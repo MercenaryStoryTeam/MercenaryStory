@@ -15,9 +15,10 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	public FirebaseAuth Auth { get; private set; }
 	public FirebaseDatabase DB { get; private set; }
 
-	private DatabaseReference userRef;
+	private DatabaseReference usersRef;
 	private Dictionary<string, UserData> userDictionary;
 	private List<UserData> userList;
+	public UserData CurrentUserData { get; private set; }
 
 	public enum State
 	{
@@ -49,10 +50,10 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		{
 			var result = await Auth.CreateUserWithEmailAndPasswordAsync(email, password);
 
-			userRef = DB.GetReference($"users/{result.User.UserId}");
+			usersRef = DB.GetReference($"users/{result.User.UserId}");
 			UserData userData = new UserData(email, result.User.UserId);
 			string userDataJson = JsonConvert.SerializeObject(userData);
-			await userRef.SetRawJsonValueAsync(userDataJson);
+			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
 
 			PanelManager.Instance.dialogPanel.DialogOpen("회원가입이 완료되었습니다.", () => PanelManager.Instance.PanelOpen("SignIn"));
@@ -85,5 +86,23 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		PanelManager.Instance.dialogPanel.DialogOpen("사용 가능한 email입니다.",
 			() => PanelManager.Instance.dialogPanel.DialogClose());
 		state = State.EmailChecked;
+	}
+
+	public async void SignIn(string email, string password, Action<FirebaseUser, UserData> callback = null)
+	{
+		var result = await Auth.SignInWithEmailAndPasswordAsync(email, password);
+		usersRef = DB.GetReference($"users/{result.User.UserId}");
+		DataSnapshot userDataValues = await usersRef.GetValueAsync();
+		UserData userData = null;
+		if (userDataValues.Exists)
+		{
+			string json = userDataValues.GetRawJsonValue();
+			userData = JsonConvert.DeserializeObject<UserData>(json);
+		}
+
+		CurrentUserData = userData;
+		callback?.Invoke(result.User, userData);
+
+		PanelManager.Instance.PanelOpen("CharacterSelect");
 	}
 }

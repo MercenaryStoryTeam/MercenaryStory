@@ -18,6 +18,7 @@ public class PanelManager : MonoBehaviourPunCallbacks
 	public SignUpPanel signUpPanel;
 	public SignInPanel signInPanel;
 	public DialogPanel dialogPanel;
+	public CharacterSelectPanel characterSelectPanel;
 
 	private void Awake()
 	{
@@ -35,7 +36,8 @@ public class PanelManager : MonoBehaviourPunCallbacks
 		{
 			{ "SignUp", signUpPanel.gameObject },
 			{ "SignIn", signInPanel.gameObject },
-			{ "Dialog", dialogPanel.gameObject }
+			{ "Dialog", dialogPanel.gameObject },
+			{ "CharacterSelect", characterSelectPanel.gameObject }
 		};
 
 		PanelOpen("SignIn");
