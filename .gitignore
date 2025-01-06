@@ -1,3 +1,23 @@
+# Visual Studio / JetBrains Rider 관련 파일
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.userprefs
+
+# Photon PUN 2 관련 파일
+# PhotonUnityNetworking의 라이브러리는 Unity 패키지 관리에서 다시 가져올 수 있으므로 제외 가능
+/Assets/Photon/PhotonUnityNetworking/PhotonNetworking-Documentation.chm
+/Assets/Photon/PhotonUnityNetworking/PhotonUnityNetworking.meta
+/Assets/Photon/PhotonUnityNetworking/PhotonRealtime.meta
+
+# Photon Chat은 필요에 따라 제외 가능
+/Assets/Photon/PhotonChat/Code/
+/Assets/Photon/PhotonChat/Demos/
+
+# 기타 불필요한 메타 파일
+*.meta
+
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
