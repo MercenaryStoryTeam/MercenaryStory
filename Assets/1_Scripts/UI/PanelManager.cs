@@ -48,10 +48,4 @@ public class PanelManager : MonoBehaviourPunCallbacks
 			row.Value.SetActive(row.Key == panelName);
 		}
 	}
-
-	public void DialogOpen(string dialog)
-	{
-		dialogPanel.SetDialog(dialog);
-		dialogPanel.gameObject.SetActive(true);
-	}
 }

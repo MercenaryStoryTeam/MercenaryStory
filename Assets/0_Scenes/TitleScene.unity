@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 119729891}
   - component: {fileID: 119729890}
   m_Layer: 5
-  m_Name: IDText
+  m_Name: EmailText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -271,7 +271,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ID
+  m_Text: Email
 --- !u!222 &119729891
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 137855926}
   - component: {fileID: 137855925}
   m_Layer: 5
-  m_Name: IDText
+  m_Name: EmailText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC0AC\uC6A9\uD560 \uC544\uC774\uB514 \uC785\uB825"
+  m_Text: "\uC0AC\uC6A9\uD560 email \uC785\uB825"
 --- !u!222 &137855926
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -920,7 +920,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC544\uC774\uB514 \uC911\uBCF5 \uD655\uC778"
+  m_Text: "Email \uC911\uBCF5 \uD655\uC778"
 --- !u!222 &422907858
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -999,7 +999,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter ID...
+  m_Text: Enter email...
 --- !u!222 &438887489
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1078,7 +1078,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "ID \uB610\uB294 \uBE44\uBC00\uBC88\uD638\uAC00 \uC77C\uCE58\uD558\uC9C0
+  m_Text: "Email \uB610\uB294 \uBE44\uBC00\uBC88\uD638\uAC00 \uC77C\uCE58\uD558\uC9C0
     \uC54A\uC2B5\uB2C8\uB2E4."
 --- !u!222 &542403074
 CanvasRenderer:
@@ -1180,7 +1180,7 @@ GameObject:
   - component: {fileID: 735239110}
   - component: {fileID: 735239109}
   m_Layer: 5
-  m_Name: IDInputField
+  m_Name: EmailInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1410,7 +1410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &886997104
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1486,7 +1486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12a9dfcc51b48d440977f30103832c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idInput: {fileID: 1214565578}
+  emailInput: {fileID: 1214565578}
   pwInput: {fileID: 341764192}
   signUpButton: {fileID: 1094503965}
   signInButton: {fileID: 1976617125}
@@ -1850,7 +1850,7 @@ GameObject:
   - component: {fileID: 1214565579}
   - component: {fileID: 1214565578}
   m_Layer: 5
-  m_Name: IDInputField
+  m_Name: EmailInputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2122,7 +2122,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1361935220
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3070,7 +3070,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter ID...
+  m_Text: Enter Email...
 --- !u!222 &1968566776
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3292,7 +3292,7 @@ GameObject:
   - component: {fileID: 2010809220}
   - component: {fileID: 2010809219}
   m_Layer: 5
-  m_Name: IDCheckButton
+  m_Name: EmailCheckButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3400,6 +3400,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010809217}
   m_CullTransparentMesh: 1
+--- !u!1 &2089816085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2089816087}
+  - component: {fileID: 2089816086}
+  m_Layer: 0
+  m_Name: FirebaseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2089816086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089816085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fd61357aedaf8b40b50bf2d22c6da09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+--- !u!4 &2089816087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089816085}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2092515520
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,7 +3542,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2103955366
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3575,10 +3620,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3d2df5f4459aa4d92d57571a1b7a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  idInput: {fileID: 735239109}
+  emailInput: {fileID: 735239109}
   pwInput1: {fileID: 1845447194}
   pwInput2: {fileID: 259997147}
-  idCheckButton: {fileID: 2010809219}
+  emailCheckButton: {fileID: 2010809219}
   signUpButton: {fileID: 1346982832}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -3588,3 +3633,4 @@ SceneRoots:
   - {fileID: 1698565660}
   - {fileID: 127619142}
   - {fileID: 1169491726}
+  - {fileID: 2089816087}

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SignInPanel : MonoBehaviour
 {
-	public InputField idInput;
+	public InputField emailInput;
 	public InputField pwInput;
 	public Button signUpButton;
 	public Button signInButton;
@@ -24,6 +24,6 @@ public class SignInPanel : MonoBehaviour
 
 	private void SignInButtonClick()
 	{
-		PanelManager.Instance.DialogOpen("로그인 중입니다.");
+		// PanelManager.Instance.dialogPanel.DialogOpen("로그인 중입니다.");
 	}
 }
