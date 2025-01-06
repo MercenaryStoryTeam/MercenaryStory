@@ -1,3 +1,22 @@
+# Firebase 관련 DLL, PDB, 리포지토리 폴더 제외
+/Assets/Plugins/Firebase/*.dll
+/Assets/Plugins/Firebase/Editor/*.dll
+/Assets/Firebase/m2repository/
+/Assets/GeneratedLocalRepo/
+
+# Plugins 폴더의 확장자 제외
+/Assets/Plugins/**/*.dll
+/Assets/Plugins/**/*.pdb
+/Assets/Plugins/**/*.bundle
+/Assets/Plugins/**/*.so
+
+# Firebase google-services 설정 제외
+/Assets/StreamingAssets/google-services-*.json
+
+# Firebase Plugin 파일 제외
+/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.bundle
+/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.so
+
 # Visual Studio / JetBrains Rider 관련 파일
 .vscode/
 *.csproj
