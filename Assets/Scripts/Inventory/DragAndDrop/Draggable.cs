@@ -41,8 +41,8 @@ public class Draggable : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDra
     {
         if (this.transform.parent == canvas)
         {
-            transform.SetParent(previousParent);
-            rectTransform.position = previousParent.GetComponent<RectTransform>().position;
+                transform.SetParent(previousParent);
+                rectTransform.position = previousParent.GetComponent<RectTransform>().position;
         }
         
         canvasGroup.alpha = 1f;
