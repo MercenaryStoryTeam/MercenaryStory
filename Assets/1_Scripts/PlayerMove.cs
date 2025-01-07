@@ -142,6 +142,8 @@ public class PlayerMove : MonoBehaviour
         // 점프 입력 처리
         if (Input.GetButtonDown("Jump") && isGrounded && canJump && currentState != State.Jumping)
         {
+            Debug.Log("Jump 버튼이 눌림");
+
             TransitionToState(State.Jumping);
             return;
         }
@@ -230,7 +232,7 @@ public class PlayerMove : MonoBehaviour
                 break;
 
             case State.Jumping:
-                // 점프 중에도 공중 이동 (에어 컨트롤)
+                // 점프 중에도 공중 이동
                 ApplyAirControl();
                 break;
         }
@@ -274,6 +276,8 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void TransitionToState(State newState)
     {
+        Debug.Log($"State 전환: {currentState} -> {newState}");
+
         if (currentState == newState) return;
 
         ExitCurrentState();
