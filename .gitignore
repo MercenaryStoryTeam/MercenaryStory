@@ -16,9 +16,12 @@
 # Firebase Plugin 파일 제외
 /Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.bundle
 /Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.so
+/Assets/Firebase/Plugins/x86_64/*.bundle
+/Assets/Firebase/Plugins/x86_64/*.so
+/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.bundle.meta
+/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.so.meta
+/Assets/Firebase/Plugins/x86_64/*
 
-/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*
-/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*
 # Visual Studio / JetBrains Rider 관련 파일
 .vscode/
 *.csproj
@@ -111,3 +114,5 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_5_0.so.meta
+Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_5_0.bundle.meta
