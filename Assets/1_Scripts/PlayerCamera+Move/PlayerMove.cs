@@ -25,7 +25,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private Transform cameraTransform; // 현재 보이는 뷰를 기준으로 이동 처리
 
     [Header("플레이어 하위 GameObject Transform")]
-    [SerializeField] private Transform ankleTransform; // 발목 위치 기준으로 레이캐스트
+    [SerializeField] private Transform ankleTransform; // 해당 위치를 기준으로 OverlapSphere 활성화
 
     private Rigidbody rb;
     private Animator animator;
