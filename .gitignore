@@ -116,3 +116,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_5_0.so.meta
 Assets/Firebase/Plugins/x86_64/FirebaseCppApp-12_5_0.bundle.meta
+ProjectSettings/Packages/com.unity.testtools.codecoverage
