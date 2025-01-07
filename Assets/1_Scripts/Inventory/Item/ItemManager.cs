@@ -17,22 +17,6 @@ public class ItemManager : SingletonManager<ItemManager>
 
     private void LoadItemsFromJson()
     {
-        // string fullPath = Path.Combine(Application.dataPath, jsonFilePath);
-        // if (File.Exists(fullPath))
-        // {
-        //     string jsonData = File.ReadAllText(fullPath);
-        //     itemList = JsonUtility.FromJson<ItemList>($"{{\"items\":{jsonData}}}");
-        //     
-        //     foreach (var item in itemList.items)
-        //     {
-        //         Debug.Log($"아이템 ID: {item.item_Id}\n아이템 이름: {item.item_Name}\n아이템 가격:{item.item_Cellprice}");
-        //     }
-        // }
-        //
-        // else
-        // {
-        //     Debug.Log("json 파일 찾을 수 없음");
-        // }
     }
 
     public Item GetItemById(int id)
