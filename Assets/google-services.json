@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "430248959740",
+    "firebase_url": "https://mercenarystory-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "mercenarystory",
+    "storage_bucket": "mercenarystory.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430248959740:android:0a600b449b65d3147f0179",
+        "android_client_info": {
+          "package_name": "MercenaryStoryTeam.MercenaryStory"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTU31GUl8ovkKl2OKYs6jLkPphmEHQGUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
