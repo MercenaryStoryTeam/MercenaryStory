@@ -66,7 +66,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: a5e10d77c49dfcb42b121f461c0b7653, type: 3}
+    m_Font: {fileID: 12800000, guid: 24fd5b2a27dc7c34c971eb23c2c023d8, type: 3}
     m_FontSize: 19
     m_FontStyle: 0
     m_BestFit: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: a5e10d77c49dfcb42b121f461c0b7653, type: 3}
+    m_Font: {fileID: 12800000, guid: 24fd5b2a27dc7c34c971eb23c2c023d8, type: 3}
     m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: a5e10d77c49dfcb42b121f461c0b7653, type: 3}
+    m_Font: {fileID: 12800000, guid: 24fd5b2a27dc7c34c971eb23c2c023d8, type: 3}
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
@@ -303,7 +303,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: a5e10d77c49dfcb42b121f461c0b7653, type: 3}
+    m_Font: {fileID: 12800000, guid: 24fd5b2a27dc7c34c971eb23c2c023d8, type: 3}
     m_FontSize: 19
     m_FontStyle: 0
     m_BestFit: 0
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e7350968c3570f745a9316b9cef3b7be, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f032cfe255d7bdc48b0b11deb565c120, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -456,7 +456,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2891089a24e33eb4287fe57bab607bf2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cb2571e7a4b262a478954c6c4a05a594, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -475,6 +475,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8263530846954528889}
+  - component: {fileID: 2767633367081095310}
   m_Layer: 5
   m_Name: ItemInfo
   m_TagString: Untagged
@@ -509,6 +510,25 @@ RectTransform:
   m_AnchoredPosition: {x: 357, y: 0}
   m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2767633367081095310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4922013428032425259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a6bcaf8542b0d247afb55c866d52490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemInfoPanel: {fileID: 4922013428032425259}
+  itemImage: {fileID: 5690822821866278632}
+  itemName: {fileID: 4185679031578176212}
+  itemInfo: {fileID: 4871526588733441420}
+  equipItemButton: {fileID: 9038826257392431260}
+  removeItemButton: {fileID: 8789891053587032957}
+  closeButton: {fileID: 9217137114591687757}
 --- !u!1 &5066075923741391152
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +595,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6261c745a3ce45a43bccf6b26e90ef6c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6589f00c88403c64bacbb2c6a4d335cf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -696,7 +716,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9c561146f7f8ed846a46d8c889f1ab11, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e4a7345de2131b040bf3d893c1b905d1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -817,7 +837,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9c561146f7f8ed846a46d8c889f1ab11, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e4a7345de2131b040bf3d893c1b905d1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -937,7 +957,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: a5e10d77c49dfcb42b121f461c0b7653, type: 3}
+    m_Font: {fileID: 12800000, guid: 24fd5b2a27dc7c34c971eb23c2c023d8, type: 3}
     m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0

@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: "\uCC45"
-  image: {fileID: 21300000, guid: c9060f6886fc51e488348cd1e0da62fc, type: 3}
+  image: {fileID: 21300000, guid: e98a0fdbba54f8c4499cce34584a0758, type: 3}
   count: 0
