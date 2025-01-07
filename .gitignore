@@ -30,6 +30,7 @@
 /Assets/Photon/PhotonUnityNetworking/PhotonNetworking-Documentation.chm
 /Assets/Photon/PhotonUnityNetworking/PhotonUnityNetworking.meta
 /Assets/Photon/PhotonUnityNetworking/PhotonRealtime.meta
+/Assets/Photon/PhotonUnityNetworking/Code/Editor/PunSceneSettingsFile.asset
 
 # Photon Chat은 필요에 따라 제외 가능
 /Assets/Photon/PhotonChat/Code/
