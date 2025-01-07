@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: "\uCE7C"
-  image: {fileID: 21300000, guid: bc1e89ab420d76148982a53e02bdbac9, type: 3}
+  image: {fileID: 21300000, guid: 4b780898205e6754b9f454cfd2aa5800, type: 3}
   count: 0

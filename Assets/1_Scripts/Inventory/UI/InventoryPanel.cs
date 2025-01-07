@@ -35,11 +35,11 @@ public class InventoryPanel : MonoBehaviour
         {
             if (!UIManager.Instance.isInventoryActive)
             {
-                UIManager.Instance.CloseInventoryPanel();
+                UIManager.Instance.OpenInventoryPanel();
             }
             else
             {
-                UIManager.Instance.OpenInventoryPanel();
+                UIManager.Instance.CloseInventoryPanel();
             }
         }
     }
