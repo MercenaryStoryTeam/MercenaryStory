@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SignUpPanel : MonoBehaviour
@@ -28,30 +25,41 @@ public class SignUpPanel : MonoBehaviour
 
 	private void SignUpButtonClick()
 	{
-		if (FirebaseManager.Instance.state == FirebaseManager.State.EmailNotChecked)
-		{
-			PanelManager.Instance.dialogPanel.DialogOpen("email 중복 체크가 완료되지 않았습니다.",
-				() => PanelManager.Instance.dialogPanel.DialogClose());
-		}
-		else if (pwInput1.text != pwInput2.text)
-		{
-			PanelManager.Instance.dialogPanel.DialogOpen("비밀번호가 일치하지 않습니다.",
-				() => PanelManager.Instance.dialogPanel.DialogClose());
-		}
-		else if (pwInput1.text.Length < 8 || pwInput1.text.Length > 12)
-		{
-			PanelManager.Instance.dialogPanel.DialogOpen("비밀번호는 8글자 이상 12글자 이하로 설정해야 합니다.",
-				() => PanelManager.Instance.dialogPanel.DialogClose());
-		}
-		else if (!IsValidPassword(pwInput1.text))
-		{
-			PanelManager.Instance.dialogPanel.DialogOpen("비밀번호는 문자, 숫자, 특수 기호 중 2가지 이상의 종류를 사용해야 합니다.",
-				() => PanelManager.Instance.dialogPanel.DialogClose());
-		}
-		else
+		if (ValidateInputs())
 		{
 			FirebaseManager.Instance.SignUp(emailInput.text, pwInput1.text);
 		}
+	}
+
+	private bool ValidateInputs()
+	{
+		if (FirebaseManager.Instance.state == FirebaseManager.State.EmailNotChecked)
+		{
+			ShowDialog("Email 중복 체크가 완료되지 않았습니다.");
+			return false;
+		}
+		else if (pwInput1.text != pwInput2.text)
+		{
+			ShowDialog("비밀번호가 일치하지 않습니다.");
+			return false;
+		}
+		else if (pwInput1.text.Length < 8 || pwInput1.text.Length > 12)
+		{
+			ShowDialog("비밀번호는 8글자 이상 12글자 이하로 설정해야 합니다.");
+			return false;
+		}
+		else if (!IsValidPassword(pwInput1.text))
+		{
+			ShowDialog("비밀번호는 문자, 숫자, 특수문자 등 2가지 이상의 종류를 사용해야 합니다.");
+			return false;
+		}
+
+		return true;
+	}
+
+	private void ShowDialog(string message)
+	{
+		PanelManager.Instance.dialogPanel.DialogOpen(message,()=>PanelManager.Instance.dialogPanel.DialogClose());
 	}
 
 	private bool IsValidPassword(string password)
