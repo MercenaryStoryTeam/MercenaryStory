@@ -17,6 +17,8 @@
 /Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.bundle
 /Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*.so
 
+/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*
+/Assets/Firebase/Plugins/x86_64/FirebaseCppApp-*
 # Visual Studio / JetBrains Rider 관련 파일
 .vscode/
 *.csproj
