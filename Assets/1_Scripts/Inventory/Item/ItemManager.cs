@@ -3,16 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : SingletonManager<ItemManager>
 {
-    public static ItemManager Instance {get; private set;}
-
-    private void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(this);
-    }
-
     public List<Item> items = new List<Item>();
 
     
