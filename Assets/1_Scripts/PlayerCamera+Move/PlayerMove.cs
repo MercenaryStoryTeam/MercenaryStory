@@ -24,6 +24,9 @@ public class PlayerMove : MonoBehaviour
     [Header("Virtual Camera 할당")]
     [SerializeField] private Transform cameraTransform; // 현재 보이는 뷰를 기준으로 이동 처리
 
+    [Header("플레이어 하위 GameObject Transform")]
+    [SerializeField] private Transform ankleTransform; // 발목 위치 기준으로 레이캐스트
+
     private Rigidbody rb;
     private Animator animator;
 
@@ -55,6 +58,12 @@ public class PlayerMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
+        // Rigidbody 설정 확인
+        if (rb.isKinematic)
+        {
+            Debug.LogWarning("Rigidbody가 Kinematic으로 설정되어 있습니다. 점프 및 물리 동작이 제대로 작동하지 않을 수 있습니다.");
+        }
+
         // 카메라 트랜스폼 자동 할당
         if (!cameraTransform)
         {
@@ -69,14 +78,16 @@ public class PlayerMove : MonoBehaviour
                 enabled = false;
             }
         }
+
+        // Animator 설정 확인
+        animator.applyRootMotion = false;
     }
 
     private void Update()
     {
 #if UNITY_EDITOR
         // 디버그용 로그
-        Debug.Log($"State: {currentState}, Movement: {movementInput}, " +
-                  $"Grounded: {isGrounded}, canJump: {canJump}");
+        Debug.Log($"State: {currentState}, Movement: {movementInput}, Grounded: {isGrounded}, canJump: {canJump}");
 #endif
         HandleInput();    // 입력 처리 먼저
         HandleState();    // 그 후 상태 처리
@@ -89,31 +100,31 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// 바닥 판정 (레이캐스트 사용)
+    /// 바닥 판정 (OverlapSphere 사용)
     /// </summary>
     private void CheckGrounded()
     {
         bool wasGrounded = isGrounded;
         isGrounded = false;
 
-        // 레이캐스트 길이 설정
-        float rayDistance = groundCheckRadius + 0.1f; // 약간의 여유를 두기 위해
-        RaycastHit hit;
+        Vector3 sphereOrigin = ankleTransform.position; // 발목 위치 기준
+        float sphereRadius = groundCheckRadius;
+        Collider[] colliders = Physics.OverlapSphere(sphereOrigin, sphereRadius, groundLayer);
 
-        // 플레이어의 발 위치에서 아래로 레이캐스트
-        Vector3 rayOrigin = transform.position + Vector3.down * 0.1f; // 약간 아래로 오프셋
-
-        if (Physics.Raycast(rayOrigin, Vector3.down, out hit, rayDistance, groundLayer))
+        if (colliders.Length > 0)
         {
             isGrounded = true;
             if (!wasGrounded)
             {
                 canJump = true;
+                Debug.Log($"착지: canJump가 true로 설정됨. 감지된 오브젝트 수: {colliders.Length}");
             }
         }
         else
         {
             isGrounded = false;
+            canJump = false;
+            Debug.Log("공중: canJump가 false로 설정됨");
         }
 
         // Animator의 isGrounded 파라미터 업데이트
@@ -143,7 +154,6 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded && canJump && currentState != State.Jumping)
         {
             Debug.Log("Jump 버튼이 눌림");
-
             TransitionToState(State.Jumping);
             return;
         }
@@ -225,15 +235,18 @@ public class PlayerMove : MonoBehaviour
                 idleVelocity.x = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime * 10f);
                 idleVelocity.z = Mathf.Lerp(rb.velocity.z, 0f, Time.fixedDeltaTime * 10f);
                 rb.velocity = idleVelocity;
+                Debug.Log($"HandlePhysics: Idle Velocity = {rb.velocity}");
                 break;
 
             case State.Moving:
                 MovePlayer();
+                Debug.Log($"HandlePhysics: Moving Velocity = {rb.velocity}");
                 break;
 
             case State.Jumping:
                 // 점프 중에도 공중 이동
                 ApplyAirControl();
+                Debug.Log($"HandlePhysics: Jumping Velocity = {rb.velocity}");
                 break;
         }
     }
@@ -335,6 +348,7 @@ public class PlayerMove : MonoBehaviour
         rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
         isGrounded = false;
         canJump = false;  // 착지 전까지 다시 점프 불가
+        Debug.Log("Jump 실행: Y 속도 설정 및 canJump False");
     }
 
     /// <summary>
@@ -342,11 +356,14 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void OnDrawGizmosSelected()
     {
-        // 레이캐스트 시각화
-        Gizmos.color = Color.yellow;
-        float rayDistance = groundCheckRadius + 0.1f;
-        Vector3 rayOrigin = transform.position + Vector3.down * 0.1f;
-        Gizmos.DrawLine(rayOrigin, rayOrigin + Vector3.down * rayDistance);
+        if (ankleTransform == null)
+            return;
+
+        // OverlapSphere 시각화
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+        Vector3 sphereOrigin = ankleTransform.position;
+        float sphereRadius = groundCheckRadius;
+        Gizmos.DrawWireSphere(sphereOrigin, sphereRadius);
 
         // 현재 플레이어 위치 시각화
         Gizmos.color = Color.red;
