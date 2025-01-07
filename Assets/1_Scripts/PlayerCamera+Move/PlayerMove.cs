@@ -24,8 +24,8 @@ public class PlayerMove : MonoBehaviour
     [Header("Virtual Camera 할당")]
     [SerializeField] private Transform cameraTransform; // 현재 보이는 뷰를 기준으로 이동 처리
 
-    [Header("플레이어 하위 GameObject Transform")]
-    [SerializeField] private Transform ankleTransform; // 해당 위치를 기준으로 OverlapSphere 활성화
+    [Header("캐릭터 하위 빈오브젝트 Transform")]
+    [SerializeField] private Transform ankleTransform; // 캐릭터 하위 빈오브젝트 위치를 기준으로 OverlapSphere 전개
 
     private Rigidbody rb;
     private Animator animator;
@@ -58,13 +58,18 @@ public class PlayerMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
-        // Rigidbody 설정 확인
+        // Rigidbody 설정 확인 
         if (rb.isKinematic)
         {
-            Debug.LogWarning("Rigidbody가 Kinematic으로 설정되어 있습니다. 점프 및 물리 동작이 제대로 작동하지 않을 수 있습니다.");
+            Debug.LogWarning("Rigidbody의 Kinematic가 활성화");
         }
 
-        // 카메라 트랜스폼 자동 할당
+        if (!rb.useGravity)
+        {
+            Debug.LogWarning("Rigidbody의 Use Gravity가 비활성화");
+        }
+
+        // 메인 카메라 자동 할당
         if (!cameraTransform)
         {
             Camera mainCamera = Camera.main;
@@ -86,8 +91,7 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
 #if UNITY_EDITOR
-        // 디버그용 로그
-        Debug.Log($"State: {currentState}, Movement: {movementInput}, Grounded: {isGrounded}, canJump: {canJump}");
+        LogDebugInfo(); 
 #endif
         HandleInput();    // 입력 처리 먼저
         HandleState();    // 그 후 상태 처리
@@ -107,7 +111,7 @@ public class PlayerMove : MonoBehaviour
         bool wasGrounded = isGrounded;
         isGrounded = false;
 
-        Vector3 sphereOrigin = ankleTransform.position; // 발목 위치 기준
+        Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // 약간 아래로 위치
         float sphereRadius = groundCheckRadius;
         Collider[] colliders = Physics.OverlapSphere(sphereOrigin, sphereRadius, groundLayer);
 
@@ -117,14 +121,12 @@ public class PlayerMove : MonoBehaviour
             if (!wasGrounded)
             {
                 canJump = true;
-                Debug.Log($"착지: canJump가 true로 설정됨. 감지된 오브젝트 수: {colliders.Length}");
             }
         }
         else
         {
             isGrounded = false;
             canJump = false;
-            Debug.Log("공중: canJump가 false로 설정됨");
         }
 
         // Animator의 isGrounded 파라미터 업데이트
@@ -153,7 +155,6 @@ public class PlayerMove : MonoBehaviour
         // 점프 입력 처리
         if (Input.GetButtonDown("Jump") && isGrounded && canJump && currentState != State.Jumping)
         {
-            Debug.Log("Jump 버튼이 눌림");
             TransitionToState(State.Jumping);
             return;
         }
@@ -206,7 +207,6 @@ public class PlayerMove : MonoBehaviour
         {
             case State.Idle:
             case State.Moving:
-                // 별도 로직 없음
                 break;
 
             case State.Jumping:
@@ -230,23 +230,20 @@ public class PlayerMove : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
-                // Idle 상태면 XZ 속도 0으로 점진적으로 감속
+                // Idle 상태면 속도 조금씩 감속
                 Vector3 idleVelocity = rb.velocity;
                 idleVelocity.x = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime * 10f);
                 idleVelocity.z = Mathf.Lerp(rb.velocity.z, 0f, Time.fixedDeltaTime * 10f);
                 rb.velocity = idleVelocity;
-                Debug.Log($"HandlePhysics: Idle Velocity = {rb.velocity}");
                 break;
 
             case State.Moving:
                 MovePlayer();
-                Debug.Log($"HandlePhysics: Moving Velocity = {rb.velocity}");
                 break;
 
             case State.Jumping:
                 // 점프 중에도 공중 이동
                 ApplyAirControl();
-                Debug.Log($"HandlePhysics: Jumping Velocity = {rb.velocity}");
                 break;
         }
     }
@@ -289,8 +286,6 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void TransitionToState(State newState)
     {
-        Debug.Log($"State 전환: {currentState} -> {newState}");
-
         if (currentState == newState) return;
 
         ExitCurrentState();
@@ -315,8 +310,7 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void ExitCurrentState()
     {
-        // Animator의 Speed 파라미터는 HandleInput에서 이미 관리하므로 별도 처리 불필요
-        // 필요 시 추가적인 상태 종료 로직을 여기에 작성
+
     }
 
     // Idle
@@ -344,11 +338,10 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // 기존 Y 속도 초기화
+        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // 속도
         rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
-        isGrounded = false;
+        isGrounded = false; // 바닥과 접촉x
         canJump = false;  // 착지 전까지 다시 점프 불가
-        Debug.Log("Jump 실행: Y 속도 설정 및 canJump False");
     }
 
     /// <summary>
@@ -359,16 +352,26 @@ public class PlayerMove : MonoBehaviour
         if (ankleTransform == null)
             return;
 
-        // OverlapSphere 시각화
+        // 플레이어의 바닥 접촉 여부를 판단하는 OverlapSphere 시각화
         Gizmos.color = isGrounded ? Color.green : Color.red;
-        Vector3 sphereOrigin = ankleTransform.position;
+        Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // 약간 아래 위치
         float sphereRadius = groundCheckRadius;
         Gizmos.DrawWireSphere(sphereOrigin, sphereRadius);
 
-        // 현재 플레이어 위치 시각화
+        // 현재 플레이어 위치 시각화(플레이어 발목 위치에 있는 빨간공)
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, 0.02f);
     }
+
+#if UNITY_EDITOR
+    /// <summary>
+    /// 디버그 정보 로그 통합
+    /// </summary>
+    private void LogDebugInfo()
+    {
+        Debug.Log($"State: {currentState}, Movement: {movementInput}, Grounded: {isGrounded}, canJump: {canJump}, Velocity: {rb.velocity}");
+    }
+#endif
 }
 
-// 중간 완성
+//중간 완성
