@@ -113,10 +113,10 @@ public class PlayerMove : MonoBehaviour
 #if UNITY_EDITOR
         LogDebugInfo();
 #endif
-        if (!isDead) // 사망 상태일 때는 입력 처리 및 상태 변경을 막음
+        if (!isDead) // Die 상태일 때는 입력 처리 및 상태 변경을 막음
         {
-            HandleInput();    // 입력 처리 먼저
-            HandleState();    // 그 후 상태 처리
+            HandleInput(); // 입력 처리
+            HandleState(); // 상태 처리
         }
     }
 
@@ -332,9 +332,9 @@ public class PlayerMove : MonoBehaviour
     /// <summary>
     /// 플레이어 사망 처리 메서드
     /// </summary>
-    public void Die()
+    public void Die() // 플레이어가 Die할 때 호출되어 Die 상태로 전환
     {
-        if (!isDead) // 플레이어가 Die 상태인지 여부 체크
+        if (!isDead) // 플레이어가 Die인지 여부 체크
         {
             TransitionToState(State.Die);
         }
@@ -361,11 +361,11 @@ public class PlayerMove : MonoBehaviour
 
 #if UNITY_EDITOR
     /// <summary>
-    /// 현재 상태 정보 디버그
+    /// 현재 핵심 정보 디버그
     /// </summary>
     private void LogDebugInfo()
     {
-        Debug.Log($"Scene: {animator.GetBool("Scene")}, State: {currentState}, Movement: {movementInput}, Grounded: {isGrounded}, Velocity: {rb.velocity}");
+        Debug.Log($"Scene: {animator.GetBool("Scene")}, State: {currentState}");
     }
 #endif
 }

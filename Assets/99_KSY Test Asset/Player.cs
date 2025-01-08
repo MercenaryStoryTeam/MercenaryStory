@@ -21,11 +21,11 @@ public class Player : MonoBehaviour
     {
         currentHp = maxHp; // 현재 체력을 최대 체력으로 초기화
 
-        // PlayerMove 스크립트 참조 획득
+        // PlayerMove 스크립트 유, 무 체크
         playerMove = GetComponent<PlayerMove>();
         if (playerMove == null)
         {
-            Debug.LogError("PlayerMove 컴포넌트가 동일한 GameObject에 없습니다.");
+            Debug.LogError("PlayerMove 스크립트 x");
         }
     }
 
