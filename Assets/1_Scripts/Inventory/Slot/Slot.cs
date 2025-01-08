@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class Slot : MonoBehaviour
 {
-    public List<Slot> slots;
-    
-    
     
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public List<Item> items;
+    public List<ItemBase> items;
 
     private void Update()
     {

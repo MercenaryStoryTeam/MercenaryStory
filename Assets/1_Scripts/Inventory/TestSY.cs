@@ -10,7 +10,7 @@ public class TestSY : MonoBehaviour
 
     private void Update()
     {
-        UIManager.Instance.inventoryPanel.TryOpenInventory();
+        UIManager.Instance.inventory.TryOpenInventory();
     }
 
     private void ItemDropTest()
