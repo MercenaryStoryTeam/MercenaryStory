@@ -8,6 +8,7 @@ public class UIManager : SingletonManager<UIManager>
     public ItemInfoPanel itemInfo;
     public InventoryPanel inventory;
     public ShopPanel shop;
+    public EquipmentPanel equipment;
     [HideInInspector]public bool isInventoryActive = false;
 
     protected override void Awake()
@@ -16,6 +17,7 @@ public class UIManager : SingletonManager<UIManager>
         itemInfo = FindObjectOfType<ItemInfoPanel>();
         inventory = FindObjectOfType<InventoryPanel>();
         shop = FindObjectOfType<ShopPanel>();
+        equipment = FindObjectOfType<EquipmentPanel>();
     }
 
     #region Inventory

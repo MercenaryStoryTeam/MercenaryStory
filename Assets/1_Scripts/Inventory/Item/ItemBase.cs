@@ -9,6 +9,7 @@ public class ItemBase : ScriptableObject
 {
     public int id;
     public string name;
+    public string description;
     public bool isSellable;
     public Sprite image;
     public List<GameObject> prefab;

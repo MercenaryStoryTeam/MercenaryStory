@@ -15,4 +15,6 @@ public class WeaponItem : ItemBase
         currentItemCount = 0;
         isSellable = true;
     }
+    
+    
 }
