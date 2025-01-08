@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Monster1 : Monster
+public class ThiefRat : Monster
 {
     public int _hp = 10;
     public int _maxHp = 10;
@@ -18,11 +18,11 @@ public class Monster1 : Monster
     public float _attackRange = 2;
     public Transform _patrolArea;
     private MonsterState currentState;
-    private Monster1 _monster1;
+    private ThiefRat _thiefRat;
 
     public void Awake()
     {
-        _monster1 = gameObject.GetComponent<Monster1>();
+        _thiefRat = gameObject.GetComponent<ThiefRat>();
         Hp = _hp;
         MaxHp = _maxHp;
         Damage = _damage;
