@@ -12,6 +12,7 @@ public class ItemInfoPanel : MonoBehaviour
     public Image itemImage;
     public Text itemName;
     public Text itemInfo;
+    public Text itemCount;
     
     public Button equipItemButton;
     public Button removeItemButton;
@@ -24,10 +25,15 @@ public class ItemInfoPanel : MonoBehaviour
         InfoButtonOnClick();
     }
 
+    private void Update()
+    {
+        
+    }
+    
     private void InfoButtonOnClick()
     {
-        equipItemButton.onClick.AddListener(EquipItemButtonClick);
-        removeItemButton.onClick.AddListener(RemoveItemButtonClick);
+        equipItemButton?.onClick.AddListener(EquipItemButtonClick);
+        removeItemButton?.onClick.AddListener(RemoveItemButtonClick);
         closeButton.onClick.AddListener(CloseButtonClick);
     }
     
