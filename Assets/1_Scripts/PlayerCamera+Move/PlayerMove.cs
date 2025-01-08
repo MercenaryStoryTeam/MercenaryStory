@@ -4,16 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PlayerMove : MonoBehaviour
 {
-    [Header("이동 속도 (2 적정)")]
-    [Tooltip("애니메이션 상태 전환간의 값 입력 공식\nㄴ Idle -> Walk : 0.1\nㄴ Walk -> Run : 달리기 값 그대로 입력\nㄴ Run -> Walk : 달리기 값 + 0.1\nㄴ Walk -> Idle : 0.2")]
-    [SerializeField] private float moveSpeed = 2f;
-
-    [Header("달리기 속도 (3 적정)")]
-    [Tooltip("애니메이션 상태 전환간의 값 입력 공식\nㄴ Idle -> Walk : 0.1\nㄴ Walk -> Run : 달리기 값 그대로 입력\nㄴ Run -> Walk : 달리기 값 + 0.1\nㄴ Walk -> Idle : 0.2")]
-    [SerializeField] private float runSpeed = 3f;
-
-    [Header("점프 정도 (5 적정)")]
-    [SerializeField] private float jumpForce = 5f;
+    [Header("이동 속도 (5 적정)")]
+    [SerializeField] private float moveSpeed = 5f;
 
     [Header("바닥 체크 범위 (0.5 적정)")]
     [SerializeField] private float groundCheckRadius = 0.5f;
@@ -25,33 +17,28 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private Transform cameraTransform; // 현재 보이는 뷰를 기준으로 이동 처리
 
     [Header("캐릭터 하위 빈오브젝트 Transform")]
-    [SerializeField] private Transform ankleTransform; // 캐릭터 하위 빈오브젝트 위치를 기준으로 OverlapSphere 전개
+    [SerializeField] private Transform ankleTransform; // 캐릭터 하위 빈오브젝트 위치를 기준으로 바닥 접촉 여부 확인
 
     private Rigidbody rb;
     private Animator animator;
 
-    // 이동/점프 제어
-    private Vector3 movementInput; // 이동 방향(월드 기준)
+    // 이동 제어
+    private Vector3 movementInput; // 이동 방향
     private bool isGrounded = false;
-    private bool canJump = true;
 
-    // 이동/정지 상태 전환 임계값
+    // 이동 상태로 전환하기 위한 최소 입력 크기
     private const float moveThreshold = 0.05f;
 
     private enum State
     {
         Idle,
-        Moving,
-        Jumping
+        Moving
     }
 
     private State currentState = State.Idle;
 
     // 현재 속도
     private float currentSpeed;
-
-    // 달리기 키를 상수로 내부에서 고정 (Left Shift)
-    private const KeyCode runKey = KeyCode.LeftShift;
 
     private void Awake()
     {
@@ -61,12 +48,12 @@ public class PlayerMove : MonoBehaviour
         // Rigidbody 설정 확인 
         if (rb.isKinematic)
         {
-            Debug.LogWarning("Rigidbody의 Kinematic가 활성화");
+            Debug.LogWarning("Rigidbody의 Kinematic이 활성화되어 있습니다.");
         }
 
         if (!rb.useGravity)
         {
-            Debug.LogWarning("Rigidbody의 Use Gravity가 비활성화");
+            Debug.LogWarning("Rigidbody의 Use Gravity가 비활성화되어 있습니다.");
         }
 
         // 메인 카메라 자동 할당
@@ -91,7 +78,7 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
 #if UNITY_EDITOR
-        LogDebugInfo(); 
+        LogDebugInfo();
 #endif
         HandleInput();    // 입력 처리 먼저
         HandleState();    // 그 후 상태 처리
@@ -108,7 +95,6 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void CheckGrounded()
     {
-        bool wasGrounded = isGrounded;
         isGrounded = false;
 
         Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // 약간 아래로 위치
@@ -118,18 +104,9 @@ public class PlayerMove : MonoBehaviour
         if (colliders.Length > 0)
         {
             isGrounded = true;
-            if (!wasGrounded)
-            {
-                canJump = true;
-            }
-        }
-        else
-        {
-            isGrounded = false;
-            canJump = false;
         }
 
-        // Animator의 isGrounded 파라미터 업데이트
+        // Animator -> isGrounded 파라미터 
         animator.SetBool("isGrounded", isGrounded);
     }
 
@@ -138,46 +115,34 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void HandleInput()
     {
-        // 점프 중에는 다른 입력 무시
-        if (currentState == State.Jumping) return;
-
         // 이동 방향 계산
         float inputX = Input.GetAxisRaw("Horizontal");
         float inputZ = Input.GetAxisRaw("Vertical");
         movementInput = CalculateMovementDirection(inputX, inputZ);
 
-        // 달리기 입력 확인
-        bool isRunning = Input.GetKey(runKey) && movementInput.sqrMagnitude > moveThreshold;
-
-        // 현재 속도 설정
-        currentSpeed = isRunning ? runSpeed : moveSpeed;
-
-        // 점프 입력 처리
-        if (Input.GetButtonDown("Jump") && isGrounded && canJump && currentState != State.Jumping)
-        {
-            TransitionToState(State.Jumping);
-            return;
-        }
+        // 현재 속도 설정 (달리기 기능 제거로 항상 moveSpeed 사용)
+        currentSpeed = moveSpeed;
 
         // 이동/정지 상태 전환
         if (movementInput.sqrMagnitude > moveThreshold)
         {
-            if (currentState != State.Moving && currentState != State.Jumping)
+            if (currentState != State.Moving)
             {
                 TransitionToState(State.Moving);
             }
         }
         else
         {
-            if (isGrounded && currentState != State.Idle && currentState != State.Jumping)
+            if (currentState != State.Idle)
             {
                 TransitionToState(State.Idle);
             }
         }
 
-        // Animator의 Speed 파라미터 업데이트
-        float speed = movementInput.magnitude * currentSpeed;
-        animator.SetFloat("Speed", speed);
+        // Speed 파라미터 정규화 (0 ~ 1 사이) -> 이동속도 변경에 따른 별도의 Conditions 값 처리 필요 없음
+        // 그냥 이동속도만 바꾸면 정상 작동
+        float normalizedSpeed = (movementInput.magnitude * currentSpeed) / moveSpeed;
+        animator.SetFloat("Speed", normalizedSpeed);
     }
 
     /// <summary>
@@ -207,17 +172,7 @@ public class PlayerMove : MonoBehaviour
         {
             case State.Idle:
             case State.Moving:
-                break;
-
-            case State.Jumping:
-                // 점프 중 바닥에 닿으면 Moving/Idle 전환
-                if (isGrounded)
-                {
-                    if (movementInput.sqrMagnitude > moveThreshold)
-                        TransitionToState(State.Moving);
-                    else
-                        TransitionToState(State.Idle);
-                }
+                // 별도 로직 없음
                 break;
         }
     }
@@ -240,38 +195,16 @@ public class PlayerMove : MonoBehaviour
             case State.Moving:
                 MovePlayer();
                 break;
-
-            case State.Jumping:
-                // 점프 중에도 공중 이동
-                ApplyAirControl();
-                break;
         }
     }
 
     /// <summary>
-    /// 실제 이동 처리 (XZ만 갱신, Y는 중력/점프 유지)
+    /// 실제 이동 처리 (X,Z만 갱신, Y는 유지)
     /// </summary>
     private void MovePlayer()
     {
         Vector3 moveVelocity = movementInput * currentSpeed;
         rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
-
-        // 이동 방향으로 회전
-        if (movementInput.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(movementInput);
-            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
-        }
-    }
-
-    /// <summary>
-    /// 공중 제어 적용
-    /// </summary>
-    private void ApplyAirControl()
-    {
-        Vector3 airMove = movementInput * currentSpeed * 0.5f; // 공중 이동 속도 감소
-        Vector3 newVelocity = new Vector3(airMove.x, rb.velocity.y, airMove.z);
-        rb.velocity = Vector3.Lerp(rb.velocity, newVelocity, Time.fixedDeltaTime * 5f);
 
         // 이동 방향으로 회전
         if (movementInput.sqrMagnitude > 0.001f)
@@ -299,9 +232,6 @@ public class PlayerMove : MonoBehaviour
             case State.Moving:
                 EnterMovingState();
                 break;
-            case State.Jumping:
-                EnterJumpingState();
-                break;
         }
     }
 
@@ -326,26 +256,8 @@ public class PlayerMove : MonoBehaviour
         animator.SetFloat("Speed", speed);
     }
 
-    // Jumping
-    private void EnterJumpingState()
-    {
-        animator.SetTrigger("Jump");
-        Jump();
-    }
-
     /// <summary>
-    /// 점프 로직
-    /// </summary>
-    private void Jump()
-    {
-        rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // 속도
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
-        isGrounded = false; // 바닥과 접촉x
-        canJump = false;  // 착지 전까지 다시 점프 불가
-    }
-
-    /// <summary>
-    /// (옵션) Gizmos 시각화
+    /// Gizmos 시각화, 추후 사망, 공격 모션 구현할때 유의미 할 것으로 보임
     /// </summary>
     private void OnDrawGizmosSelected()
     {
@@ -358,20 +270,18 @@ public class PlayerMove : MonoBehaviour
         float sphereRadius = groundCheckRadius;
         Gizmos.DrawWireSphere(sphereOrigin, sphereRadius);
 
-        // 현재 플레이어 위치 시각화(플레이어 발목 위치에 있는 빨간공)
+        // 현재 플레이어 위치 시각화 (플레이어 아래 위치에 있는 빨간공)
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(transform.position, 0.02f);
     }
 
 #if UNITY_EDITOR
     /// <summary>
-    /// 디버그 정보 로그 통합
+    /// 현재 상태 정보 디버그
     /// </summary>
     private void LogDebugInfo()
     {
-        Debug.Log($"State: {currentState}, Movement: {movementInput}, Grounded: {isGrounded}, canJump: {canJump}, Velocity: {rb.velocity}");
+        Debug.Log($"State: {currentState}, Movement: {movementInput}, Grounded: {isGrounded}, Velocity: {rb.velocity}");
     }
 #endif
 }
-
-//중간 완성
