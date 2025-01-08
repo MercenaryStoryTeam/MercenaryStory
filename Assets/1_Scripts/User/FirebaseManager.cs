@@ -42,14 +42,15 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void SignUp(string email, string password, Action<FirebaseUser, UserData> callback = null)
+	public async void SignUp(string email, string password, string user_Name,
+		Action<FirebaseUser, UserData> callback = null)
 	{
 		try
 		{
 			var result = await Auth.CreateUserWithEmailAndPasswordAsync(email, password);
 
 			usersRef = DB.GetReference($"users/{result.User.UserId}");
-			UserData userData = new UserData(email, result.User.UserId);
+			UserData userData = new UserData(result.User.UserId, email, user_Name);
 			string userDataJson = JsonConvert.SerializeObject(userData);
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
@@ -71,7 +72,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			userList = new List<UserData>(userDictionary.Values);
 			foreach (UserData userData in userList)
 			{
-				if (userData.email == email)
+				if (userData.user_Email == email)
 				{
 					PanelManager.Instance.popUpPanel.DialogOpen("이미 사용중인 email입니다.",
 						() => PanelManager.Instance.popUpPanel.DialogClose());
@@ -86,7 +87,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		state = State.EmailChecked;
 	}
 
-	public async void SignIn(string email, string password, Action<FirebaseUser, UserData> callback = null)
+	public async void SignIn(string email, string password)
 	{
 		var result = await Auth.SignInWithEmailAndPasswordAsync(email, password);
 		usersRef = DB.GetReference($"users/{result.User.UserId}");
@@ -96,11 +97,27 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		{
 			string json = userDataValues.GetRawJsonValue();
 			userData = JsonConvert.DeserializeObject<UserData>(json);
+			print($"userData: {userData}");
+			print($"userData.user_Id1: {userData.user_Id}");
 		}
 
+		print($"userData.user_Id2: {userData.user_Id}");
 		CurrentUserData = userData;
-		callback?.Invoke(result.User, userData);
 
-		PanelManager.Instance.PanelOpen("CharacterSelect");
+		if (CurrentUserData.user_Appearance == 0)
+		{
+			PanelManager.Instance.PanelOpen("CharacterSelect");
+		}
+		else
+		{
+			print("서버 접속 패널 오픈");
+		}
+	}
+
+	public async void UpdateCurrentUserData(string childName, object value, Action<object> callback = null)
+	{
+		DatabaseReference targetRef = usersRef.Child(childName);
+		await targetRef.SetValueAsync(value);
+		callback?.Invoke(value);
 	}
 }

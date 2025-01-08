@@ -9,6 +9,7 @@ public class SignUpPanel : MonoBehaviour
 	public InputField emailInput;
 	public InputField pwInput1;
 	public InputField pwInput2;
+	public InputField nameInput;
 	public Button emailCheckButton;
 	public Button signUpButton;
 
@@ -27,7 +28,7 @@ public class SignUpPanel : MonoBehaviour
 	{
 		if (ValidateInputs())
 		{
-			FirebaseManager.Instance.SignUp(emailInput.text, pwInput1.text);
+			FirebaseManager.Instance.SignUp(emailInput.text, pwInput1.text, nameInput.text);
 		}
 	}
 
@@ -59,7 +60,7 @@ public class SignUpPanel : MonoBehaviour
 
 	private void ShowDialog(string message)
 	{
-		PanelManager.Instance.popUpPanel.DialogOpen(message,()=>PanelManager.Instance.popUpPanel.DialogClose());
+		PanelManager.Instance.popUpPanel.DialogOpen(message, () => PanelManager.Instance.popUpPanel.DialogClose());
 	}
 
 	private bool IsValidPassword(string password)
