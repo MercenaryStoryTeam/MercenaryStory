@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UIManager : SingletonManager<UIManager>
 {
-    public ItemInfoPanel itemInfoPanel;
-    public InventoryPanel inventoryPanel;
+    public ItemInfoPanel itemInfo;
+    public InventoryPanel inventory;
+    public ShopPanel shop;
     [HideInInspector]public bool isInventoryActive = false;
 
     protected override void Awake()
     {
         base.Awake();
-        itemInfoPanel = FindObjectOfType<ItemInfoPanel>();
-        inventoryPanel = FindObjectOfType<InventoryPanel>();
+        itemInfo = FindObjectOfType<ItemInfoPanel>();
+        inventory = FindObjectOfType<InventoryPanel>();
+        shop = FindObjectOfType<ShopPanel>();
     }
 
     #region Inventory
@@ -20,14 +23,28 @@ public class UIManager : SingletonManager<UIManager>
     public void OpenInventoryPanel()
     {
         isInventoryActive = true;
-        inventoryPanel.panel.SetActive(true);
+        inventory.panel.SetActive(true);
     }
 
     public void CloseInventoryPanel()
     {
         isInventoryActive = false;
-        inventoryPanel.panel.SetActive(false);
+        inventory.panel.SetActive(false);
     }
 
+    #endregion
+    
+    #region Shop
+
+    public void OpenShopPanel()
+    {
+        shop.shopPanel.SetActive(true);
+    }
+
+    public void CloseShopPanel()
+    {
+        shop.shopPanel.SetActive(false);
+    }
+    
     #endregion
 }
