@@ -1,26 +1,48 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using MonsterOwnedStates;
 using UnityEngine;
 
-public class MonsterStateMachine : MonoBehaviour
+public class MonsterStateMachine
 {
-    public MonsterState CurrentState{ get; private set; }
+    private MonsterState currentState;
+    private readonly Monster owner;
 
-    enum MState
+    public MonsterState CurrentState => currentState;
+
+    public MonsterStateMachine(Monster owner)
     {
-       Idle = 0,
-       Patrol,
-       Chase,
-       Attack,
-       Stagger,
-       GetBack,
-       Die
+        this.owner = owner;
     }
 
-    public void ChangeState(MonsterState newState)
+    public void ChangeState(MonsterStateType stateType)
     {
-        CurrentState = newState;
+        currentState?.ExitState(owner);
+        currentState = CreateState(stateType);
+        currentState?.EnterState(owner);
     }
+
+    private MonsterState CreateState(MonsterStateType stateType)
+    {
+        return stateType switch
+        {
+            MonsterStateType.Idle => new MonsterIdleState(),
+            MonsterStateType.Patrol => new MonsterPatrolState(),
+            MonsterStateType.Chase => new MonsterChaseState(),
+            MonsterStateType.Attack => new MonsterAttackState(),
+            MonsterStateType.Return => new MonsterReturnState(),
+            MonsterStateType.Die => new MonsterDieState(),
+            _ => throw new ArgumentException($"Invalid state type: {stateType}")
+        };
+    }
+}
+
+public enum MonsterStateType
+{
+    Idle,
+    Patrol,
+    Chase,
+    Attack,
+    Return,
+    Die
 }
