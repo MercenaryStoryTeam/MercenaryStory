@@ -15,9 +15,9 @@ MonoBehaviour:
   id: 33131
   name: "\uAE30\uD0C0 \uC544\uC774\uD15C 6"
   isSellable: 1
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: dbfeb97fbba20a14f99f03df7897f01e, type: 3}
   prefab:
-  - {fileID: 0}
+  - {fileID: 2300998956181542402, guid: 2c2f9d5778ce95e49baefc8948109623, type: 3}
   currentItemCount: 0
   sellPrice: 0
   stackAmount: 10

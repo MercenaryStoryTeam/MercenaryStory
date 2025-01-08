@@ -15,9 +15,9 @@ MonoBehaviour:
   id: 32002
   name: "\uC591\uC190\uAC80 3"
   isSellable: 1
-  image: {fileID: 0}
+  image: {fileID: 21300000, guid: c434c01d3ac2fd84eb7b8da6039b81e4, type: 3}
   prefab:
-  - {fileID: 0}
+  - {fileID: 5730931172267903750, guid: ea5a37be48f3fdf47b9fab8632999015, type: 3}
   currentItemCount: 0
   Rank: 3
   Damage: 6
