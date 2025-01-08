@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
@@ -56,7 +54,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
 
-			PanelManager.Instance.dialogPanel.DialogOpen("회원가입이 완료되었습니다.", () => PanelManager.Instance.PanelOpen("SignIn"));
+			PanelManager.Instance.popUpPanel.DialogOpen("회원가입이 완료되었습니다.", () => PanelManager.Instance.PanelOpen("SignIn"));
 		}
 		catch (FirebaseException e)
 		{
@@ -75,16 +73,16 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			{
 				if (userData.email == email)
 				{
-					PanelManager.Instance.dialogPanel.DialogOpen("이미 사용중인 email입니다.",
-						() => PanelManager.Instance.dialogPanel.DialogClose());
+					PanelManager.Instance.popUpPanel.DialogOpen("이미 사용중인 email입니다.",
+						() => PanelManager.Instance.popUpPanel.DialogClose());
 					state = State.EmailNotChecked;
 					return;
 				}
 			}
 		}
 
-		PanelManager.Instance.dialogPanel.DialogOpen("사용 가능한 email입니다.",
-			() => PanelManager.Instance.dialogPanel.DialogClose());
+		PanelManager.Instance.popUpPanel.DialogOpen("사용 가능한 email입니다.",
+			() => PanelManager.Instance.popUpPanel.DialogClose());
 		state = State.EmailChecked;
 	}
 
