@@ -10,9 +10,12 @@ public class WeaponItem : ItemBase
     public int Rank;
     public float Damage;
     public float sellPrice;
+    public bool isInstall;
     private void Awake()
     {
         isSellable = true;
+        isStackable = false;
+        isInstall = false;
     }
     
     

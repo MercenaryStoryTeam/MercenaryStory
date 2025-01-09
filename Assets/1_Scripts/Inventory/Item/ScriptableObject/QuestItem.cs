@@ -10,6 +10,7 @@ public class QuestItem : ItemBase
     private void Awake()
     {
         isSellable = false;
+        isStackable = false;
         itemClass = 3;
     }
 }

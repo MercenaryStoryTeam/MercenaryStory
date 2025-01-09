@@ -6,7 +6,6 @@ using UnityEngine.Windows;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEditor;
-using File = System.IO.File;
 using Input = UnityEngine.Input;
 using Random = UnityEngine.Random;
 
@@ -20,6 +19,10 @@ public class ItemManager : SingletonManager<ItemManager>
     protected override void Awake()
     {
         base.Awake();
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i].currentItemCount = 0;
+        }
     }
     
     public void SetCurrentEquipImage(WeaponItem weapon)
@@ -31,36 +34,6 @@ public class ItemManager : SingletonManager<ItemManager>
         equipColor.a = 1;
         //if(GameManager.Instance.Player.currentEquip == null) 관련 로직 추가
         //{equipColor.a = 0f;}
-    }
-    public void SetEquipItemInfo(WeaponItem weapon)
-    {
-        UIManager.Instance.itemInfo.itemName.text = weapon.name.ToString();
-        UIManager.Instance.itemInfo.itemDescription.text = weapon.description.ToString();
-        UIManager.Instance.itemInfo.itemImage.sprite = weapon.image;
-    }
-    
-    public void SetQuestItemInfo(QuestItem questItem)
-    {
-        UIManager.Instance.itemInfo.itemName.text = questItem.name.ToString();
-        UIManager.Instance.itemInfo.itemDescription.text = questItem.description.ToString();
-        UIManager.Instance.itemInfo.itemImage.sprite = questItem.image;
-        UIManager.Instance.itemInfo.firstOptionText.text = questItem.currentItemCount.ToString();
-    }
-    
-    public void SetOtherItemInfo(OtherItem otherItem)
-    {
-        UIManager.Instance.itemInfo.itemName.text = otherItem.name.ToString();
-        UIManager.Instance.itemInfo.itemDescription.text = otherItem.description.ToString();
-        UIManager.Instance.itemInfo.itemImage.sprite = otherItem.image;
-        UIManager.Instance.itemInfo.firstOptionText.text = otherItem.currentItemCount.ToString();
-    }
-    
-    public void RandomOtherDrop()
-
-    {
-        int randomOther = Random.Range(0, otherItems.Count);
-        ItemBase other = otherItems[randomOther];
-        items.Add(other);
     }
     
     public string SerializeItems()

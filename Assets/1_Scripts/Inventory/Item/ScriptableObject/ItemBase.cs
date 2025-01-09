@@ -13,6 +13,7 @@ public class ItemBase : ScriptableObject
     public string description; //아이템 설명
     public int dropPercent; //아이템 드랍률
     public bool isSellable; //팔 수 있는 물품인지
+    public bool isStackable; //슬롯에 중복 추가가 가능한지
     public Sprite image; //아이템 아이콘
     public List<GameObject> prefab; //아이템 프리팹
     public int currentItemCount; //현재 아이템 갯수

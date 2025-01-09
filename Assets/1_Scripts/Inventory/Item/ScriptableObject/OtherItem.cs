@@ -12,6 +12,7 @@ public class OtherItem : ItemBase
     private void Awake()
     {
         isSellable = true;
+        isStackable = true;
         itemClass = 2;
     }
 }
