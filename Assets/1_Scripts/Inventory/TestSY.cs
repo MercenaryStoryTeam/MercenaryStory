@@ -9,6 +9,8 @@ public class TestSY : MonoBehaviour
 {
     private int currentOption;
     private Inventory inventory;
+    public bool isEquipped = false;
+    
     private void Awake()
     {
         inventory = FindObjectOfType<Inventory>();

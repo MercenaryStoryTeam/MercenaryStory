@@ -7,16 +7,29 @@ using UnityEngine.UI;
 
 public class EquipmentPanel : MonoBehaviour
 {
+    
     public Image currentEquipImage;
-    private List<ItemBase> myItems;
-
+    private TestSY _testSy;
     private void Awake()
     {
-        //myItems = ItemManager.Instance.items;
+        _testSy = FindObjectOfType<TestSY>();
     }
 
     private void Update()
     {
-       // ItemManager.Instance.SetCurrentEquipImage();
+       UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if (_testSy.isEquipped == false)
+        {
+            currentEquipImage.enabled = false;
+        }
+        
+        else
+        {
+            currentEquipImage.enabled = true;
+        }
     }
 }

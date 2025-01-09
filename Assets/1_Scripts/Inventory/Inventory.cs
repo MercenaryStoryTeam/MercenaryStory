@@ -7,7 +7,9 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public List<ItemBase> myItems;
+    public List<ItemBase> allItems;
     public List<InventorySlot> slots;
+    
     
     private void Update()
     {
@@ -15,8 +17,8 @@ public class Inventory : MonoBehaviour
 
     public ItemBase RandomDropItems()
     { 
-        int random = UnityEngine.Random.Range(0, myItems.Count);
-        return myItems[random];
+        int random = UnityEngine.Random.Range(0, allItems.Count);
+        return allItems[random];
     }
     public void AddItemToInventory(ItemBase newItem)
     {
@@ -24,11 +26,15 @@ public class Inventory : MonoBehaviour
         {
             if (slot.item == null)
             {
-                slot.AddItem(newItem);
-                newItem.currentItemCount++;
-                Debug.Log($"현재 내 인벤토리 내 아이템: {slots.Count()}");
-                break;
-            }
+                    slot.AddItem(newItem);
+                    myItems.Add(newItem);
+                    newItem.currentItemCount++;
+                    Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
+                
+                    break;
+                }
+
+            
             
         }
     }
