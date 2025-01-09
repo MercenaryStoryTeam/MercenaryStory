@@ -1,22 +1,22 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [Header("¹«±â °ø°İ·Â")]
+    [Header("ë¬´ê¸° ê³µê²©ë ¥")]
     public float damage = 10f;
 
-    [Header("Àû ·¹ÀÌ¾î")]
-    public LayerMask Monster; // ÀÎ½ºÆåÅÍ¿¡¼­ ¸ó½ºÅÍ ·¹ÀÌ¾î¸¦ ¼³Á¤
+    [Header("ì  ë ˆì´ì–´")]
+    public LayerMask Monster; // ì¸ìŠ¤í™í„°ì—ì„œ ëª¬ìŠ¤í„° ë ˆì´ì–´ë¥¼ ì„¤ì •
 
-    private void OnCollisionEnter(Collision collision) // µÎ ¿ÀºêÁ§Æ®°¡ Ãæµ¹ÇÒ ¶§ ¸Ş¼­µå È£Ãâ
+    private void OnCollisionEnter(Collision collision) // ë‘ ì˜¤ë¸Œì íŠ¸ê°€ ì¶©ëŒí•  ë•Œ ë©”ì„œë“œ í˜¸ì¶œ
     {
-        // Ãæµ¹ÇÑ ¿ÀºêÁ§Æ®°¡ Àû ·¹ÀÌ¾î¿¡ ¼ÓÇÏ´ÂÁö È®ÀÎ
+        // ì¶©ëŒí•œ ì˜¤ë¸Œì íŠ¸ê°€ ì  ë ˆì´ì–´ì— ì†í•˜ëŠ”ì§€ í™•ì¸
         if ((Monster.value & (1 << collision.gameObject.layer)) != 0)
         {
             MonsterTest monster = collision.gameObject.GetComponent<MonsterTest>();
             if (monster != null)
             {
-                monster.TakeDamage(damage); // ¸ó½ºÅÍ¿¡°Ô µ¥¹ÌÁö Àû¿ë
+                monster.TakeDamage(damage); // ëª¬ìŠ¤í„°ì—ê²Œ ë°ë¯¸ì§€ ì ìš©
             }
         }
     }

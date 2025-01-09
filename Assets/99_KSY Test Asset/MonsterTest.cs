@@ -1,47 +1,47 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class MonsterTest : MonoBehaviour
 {
-    [Header("¸ó½ºÅÍ °ø°İ·Â")]
+    [Header("ëª¬ìŠ¤í„° ê³µê²©ë ¥")]
     public float damage = 10f;
 
-    [Header("¸ó½ºÅÍ ÇöÀç Ã¼·Â")]
+    [Header("ëª¬ìŠ¤í„° í˜„ì¬ ì²´ë ¥")]
     public float currentHp;
 
-    [Header("¸ó½ºÅÍ ÃÖ´ë Ã¼·Â")]
+    [Header("ëª¬ìŠ¤í„° ìµœëŒ€ ì²´ë ¥")]
     public float maxHp = 100f;
 
-    [Header("ÇÃ·¹ÀÌ¾î ·¹ÀÌ¾î")]
-    public LayerMask playerLayer; // ÇÃ·¹ÀÌ¾î ·¹ÀÌ¾î ¼³Á¤ -> ÀÎ½ºÆåÅÍ¿¡¼­ Á÷Á¢ ¼³Á¤ÇØ¾ß µÊ.
+    [Header("í”Œë ˆì´ì–´ ë ˆì´ì–´")]
+    public LayerMask playerLayer; // í”Œë ˆì´ì–´ ë ˆì´ì–´ ì„¤ì • -> ì¸ìŠ¤í™í„°ì—ì„œ ì§ì ‘ ì„¤ì •í•´ì•¼ ë¨.
 
     private void Start()
     {
-        currentHp = maxHp; // ÇöÀç Ã¼·ÂÀ» ÃÖ´ë Ã¼·ÂÀ¸·Î ÃÊ±âÈ­
+        currentHp = maxHp; // í˜„ì¬ ì²´ë ¥ì„ ìµœëŒ€ ì²´ë ¥ìœ¼ë¡œ ì´ˆê¸°í™”
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Ãæµ¹ÇÑ ¿ÀºêÁ§Æ®°¡ ÇÃ·¹ÀÌ¾î ·¹ÀÌ¾î¿¡ ¼ÓÇÏ´ÂÁö È®ÀÎ
+        // ì¶©ëŒí•œ ì˜¤ë¸Œì íŠ¸ê°€ í”Œë ˆì´ì–´ ë ˆì´ì–´ì— ì†í•˜ëŠ”ì§€ í™•ì¸
         if ((playerLayer.value & (1 << collision.gameObject.layer)) != 0)
         {
             Player player = collision.gameObject.GetComponent<Player>();
             if (player != null)
             {
-                player.TakeDamage(damage); // ÇÃ·¹ÀÌ¾î¿¡°Ô µ¥¹ÌÁö Àû¿ë
+                player.TakeDamage(damage); // í”Œë ˆì´ì–´ì—ê²Œ ë°ë¯¸ì§€ ì ìš©
             }
         }
     }
 
     public void TakeDamage(float damage)
     {
-        // ÇöÀç Ã¼·ÂÀÌ 0ÀÌ¶ó¸é ´õ ÀÌ»ó µ¥¹ÌÁö Ã³¸®¸¦ ÇÏÁö ¾ÊÀ½
+        // í˜„ì¬ ì²´ë ¥ì´ 0ì´ë¼ë©´ ë” ì´ìƒ ë°ë¯¸ì§€ ì²˜ë¦¬ë¥¼ í•˜ì§€ ì•ŠìŒ
         if (currentHp <= 0)
         {
             return;
         }
 
         currentHp -= damage;
-        currentHp = Mathf.Clamp(currentHp, 0, maxHp); // ÇöÀç Ã¼·ÂÀ» 0°ú maxHp »çÀÌ·Î Á¦ÇÑ
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp); // í˜„ì¬ ì²´ë ¥ì„ 0ê³¼ maxHp ì‚¬ì´ë¡œ ì œí•œ
         Debug.Log($"Monster HP: {currentHp}/{maxHp} (Received {damage} damage)");
 
         if (currentHp <= 0)

@@ -1,59 +1,59 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("ÇÃ·¹ÀÌ¾î °ø°İ·Â")]
+    [Header("í”Œë ˆì´ì–´ ê³µê²©ë ¥")]
     public float damage = 10f;
 
-    [Header("ÇÃ·¹ÀÌ¾î ÇöÀç Ã¼·Â")]
+    [Header("í”Œë ˆì´ì–´ í˜„ì¬ ì²´ë ¥")]
     public float currentHp;
 
-    [Header("ÇÃ·¹ÀÌ¾î ÃÖ´ë Ã¼·Â")]
+    [Header("í”Œë ˆì´ì–´ ìµœëŒ€ ì²´ë ¥")]
     public float maxHp = 100f;
 
-    [Header("Àû ·¹ÀÌ¾î")]
-    public LayerMask Monster; // ¸ó½ºÅÍ ·¹ÀÌ¾î ¼³Á¤ -> ÀÎ½ºÆåÅÍ¿¡¼­ Á÷Á¢ ¼³Á¤ÇØ¾ß µÊ.
+    [Header("ì  ë ˆì´ì–´")]
+    public LayerMask Monster; // ëª¬ìŠ¤í„° ë ˆì´ì–´ ì„¤ì • -> ì¸ìŠ¤í™í„°ì—ì„œ ì§ì ‘ ì„¤ì •í•´ì•¼ ë¨.
 
-    private PlayerMove playerMove; // ÇØ´ç ½ºÅ©¸³Æ® ÂüÁ¶
+    private PlayerMove playerMove; // í•´ë‹¹ ìŠ¤í¬ë¦½íŠ¸ ì°¸ì¡°
 
     private void Start()
     {
-        currentHp = maxHp; // ÇöÀç Ã¼·ÂÀ» ÃÖ´ë Ã¼·ÂÀ¸·Î ÃÊ±âÈ­
+        currentHp = maxHp; // í˜„ì¬ ì²´ë ¥ì„ ìµœëŒ€ ì²´ë ¥ìœ¼ë¡œ ì´ˆê¸°í™”
 
-        // PlayerMove ½ºÅ©¸³Æ® À¯, ¹« Ã¼Å©
+        // PlayerMove ìŠ¤í¬ë¦½íŠ¸ ìœ , ë¬´ ì²´í¬
         playerMove = GetComponent<PlayerMove>();
         if (playerMove == null)
         {
-            Debug.LogError("PlayerMove ½ºÅ©¸³Æ® x");
+            Debug.LogError("PlayerMove ìŠ¤í¬ë¦½íŠ¸ x");
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Ãæµ¹ÇÑ ¿ÀºêÁ§Æ®°¡ Àû ·¹ÀÌ¾î¿¡ ¼ÓÇÏ´ÂÁö È®ÀÎ
+        // ì¶©ëŒí•œ ì˜¤ë¸Œì íŠ¸ê°€ ì  ë ˆì´ì–´ì— ì†í•˜ëŠ”ì§€ í™•ì¸
         if ((Monster.value & (1 << collision.gameObject.layer)) != 0)
         {
             MonsterTest monster = collision.gameObject.GetComponent<MonsterTest>();
             if (monster != null)
             {
-                monster.TakeDamage(damage); // ¸ó½ºÅÍ¿¡°Ô µ¥¹ÌÁö Àû¿ë
+                monster.TakeDamage(damage); // ëª¬ìŠ¤í„°ì—ê²Œ ë°ë¯¸ì§€ ì ìš©
             }
         }
     }
 
     public void TakeDamage(float damage)
     {
-        // ÇöÀç Ã¼·ÂÀÌ 0ÀÌ¶ó¸é ´õ ÀÌ»ó µ¥¹ÌÁö Ã³¸®¸¦ ÇÏÁö ¾ÊÀ½
+        // í˜„ì¬ ì²´ë ¥ì´ 0ì´ë¼ë©´ ë” ì´ìƒ ë°ë¯¸ì§€ ì²˜ë¦¬ë¥¼ í•˜ì§€ ì•ŠìŒ
         if (currentHp <= 0)
         {
             return;
         }
 
         currentHp -= damage;
-        currentHp = Mathf.Clamp(currentHp, 0, maxHp); // ÇöÀç Ã¼·ÂÀ» 0°ú maxHp »çÀÌ·Î Á¦ÇÑ
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp); // í˜„ì¬ ì²´ë ¥ì„ 0ê³¼ maxHp ì‚¬ì´ë¡œ ì œí•œ
         Debug.Log($"Player HP: {currentHp}/{maxHp} (Received {damage} damage)");
 
-        if (currentHp <= 0) // ÇöÀç Ã¼·Â 0ÀÌµÇ¸é die ¸Ş¼­µå È£Ãâ
+        if (currentHp <= 0) // í˜„ì¬ ì²´ë ¥ 0ì´ë˜ë©´ die ë©”ì„œë“œ í˜¸ì¶œ
         {
             Die();
         }
@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         Debug.Log("Player Die");
         if (playerMove != null)
         {
-            playerMove.Die(); // ÇöÀç Ã¼·ÂÀÌ 0ÀÌµÇ¸é PlayerMove ½ºÅ©¸³Æ®ÀÇ Die() ¸Ş¼­µå È£ÃâÇÏ¿© die »óÅÂÀÇ ¾Ö´Ï ±¸Çö
+            playerMove.Die(); // í˜„ì¬ ì²´ë ¥ì´ 0ì´ë˜ë©´ PlayerMove ìŠ¤í¬ë¦½íŠ¸ì˜ Die() ë©”ì„œë“œ í˜¸ì¶œí•˜ì—¬ die ìƒíƒœì˜ ì• ë‹ˆ êµ¬í˜„
         }
     }
 }

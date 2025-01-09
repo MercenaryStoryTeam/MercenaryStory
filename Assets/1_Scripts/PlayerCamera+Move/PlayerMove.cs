@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
@@ -7,38 +7,38 @@ using System.Collections.Generic;
 
 public class PlayerMove : MonoBehaviour
 {
-    [Header("ÀÌµ¿ ¼Óµµ (5 ÀûÁ¤)")]
-    [SerializeField] private float moveSpeed = 5f; // [SerializeField] private »ç¿ëÇÑ ÀÌÀ¯: privateÀ» »ç¿ëÇÏ¸é¼­ ÀÎ½ºÆåÅÍ¿¡ ³ëÃâ, ´Ù¸¥ ½ºÅ©¸³Æ®¿¡ ÀÇÇØ ÀÇµµÄ¡ ¾ÊÀº Á¤º¸ º¯°æÀ» ¸·°íÀÚ 
+    [Header("ì´ë™ ì†ë„ (5 ì ì •)")]
+    [SerializeField] private float moveSpeed = 5f; // [SerializeField] private ì‚¬ìš©í•œ ì´ìœ : privateì„ ì‚¬ìš©í•˜ë©´ì„œ ì¸ìŠ¤í™í„°ì— ë…¸ì¶œ, ë‹¤ë¥¸ ìŠ¤í¬ë¦½íŠ¸ì— ì˜í•´ ì˜ë„ì¹˜ ì•Šì€ ì •ë³´ ë³€ê²½ì„ ë§‰ê³ ì 
 
-    [Header("¹Ù´Ú Ã¼Å© ¹üÀ§ (0.5 ÀûÁ¤)")]
+    [Header("ë°”ë‹¥ ì²´í¬ ë²”ìœ„ (0.5 ì ì •)")]
     [SerializeField] private float groundCheckRadius = 0.5f;
 
-    [Header("¹Ù´Ú ·¹ÀÌ¾î")]
+    [Header("ë°”ë‹¥ ë ˆì´ì–´")]
     [SerializeField] private LayerMask groundLayer;
 
-    [Header("Virtual Camera ÇÒ´ç")]
+    [Header("Virtual Camera í• ë‹¹")]
     [SerializeField] private Transform cameraTransform;
 
-    [Header("Ä³¸¯ÅÍ ÇÏÀ§ ºó¿ÀºêÁ§Æ® Transform")]
+    [Header("ìºë¦­í„° í•˜ìœ„ ë¹ˆì˜¤ë¸Œì íŠ¸ Transform")]
     [SerializeField] private Transform ankleTransform;
 
-    [Header("¾À ¸ñ·Ï (¸®½ºÆ®¿¡ ¾ÀÀÌ¸§ Ãß°¡½Ã Ãß°¡µÈ ¾À¿¡¼­ ÀÌµ¿ ¾Ö´Ï¸ŞÀÌ¼Ç º¯°æ)")]
+    [Header("ì”¬ ëª©ë¡ (ë¦¬ìŠ¤íŠ¸ì— ì”¬ì´ë¦„ ì¶”ê°€ì‹œ ì¶”ê°€ëœ ì”¬ì—ì„œ ì´ë™ ì• ë‹ˆë©”ì´ì…˜ ë³€ê²½)")]
     [SerializeField] private List<string> specialScenes = new List<string>();
 
-    [Header("Die ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı ½Ã°£ (2ÃÊ ÀûÁ¤)")]
+    [Header("Die ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ ì‹œê°„ (2ì´ˆ ì ì •)")]
     [SerializeField] private float dieAnimationDuration = 2f;
 
-    [Header("ÄŞº¸ Å¸ÀÌ¸Ó (1ÃÊ ÀûÁ¤)")]
-    [SerializeField] private float comboResetTime = 1.0f; // ÄŞº¸¸¦ ÃÊ±âÈ­ÇÒ ½Ã°£
+    [Header("ì½¤ë³´ íƒ€ì´ë¨¸ (1ì´ˆ ì ì •)")]
+    [SerializeField] private float comboResetTime = 1.0f; // ì½¤ë³´ë¥¼ ì´ˆê¸°í™”í•  ì‹œê°„
 
     private Rigidbody rb;
     private Animator animator;
 
-    // ÀÌµ¿ Á¦¾î
-    private Vector3 movementInput; // ÀÌµ¿ ¹æÇâ
+    // ì´ë™ ì œì–´
+    private Vector3 movementInput; // ì´ë™ ë°©í–¥
     private bool isGrounded = false;
 
-    // ÀÌµ¿ »óÅÂ·Î ÀüÈ¯ÇÏ±â À§ÇÑ ÃÖ¼Ò ÀÔ·Â Å©±â
+    // ì´ë™ ìƒíƒœë¡œ ì „í™˜í•˜ê¸° ìœ„í•œ ìµœì†Œ ì…ë ¥ í¬ê¸°
     private const float moveThreshold = 0.05f;
 
     private enum State
@@ -53,33 +53,33 @@ public class PlayerMove : MonoBehaviour
 
     private State currentState = State.Idle;
 
-    // ÇöÀç ¼Óµµ
+    // í˜„ì¬ ì†ë„
     private float currentSpeed;
 
-    // »ç¸Á ¿©ºÎ
+    // ì‚¬ë§ ì—¬ë¶€
     private bool isDead = false;
 
-    // ÄŞº¸ º¯¼ö
-    private int attackCombo = 0; // ÇöÀç ÄŞº¸ ¼ö
-    private float lastAttackTime = 0f; // ¸¶Áö¸· °ø°İ ÀÔ·Â ½Ã°£
+    // ì½¤ë³´ ë³€ìˆ˜
+    private int attackCombo = 0; // í˜„ì¬ ì½¤ë³´ ìˆ˜
+    private float lastAttackTime = 0f; // ë§ˆì§€ë§‰ ê³µê²© ì…ë ¥ ì‹œê°„
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
 
-        // Rigidbody ¼³Á¤ È®ÀÎ 
+        // Rigidbody ì„¤ì • í™•ì¸ 
         if (rb.isKinematic)
         {
-            Debug.LogWarning("RigidbodyÀÇ KinematicÀÌ È°¼ºÈ­µÇ¾î ÀÖ½À´Ï´Ù.");
+            Debug.LogWarning("Rigidbodyì˜ Kinematicì´ í™œì„±í™”ë˜ì–´ ìˆìŠµë‹ˆë‹¤.");
         }
 
         if (!rb.useGravity)
         {
-            Debug.LogWarning("RigidbodyÀÇ Use Gravity°¡ ºñÈ°¼ºÈ­µÇ¾î ÀÖ½À´Ï´Ù.");
+            Debug.LogWarning("Rigidbodyì˜ Use Gravityê°€ ë¹„í™œì„±í™”ë˜ì–´ ìˆìŠµë‹ˆë‹¤.");
         }
 
-        // ¸ŞÀÎ Ä«¸Ş¶ó ÀÚµ¿ ÇÒ´ç
+        // ë©”ì¸ ì¹´ë©”ë¼ ìë™ í• ë‹¹
         if (!cameraTransform)
         {
             Camera mainCamera = Camera.main;
@@ -89,26 +89,26 @@ public class PlayerMove : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Main Camera°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+                Debug.LogError("Main Cameraê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
                 enabled = false;
                 return;
             }
         }
 
-        // Animator ¼³Á¤ È®ÀÎ
+        // Animator ì„¤ì • í™•ì¸
         animator.applyRootMotion = false;
 
-        // ÇöÀç ¾ÀÀÌ Æ¯º°ÇÑ ¾ÀÀÎÁö È®ÀÎÇÏ°í Animator ÆÄ¶ó¹ÌÅÍ ¼³Á¤
+        // í˜„ì¬ ì”¬ì´ íŠ¹ë³„í•œ ì”¬ì¸ì§€ í™•ì¸í•˜ê³  Animator íŒŒë¼ë¯¸í„° ì„¤ì •
         bool isScene = IsCurrentSceneSpecial();
         animator.SetBool("Scene", isScene);
 
-        // ¾À º¯°æ ½Ã Scene ÆÄ¶ó¹ÌÅÍ ¾÷µ¥ÀÌÆ®
+        // ì”¬ ë³€ê²½ ì‹œ Scene íŒŒë¼ë¯¸í„° ì—…ë°ì´íŠ¸
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDestroy()
     {
-        // ÀÌº¥Æ® ÇØÁ¦
+        // ì´ë²¤íŠ¸ í•´ì œ
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -123,23 +123,23 @@ public class PlayerMove : MonoBehaviour
 #if UNITY_EDITOR
         LogDebugInfo();
 #endif
-        if (!isDead) // Die »óÅÂÀÏ ¶§´Â ÀÔ·Â Ã³¸® ¹× »óÅÂ º¯°æÀ» ¸·À½
+        if (!isDead) // Die ìƒíƒœì¼ ë•ŒëŠ” ì…ë ¥ ì²˜ë¦¬ ë° ìƒíƒœ ë³€ê²½ì„ ë§‰ìŒ
         {
-            HandleInput(); // ÀÔ·Â Ã³¸®
-            HandleState(); // »óÅÂ Ã³¸®
+            HandleInput(); // ì…ë ¥ ì²˜ë¦¬
+            HandleState(); // ìƒíƒœ ì²˜ë¦¬
         }
     }
 
     private void FixedUpdate()
     {
-        CheckGrounded();   // ¹Ù´Ú ÆÇÁ¤
-        HandlePhysics();   // »óÅÂº° ¹°¸® Ã³¸®
+        CheckGrounded();   // ë°”ë‹¥ íŒì •
+        HandlePhysics();   // ìƒíƒœë³„ ë¬¼ë¦¬ ì²˜ë¦¬
     }
 
     /// <summary>
-    /// ÇöÀç ¾ÀÀÌ specialScenes¿¡ Æ÷ÇÔµÈ ¾ÀÀÎÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+    /// í˜„ì¬ ì”¬ì´ specialScenesì— í¬í•¨ëœ ì”¬ì¸ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
-    /// <returns>specialScenes¿¡ Æ÷ÇÔµÇ¸é true, ¾Æ´Ï¸é false</returns>
+    /// <returns>specialScenesì— í¬í•¨ë˜ë©´ true, ì•„ë‹ˆë©´ false</returns>
     private bool IsCurrentSceneSpecial()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
@@ -147,13 +147,13 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// ¹Ù´Ú ÆÇÁ¤ (OverlapSphere »ç¿ë)
+    /// ë°”ë‹¥ íŒì • (OverlapSphere ì‚¬ìš©)
     /// </summary>
     private void CheckGrounded()
     {
         isGrounded = false;
 
-        Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // ¾à°£ ¾Æ·¡·Î À§Ä¡
+        Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // ì•½ê°„ ì•„ë˜ë¡œ ìœ„ì¹˜
         float sphereRadius = groundCheckRadius;
         Collider[] colliders = Physics.OverlapSphere(sphereOrigin, sphereRadius, groundLayer);
 
@@ -162,50 +162,62 @@ public class PlayerMove : MonoBehaviour
             isGrounded = true;
         }
 
-        // Animator -> isGrounded ÆÄ¶ó¹ÌÅÍ 
+        // Animator -> isGrounded íŒŒë¼ë¯¸í„° 
         animator.SetBool("isGrounded", isGrounded);
     }
 
     /// <summary>
-    /// »ç¿ëÀÚ ÀÔ·Â Ã³¸®
+    /// ì‚¬ìš©ì ì…ë ¥ ì²˜ë¦¬
     /// </summary>
     private void HandleInput()
     {
-        // ÀÌµ¿ ¹æÇâ °è»ê
-        float inputX = Input.GetAxisRaw("Horizontal");
-        float inputZ = Input.GetAxisRaw("Vertical");
-        movementInput = CalculateMovementDirection(inputX, inputZ);
+        // ê³µê²© ì¤‘ì´ê±°ë‚˜ ì‚¬ë§ ìƒíƒœê°€ ì•„ë‹ ë•Œë§Œ ì´ë™ ì…ë ¥ ì²˜ë¦¬
+        bool canProcessMovement = !IsAttacking() && currentState != State.Die;
 
-        // ÇöÀç ¼Óµµ ¼³Á¤ (´Ş¸®±â ±â´É Á¦°Å·Î Ç×»ó moveSpeed »ç¿ë)
-        currentSpeed = moveSpeed;
-
-        // ÀÌµ¿/Á¤Áö »óÅÂ ÀüÈ¯
-        if (movementInput.sqrMagnitude > moveThreshold)
+        if (canProcessMovement)
         {
-            if (currentState != State.Moving)
+            // ì´ë™ ë°©í–¥ ê³„ì‚°
+            float inputX = Input.GetAxisRaw("Horizontal");
+            float inputZ = Input.GetAxisRaw("Vertical");
+            movementInput = CalculateMovementDirection(inputX, inputZ);
+
+            // í˜„ì¬ ì†ë„ ì„¤ì • (ë‹¬ë¦¬ê¸° ê¸°ëŠ¥ ì œê±°ë¡œ í•­ìƒ moveSpeed ì‚¬ìš©)
+            currentSpeed = moveSpeed;
+
+            // ì´ë™/ì •ì§€ ìƒíƒœ ì „í™˜
+            if (movementInput.sqrMagnitude > moveThreshold)
             {
-                TransitionToState(State.Moving);
+                if (currentState != State.Moving)
+                {
+                    TransitionToState(State.Moving);
+                }
             }
+            else
+            {
+                if (currentState != State.Idle)
+                {
+                    TransitionToState(State.Idle);
+                }
+            }
+
+            // Speed íŒŒë¼ë¯¸í„° ì •ê·œí™” (0 ~ 1 ì‚¬ì´)
+            float normalizedSpeed = (movementInput.magnitude * currentSpeed) / moveSpeed;
+            animator.SetFloat("Speed", normalizedSpeed);
         }
         else
         {
-            if (currentState != State.Idle)
-            {
-                TransitionToState(State.Idle);
-            }
+            // ê³µê²© ì¤‘ì´ê±°ë‚˜ ì‚¬ë§ ìƒíƒœì¼ ë•ŒëŠ” ì´ë™ì„ ë©ˆì¶”ê³  Speedë¥¼ 0ìœ¼ë¡œ ì„¤ì •
+            movementInput = Vector3.zero;
+            animator.SetFloat("Speed", 0f);
         }
 
-        // Speed ÆÄ¶ó¹ÌÅÍ Á¤±ÔÈ­ (0 ~ 1 »çÀÌ)
-        float normalizedSpeed = (movementInput.magnitude * currentSpeed) / moveSpeed;
-        animator.SetFloat("Speed", normalizedSpeed);
-
-        // °ø°İ ÀÔ·Â Ã³¸®
+        // ê³µê²© ì…ë ¥ ì²˜ë¦¬
         if (Input.GetMouseButtonDown(0) && !isDead)
         {
             HandleAttackInput();
         }
 
-        // ÄŞº¸ ¸®¼Â Å¸ÀÌ¸Ó Ã³¸®
+        // ì½¤ë³´ ë¦¬ì…‹ íƒ€ì´ë¨¸ ì²˜ë¦¬
         if (Time.time - lastAttackTime > comboResetTime)
         {
             attackCombo = 0;
@@ -213,16 +225,16 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// °ø°İ ÀÔ·Â Ã³¸® ¹× ÄŞº¸ ·ÎÁ÷ °ü¸®
+    /// ê³µê²© ì…ë ¥ ì²˜ë¦¬ ë° ì½¤ë³´ ë¡œì§ ê´€ë¦¬
     /// </summary>
-    private void HandleAttackInput() // °ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç Å¬¸³ÀÌ ·çÇÁµÇÁö ¾Êµµ·Ï ¼³Á¤ 
+    private void HandleAttackInput() // ê³µê²© ì• ë‹ˆë©”ì´ì…˜ í´ë¦½ì´ ë£¨í”„ë˜ì§€ ì•Šë„ë¡ ì„¤ì • 
     {
         lastAttackTime = Time.time;
         attackCombo++;
 
         if (attackCombo > 3)
         {
-            attackCombo = 1; // ÄŞº¸°¡ 3À» ÃÊ°úÇÏ¸é ÃÊ±âÈ­
+            attackCombo = 1; // ì½¤ë³´ê°€ 3ì„ ì´ˆê³¼í•˜ë©´ ì´ˆê¸°í™”
         }
 
         switch (attackCombo)
@@ -240,7 +252,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// »óÅÂ¿¡ µû¸¥ Ãß°¡ ·ÎÁ÷
+    /// ìƒíƒœì— ë”°ë¥¸ ì¶”ê°€ ë¡œì§
     /// </summary>
     private void HandleState()
     {
@@ -252,20 +264,20 @@ public class PlayerMove : MonoBehaviour
             case State.Attack1:
             case State.Attack2:
             case State.Attack3:
-                // °ø°İ Áß Ãß°¡ ·ÎÁ÷ÀÌ ÇÊ¿äÇÏ¸é ¿©±â¿¡ ÀÛ¼º
+                // ê³µê²© ì¤‘ ì¶”ê°€ ë¡œì§ì´ í•„ìš”í•˜ë©´ ì—¬ê¸°ì— ì‘ì„±
                 break;
         }
     }
 
     /// <summary>
-    /// »óÅÂº° ¹°¸® Ã³¸®
+    /// ìƒíƒœë³„ ë¬¼ë¦¬ ì²˜ë¦¬
     /// </summary>
     private void HandlePhysics()
     {
         switch (currentState)
         {
             case State.Idle:
-                // Idle »óÅÂ¸é ¼Óµµ Á¶±İ¾¿ °¨¼Ó
+                // Idle ìƒíƒœë©´ ì†ë„ ì¡°ê¸ˆì”© ê°ì†
                 Vector3 idleVelocity = rb.velocity;
                 idleVelocity.x = Mathf.Lerp(rb.velocity.x, 0f, Time.fixedDeltaTime * 10f);
                 idleVelocity.z = Mathf.Lerp(rb.velocity.z, 0f, Time.fixedDeltaTime * 10f);
@@ -279,13 +291,13 @@ public class PlayerMove : MonoBehaviour
             case State.Attack1:
             case State.Attack2:
             case State.Attack3:
-                // °ø°İ Áß¿¡´Â ÇÃ·¹ÀÌ¾î ÀÌµ¿À» ¸ØÃã
+                // ê³µê²© ì¤‘ì—ëŠ” í”Œë ˆì´ì–´ ì´ë™ì„ ë©ˆì¶¤
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 break;
 
             case State.Die:
-                // »ç¸Á »óÅÂ¿¡¼­´Â ÀÌµ¿À» ¸ØÃß°í ¼Óµµ¸¦ 0À¸·Î ¼³Á¤
+                // ì‚¬ë§ ìƒíƒœì—ì„œëŠ” ì´ë™ì„ ë©ˆì¶”ê³  ì†ë„ë¥¼ 0ìœ¼ë¡œ ì„¤ì •
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 break;
@@ -293,14 +305,14 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// ½ÇÁ¦ ÀÌµ¿ Ã³¸® (X,Z¸¸ °»½Å, Y´Â À¯Áö)
+    /// ì‹¤ì œ ì´ë™ ì²˜ë¦¬ (X,Zë§Œ ê°±ì‹ , YëŠ” ìœ ì§€)
     /// </summary>
     private void MovePlayer()
     {
         Vector3 moveVelocity = movementInput * currentSpeed;
         rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
 
-        // ÀÌµ¿ ¹æÇâÀ¸·Î È¸Àü
+        // ì´ë™ ë°©í–¥ìœ¼ë¡œ íšŒì „
         if (movementInput.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movementInput);
@@ -309,13 +321,20 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// »óÅÂ ÀüÈ¯
+    /// ìƒíƒœ ì „í™˜
     /// </summary>
     private void TransitionToState(State newState)
     {
-        if (currentState == newState) return;
+        // ì‚¬ë§ ìƒíƒœì¼ ë•Œ Die ìƒíƒœë¡œë§Œ ì „í™˜ ê°€ëŠ¥
+        if (isDead && newState != State.Die) return;
 
-        if (isDead && newState != State.Die) return; // »ç¸Á »óÅÂ¿¡¼­´Â Die »óÅÂ ¿Ü ÀüÈ¯ ºÒ°¡
+        // ê³µê²© ì¤‘ì¼ ë•Œ Idle ë˜ëŠ” Moving ìƒíƒœë¡œì˜ ì „í™˜ ë°©ì§€
+        if (IsAttacking() && (newState == State.Idle || newState == State.Moving))
+        {
+            return;
+        }
+
+        if (currentState == newState) return;
 
         ExitCurrentState();
         currentState = newState;
@@ -344,20 +363,20 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// »óÅÂ Á¾·á Ã³¸®
+    /// ìƒíƒœ ì¢…ë£Œ ì²˜ë¦¬
     /// </summary>
     private void ExitCurrentState()
     {
-        // ÇöÀç »óÅÂ¿¡¼­ Á¾·á ½Ã ÇÊ¿äÇÑ ·ÎÁ÷ÀÌ ÀÖÀ¸¸é ¿©±â¿¡ ÀÛ¼º
+        // í˜„ì¬ ìƒíƒœì—ì„œ ì¢…ë£Œ ì‹œ í•„ìš”í•œ ë¡œì§ì´ ìˆìœ¼ë©´ ì—¬ê¸°ì— ì‘ì„±
     }
 
-    // Idle »óÅÂ
+    // Idle ìƒíƒœ
     private void EnterIdleState()
     {
         animator.SetFloat("Speed", 0f);
     }
 
-    // Moving »óÅÂ
+    // Moving ìƒíƒœ
     private void EnterMovingState()
     {
         float speed = movementInput.magnitude * currentSpeed;
@@ -365,15 +384,15 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// °ø°İ »óÅÂ ÁøÀÔ Ã³¸®
+    /// ê³µê²© ìƒíƒœ ì§„ì… ì²˜ë¦¬
     /// </summary>
-    /// <param name="attackNumber">°ø°İ ¹øÈ£ (1, 2, 3)</param>
+    /// <param name="attackNumber">ê³µê²© ë²ˆí˜¸ (1, 2, 3)</param>
     private void EnterAttackState(int attackNumber)
     {
-        // °ø°İ Áß ÀÌµ¿ ¸ØÃã
+        // ê³µê²© ì¤‘ ì´ë™ ë©ˆì¶¤
         rb.velocity = Vector3.zero;
 
-        // ÀûÀıÇÑ °ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç Æ®¸®°Å
+        // ì ì ˆí•œ ê³µê²© ì• ë‹ˆë©”ì´ì…˜ íŠ¸ë¦¬ê±°
         switch (attackNumber)
         {
             case 1:
@@ -387,60 +406,41 @@ public class PlayerMove : MonoBehaviour
                 break;
         }
 
-        // ¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á ½Ã »óÅÂ ÀüÈ¯À» À§ÇØ Animation Event »ç¿ë
+        // ì• ë‹ˆë©”ì´ì…˜ ì¢…ë£Œ ì‹œ ìƒíƒœ ì „í™˜ì„ ìœ„í•´ Animation Event ì‚¬ìš©
     }
 
-    // Die »óÅÂ
+    // Die ìƒíƒœ
     private void EnterDieState()
     {
         isDead = true;
-        animator.SetTrigger("Die"); // Animator¿¡¼­ 'Die' Æ®¸®°Å ¼³Á¤
+        animator.SetTrigger("Die"); // Animatorì—ì„œ 'Die' íŠ¸ë¦¬ê±° ì„¤ì •
 
-        // Die »óÅÂ¿¡¼­ Invoke¸¦ ÀÌ¿ëÇØ dieAnimationDuration ½Ã°£ ¸¸Å­ ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı ÈÄ DisablePlayer ¸Ş¼­µå È£Ãâ
-        Invoke("DisablePlayer", dieAnimationDuration); // ÁöÁ¤ÇÑ ½Ã°£ ÈÄ¿¡ DisablePlayer È£Ãâ
+        // Die ìƒíƒœì—ì„œ Invokeë¥¼ ì´ìš©í•´ dieAnimationDuration ì‹œê°„ ë§Œí¼ ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ í›„ DisablePlayer ë©”ì„œë“œ í˜¸ì¶œ
+        Invoke("DisablePlayer", dieAnimationDuration); // ì§€ì •í•œ ì‹œê°„ í›„ì— DisablePlayer í˜¸ì¶œ
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ® ºñÈ°¼ºÈ­
+    /// í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ ë¹„í™œì„±í™”
     /// </summary>
     private void DisablePlayer()
     {
-        gameObject.SetActive(false); // ÇÃ·¹ÀÌ¾î ºñÈ°¼ºÈ­
+        gameObject.SetActive(false); // í”Œë ˆì´ì–´ ë¹„í™œì„±í™”
     }
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î »ç¸Á Ã³¸® ¸Ş¼­µå
+    /// í”Œë ˆì´ì–´ ì‚¬ë§ ì²˜ë¦¬ ë©”ì„œë“œ
     /// </summary>
-    public void Die() // ÇÃ·¹ÀÌ¾î°¡ DieÇÒ ¶§ È£ÃâµÇ¾î Die »óÅÂ·Î ÀüÈ¯
+    public void Die() // í”Œë ˆì´ì–´ê°€ Dieí•  ë•Œ í˜¸ì¶œë˜ì–´ Die ìƒíƒœë¡œ ì „í™˜
     {
-        if (!isDead) // ÇÃ·¹ÀÌ¾î°¡ DieÀÎÁö ¿©ºÎ Ã¼Å©
+        if (!isDead) // í”Œë ˆì´ì–´ê°€ Dieì¸ì§€ ì—¬ë¶€ ì²´í¬
         {
             TransitionToState(State.Die);
         }
     }
 
-    /// <summary>
-    /// Gizmos ½Ã°¢È­, ÃßÈÄ »ç¸Á, °ø°İ ¸ğ¼Ç ±¸ÇöÇÒ¶§ À¯ÀÇ¹Ì ÇÒ °ÍÀ¸·Î º¸ÀÓ
-    /// </summary>
-    //private void OnDrawGizmosSelected()
-    //{
-    //    if (ankleTransform == null)
-    //        return;
-
-    //    // ÇÃ·¹ÀÌ¾îÀÇ ¹Ù´Ú Á¢ÃË ¿©ºÎ¸¦ ÆÇ´ÜÇÏ´Â OverlapSphere ½Ã°¢È­
-    //    Gizmos.color = isGrounded ? Color.green : Color.red;
-    //    Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // ¾à°£ ¾Æ·¡ À§Ä¡
-    //    float sphereRadius = groundCheckRadius;
-    //    Gizmos.DrawWireSphere(sphereOrigin, sphereRadius);
-
-    //    // ÇöÀç ÇÃ·¹ÀÌ¾î À§Ä¡ ½Ã°¢È­ (ÇÃ·¹ÀÌ¾î ¾Æ·¡ À§Ä¡¿¡ ÀÖ´Â »¡°£°ø)
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawSphere(transform.position, 0.02f);
-    //}
-
 #if UNITY_EDITOR
     /// <summary>
-    /// ÇöÀç ÇÙ½É Á¤º¸ µğ¹ö±×
+    /// í˜„ì¬ í•µì‹¬ ì •ë³´ ë””ë²„ê·¸
     /// </summary>
     private void LogDebugInfo()
     {
@@ -449,10 +449,11 @@ public class PlayerMove : MonoBehaviour
 #endif
 
     /// <summary>
-    /// ¾Ö´Ï¸ŞÀÌ¼Ç Á¾·á ÈÄ »óÅÂ ÀüÈ¯ Ã³¸®
+    /// ì• ë‹ˆë©”ì´ì…˜ ì¢…ë£Œ í›„ ìƒíƒœ ì „í™˜ ì²˜ë¦¬
     /// </summary>
     public void OnAttackAnimationEnd()
     {
+        // ê³µê²© ì• ë‹ˆë©”ì´ì…˜ì´ ëë‚œ í›„, í˜„ì¬ ì…ë ¥ì— ë”°ë¼ ì´ë™ ìƒíƒœë¡œ ì „í™˜
         if (movementInput.sqrMagnitude > moveThreshold)
         {
             TransitionToState(State.Moving);
@@ -464,7 +465,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Ä«¸Ş¶ó ±âÁØÀ¸·Î ÀÌµ¿ ¹æÇâ °è»ê
+    /// ì¹´ë©”ë¼ ê¸°ì¤€ìœ¼ë¡œ ì´ë™ ë°©í–¥ ê³„ì‚°
     /// </summary>
     private Vector3 CalculateMovementDirection(float inputX, float inputZ)
     {
@@ -476,8 +477,17 @@ public class PlayerMove : MonoBehaviour
         camForward.Normalize();
         camRight.Normalize();
 
-        // (ZÃà: ÀüÈÄ, XÃà: ÁÂ¿ì)
+        // (Zì¶•: ì „í›„, Xì¶•: ì¢Œìš°)
         Vector3 direction = (camForward * inputZ + camRight * inputX).normalized;
         return direction;
+    }
+
+    /// <summary>
+    /// í˜„ì¬ ìƒíƒœê°€ ê³µê²© ìƒíƒœì¸ì§€ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
+    /// </summary>
+    /// <returns>ê³µê²© ì¤‘ì´ë©´ true, ì•„ë‹ˆë©´ false</returns>
+    private bool IsAttacking()
+    {
+        return currentState == State.Attack1 || currentState == State.Attack2 || currentState == State.Attack3;
     }
 }
