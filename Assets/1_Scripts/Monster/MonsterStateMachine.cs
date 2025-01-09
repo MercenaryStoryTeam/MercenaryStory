@@ -26,7 +26,6 @@ public class MonsterStateMachine
     {
         return stateType switch
         {
-            MonsterStateType.Idle => new MonsterIdleState(),
             MonsterStateType.Patrol => new MonsterPatrolState(),
             MonsterStateType.Chase => new MonsterChaseState(),
             MonsterStateType.Attack => new MonsterAttackState(),
@@ -39,7 +38,6 @@ public class MonsterStateMachine
 
 public enum MonsterStateType
 {
-    Idle,
     Patrol,
     Chase,
     Attack,
