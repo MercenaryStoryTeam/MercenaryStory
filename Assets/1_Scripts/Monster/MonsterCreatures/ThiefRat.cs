@@ -6,23 +6,23 @@ using UnityEngine.Serialization;
 
 public class ThiefRat : Monster
 {
-    [Header("Stats")]
+    [Header("몬스터 스텟")]
     public int _hp = 10;
     public int _maxHp = 10;
     public int _damage = 3;
     public float _moveSpeed = 1;
     public float _rotationSpeed = 1;
     public float _attackSpeed = 1;
+    [Header("순찰")]
     public Vector3 _patrolPoint = new Vector3(1, 1, 1);
     public float _patrolRange = 3;
+    [Header("범위")]
     public float _detectionRange = 3;
     public float _attackRange = 2;
     private MonsterState currentState;
-    private ThiefRat _thiefRat;
 
     public void Awake()
     {
-        _thiefRat = gameObject.GetComponent<ThiefRat>();
         Hp = _hp;
         MaxHp = _maxHp;
         Damage = _damage;
@@ -34,5 +34,4 @@ public class ThiefRat : Monster
         AttackRange = _attackRange;
         PatrolPoint = _patrolPoint;
     }
-
 }
