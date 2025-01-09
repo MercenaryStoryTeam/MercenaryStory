@@ -21,21 +21,7 @@ public class ItemManager : SingletonManager<ItemManager>
     {
         base.Awake();
     }
-
-    public void RandomWeaponDrop()
-    {
-        int randomWeapon = Random.Range(0, weaponItems.Count);
-        ItemBase weapon = weaponItems[randomWeapon];
-        items.Add(weapon);
-    }
-
-    public void RandomQuestDrop()
-    {
-        int randomQuest = Random.Range(0, questItems.Count);
-        ItemBase quest = questItems[randomQuest];
-        items.Add(quest);
-    }
-
+    
     public void SetCurrentEquipImage(WeaponItem weapon)
     {
         Color equipColor = UIManager.Instance.equipment.currentEquipImage.color;
@@ -49,24 +35,24 @@ public class ItemManager : SingletonManager<ItemManager>
     public void SetEquipItemInfo(WeaponItem weapon)
     {
         UIManager.Instance.itemInfo.itemName.text = weapon.name.ToString();
-        UIManager.Instance.itemInfo.itemInfo.text = weapon.description.ToString();
+        UIManager.Instance.itemInfo.itemDescription.text = weapon.description.ToString();
         UIManager.Instance.itemInfo.itemImage.sprite = weapon.image;
     }
     
     public void SetQuestItemInfo(QuestItem questItem)
     {
         UIManager.Instance.itemInfo.itemName.text = questItem.name.ToString();
-        UIManager.Instance.itemInfo.itemInfo.text = questItem.description.ToString();
+        UIManager.Instance.itemInfo.itemDescription.text = questItem.description.ToString();
         UIManager.Instance.itemInfo.itemImage.sprite = questItem.image;
-        UIManager.Instance.itemInfo.itemCount.text = questItem.currentItemCount.ToString();
+        UIManager.Instance.itemInfo.firstOptionText.text = questItem.currentItemCount.ToString();
     }
     
     public void SetOtherItemInfo(OtherItem otherItem)
     {
         UIManager.Instance.itemInfo.itemName.text = otherItem.name.ToString();
-        UIManager.Instance.itemInfo.itemInfo.text = otherItem.description.ToString();
+        UIManager.Instance.itemInfo.itemDescription.text = otherItem.description.ToString();
         UIManager.Instance.itemInfo.itemImage.sprite = otherItem.image;
-        UIManager.Instance.itemInfo.itemCount.text = otherItem.currentItemCount.ToString();
+        UIManager.Instance.itemInfo.firstOptionText.text = otherItem.currentItemCount.ToString();
     }
     
     public void RandomOtherDrop()
