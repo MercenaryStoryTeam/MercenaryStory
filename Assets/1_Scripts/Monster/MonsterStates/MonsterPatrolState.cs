@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MonsterPatrolState : MonsterState
 {
@@ -6,34 +7,26 @@ public class MonsterPatrolState : MonsterState
 
     public override void EnterState(Monster monster)
     {
+        monster.Agent.speed = monster.MoveSpeed;
+        monster.Agent.stoppingDistance = 0.5f;
         SetNewPatrolPoint(monster);
     }
 
     public override void ExecuteState(Monster monster)
     {
-        // 플레이어 감지
         if (DetectPlayer(monster))
         {
             monster.ChangeState(MonsterStateType.Chase);
             return;
         }
 
-        // 순찰
-        float distanceToTarget = Vector3.Distance(monster.transform.position, currentPatrolPoint);
-        if (distanceToTarget < 0.5f)
+        if (!monster.Agent.pathPending && 
+            monster.Agent.remainingDistance < monster.Agent.stoppingDistance)
         {
             SetNewPatrolPoint(monster);
         }
-
-        Vector3 direction = (currentPatrolPoint - monster.transform.position).normalized;
-        monster.transform.position += direction * (monster.MoveSpeed * Time.deltaTime);
-        monster.transform.rotation = Quaternion.Lerp(
-            monster.transform.rotation,
-            Quaternion.LookRotation(direction),
-            monster.RotationSpeed * Time.deltaTime
-        );
     }
-
+    
     public override void ExitState(Monster monster)
     {
     }
@@ -43,16 +36,29 @@ public class MonsterPatrolState : MonsterState
         Vector3 center = monster.PatrolPoint;
         float range = monster.PatrolRange;
         
-        float randomX = Random.Range(center.x - range, center.x + range);
-        float randomZ = Random.Range(center.z - range, center.z + range);
+        Vector3 randomPoint = center + Random.insideUnitSphere * range;
         
-        currentPatrolPoint = new Vector3(randomX, monster.transform.position.y, randomZ);
+        if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, range, NavMesh.AllAreas))
+        {
+            currentPatrolPoint = hit.position;
+            monster.Agent.SetDestination(currentPatrolPoint);
+        }
     }
 
     private bool DetectPlayer(Monster monster)
     {
-        // 플레이어 감지 로직 구현
-        // Physics.OverlapSphere 등을 사용
+        Collider[] hitColliders = Physics.OverlapSphere(
+            monster.transform.position, 
+            monster.DetectionRange, 
+            monster.PlayerLayer
+        );
+
+        if (hitColliders.Length > 0)
+        {
+            monster.PlayerTransform = hitColliders[0].transform;
+            return true;
+        }
+    
         return false;
     }
 } 

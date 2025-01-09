@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 
 public class ThiefRat : Monster
 {
+    [Header("Stats")]
     public int _hp = 10;
     public int _maxHp = 10;
     public int _damage = 3;
@@ -16,7 +17,6 @@ public class ThiefRat : Monster
     public float _patrolRange = 3;
     public float _detectionRange = 3;
     public float _attackRange = 2;
-    public Transform _patrolArea;
     private MonsterState currentState;
     private ThiefRat _thiefRat;
 
@@ -33,8 +33,6 @@ public class ThiefRat : Monster
         DetectionRange = _detectionRange;
         AttackRange = _attackRange;
         PatrolPoint = _patrolPoint;
-        _patrolArea.position = PatrolPoint;
-        _patrolArea.localScale = new Vector3(PatrolRange, PatrolRange, 1);
     }
 
 }

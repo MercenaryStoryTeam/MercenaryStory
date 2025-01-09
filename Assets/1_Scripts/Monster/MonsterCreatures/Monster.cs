@@ -1,29 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public abstract class Monster : MonoBehaviour
 {
-    [Header("Stats")]
-    [SerializeField] private int hp;
-    [SerializeField] private int maxHp;
-    [SerializeField] private int damage;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float rotationSpeed;
-    [SerializeField] private float attackSpeed;
+    private int hp;
+    private int maxHp;
+    private int damage;
+    private float moveSpeed;
+    private float rotationSpeed;
+    private float attackSpeed;
     
-    [Header("Ranges")]
-    [SerializeField] private float patrolRange;
-    [SerializeField] private float detectionRange;
-    [SerializeField] private float attackRange;
+    private float patrolRange;
+    private float detectionRange;
+    private float attackRange;
     
-    [Header("Patrol")]
-    [SerializeField] private Vector3 patrolPoint;
-    [SerializeField] private Transform patrolArea;
+    private Vector3 patrolPoint;
+    private LayerMask playerLayer;
+    private Transform playerTransform;
+    
+    private NavMeshAgent agent;
+    private MonsterStateMachine stateMachine;
 
-    protected MonsterStateMachine stateMachine;
-    
-    // 프로퍼티들
+    // 프로퍼티
     public int Hp { set => hp = Mathf.Max(0, value); get => hp; }
     public int MaxHp { set => maxHp = Mathf.Max(0, value); get => maxHp; }
     public int Damage { set => damage = Mathf.Max(0, value); get => damage; }
@@ -34,13 +35,17 @@ public abstract class Monster : MonoBehaviour
     public float DetectionRange { set => detectionRange = Mathf.Max(0, value); get => detectionRange; }
     public float AttackRange { set => attackRange = Mathf.Max(0, value); get => attackRange; }
     public Vector3 PatrolPoint { get => patrolPoint; set => patrolPoint = value; }
-    public Transform PatrolArea => patrolArea;
+    public LayerMask PlayerLayer => playerLayer;
+    public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
+    public NavMeshAgent Agent => agent;
 
     protected virtual void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = MoveSpeed;
+        
         InitializeStateMachine();
     }
-
     protected virtual void Update()
     {
         stateMachine.CurrentState?.ExecuteState(this);
@@ -49,7 +54,7 @@ public abstract class Monster : MonoBehaviour
     protected virtual void InitializeStateMachine()
     {
         stateMachine = new MonsterStateMachine(this);
-        stateMachine.ChangeState(MonsterStateType.Idle);
+        stateMachine.ChangeState(MonsterStateType.Patrol);
     }
 
     public void ChangeState(MonsterStateType newState)
