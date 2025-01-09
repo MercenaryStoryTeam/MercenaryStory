@@ -17,12 +17,14 @@ MonoBehaviour:
   description: "\uC2E0\uC131\uD55C \uCD95\uBCF5\uC73C\uB85C \uAC15\uD654\uB41C\n\uAC80\uACFC
     \uBC29\uD328 \uD55C \uBC8C.\n\uB9CC\uC9C0\uBA74 \uC190\uC774 \uB530\uB054\uD560
     \uC218 \uC788\uB2E4."
+  dropPercent: 0
   isSellable: 1
   image: {fileID: 21300000, guid: 3f10acafcc0d59f49ba1d7c4a1bae6c6, type: 3}
   prefab:
   - {fileID: 5730931172267903750, guid: ea5a37be48f3fdf47b9fab8632999015, type: 3}
   - {fileID: 0}
   currentItemCount: 0
+  itemClass: 1
   Rank: 2
   Damage: 3
   sellPrice: 3
