@@ -4,6 +4,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Monster : MonoBehaviour
 {
+    #region 변수
     private int hp;
     private int maxHp;
     private int damage;
@@ -23,8 +24,9 @@ public abstract class Monster : MonoBehaviour
     private MonsterStateMachine stateMachine;
     
     private Animator animator;
+    #endregion
 
-    // 프로퍼티
+    #region 프로퍼티
     public int Hp { set => hp = Mathf.Max(0, value); get => hp; }
     public int MaxHp { set => maxHp = Mathf.Max(0, value); get => maxHp; }
     public int Damage { set => damage = Mathf.Max(0, value); get => damage; }
@@ -39,24 +41,21 @@ public abstract class Monster : MonoBehaviour
     public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
     public NavMeshAgent Agent => agent;
     public Animator Animator { get => animator;  set => animator = value; }
-
+    
+    #endregion
+    
     protected virtual void Start()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.speed = MoveSpeed;
         playerLayer = LayerMask.GetMask("Player");
-        InitializeStateMachine();
+        stateMachine = new MonsterStateMachine(this);
+        stateMachine.ChangeState(MonsterStateType.Patrol);
     }
     protected virtual void Update()
     {
         stateMachine.CurrentState?.ExecuteState(this);
-    }
-
-    protected virtual void InitializeStateMachine()
-    {
-        stateMachine = new MonsterStateMachine(this);
-        stateMachine.ChangeState(MonsterStateType.Patrol);
     }
 
     public void ChangeState(MonsterStateType newState)
@@ -64,9 +63,15 @@ public abstract class Monster : MonoBehaviour
         print($"State change : {newState}");
         stateMachine.ChangeState(newState);
     }
+    
+    public void OnAttackAnimationEnd()
+    {
+        ChangeState(MonsterStateType.Chase);
+    }
 
     public void TakeDamage(int damage)
     {
+        stateMachine.ChangeState(MonsterStateType.GetHit);
         Hp -= damage;
         if (Hp <= 0)
         {
