@@ -12,6 +12,7 @@ public class PopUpPanel : MonoBehaviour
 
 	private void Awake()
 	{
+		gameObject.SetActive(false);
 		closeButton.onClick.AddListener(CloseButtonClick);
 	}
 
