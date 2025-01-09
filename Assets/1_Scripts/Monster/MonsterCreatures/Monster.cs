@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,6 +21,8 @@ public abstract class Monster : MonoBehaviour
     
     private NavMeshAgent agent;
     private MonsterStateMachine stateMachine;
+    
+    private Animator animator;
 
     // 프로퍼티
     public int Hp { set => hp = Mathf.Max(0, value); get => hp; }
@@ -38,12 +38,14 @@ public abstract class Monster : MonoBehaviour
     public LayerMask PlayerLayer => playerLayer;
     public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
     public NavMeshAgent Agent => agent;
+    public Animator Animator { get => animator;  set => animator = value; }
 
     protected virtual void Start()
     {
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.speed = MoveSpeed;
-        
+        playerLayer = LayerMask.GetMask("Player");
         InitializeStateMachine();
     }
     protected virtual void Update()
@@ -59,6 +61,7 @@ public abstract class Monster : MonoBehaviour
 
     public void ChangeState(MonsterStateType newState)
     {
+        print($"State change : {newState}");
         stateMachine.ChangeState(newState);
     }
 
@@ -69,5 +72,19 @@ public abstract class Monster : MonoBehaviour
         {
             stateMachine.ChangeState(MonsterStateType.Die);
         }
+    }
+    private void OnDrawGizmos()
+    {
+        // 감지 범위
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, DetectionRange);
+    
+        // 공격 범위
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, AttackRange);
+    
+        // 순찰 범위
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(PatrolPoint, PatrolRange);
     }
 }
