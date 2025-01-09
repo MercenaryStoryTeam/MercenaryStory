@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class MonsterChaseState : MonsterState
 {
-    public override void EnterState(Monster entity)
+    public override void EnterState(Monster monster)
+    {
+        monster.Animator.SetBool("IsWalking", true);
+    }
+
+    public override void ExecuteState(Monster monster)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void ExecuteState(Monster entity)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void ExitState(Monster entity)
+    public override void ExitState(Monster monster)
     {
         throw new System.NotImplementedException();
     }

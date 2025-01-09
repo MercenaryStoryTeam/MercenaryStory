@@ -7,8 +7,9 @@ public class MonsterPatrolState : MonsterState
 
     public override void EnterState(Monster monster)
     {
+        monster.Animator.SetBool("IsWalking", true);
         monster.Agent.speed = monster.MoveSpeed;
-        monster.Agent.stoppingDistance = 0.5f;
+        monster.Agent.stoppingDistance = 0.1f;
         SetNewPatrolPoint(monster);
     }
 
@@ -29,6 +30,7 @@ public class MonsterPatrolState : MonsterState
     
     public override void ExitState(Monster monster)
     {
+        monster.Animator.SetBool("IsWalking", false);
     }
 
     private void SetNewPatrolPoint(Monster monster)
