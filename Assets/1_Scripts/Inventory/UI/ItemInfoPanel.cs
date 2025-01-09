@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ItemInfoPanel : MonoBehaviour
@@ -11,16 +12,17 @@ public class ItemInfoPanel : MonoBehaviour
 
     public Image itemImage;
     public Text itemName;
-    public Text itemInfo;
-    public Text itemCount;
+    public Text itemDescription;
+    public Text firstOptionText;
+    public Text secondOptionText;
     
-    public Button equipItemButton;
-    public Button removeItemButton;
+    public Button firstButton;
+    public Button secondButton;
     public Button closeButton;
 
+    public GameObject secondOption;
     private void Awake()
     {
-        itemImage = GetComponent<Image>();
         itemInfoPanel.SetActive(false);
         InfoButtonOnClick();
     }
@@ -32,14 +34,14 @@ public class ItemInfoPanel : MonoBehaviour
     
     private void InfoButtonOnClick()
     {
-        equipItemButton?.onClick.AddListener(EquipItemButtonClick);
-        removeItemButton?.onClick.AddListener(RemoveItemButtonClick);
+        firstButton.onClick.AddListener(EquipItemButtonClick);
+        secondButton.onClick.AddListener(RemoveItemButtonClick);
         closeButton.onClick.AddListener(CloseButtonClick);
     }
     
     private void CloseButtonClick()
     {
-        itemInfoPanel.SetActive(false);
+        UIManager.Instance.CloseItemInfoPanel();
     }
 
     private void RemoveItemButtonClick()

@@ -12,7 +12,7 @@ public class EquipmentPanel : MonoBehaviour
 
     private void Awake()
     {
-        myItems = ItemManager.Instance.items;
+        //myItems = ItemManager.Instance.items;
     }
 
     private void Update()
