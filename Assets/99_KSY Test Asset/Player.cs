@@ -14,8 +14,7 @@ public class Player : MonoBehaviour
     [Header("적 레이어")]
     public LayerMask Monster; // 몬스터 레이어 설정 -> 인스펙터에서 직접 설정해야 됨.
 
-    // PlayerMove 스크립트 참조
-    private PlayerMove playerMove;
+    private PlayerMove playerMove; // 해당 스크립트 참조
 
     private void Start()
     {
@@ -44,11 +43,17 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        // 현재 체력이 0이라면 더 이상 데미지 처리를 하지 않음
+        if (currentHp <= 0)
+        {
+            return;
+        }
+
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0, maxHp); // 현재 체력을 0과 maxHp 사이로 제한
         Debug.Log($"Player HP: {currentHp}/{maxHp} (Received {damage} damage)");
 
-        if (currentHp <= 0)
+        if (currentHp <= 0) // 현재 체력 0이되면 die 메서드 호출
         {
             Die();
         }
@@ -59,7 +64,7 @@ public class Player : MonoBehaviour
         Debug.Log("Player Die");
         if (playerMove != null)
         {
-            playerMove.Die(); // PlayerMove 스크립트의 Die() 메서드 호출
+            playerMove.Die(); // 현재 체력이 0이되면 PlayerMove 스크립트의 Die() 메서드 호출하여 die 상태의 애니 구현
         }
     }
 }

@@ -34,6 +34,12 @@ public class MonsterTest : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        // 현재 체력이 0이라면 더 이상 데미지 처리를 하지 않음
+        if (currentHp <= 0)
+        {
+            return;
+        }
+
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0, maxHp); // 현재 체력을 0과 maxHp 사이로 제한
         Debug.Log($"Monster HP: {currentHp}/{maxHp} (Received {damage} damage)");
