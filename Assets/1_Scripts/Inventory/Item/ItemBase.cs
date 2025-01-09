@@ -9,6 +9,7 @@ public class ItemBase : ScriptableObject
 {
     public int id;
     public string name;
+    [TextArea]
     public string description;
     public bool isSellable;
     public Sprite image;
