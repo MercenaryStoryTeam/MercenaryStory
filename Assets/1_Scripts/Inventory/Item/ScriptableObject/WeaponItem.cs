@@ -12,7 +12,6 @@ public class WeaponItem : ItemBase
     public float sellPrice;
     private void Awake()
     {
-        currentItemCount = 0;
         isSellable = true;
     }
     

@@ -11,7 +11,7 @@ public class OtherItem : ItemBase
     public int stackAmount = 10;
     private void Awake()
     {
-        currentItemCount = 0;
         isSellable = true;
+        itemClass = 2;
     }
 }

@@ -9,7 +9,7 @@ public class QuestItem : ItemBase
 {
     private void Awake()
     {
-        currentItemCount = 0;
         isSellable = false;
+        itemClass = 3;
     }
 }
