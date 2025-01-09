@@ -22,8 +22,6 @@ public class ThiefRat : Monster
     public float _detectionRange = 3;
     public float _attackRange = 2;
     
-    private MonsterState currentState;
-
     public void Awake()
     {
         Hp = _hp;

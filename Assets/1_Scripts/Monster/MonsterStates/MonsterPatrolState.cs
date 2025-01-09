@@ -49,15 +49,12 @@ public class MonsterPatrolState : MonsterState
 
     private bool DetectPlayer(Monster monster)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(
-            monster.transform.position, 
-            monster.DetectionRange, 
-            monster.PlayerLayer
-        );
+        Collider[] playerColliders = Physics.OverlapSphere
+            (monster.transform.position, monster.DetectionRange, monster.PlayerLayer);
 
-        if (hitColliders.Length > 0)
+        if (playerColliders.Length > 0)
         {
-            monster.PlayerTransform = hitColliders[0].transform;
+            monster.PlayerTransform = playerColliders[0].transform;
             return true;
         }
     
