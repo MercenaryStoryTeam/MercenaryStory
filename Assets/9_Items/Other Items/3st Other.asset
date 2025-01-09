@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: 3st Other
   m_EditorClassIdentifier: 
   id: 33120
-  name: "\uAE30\uD0C0 \uC544\uC774\uD15C 3"
+  name: "\uC0DD\uC120 \uBF08\uB2E4\uADC0"
+  description: "\uBA40\uB85D\uB4E4\uC774 \uC544\uC26C\uC6B4\uB4EF \uB4E4\uACE0 \uC788\uB358\n\uB2E4
+    \uBA39\uACE0 \uB0A8\uC740 \uC0DD\uC120 \uBF08\uB2E4\uADC0\uC774\uB2E4."
   isSellable: 1
-  image: {fileID: 21300000, guid: dbfeb97fbba20a14f99f03df7897f01e, type: 3}
+  image: {fileID: 21300000, guid: 9dd37670ec907c742a4ae63b2f430827, type: 3}
   prefab:
   - {fileID: 2300998956181542402, guid: 2c2f9d5778ce95e49baefc8948109623, type: 3}
   currentItemCount: 0

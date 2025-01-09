@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: 6th Other
   m_EditorClassIdentifier: 
   id: 33131
-  name: "\uAE30\uD0C0 \uC544\uC774\uD15C 6"
+  name: "\uB2AA\uC9C0 \uBC00\uB78D"
+  description: "\uB2AA\uC9C0 \uBC8C\uB4E4\uC774 \uAC74\uCD95 \uC7AC\uB8CC\uB85C\n\uC0AC\uC6A9\uD558\uB294
+    \uBC00\uB78D \uB369\uC5B4\uB9AC\uB2E4."
   isSellable: 1
-  image: {fileID: 21300000, guid: dbfeb97fbba20a14f99f03df7897f01e, type: 3}
+  image: {fileID: 21300000, guid: 3c0cbb0a91d5f0a45b307476247531ac, type: 3}
   prefab:
   - {fileID: 2300998956181542402, guid: 2c2f9d5778ce95e49baefc8948109623, type: 3}
   currentItemCount: 0

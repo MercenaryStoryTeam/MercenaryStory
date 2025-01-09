@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: 2nd Other
   m_EditorClassIdentifier: 
   id: 33111
-  name: "\uAE30\uD0C0 \uC544\uC774\uD15C 2"
+  name: "\uB3C5\uC5D0 \uBB3C\uB4E0 \uBC1C\uD1B1"
+  description: "\uB2AA \uC950\uC758 \uBC1C\uD1B1\uC774\uB2E4.\n\uB2AA\uC758 \uB3C5\uAE30\uAC00
+    \uC62E\uC740 \uAC83\uCC98\uB7FC\n\uB05D\uC774 \uBCC0\uC0C9\uB418\uC5B4 \uC788\uB2E4."
   isSellable: 1
-  image: {fileID: 21300000, guid: dbfeb97fbba20a14f99f03df7897f01e, type: 3}
+  image: {fileID: 21300000, guid: 61ced0ea5a9a4da47b37c16a0d1813f4, type: 3}
   prefab:
   - {fileID: 2300998956181542402, guid: 2c2f9d5778ce95e49baefc8948109623, type: 3}
   currentItemCount: 0

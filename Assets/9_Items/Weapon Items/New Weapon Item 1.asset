@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: New Weapon Item 1
   m_EditorClassIdentifier: 
   id: 31001
-  name: "\uD55C\uC190\uAC80 + \uBC29\uD328 2"
+  name: "\uC601\uAD11\uACFC \uC2EC\uD310"
+  description: "\uC2E0\uC131\uD55C \uCD95\uBCF5\uC73C\uB85C \uAC15\uD654\uB41C\n\uAC80\uACFC
+    \uBC29\uD328 \uD55C \uBC8C.\n\uB9CC\uC9C0\uBA74 \uC190\uC774 \uB530\uB054\uD560
+    \uC218 \uC788\uB2E4."
   isSellable: 1
-  image: {fileID: 21300000, guid: c434c01d3ac2fd84eb7b8da6039b81e4, type: 3}
+  image: {fileID: 21300000, guid: 3f10acafcc0d59f49ba1d7c4a1bae6c6, type: 3}
   prefab:
   - {fileID: 5730931172267903750, guid: ea5a37be48f3fdf47b9fab8632999015, type: 3}
   - {fileID: 0}
