@@ -13,9 +13,10 @@ public class ShopPanel : MonoBehaviour
     public Button sellButton;
     public Button closeButton;
 
-    private void Update()
+    private void Awake()
     {
-        
+        shopPanel.SetActive(false);
+        ShopButtonClicked();
     }
 
     private void ShopButtonClicked()
@@ -26,6 +27,7 @@ public class ShopPanel : MonoBehaviour
 
     private void CloseButtonClick()
     {
+        UIManager.Instance.isShopActive = false;
         UIManager.Instance.CloseShopPanel();
     }
 
@@ -34,5 +36,20 @@ public class ShopPanel : MonoBehaviour
         UIManager.Instance.CloseShopPanel();
         //아이템 삭제 로직
         //플레이어 골드 변경 로직
+    }
+    
+    public void TryOpenShop()
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            if (!UIManager.Instance.isShopActive)
+            {
+                UIManager.Instance.OpenShopPanel();
+            }
+            else
+            {
+                UIManager.Instance.CloseShopPanel();
+            }
+        }
     }
 }
