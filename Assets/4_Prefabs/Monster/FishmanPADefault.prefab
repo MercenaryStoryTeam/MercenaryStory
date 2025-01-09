@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6895535425086125292}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_mouthHorn02Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23,13 +23,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51285069558208136}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00735763, y: 0.067614816, z: 0.004405384, w: 0.99767464}
   m_LocalPosition: {x: 0.23056535, y: -0.0000016541995, z: 0.0000025405502}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6314020116228826607}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &379293922054974451
 GameObject:
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6314020116228826607}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_mouthHorn01Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,6 +54,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 379293922054974451}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.2518379, y: -0.13988619, z: 0.55171174, w: 0.7827028}
   m_LocalPosition: {x: 0.05031208, y: 0.09143044, z: 0.21391599}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -61,7 +62,6 @@ Transform:
   m_Children:
   - {fileID: 6895535425086125292}
   m_Father: {fileID: 8213636454671555478}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &511476380983661553
 GameObject:
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7216554989852468081}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_upperMouth01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,6 +86,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 511476380983661553}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.27213782, w: 0.9622583}
   m_LocalPosition: {x: -0.10006561, y: -0.000090319416, z: 3.7280057e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -93,7 +94,6 @@ Transform:
   m_Children:
   - {fileID: 8854369406769206047}
   m_Father: {fileID: 5428818258960198966}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &692932561218816399
 GameObject:
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2835425253998663758}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_mouthHorn02Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,13 +118,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692932561218816399}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00735763, y: 0.067614816, z: 0.004405384, w: 0.99767464}
   m_LocalPosition: {x: -0.2305675, y: 7.105427e-16, z: -5.684342e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 664305619891545256}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &774984908791376397
 GameObject:
@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 478573218311152669}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_middle03Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,13 +149,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 774984908791376397}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.13275152, y: -4.6185276e-16, z: -3.2684964e-15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7881270869887180638}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &784849807245815144
 GameObject:
@@ -166,7 +166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2293685070522905828}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_eyeHornRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,13 +180,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784849807245815144}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.1865445, y: -0.78033584, z: -0.03624237, w: 0.59578824}
   m_LocalPosition: {x: -0.15101147, y: 0.10205343, z: 0.21178773}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5428818258960198966}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &968249786130224647
 GameObject:
@@ -197,7 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4562247753557572765}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_fin03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,13 +211,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968249786130224647}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.5976526, w: 0.80175525}
   m_LocalPosition: {x: -0.051798344, y: 0.42720485, z: 1.2160927e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6308841911034095030}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1031131092737018303
 GameObject:
@@ -228,7 +228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6752798846846246354}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_handLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,6 +242,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1031131092737018303}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.118022166, y: 0.1453989, z: 0.0598508, w: 0.9804835}
   m_LocalPosition: {x: -0.34269026, y: 7.105427e-17, z: -2.131628e-15}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -252,7 +253,6 @@ Transform:
   - {fileID: 9181070760652184615}
   - {fileID: 8191850913328005049}
   m_Father: {fileID: 3981826981464950340}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1032203210284694672
 GameObject:
@@ -263,7 +263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2118173444915717762}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_index02Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,6 +277,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1032203210284694672}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.08009999, y: -0.70743346, z: 0.10303651, w: 0.69462603}
   m_LocalPosition: {x: 0.0979354, y: 0.0000007095839, z: -2.3067456e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -284,7 +285,6 @@ Transform:
   m_Children:
   - {fileID: 5280103455503956959}
   m_Father: {fileID: 4003786813655212168}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1169402618134134347
 GameObject:
@@ -295,7 +295,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 85076905515493037}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,6 +309,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169402618134134347}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.47941604, y: 0.611327, z: -0.3885444, w: 0.4954521}
   m_LocalPosition: {x: -0.017292442, y: 0.6228893, z: -0.08167914}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -320,7 +321,6 @@ Transform:
   - {fileID: 5425070684354478922}
   - {fileID: 4589993851525281893}
   m_Father: {fileID: 3917713134838844751}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1483939881261882935
 GameObject:
@@ -331,7 +331,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2239766377298248373}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_lowerLegLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,6 +345,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483939881261882935}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.1398894, y: -0.09179771, z: -0.3742122, w: 0.91212356}
   m_LocalPosition: {x: -0.2979794, y: -4.6185276e-16, z: -1.4210854e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -352,7 +353,6 @@ Transform:
   m_Children:
   - {fileID: 94686353987815961}
   m_Father: {fileID: 5425070684354478922}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1652592467283377790
 GameObject:
@@ -363,7 +363,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8218193654739090649}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_pinky02Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,6 +377,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1652592467283377790}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.010445471, y: -0.104675084, z: 0.014765783, w: 0.994342}
   m_LocalPosition: {x: -0.10729393, y: 5.2846613e-16, z: -1.4210854e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -384,7 +385,6 @@ Transform:
   m_Children:
   - {fileID: 3136804132348869298}
   m_Father: {fileID: 9181070760652184615}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2190497907899565677
 GameObject:
@@ -395,7 +395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8854369406769206047}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_upperMouth02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,13 +409,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2190497907899565677}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.1589812, y: 0.0012477258, z: 5.5880835e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7216554989852468081}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2451823440394706783
 GameObject:
@@ -426,7 +426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7022316172247043401}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_eyeLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -440,13 +440,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2451823440394706783}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.28961548, y: -0.64507586, z: -0.28961548, w: 0.64507586}
   m_LocalPosition: {x: -0.18332006, y: 0.022024319, z: -0.17920734}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5428818258960198966}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2498452170544208121
 GameObject:
@@ -457,7 +457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8872205884877281500}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_middle01Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,6 +471,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2498452170544208121}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.16665527, y: -0.11425544, z: 0.00090509467, w: 0.97937274}
   m_LocalPosition: {x: -0.15858623, y: -0.011471321, z: -0.0022727416}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -478,7 +479,6 @@ Transform:
   m_Children:
   - {fileID: 7881270869887180638}
   m_Father: {fileID: 6752798846846246354}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2503545105458652948
 GameObject:
@@ -489,7 +489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9181070760652184615}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_pinky01Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -503,6 +503,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2503545105458652948}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.2594273, y: -0.09714014, z: -0.10751362, w: 0.95483094}
   m_LocalPosition: {x: -0.14712188, y: 0.04272635, z: 0.023474116}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -510,7 +511,6 @@ Transform:
   m_Children:
   - {fileID: 8218193654739090649}
   m_Father: {fileID: 6752798846846246354}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2585597908702374933
 GameObject:
@@ -521,7 +521,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6429669072211635925}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,6 +535,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2585597908702374933}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.002619985, y: -0.05418505, z: 0.23372167, w: 0.970789}
   m_LocalPosition: {x: -0.16551073, y: -1.4210854e-16, z: 5.0626478e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -542,7 +543,6 @@ Transform:
   m_Children:
   - {fileID: 5428818258960198966}
   m_Father: {fileID: 8409035296603648904}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2660223184755653324
 GameObject:
@@ -553,7 +553,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5872465204261129937}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_fin04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,13 +567,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2660223184755653324}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.5162347, w: 0.85644716}
   m_LocalPosition: {x: -0.16313617, y: 0.42575148, z: 2.7314965e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 85076905515493037}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2902624091385202251
 GameObject:
@@ -584,7 +584,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3518083998964421162}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_lowerLegRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,6 +598,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2902624091385202251}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.14264083, y: -0.08356376, z: -0.3504224, w: 0.92188656}
   m_LocalPosition: {x: 0.29797894, y: 0.00000017957119, z: 0.0000007576104}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -605,7 +606,6 @@ Transform:
   m_Children:
   - {fileID: 6684206548516935557}
   m_Father: {fileID: 4589993851525281893}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2919128323685243924
 GameObject:
@@ -616,7 +616,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6858466981725678322}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_lowerMouth02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,6 +630,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2919128323685243924}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.8365514, y: 0.5478884, z: 1.6170481e-16, w: 2.327182e-16}
   m_LocalPosition: {x: -0.18275534, y: -0.00047812428, z: -5.5608335e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -637,7 +638,6 @@ Transform:
   m_Children:
   - {fileID: 8213636454671555478}
   m_Father: {fileID: 2992348444546880402}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3048658315760579364
 GameObject:
@@ -648,7 +648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5232546448099206452}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_thumb01Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,6 +662,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3048658315760579364}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.31785876, y: -0.66198146, z: -0.37132162, w: 0.5682135}
   m_LocalPosition: {x: 0.08392869, y: 0.05659004, z: 0.0697864}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -669,7 +670,6 @@ Transform:
   m_Children:
   - {fileID: 8110903161943058352}
   m_Father: {fileID: 4105840064615772404}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3177045840379877311
 GameObject:
@@ -680,7 +680,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4291120015025463852}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_index03Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,13 +694,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3177045840379877311}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.10448647, y: -3.907985e-16, z: 1.563194e-15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6684128059504081034}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3268811545927878397
 GameObject:
@@ -711,7 +711,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3981826981464950340}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_lowerArmLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -725,6 +725,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3268811545927878397}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.10583269, y: -0.42120486, z: 0.35854906, w: 0.82633436}
   m_LocalPosition: {x: -0.3985641, y: -3.1974422e-16, z: 2.131628e-15}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -732,7 +733,6 @@ Transform:
   m_Children:
   - {fileID: 6752798846846246354}
   m_Father: {fileID: 1434502961736327883}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3380324787397739390
 GameObject:
@@ -743,7 +743,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2471602503967089190}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_middle02Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -757,6 +757,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3380324787397739390}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.020719055, y: -0.7596601, z: -0.06942257, w: 0.6462722}
   m_LocalPosition: {x: 0.10729402, y: 0.00000021978052, z: -0.00000052653553}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -764,7 +765,6 @@ Transform:
   m_Children:
   - {fileID: 4825927544196886970}
   m_Father: {fileID: 1903979358426217245}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3807105447057027666
 GameObject:
@@ -775,7 +775,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1434502961736327883}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_upperArmLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,6 +789,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3807105447057027666}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.54061234, y: 0.61070716, z: 0.47351056, w: -0.33250988}
   m_LocalPosition: {x: 0.00594928, y: -0.059975453, z: -0.20138624}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -796,7 +797,6 @@ Transform:
   m_Children:
   - {fileID: 3981826981464950340}
   m_Father: {fileID: 8409035296603648904}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4064419272271308461
 GameObject:
@@ -807,7 +807,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7133986230364099577}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_upperArmRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -821,6 +821,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4064419272271308461}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.7286969, y: -0.42500275, z: 0.24151444, w: 0.47962937}
   m_LocalPosition: {x: 0.005949321, y: -0.05997588, z: 0.20138599}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -828,7 +829,6 @@ Transform:
   m_Children:
   - {fileID: 5889282826291899978}
   m_Father: {fileID: 8409035296603648904}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4083031868565250775
 GameObject:
@@ -840,7 +840,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5021746618298246143}
   - component: {fileID: 6223519862016982087}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Fishman
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -854,13 +854,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4083031868565250775}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3917713134838844751}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &6223519862016982087
 SkinnedMeshRenderer:
@@ -990,7 +990,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3917713134838844751}
   - component: {fileID: 6971202247448221493}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FishmanPADefault
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1004,6 +1004,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4401516545361303541}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1012,7 +1013,6 @@ Transform:
   - {fileID: 5021746618298246143}
   - {fileID: 85076905515493037}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6971202247448221493
 Animator:
@@ -1044,7 +1044,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2710144784354385767}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_fin02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1058,13 +1058,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4587785653938087335}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.71595573, w: 0.6981457}
   m_LocalPosition: {x: 0.057329543, y: 0.4027744, z: 7.520302e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8409035296603648904}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4634015702458308239
 GameObject:
@@ -1075,7 +1075,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3340224527554331825}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_toeLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1089,13 +1089,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4634015702458308239}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.21237478, y: 1.0658141e-16, z: -1.0658141e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 94686353987815961}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4818013312990705108
 GameObject:
@@ -1106,7 +1106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7881270869887180638}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_middle02Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1120,6 +1120,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4818013312990705108}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.0028356535, y: -0.0869243, z: -0.0074113356, w: 0.99618334}
   m_LocalPosition: {x: -0.10729393, y: 3.907985e-16, z: 1.9895197e-15}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1127,7 +1128,6 @@ Transform:
   m_Children:
   - {fileID: 478573218311152669}
   m_Father: {fileID: 8872205884877281500}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4843148033091659307
 GameObject:
@@ -1138,7 +1138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7772855980657862500}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_thumb03Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1152,13 +1152,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4843148033091659307}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.039931208, y: 0.039464246, z: 0.0015783464, w: 0.99842155}
   m_LocalPosition: {x: 0.10436913, y: 0.0006591995, z: -0.008237529}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8110903161943058352}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4843340546095539066
 GameObject:
@@ -1169,7 +1169,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5428818258960198966}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1183,6 +1183,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4843340546095539066}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.01683586, y: -0.009126202, z: -0.421945, w: 0.9064192}
   m_LocalPosition: {x: -0.17533451, y: -2.842171e-16, z: 9.325873e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1196,7 +1197,6 @@ Transform:
   - {fileID: 2992348444546880402}
   - {fileID: 7216554989852468081}
   m_Father: {fileID: 6429669072211635925}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4871872245567423778
 GameObject:
@@ -1207,7 +1207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5430110798789356525}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_tail01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1221,6 +1221,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4871872245567423778}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.35676563, y: 0.92936224, z: 0.034007013, w: 0.08858709}
   m_LocalPosition: {x: 0.18994255, y: 0.08495373, z: 0.021860693}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1228,7 +1229,6 @@ Transform:
   m_Children:
   - {fileID: 6596963273918723134}
   m_Father: {fileID: 85076905515493037}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5102976110450095640
 GameObject:
@@ -1239,7 +1239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6596963273918723134}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_tail02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1253,6 +1253,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5102976110450095640}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.0077262316, y: -0.09457513, z: -0.08105546, w: 0.9921824}
   m_LocalPosition: {x: -0.21368548, y: -0.0024216303, z: 1.173297e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1260,7 +1261,6 @@ Transform:
   m_Children:
   - {fileID: 5745195646946368859}
   m_Father: {fileID: 5430110798789356525}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5595519155939596001
 GameObject:
@@ -1271,7 +1271,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 94686353987815961}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_feetLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1285,6 +1285,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5595519155939596001}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.4571443, y: 0.42923427, z: 0.57380074, w: 0.52681094}
   m_LocalPosition: {x: -0.27135247, y: 0.0025587173, z: -0.016949711}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1292,7 +1293,6 @@ Transform:
   m_Children:
   - {fileID: 3340224527554331825}
   m_Father: {fileID: 2239766377298248373}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5791056362848606764
 GameObject:
@@ -1303,7 +1303,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8409035296603648904}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_spine02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1317,6 +1317,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5791056362848606764}
+  serializedVersion: 2
   m_LocalRotation: {x: -1.110223e-16, y: -8.326673e-17, z: 0.2914944, w: 0.95657253}
   m_LocalPosition: {x: -0.20953512, y: 1.4210854e-16, z: 1.2217357e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1327,7 +1328,6 @@ Transform:
   - {fileID: 1434502961736327883}
   - {fileID: 7133986230364099577}
   m_Father: {fileID: 6308841911034095030}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5828182275055754384
 GameObject:
@@ -1338,7 +1338,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4269259490711826047}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_index01Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1352,6 +1352,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5828182275055754384}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.29596695, y: -0.11094106, z: 0.12097062, w: 0.9409898}
   m_LocalPosition: {x: -0.14610328, y: -0.06282748, z: -0.020330187}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1359,7 +1360,6 @@ Transform:
   m_Children:
   - {fileID: 6684128059504081034}
   m_Father: {fileID: 6752798846846246354}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5876219572057681960
 GameObject:
@@ -1370,7 +1370,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 664305619891545256}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_mouthHorn01Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1384,6 +1384,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5876219572057681960}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.13988619, y: -0.2518379, z: -0.7827028, w: 0.55171174}
   m_LocalPosition: {x: 0.050312392, y: 0.09143029, z: -0.2139162}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1391,7 +1392,6 @@ Transform:
   m_Children:
   - {fileID: 2835425253998663758}
   m_Father: {fileID: 8213636454671555478}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6060841019674711678
 GameObject:
@@ -1402,7 +1402,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8360854584939883038}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_thumb02Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1416,6 +1416,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6060841019674711678}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.043435168, y: 0.083117455, z: -0.12797612, w: 0.9873333}
   m_LocalPosition: {x: -0.08488386, y: 4.2632563e-16, z: 0.005754693}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1423,7 +1424,6 @@ Transform:
   m_Children:
   - {fileID: 3085289669003325180}
   m_Father: {fileID: 8191850913328005049}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6105132598132798790
 GameObject:
@@ -1434,7 +1434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8908365249151075195}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_pinky03Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1448,13 +1448,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6105132598132798790}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.39130804, z: -0, w: 0.9202598}
   m_LocalPosition: {x: 0.1115563, y: 0.0045184996, z: -0.00000016358987}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6509631934597761662}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6143888938343631408
 GameObject:
@@ -1465,7 +1465,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5280103455503956959}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_index03Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1479,13 +1479,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6143888938343631408}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00012567932, y: -0.521359, z: 0.028621137, w: 0.8528573}
   m_LocalPosition: {x: 0.1044864, y: 0.00000009952088, z: 0.00000013852691}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2118173444915717762}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6172976485275551347
 GameObject:
@@ -1496,7 +1496,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6684128059504081034}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_index02Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1510,6 +1510,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6172976485275551347}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.021816954, y: -0.11188497, z: 0.023744155, w: 0.99319786}
   m_LocalPosition: {x: -0.09793559, y: 8.881784e-16, z: -9.947598e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1517,7 +1518,6 @@ Transform:
   m_Children:
   - {fileID: 4291120015025463852}
   m_Father: {fileID: 4269259490711826047}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6309560099560503240
 GameObject:
@@ -1528,7 +1528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1903979358426217245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_middle01Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1542,6 +1542,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6309560099560503240}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.18217225, y: -0.6049161, z: -0.14636956, w: 0.7612265}
   m_LocalPosition: {x: 0.15858631, y: 0.011471417, z: 0.0022730306}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1549,7 +1550,6 @@ Transform:
   m_Children:
   - {fileID: 2471602503967089190}
   m_Father: {fileID: 4105840064615772404}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6421474532124836827
 GameObject:
@@ -1560,7 +1560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8213636454671555478}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_lowerMouth03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1574,6 +1574,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6421474532124836827}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.05572779, w: 0.998446}
   m_LocalPosition: {x: -0.17276454, y: -0.0013046985, z: 7.4882285e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1582,7 +1583,6 @@ Transform:
   - {fileID: 664305619891545256}
   - {fileID: 6314020116228826607}
   m_Father: {fileID: 6858466981725678322}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6616688647936440009
 GameObject:
@@ -1595,7 +1595,7 @@ GameObject:
   - component: {fileID: 1100144150044504479}
   - component: {fileID: 8143743523936135161}
   - component: {fileID: 3922540511870791387}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Harpoon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1609,13 +1609,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6616688647936440009}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.77775174, y: -0.33042368, z: -0.49214432, w: -0.20908488}
   m_LocalPosition: {x: -0.03286149, y: 0.003398872, z: -0.004620252}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3795735899678648117}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8143743523936135161
 MeshFilter:
@@ -1676,7 +1676,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5425070684354478922}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_upperLegLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1690,6 +1690,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7067504655008610251}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.3126081, y: 0.91680664, z: 0.037511915, w: -0.24563126}
   m_LocalPosition: {x: 0.011533938, y: -0.06529141, z: -0.13924953}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1697,7 +1698,6 @@ Transform:
   m_Children:
   - {fileID: 2239766377298248373}
   m_Father: {fileID: 85076905515493037}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7130884143468977195
 GameObject:
@@ -1708,7 +1708,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8583190612092537373}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_fin01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1722,13 +1722,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7130884143468977195}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.49112198, w: 0.8710908}
   m_LocalPosition: {x: -0.28521544, y: 0.33816227, z: 9.194623e-18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5428818258960198966}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7149347410931122166
 GameObject:
@@ -1739,7 +1739,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 229087657451989196}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_pinky01Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1753,6 +1753,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7149347410931122166}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.14429213, y: -0.6154388, z: -0.18680793, w: 0.7520091}
   m_LocalPosition: {x: 0.14712241, y: -0.04272647, z: -0.02347424}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1760,7 +1761,6 @@ Transform:
   m_Children:
   - {fileID: 6509631934597761662}
   m_Father: {fileID: 4105840064615772404}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7223356962942589442
 GameObject:
@@ -1771,7 +1771,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6509631934597761662}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_pinky02Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1785,6 +1785,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7223356962942589442}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.022419801, y: -0.7554815, z: 0.010082696, w: 0.6547086}
   m_LocalPosition: {x: 0.10729381, y: -0.00000032347543, z: 0.00000053483745}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1792,7 +1793,6 @@ Transform:
   m_Children:
   - {fileID: 8908365249151075195}
   m_Father: {fileID: 229087657451989196}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7352992169588363044
 GameObject:
@@ -1803,7 +1803,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 172441838561227684}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_toeRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1817,13 +1817,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7352992169588363044}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.21237443, y: -0.0000004661231, z: 0.00000003686753}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6684206548516935557}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7415582516606157757
 GameObject:
@@ -1834,7 +1834,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5889282826291899978}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_lowerArmRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1848,6 +1848,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7415582516606157757}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.12877987, y: -0.37197748, z: 0.3127909, w: 0.8644133}
   m_LocalPosition: {x: 0.398564, y: -0.00000031872608, z: -0.0000009473659}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1855,7 +1856,6 @@ Transform:
   m_Children:
   - {fileID: 4105840064615772404}
   m_Father: {fileID: 7133986230364099577}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7898957881134348307
 GameObject:
@@ -1866,7 +1866,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4589993851525281893}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_upperLegRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1880,6 +1880,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7898957881134348307}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.9494238, y: -0.19667888, z: 0.24383704, w: 0.021340532}
   m_LocalPosition: {x: 0.011533887, y: -0.06529145, z: 0.13925}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1887,7 +1888,6 @@ Transform:
   m_Children:
   - {fileID: 3518083998964421162}
   m_Father: {fileID: 85076905515493037}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7916890441810376995
 GameObject:
@@ -1898,7 +1898,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8037620837866719649}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_eyeHornLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1912,13 +1912,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7916890441810376995}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.0664762, y: -0.62099093, z: -0.23030667, w: 0.74626404}
   m_LocalPosition: {x: -0.15101081, y: 0.10205308, z: -0.21178819}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5428818258960198966}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7995381614257632695
 GameObject:
@@ -1929,7 +1929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2342260176330742335}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_eyeRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1943,13 +1943,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7995381614257632695}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.64507586, y: -0.28961548, z: 0.64507586, w: 0.28961548}
   m_LocalPosition: {x: -0.1833178, y: 0.02202203, z: 0.179207}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5428818258960198966}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8017591000726023667
 GameObject:
@@ -1960,7 +1960,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2992348444546880402}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_lowerMouth01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1974,6 +1974,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8017591000726023667}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.6583507, y: 0.75271136, z: 2.3257942e-16, w: -1.7290607e-16}
   m_LocalPosition: {x: 0.05120487, y: -0.071720295, z: 2.2003704e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1981,7 +1982,6 @@ Transform:
   m_Children:
   - {fileID: 6858466981725678322}
   m_Father: {fileID: 5428818258960198966}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8213512911363779550
 GameObject:
@@ -1992,7 +1992,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4105840064615772404}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_handRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2006,6 +2006,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8213512911363779550}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.23580644, y: 0.15580074, z: 0.058398236, w: 0.95745033}
   m_LocalPosition: {x: 0.34269038, y: 0.00000004387748, z: 0.00000034077377}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2017,7 +2018,6 @@ Transform:
   - {fileID: 229087657451989196}
   - {fileID: 5232546448099206452}
   m_Father: {fileID: 5889282826291899978}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8235101264832212432
 GameObject:
@@ -2028,7 +2028,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3085289669003325180}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_thumb03Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2042,13 +2042,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8235101264832212432}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.039931208, y: 0.039464246, z: 0.0015783464, w: 0.99842155}
   m_LocalPosition: {x: -0.10436903, y: -0.00065994076, z: 0.008237231}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8360854584939883038}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8338986623139615670
 GameObject:
@@ -2059,7 +2059,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4825927544196886970}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_middle03Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2073,13 +2073,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8338986623139615670}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0021073637, y: -0.40924045, z: -0.06745587, w: 0.90992725}
   m_LocalPosition: {x: 0.13275202, y: -0.00000034009423, z: 0.00000022440418}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2471602503967089190}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8387496534460441825
 GameObject:
@@ -2090,7 +2090,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5745195646946368859}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_tail03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2104,13 +2104,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8387496534460441825}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0061373916, y: -0.09469151, z: 0.06438703, w: 0.9934033}
   m_LocalPosition: {x: -0.19984725, y: 0, z: -2.915201e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6596963273918723134}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8445451035617699443
 GameObject:
@@ -2121,7 +2121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4003786813655212168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_index01Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2135,6 +2135,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8445451035617699443}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.22605403, y: -0.54652333, z: -0.10642442, w: 0.79930323}
   m_LocalPosition: {x: 0.14610375, y: 0.06282728, z: 0.02033005}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2142,7 +2143,6 @@ Transform:
   m_Children:
   - {fileID: 2118173444915717762}
   m_Father: {fileID: 4105840064615772404}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8499441271153783486
 GameObject:
@@ -2153,7 +2153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6308841911034095030}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_spine01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2167,6 +2167,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8499441271153783486}
+  serializedVersion: 2
   m_LocalRotation: {x: 4.510281e-17, y: 6.591949e-17, z: 0.28291807, w: 0.95914406}
   m_LocalPosition: {x: -0.2683505, y: -3.5527136e-17, z: -5.753964e-17}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2176,7 +2177,6 @@ Transform:
   - {fileID: 4562247753557572765}
   - {fileID: 8409035296603648904}
   m_Father: {fileID: 85076905515493037}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8633085136043409027
 GameObject:
@@ -2187,7 +2187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4243216155452843561}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_belly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2201,13 +2201,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8633085136043409027}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.23889796, y: -0.66552824, z: -0.23889796, w: 0.66552824}
   m_LocalPosition: {x: -0.058829963, y: -0.37505683, z: -2.3598288e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6308841911034095030}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8713510167000108712
 GameObject:
@@ -2218,7 +2218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8191850913328005049}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_thumb01Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2232,6 +2232,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8713510167000108712}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.5316642, y: -0.5392778, z: -0.009557251, w: 0.6530094}
   m_LocalPosition: {x: -0.0839284, y: -0.05658991, z: -0.06978588}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2239,7 +2240,6 @@ Transform:
   m_Children:
   - {fileID: 8360854584939883038}
   m_Father: {fileID: 6752798846846246354}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8747093563099541193
 GameObject:
@@ -2250,7 +2250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3136804132348869298}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_pinky03Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2264,13 +2264,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8747093563099541193}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.0076092854, z: -0, w: 0.9999711}
   m_LocalPosition: {x: -0.11155599, y: -0.0045175375, z: -7.105427e-16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8218193654739090649}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8913191546328591935
 GameObject:
@@ -2281,7 +2281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3795735899678648117}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_harppon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2295,6 +2295,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8913191546328591935}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.15774499, y: -0.014421852, z: 0.07461142}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2302,7 +2303,6 @@ Transform:
   m_Children:
   - {fileID: 1100144150044504479}
   m_Father: {fileID: 4105840064615772404}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8990945976150117731
 GameObject:
@@ -2313,7 +2313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8110903161943058352}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_thumb02Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2327,6 +2327,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8990945976150117731}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.050667677, y: 0.5529881, z: -0.40335593, w: 0.72728324}
   m_LocalPosition: {x: 0.084883384, y: 0.0000008412224, z: -0.0057547847}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2334,7 +2335,6 @@ Transform:
   m_Children:
   - {fileID: 7772855980657862500}
   m_Father: {fileID: 5232546448099206452}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9186614224701898855
 GameObject:
@@ -2345,7 +2345,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6684206548516935557}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: fishman_feetRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2359,6 +2359,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9186614224701898855}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.41300902, y: 0.43180534, z: 0.656715, w: 0.46010125}
   m_LocalPosition: {x: 0.27135274, y: -0.0025585073, z: 0.016949257}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -2366,5 +2367,4 @@ Transform:
   m_Children:
   - {fileID: 172441838561227684}
   m_Father: {fileID: 3518083998964421162}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
