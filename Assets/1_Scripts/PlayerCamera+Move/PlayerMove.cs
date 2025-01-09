@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
@@ -9,12 +9,6 @@ public class PlayerMove : MonoBehaviour
 {
     [Header("이동 속도 (5 적정)")]
     [SerializeField] private float moveSpeed = 5f; // [SerializeField] private 사용한 이유: private을 사용하면서 인스펙터에 노출, 다른 스크립트에 의해 의도치 않은 정보 변경을 막고자 
-
-    [Header("바닥 체크 범위 (0.5 적정)")]
-    [SerializeField] private float groundCheckRadius = 0.5f;
-
-    [Header("바닥 레이어")]
-    [SerializeField] private LayerMask groundLayer;
 
     [Header("Virtual Camera 할당")]
     [SerializeField] private Transform cameraTransform;
@@ -36,7 +30,6 @@ public class PlayerMove : MonoBehaviour
 
     // 이동 제어
     private Vector3 movementInput; // 이동 방향
-    private bool isGrounded = false;
 
     // 이동 상태로 전환하기 위한 최소 입력 크기
     private const float moveThreshold = 0.05f;
@@ -132,7 +125,6 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CheckGrounded();   // 바닥 판정
         HandlePhysics();   // 상태별 물리 처리
     }
 
@@ -144,26 +136,6 @@ public class PlayerMove : MonoBehaviour
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
         return specialScenes.Contains(currentSceneName);
-    }
-
-    /// <summary>
-    /// 바닥 판정 (OverlapSphere 사용)
-    /// </summary>
-    private void CheckGrounded()
-    {
-        isGrounded = false;
-
-        Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // 약간 아래로 위치
-        float sphereRadius = groundCheckRadius;
-        Collider[] colliders = Physics.OverlapSphere(sphereOrigin, sphereRadius, groundLayer);
-
-        if (colliders.Length > 0)
-        {
-            isGrounded = true;
-        }
-
-        // Animator -> isGrounded 파라미터 
-        animator.SetBool("isGrounded", isGrounded);
     }
 
     /// <summary>
