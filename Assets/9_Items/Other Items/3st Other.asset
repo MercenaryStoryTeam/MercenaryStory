@@ -18,6 +18,7 @@ MonoBehaviour:
     \uBA39\uACE0 \uB0A8\uC740 \uC0DD\uC120 \uBF08\uB2E4\uADC0\uC774\uB2E4."
   dropPercent: 0
   isSellable: 1
+  isStackable: 1
   image: {fileID: 21300000, guid: 9dd37670ec907c742a4ae63b2f430827, type: 3}
   prefab:
   - {fileID: 2300998956181542402, guid: 2c2f9d5778ce95e49baefc8948109623, type: 3}

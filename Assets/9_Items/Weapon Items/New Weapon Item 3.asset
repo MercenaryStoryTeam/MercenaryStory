@@ -23,7 +23,7 @@ MonoBehaviour:
   prefab:
   - {fileID: 5730931172267903750, guid: ea5a37be48f3fdf47b9fab8632999015, type: 3}
   - {fileID: 0}
-  currentItemCount: 2
+  currentItemCount: 0
   itemClass: 1
   Rank: 4
   Damage: 7

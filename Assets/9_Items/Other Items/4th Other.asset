@@ -18,10 +18,11 @@ MonoBehaviour:
     \uC218\uC900\uC5D0 \uB9DE\uC9C0 \uC54A\uB294\n\uC815\uAD50\uD568\uC774 \uB3CB\uBCF4\uC778\uB2E4."
   dropPercent: 0
   isSellable: 1
+  isStackable: 1
   image: {fileID: 21300000, guid: 7b9e19db70d2fd54d9adb2b3c13cbbfd, type: 3}
   prefab:
   - {fileID: 2300998956181542402, guid: 2c2f9d5778ce95e49baefc8948109623, type: 3}
-  currentItemCount: 4
+  currentItemCount: 0
   itemClass: 2
   sellPrice: 3
   stackAmount: 10
