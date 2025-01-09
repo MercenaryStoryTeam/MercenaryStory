@@ -11,11 +11,31 @@ public class MonsterChaseState : MonsterState
 
     public override void ExecuteState(Monster monster)
     {
-        throw new System.NotImplementedException();
+        if (IsAttackable(monster))
+        {
+            monster.ChangeState(MonsterStateType.Attack);
+        }
+        
+        monster.Agent.SetDestination(monster.PlayerTransform.position);
     }
 
     public override void ExitState(Monster monster)
     {
-        throw new System.NotImplementedException();
+        monster.Animator.SetBool("IsWalking", false);
+        monster.Agent.SetDestination(monster.transform.position);
+    }
+    
+    private bool IsAttackable(Monster monster)
+    {
+        Collider[] playerColliders = Physics.OverlapSphere
+            (monster.transform.position, monster.AttackRange, monster.PlayerLayer);
+
+        if (playerColliders.Length > 0)
+        {
+            monster.PlayerTransform = playerColliders[0].transform;
+            return true;
+        }
+    
+        return false;
     }
 }
