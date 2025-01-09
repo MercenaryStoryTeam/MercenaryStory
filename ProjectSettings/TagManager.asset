@@ -11,9 +11,9 @@ TagManager:
   - groundLayer
   - Water
   - UI
+  - Player
   - Monster
-  - 
-  - 
+  - Weapon
   - 
   - 
   - 

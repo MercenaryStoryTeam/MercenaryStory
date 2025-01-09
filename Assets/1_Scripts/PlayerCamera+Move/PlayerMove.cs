@@ -1,23 +1,35 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
+
 public class PlayerMove : MonoBehaviour
 {
     [Header("이동 속도 (5 적정)")]
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 5f; // [SerializeField] private 사용한 이유: private을 사용하면서 인스펙터에 노출, 다른 스크립트에 의해 의도치 않은 정보 변경을 막고자 
 
     [Header("바닥 체크 범위 (0.5 적정)")]
     [SerializeField] private float groundCheckRadius = 0.5f;
 
     [Header("바닥 레이어")]
-    [SerializeField] private LayerMask groundLayer; // 바닥으로 체크할 대상
+    [SerializeField] private LayerMask groundLayer;
 
     [Header("Virtual Camera 할당")]
-    [SerializeField] private Transform cameraTransform; // 현재 보이는 뷰를 기준으로 이동 처리
+    [SerializeField] private Transform cameraTransform;
 
     [Header("캐릭터 하위 빈오브젝트 Transform")]
-    [SerializeField] private Transform ankleTransform; // 캐릭터 하위 빈오브젝트 위치를 기준으로 바닥 접촉 여부 확인
+    [SerializeField] private Transform ankleTransform;
+
+    [Header("씬 목록 (리스트에 씬이름 추가시 추가된 씬에서 이동 애니메이션 변경)")]
+    [SerializeField] private List<string> specialScenes = new List<string>();
+
+    [Header("Die 애니메이션 재생 시간 (2초 적정)")]
+    [SerializeField] private float dieAnimationDuration = 2f;
+
+    [Header("콤보 타이머 (1초 적정)")]
+    [SerializeField] private float comboResetTime = 1.0f; // 콤보를 초기화할 시간
 
     private Rigidbody rb;
     private Animator animator;
@@ -32,13 +44,24 @@ public class PlayerMove : MonoBehaviour
     private enum State
     {
         Idle,
-        Moving
+        Moving,
+        Attack1,
+        Attack2,
+        Attack3,
+        Die
     }
 
     private State currentState = State.Idle;
 
     // 현재 속도
     private float currentSpeed;
+
+    // 사망 여부
+    private bool isDead = false;
+
+    // 콤보 변수
+    private int attackCombo = 0; // 현재 콤보 수
+    private float lastAttackTime = 0f; // 마지막 공격 입력 시간
 
     private void Awake()
     {
@@ -68,11 +91,31 @@ public class PlayerMove : MonoBehaviour
             {
                 Debug.LogError("Main Camera가 존재하지 않습니다.");
                 enabled = false;
+                return;
             }
         }
 
         // Animator 설정 확인
         animator.applyRootMotion = false;
+
+        // 현재 씬이 특별한 씬인지 확인하고 Animator 파라미터 설정
+        bool isScene = IsCurrentSceneSpecial();
+        animator.SetBool("Scene", isScene);
+
+        // 씬 변경 시 Scene 파라미터 업데이트
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        // 이벤트 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        bool isScene = IsCurrentSceneSpecial();
+        animator.SetBool("Scene", isScene);
     }
 
     private void Update()
@@ -80,14 +123,27 @@ public class PlayerMove : MonoBehaviour
 #if UNITY_EDITOR
         LogDebugInfo();
 #endif
-        HandleInput();    // 입력 처리 먼저
-        HandleState();    // 그 후 상태 처리
+        if (!isDead) // Die 상태일 때는 입력 처리 및 상태 변경을 막음
+        {
+            HandleInput(); // 입력 처리
+            HandleState(); // 상태 처리
+        }
     }
 
     private void FixedUpdate()
     {
         CheckGrounded();   // 바닥 판정
         HandlePhysics();   // 상태별 물리 처리
+    }
+
+    /// <summary>
+    /// 현재 씬이 specialScenes에 포함된 씬인지 확인하는 함수
+    /// </summary>
+    /// <returns>specialScenes에 포함되면 true, 아니면 false</returns>
+    private bool IsCurrentSceneSpecial()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        return specialScenes.Contains(currentSceneName);
     }
 
     /// <summary>
@@ -139,28 +195,48 @@ public class PlayerMove : MonoBehaviour
             }
         }
 
-        // Speed 파라미터 정규화 (0 ~ 1 사이) -> 이동속도 변경에 따른 별도의 Conditions 값 처리 필요 없음
-        // 그냥 이동속도만 바꾸면 정상 작동
+        // Speed 파라미터 정규화 (0 ~ 1 사이)
         float normalizedSpeed = (movementInput.magnitude * currentSpeed) / moveSpeed;
         animator.SetFloat("Speed", normalizedSpeed);
+
+        // 공격 입력 처리
+        if (Input.GetMouseButtonDown(0) && !isDead)
+        {
+            HandleAttackInput();
+        }
+
+        // 콤보 리셋 타이머 처리
+        if (Time.time - lastAttackTime > comboResetTime)
+        {
+            attackCombo = 0;
+        }
     }
 
     /// <summary>
-    /// 카메라 기준으로 이동 방향 계산
+    /// 공격 입력 처리 및 콤보 로직 관리
     /// </summary>
-    private Vector3 CalculateMovementDirection(float inputX, float inputZ)
+    private void HandleAttackInput() // 공격 애니메이션 클립이 루프되지 않도록 설정 
     {
-        Vector3 camForward = cameraTransform.forward;
-        Vector3 camRight = cameraTransform.right;
+        lastAttackTime = Time.time;
+        attackCombo++;
 
-        camForward.y = 0f;
-        camRight.y = 0f;
-        camForward.Normalize();
-        camRight.Normalize();
+        if (attackCombo > 3)
+        {
+            attackCombo = 1; // 콤보가 3을 초과하면 초기화
+        }
 
-        // (Z축: 전후, X축: 좌우)
-        Vector3 direction = (camForward * inputZ + camRight * inputX).normalized;
-        return direction;
+        switch (attackCombo)
+        {
+            case 1:
+                TransitionToState(State.Attack1);
+                break;
+            case 2:
+                TransitionToState(State.Attack2);
+                break;
+            case 3:
+                TransitionToState(State.Attack3);
+                break;
+        }
     }
 
     /// <summary>
@@ -172,7 +248,11 @@ public class PlayerMove : MonoBehaviour
         {
             case State.Idle:
             case State.Moving:
-                // 별도 로직 없음
+                break;
+            case State.Attack1:
+            case State.Attack2:
+            case State.Attack3:
+                // 공격 중 추가 로직이 필요하면 여기에 작성
                 break;
         }
     }
@@ -194,6 +274,20 @@ public class PlayerMove : MonoBehaviour
 
             case State.Moving:
                 MovePlayer();
+                break;
+
+            case State.Attack1:
+            case State.Attack2:
+            case State.Attack3:
+                // 공격 중에는 플레이어 이동을 멈춤
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+                break;
+
+            case State.Die:
+                // 사망 상태에서는 이동을 멈추고 속도를 0으로 설정
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
                 break;
         }
     }
@@ -221,6 +315,8 @@ public class PlayerMove : MonoBehaviour
     {
         if (currentState == newState) return;
 
+        if (isDead && newState != State.Die) return; // 사망 상태에서는 Die 상태 외 전환 불가
+
         ExitCurrentState();
         currentState = newState;
 
@@ -232,6 +328,18 @@ public class PlayerMove : MonoBehaviour
             case State.Moving:
                 EnterMovingState();
                 break;
+            case State.Attack1:
+                EnterAttackState(1);
+                break;
+            case State.Attack2:
+                EnterAttackState(2);
+                break;
+            case State.Attack3:
+                EnterAttackState(3);
+                break;
+            case State.Die:
+                EnterDieState();
+                break;
         }
     }
 
@@ -240,16 +348,16 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     private void ExitCurrentState()
     {
-
+        // 현재 상태에서 종료 시 필요한 로직이 있으면 여기에 작성
     }
 
-    // Idle
+    // Idle 상태
     private void EnterIdleState()
     {
         animator.SetFloat("Speed", 0f);
     }
 
-    // Moving
+    // Moving 상태
     private void EnterMovingState()
     {
         float speed = movementInput.magnitude * currentSpeed;
@@ -257,31 +365,119 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
+    /// 공격 상태 진입 처리
+    /// </summary>
+    /// <param name="attackNumber">공격 번호 (1, 2, 3)</param>
+    private void EnterAttackState(int attackNumber)
+    {
+        // 공격 중 이동 멈춤
+        rb.velocity = Vector3.zero;
+
+        // 적절한 공격 애니메이션 트리거
+        switch (attackNumber)
+        {
+            case 1:
+                animator.SetTrigger("Attack1");
+                break;
+            case 2:
+                animator.SetTrigger("Attack2");
+                break;
+            case 3:
+                animator.SetTrigger("Attack3");
+                break;
+        }
+
+        // 애니메이션 종료 시 상태 전환을 위해 Animation Event 사용
+    }
+
+    // Die 상태
+    private void EnterDieState()
+    {
+        isDead = true;
+        animator.SetTrigger("Die"); // Animator에서 'Die' 트리거 설정
+
+        // Die 상태에서 Invoke를 이용해 dieAnimationDuration 시간 만큼 애니메이션 재생 후 DisablePlayer 메서드 호출
+        Invoke("DisablePlayer", dieAnimationDuration); // 지정한 시간 후에 DisablePlayer 호출
+    }
+
+    /// <summary>
+    /// 플레이어 오브젝트 비활성화
+    /// </summary>
+    private void DisablePlayer()
+    {
+        gameObject.SetActive(false); // 플레이어 비활성화
+    }
+
+    /// <summary>
+    /// 플레이어 사망 처리 메서드
+    /// </summary>
+    public void Die() // 플레이어가 Die할 때 호출되어 Die 상태로 전환
+    {
+        if (!isDead) // 플레이어가 Die인지 여부 체크
+        {
+            TransitionToState(State.Die);
+        }
+    }
+
+    /// <summary>
     /// Gizmos 시각화, 추후 사망, 공격 모션 구현할때 유의미 할 것으로 보임
     /// </summary>
-    private void OnDrawGizmosSelected()
-    {
-        if (ankleTransform == null)
-            return;
+    //private void OnDrawGizmosSelected()
+    //{
+    //    if (ankleTransform == null)
+    //        return;
 
-        // 플레이어의 바닥 접촉 여부를 판단하는 OverlapSphere 시각화
-        Gizmos.color = isGrounded ? Color.green : Color.red;
-        Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // 약간 아래 위치
-        float sphereRadius = groundCheckRadius;
-        Gizmos.DrawWireSphere(sphereOrigin, sphereRadius);
+    //    // 플레이어의 바닥 접촉 여부를 판단하는 OverlapSphere 시각화
+    //    Gizmos.color = isGrounded ? Color.green : Color.red;
+    //    Vector3 sphereOrigin = ankleTransform.position + Vector3.down * 0.05f; // 약간 아래 위치
+    //    float sphereRadius = groundCheckRadius;
+    //    Gizmos.DrawWireSphere(sphereOrigin, sphereRadius);
 
-        // 현재 플레이어 위치 시각화 (플레이어 아래 위치에 있는 빨간공)
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 0.02f);
-    }
+    //    // 현재 플레이어 위치 시각화 (플레이어 아래 위치에 있는 빨간공)
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawSphere(transform.position, 0.02f);
+    //}
 
 #if UNITY_EDITOR
     /// <summary>
-    /// 현재 상태 정보 디버그
+    /// 현재 핵심 정보 디버그
     /// </summary>
     private void LogDebugInfo()
     {
-        Debug.Log($"State: {currentState}, Movement: {movementInput}, Grounded: {isGrounded}, Velocity: {rb.velocity}");
+        Debug.Log($"Scene: {animator.GetBool("Scene")}, State: {currentState}, Combo: {attackCombo}");
     }
 #endif
+
+    /// <summary>
+    /// 애니메이션 종료 후 상태 전환 처리
+    /// </summary>
+    public void OnAttackAnimationEnd()
+    {
+        if (movementInput.sqrMagnitude > moveThreshold)
+        {
+            TransitionToState(State.Moving);
+        }
+        else
+        {
+            TransitionToState(State.Idle);
+        }
+    }
+
+    /// <summary>
+    /// 카메라 기준으로 이동 방향 계산
+    /// </summary>
+    private Vector3 CalculateMovementDirection(float inputX, float inputZ)
+    {
+        Vector3 camForward = cameraTransform.forward;
+        Vector3 camRight = cameraTransform.right;
+
+        camForward.y = 0f;
+        camRight.y = 0f;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        // (Z축: 전후, X축: 좌우)
+        Vector3 direction = (camForward * inputZ + camRight * inputX).normalized;
+        return direction;
+    }
 }
