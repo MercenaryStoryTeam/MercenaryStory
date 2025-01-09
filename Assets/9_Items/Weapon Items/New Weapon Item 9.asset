@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23bef77b82bc2db42982d329f7ec5352, type: 3}
+  m_Name: New Weapon Item 9
+  m_EditorClassIdentifier: 
+  id: 32004
+  name: "\uC774\uC815\uD45C"
+  description: "\uADE0\uD615 \uC7A1\uD78C \uBAA8\uC591\uC0C8\uB97C \uAC00\uC9C4 \uC591\uC190\uAC80.\n\uC0AC\uC6A9\uC790\uAC00
+    \uD754\uB4E4\uB9AC\uC9C0 \uC54A\uAC8C\n\uBBFF\uC74C\uACFC \uC548\uC815\uAC10\uC744
+    \uC81C\uACF5\uD55C\uB2E4."
+  dropPercent: 0
+  isSellable: 1
+  image: {fileID: 21300000, guid: 29bde09c3c3db2040bf9af9bd30bd898, type: 3}
+  prefab:
+  - {fileID: 5730931172267903750, guid: ea5a37be48f3fdf47b9fab8632999015, type: 3}
+  currentItemCount: 0
+  itemClass: 1
+  Rank: 5
+  Damage: 10
+  sellPrice: 10
