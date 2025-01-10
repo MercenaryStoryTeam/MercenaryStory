@@ -109,7 +109,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		else
 		{
-			print("서버 접속 패널 오픈");
+			PanelManager.Instance.PanelOpen("ServerSelect");
 		}
 	}
 

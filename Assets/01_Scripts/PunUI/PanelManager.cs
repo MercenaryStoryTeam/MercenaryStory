@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PanelManager : MonoBehaviourPunCallbacks
 {
@@ -18,8 +17,9 @@ public class PanelManager : MonoBehaviourPunCallbacks
 	private Dictionary<string, GameObject> panels;
 	public SignUpPanel signUpPanel;
 	public SignInPanel signInPanel;
-	[FormerlySerializedAs("popUpPanel")] public PopUp popUp;
+	public PopUp popUp;
 	public CharacterSelectPanel characterSelectPanel;
+	public ServerSelectPanel serverSelectPanel;
 
 	private void Awake()
 	{
@@ -37,7 +37,8 @@ public class PanelManager : MonoBehaviourPunCallbacks
 		{
 			{ "SignUp", signUpPanel.gameObject },
 			{ "SignIn", signInPanel.gameObject },
-			{ "CharacterSelect", characterSelectPanel.gameObject }
+			{ "CharacterSelect", characterSelectPanel.gameObject },
+			{ "ServerSelect", serverSelectPanel.gameObject }
 		};
 
 		PanelOpen("SignIn");
