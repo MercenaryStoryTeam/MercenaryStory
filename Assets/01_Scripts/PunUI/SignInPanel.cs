@@ -24,8 +24,6 @@ public class SignInPanel : MonoBehaviour
 
 	private void SignInButtonClick()
 	{
-		// connect end
-		PanelManager.Instance.popUpPanel.DialogOpen("로그인 중입니다.",
-			() => FirebaseManager.Instance.SignIn(emailInput.text, pwInput.text));
+		FirebaseManager.Instance.SignIn(emailInput.text, pwInput.text);
 	}
 }

@@ -55,7 +55,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
 
-			PanelManager.Instance.popUpPanel.DialogOpen("회원가입이 완료되었습니다.", () => PanelManager.Instance.PanelOpen("SignIn"));
+			PanelManager.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () => PanelManager.Instance.PanelOpen("SignIn"));
 		}
 		catch (FirebaseException e)
 		{
@@ -74,21 +74,22 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			{
 				if (userData.user_Email == email)
 				{
-					PanelManager.Instance.popUpPanel.DialogOpen("이미 사용중인 email입니다.",
-						() => PanelManager.Instance.popUpPanel.DialogClose());
+					PanelManager.Instance.popUp.PopUpOpen("이미 사용중인 email입니다.",
+						() => PanelManager.Instance.popUp.PopUpClose());
 					state = State.EmailNotChecked;
 					return;
 				}
 			}
 		}
 
-		PanelManager.Instance.popUpPanel.DialogOpen("사용 가능한 email입니다.",
-			() => PanelManager.Instance.popUpPanel.DialogClose());
+		PanelManager.Instance.popUp.PopUpOpen("사용 가능한 email입니다.",
+			() => PanelManager.Instance.popUp.PopUpClose());
 		state = State.EmailChecked;
 	}
 
 	public async void SignIn(string email, string password)
 	{
+		PanelManager.Instance.popUp.WaitPopUpOpen("로그인 중입니다.");
 		var result = await Auth.SignInWithEmailAndPasswordAsync(email, password);
 		usersRef = DB.GetReference($"users/{result.User.UserId}");
 		DataSnapshot userDataValues = await usersRef.GetValueAsync();
@@ -97,13 +98,11 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		{
 			string json = userDataValues.GetRawJsonValue();
 			userData = JsonConvert.DeserializeObject<UserData>(json);
-			print($"userData: {userData}");
-			print($"userData.user_Id1: {userData.user_Id}");
 		}
 
-		print($"userData.user_Id2: {userData.user_Id}");
 		CurrentUserData = userData;
 
+		PanelManager.Instance.popUp.PopUpClose();
 		if (CurrentUserData.user_Appearance == 0)
 		{
 			PanelManager.Instance.PanelOpen("CharacterSelect");

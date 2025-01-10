@@ -4,11 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopUpPanel : MonoBehaviour
+public class PopUp : MonoBehaviour
 {
 	public Text dialogText;
 	private Action callback;
 	public Button closeButton;
+
+	private void Start()
+	{
+		gameObject.SetActive(false);
+	}
 
 	private void Awake()
 	{
@@ -24,19 +29,28 @@ public class PopUpPanel : MonoBehaviour
 		}
 	}
 
-	public void CloseButtonClick()
+	private void CloseButtonClick()
 	{
 		callback?.Invoke();
 	}
 
-	public void DialogOpen(string dialog, Action callback)
+	public void PopUpOpen(string dialog, Action callback = null)
 	{
 		gameObject.SetActive(true);
+		closeButton.gameObject.SetActive(true);
 		this.dialogText.text = dialog;
 		this.callback = callback;
 	}
 
-	public void DialogClose()
+	public void WaitPopUpOpen(string dialog, Action callback = null)
+	{
+		gameObject.SetActive(true);
+		closeButton.gameObject.SetActive(false);
+		this.dialogText.text = dialog;
+		this.callback = callback;
+	}
+
+	public void PopUpClose()
 	{
 		gameObject.SetActive(false);
 	}
