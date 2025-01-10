@@ -10,6 +10,7 @@ public class TestSY : MonoBehaviour
     private int currentOption;
     private Inventory inventory;
     public bool isEquipped = false;
+    public float myGold = 0;
     
     private void Awake()
     {
