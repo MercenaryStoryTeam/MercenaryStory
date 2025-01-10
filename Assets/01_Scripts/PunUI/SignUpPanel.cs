@@ -36,7 +36,7 @@ public class SignUpPanel : MonoBehaviour
 	{
 		if (FirebaseManager.Instance.state == FirebaseManager.State.EmailNotChecked)
 		{
-			ShowDialog("Email 중복 체크가 완료되지 않았습니다.");
+			ShowDialog("Email 중복 체크가 \n완료되지 않았습니다.");
 			return false;
 		}
 		else if (pwInput1.text != pwInput2.text)
@@ -46,12 +46,12 @@ public class SignUpPanel : MonoBehaviour
 		}
 		else if (pwInput1.text.Length < 8 || pwInput1.text.Length > 12)
 		{
-			ShowDialog("비밀번호는 8글자 이상 12글자 이하로 설정해야 합니다.");
+			ShowDialog("비밀번호는 8글자 이상 \n12글자 이하로 설정해야 합니다.");
 			return false;
 		}
 		else if (!IsValidPassword(pwInput1.text))
 		{
-			ShowDialog("비밀번호는 문자, 숫자, 특수문자 등 2가지 이상의 종류를 사용해야 합니다.");
+			ShowDialog("비밀번호는 문자, 숫자, 특수문자\n 등 2가지 이상의 종류를 \n사용해야 합니다.");
 			return false;
 		}
 
