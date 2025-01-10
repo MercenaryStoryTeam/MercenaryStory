@@ -5,14 +5,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler
+public class InventorySlot : MonoBehaviour
 {
     public ItemBase item;
     public Image itemImage;
     public Button itemButton;
     public Text itemCountText;
     
-    private float clikcTime = 0;
+    private int slotCount = 0;
+
     private void Awake()
     {
         itemButton.onClick.AddListener(itemButtonClick);
@@ -31,7 +32,30 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
 
     public void AddItem(ItemBase newItem)
     {
-        item = newItem;
+        if (item == null)
+        {
+            item = newItem;
+        }
+        else if(item == newItem && newItem.currentItemCount < 10 && newItem.itemClass == 2)
+        {
+            slotCount++;
+            itemCountText.text = newItem.currentItemCount.ToString();
+        }
+        else if (item == newItem && newItem.currentItemCount >= 10 && newItem.itemClass == 2)
+        {
+            item = newItem;
+        }
+    }
+
+    public void RemoveItem()
+    {
+        slotCount = 0;
+        item.currentItemCount = 0;
+        if (item.currentItemCount <= 0)
+        {
+            item = null;
+            itemCountText.text = item.currentItemCount.ToString();
+        }
     }
 
     public void UpdateUI()
@@ -54,15 +78,6 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
         }
     }
     
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (Time.time - clikcTime < 0.3f)
-        {
-            clikcTime = -1;
-        }
-        else
-        {
-            clikcTime = Time.time;
-        }
-    }
+    
+
 }
