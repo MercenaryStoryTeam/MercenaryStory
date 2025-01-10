@@ -82,6 +82,14 @@ public abstract class Monster : MonoBehaviour
             ChangeState(MonsterStateType.Patrol);
         }
     }
+    
+    public void GetHitAnimationEnd()
+    {
+        if (currentState == MonsterStateType.GetHit)
+        {
+            ChangeState(MonsterStateType.Patrol);
+        }
+    }
 
     public void TakeDamage(int damage)
     {
