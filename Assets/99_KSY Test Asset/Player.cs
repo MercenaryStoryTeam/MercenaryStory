@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("플레이어 공격력")]
-    public float damage = 10f;
+    //[Header("플레이어 공격력")]
+    //public float damage = 10f;
 
     [Header("플레이어 현재 체력")]
     public float currentHp;
@@ -14,11 +14,11 @@ public class Player : MonoBehaviour
     [Header("플레이어 흡혈 비율")]
     public float suckBlood = 0.03f;
 
-    private PlayerMove playerMove;
-
     // 몬스터 레이어 설정 -> 인스펙터에서 직접 설정해야 됨 -> 비트 연산자를 이용해야 여기서 설정한 레이어를 출력 가능, 번거롭다.
-    [Header("적 레이어")]
-    public LayerMask Monster;
+    //[Header("적 레이어")]
+    //public LayerMask Monster;
+
+    private PlayerMove playerMove;
 
     private void Start()
     {
@@ -37,28 +37,28 @@ public class Player : MonoBehaviour
     }
 
     // 객체간 충돌에 따른 데미지 처리 
-    private void OnCollisionEnter(Collision collision)
-    {
-        // 충돌한 객체의 레이어가 몬스터라면 실행
-        if ((Monster.value & (1 << collision.gameObject.layer)) != 0)
-        {
-            // 몬스터 스크립트를 불러와서 변수에 할당
-            // 불러오는 이유는 몬스터 스크립트에 데미지를 전달 -> 추후 몬스터 스크립트 이름만 바꾸면 된다.
-            // MonsterTest 이것은 참조형 데이터 타입을 나타낸다.
-            // 주된 목적: 객체 간의 데이터 공유
-            MonsterTest monster = collision.gameObject.GetComponent<MonsterTest>();
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    // 충돌한 객체의 레이어가 몬스터라면 실행
+    //    if ((Monster.value & (1 << collision.gameObject.layer)) != 0)
+    //    {
+    //        // 몬스터 스크립트를 불러와서 변수에 할당
+    //        // 불러오는 이유는 몬스터 스크립트에 데미지를 전달 -> 추후 몬스터 스크립트 이름만 바꾸면 된다.
+    //        // MonsterTest 이것은 참조형 데이터 타입을 나타낸다.
+    //        // 주된 목적: 객체 간의 데이터 공유
+    //        MonsterTest monster = collision.gameObject.GetComponent<MonsterTest>();
 
-            // 충돌한 객체에 몬스터 스크립트가 있다면 실행
-            if (monster != null)
-            {
-                // 몬스터에게 데미지 적용
-                monster.TakeDamage(damage); 
+    //        // 충돌한 객체에 몬스터 스크립트가 있다면 실행
+    //        if (monster != null)
+    //        {
+    //            // 몬스터에게 데미지 적용
+    //            monster.TakeDamage(damage); 
 
-                // 데미지를 준 후 플레이어 체력 회복 (최대 체력의 3%)
-                SuckBlood(suckBlood);
-            }
-        }
-    }
+    //            // 데미지를 준 후 플레이어 체력 회복 (최대 체력의 3%)
+    //            SuckBlood(suckBlood);
+    //        }
+    //    }
+    //}
 
     // 흡혈 
     public void SuckBlood(float suckBlood)
