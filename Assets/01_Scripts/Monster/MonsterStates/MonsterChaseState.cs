@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterChaseState : MonsterState
 {
     public override void EnterState(Monster monster)
     {
-        monster.Animator.SetBool("IsWalking", true);
+        monster.Agent.isStopped = false;
+        monster.Animator.SetBool("IsMoving", true);
     }
 
     public override void ExecuteState(Monster monster)
@@ -21,7 +20,8 @@ public class MonsterChaseState : MonsterState
 
     public override void ExitState(Monster monster)
     {
-        monster.Animator.SetBool("IsWalking", false);
+        monster.Agent.isStopped = true;
+        monster.Animator.SetBool("IsMoving", false);
         monster.Agent.SetDestination(monster.transform.position);
     }
     
