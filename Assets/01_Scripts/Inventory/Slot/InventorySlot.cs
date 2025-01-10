@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -58,6 +59,10 @@ public class InventorySlot : MonoBehaviour
         }
     }
 
+    public bool IsFull()
+    {
+        return slotCount >= 10;
+    }
     public void UpdateUI()
     {
         if (item != null)
