@@ -1,44 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class MonsterStateMachine
-{
-    private MonsterState exState;
-    private MonsterState currentState;
-    private readonly Monster owner;
-
-    public MonsterState ExState => exState;
-    public MonsterState CurrentState => currentState;
-
-    public MonsterStateMachine(Monster owner)
-    {
-        this.owner = owner;
-    }
-
-    public void ChangeState(MonsterStateType stateType)
-    {
-        exState = currentState;
-        currentState?.ExitState(owner);
-        currentState = CreateState(stateType);
-        currentState?.EnterState(owner);
-    }
-
-    private MonsterState CreateState(MonsterStateType stateType)
-    {
-        return stateType switch
-        {
-            MonsterStateType.Patrol => new MonsterPatrolState(),
-            MonsterStateType.Chase => new MonsterChaseState(),
-            MonsterStateType.Attack => new MonsterAttackState(),
-            MonsterStateType.Return => new MonsterReturnState(),
-            MonsterStateType.Die => new MonsterDieState(),
-            MonsterStateType.GetHit => new MonsterDieState(),
-            _ => throw new ArgumentException($"Invalid state type: {stateType}")
-        };
-    }
-}
 
 public enum MonsterStateType
 {
@@ -48,4 +10,55 @@ public enum MonsterStateType
     Return,
     Die,
     GetHit
+}
+
+public class MonsterStateMachine
+{
+    private MonsterStateType exStateType;
+    private MonsterState currentState;
+    public MonsterStateType currentStateType;
+    private readonly Monster owner;
+    private readonly Dictionary<MonsterStateType, MonsterState> stateInstances;
+
+    public MonsterState CurrentState => currentState;
+
+    public MonsterStateMachine(Monster owner)
+    {
+        this.owner = owner;
+        stateInstances = new Dictionary<MonsterStateType, MonsterState>
+        {
+            { MonsterStateType.Patrol, new MonsterPatrolState() },
+            { MonsterStateType.Chase, new MonsterChaseState() },
+            { MonsterStateType.Attack, new MonsterAttackState() },
+            { MonsterStateType.Return, new MonsterReturnState() },
+            { MonsterStateType.Die, new MonsterDieState() },
+            { MonsterStateType.GetHit, new MonsterDieState() }
+        };
+    }
+
+    public void ChangeState(MonsterStateType stateType)
+    {
+        exStateType = currentStateType;
+        currentState?.ExitState(owner);
+        currentState = CreateState(stateType);
+        currentState?.EnterState(owner);
+        currentStateType = stateType;
+    }
+    
+    public void RevertToExState()
+    {
+        if (exStateType != currentStateType)
+        {
+            ChangeState(exStateType);
+        }
+    }
+
+    private MonsterState CreateState(MonsterStateType stateType)
+    {
+        if (stateInstances.TryGetValue(stateType, out var state))
+        {
+            return state;
+        }
+        throw new ArgumentException($"Invalid state type: {stateType}");
+    }
 }
