@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterStaggerState : MonsterState
+public class MonsterGetHitState : MonsterState
 {
     public override void EnterState(Monster entity)
     {

@@ -7,8 +7,9 @@ public class MonsterPatrolState : MonsterState
 
     public override void EnterState(Monster monster)
     {
+        monster.Animator.SetBool("IsWalking", true);
         monster.Agent.speed = monster.MoveSpeed;
-        monster.Agent.stoppingDistance = 0.5f;
+        monster.Agent.stoppingDistance = 0.1f;
         SetNewPatrolPoint(monster);
     }
 
@@ -29,6 +30,7 @@ public class MonsterPatrolState : MonsterState
     
     public override void ExitState(Monster monster)
     {
+        monster.Animator.SetBool("IsWalking", false);
     }
 
     private void SetNewPatrolPoint(Monster monster)
@@ -47,15 +49,12 @@ public class MonsterPatrolState : MonsterState
 
     private bool DetectPlayer(Monster monster)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(
-            monster.transform.position, 
-            monster.DetectionRange, 
-            monster.PlayerLayer
-        );
+        Collider[] playerColliders = Physics.OverlapSphere
+            (monster.transform.position, monster.DetectionRange, monster.PlayerLayer);
 
-        if (hitColliders.Length > 0)
+        if (playerColliders.Length > 0)
         {
-            monster.PlayerTransform = hitColliders[0].transform;
+            monster.PlayerTransform = playerColliders[0].transform;
             return true;
         }
     
