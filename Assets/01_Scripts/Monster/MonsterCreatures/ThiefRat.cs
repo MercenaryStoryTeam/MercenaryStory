@@ -21,7 +21,7 @@ public class ThiefRat : Monster
     [Header("범위")]
     public float _detectionRange = 3;
     public float _attackRange = 2;
-    public float _returnRange = 7;
+    public float _returnRange = 10;
     
     public void Awake()
     {
