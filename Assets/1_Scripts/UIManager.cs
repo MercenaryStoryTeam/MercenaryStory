@@ -10,6 +10,7 @@ public class UIManager : SingletonManager<UIManager>
     public ShopPanel shop;
     public EquipmentPanel equipment;
     [HideInInspector]public bool isInventoryActive = false;
+    [HideInInspector]public bool isItemInfoActive = false;
     [HideInInspector]public bool isShopActive = false;
 
     protected override void Awake()
@@ -57,11 +58,13 @@ public class UIManager : SingletonManager<UIManager>
 
     public void OpenItemInfoPanel()
     {
+        isItemInfoActive = true;
         itemInfo.itemInfoPanel.SetActive(true);
     }
 
     public void CloseItemInfoPanel()
     {
+        isItemInfoActive = false;
         itemInfo.itemInfoPanel.SetActive(false);
     }
     

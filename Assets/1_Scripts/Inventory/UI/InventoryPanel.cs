@@ -7,15 +7,24 @@ using UnityEngine.UI;
 
 public class InventoryPanel : MonoBehaviour
 {
-    
+    public CanvasGroup invenCanvasGroup;
     public GameObject panel;
     
     public Button invenCloseButton;
-    
+    public Text currentGoldText;
+
+    private TestSY _testsy;
     private void Awake()
     {
+        _testsy = FindObjectOfType<TestSY>();
         panel.SetActive(false);
         ButtonOnClick();
+    }
+
+    private void Update()
+    {
+        InteractableController();
+        SetCurrentGold();
     }
 
     private void ButtonOnClick()
@@ -25,8 +34,7 @@ public class InventoryPanel : MonoBehaviour
     
     private void InvenCloseButtonClick()
     {
-        panel.SetActive(false);
-        UIManager.Instance.isInventoryActive = false;
+        UIManager.Instance.CloseInventoryPanel();
     }
 
     public void TryOpenInventory()
@@ -42,5 +50,24 @@ public class InventoryPanel : MonoBehaviour
                 UIManager.Instance.CloseInventoryPanel();
             }
         }
+    }
+
+    private void InteractableController()
+    {
+        if (UIManager.Instance.itemInfo.itemInfoPanel.activeSelf)
+        {
+            invenCanvasGroup.alpha = 0.5f;
+            invenCanvasGroup.interactable = false;
+        }
+        else if (!UIManager.Instance.itemInfo.itemInfoPanel.activeSelf)
+        {
+            invenCanvasGroup.alpha = 1;
+            invenCanvasGroup.interactable = true;
+        }
+    }
+
+    private void SetCurrentGold()
+    {
+        currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
     }
 }

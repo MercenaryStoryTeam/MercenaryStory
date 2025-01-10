@@ -65,5 +65,4 @@ public class ItemInfoPanel : MonoBehaviour
         
         UIManager.Instance.CloseItemInfoPanel();
     }
-
 }

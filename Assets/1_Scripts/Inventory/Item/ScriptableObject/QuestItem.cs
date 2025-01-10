@@ -13,4 +13,5 @@ public class QuestItem : ItemBase
         isStackable = false;
         itemClass = 3;
     }
+    
 }

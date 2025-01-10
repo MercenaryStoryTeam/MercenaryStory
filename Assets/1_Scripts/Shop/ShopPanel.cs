@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,18 @@ public class ShopPanel : MonoBehaviour
 
     public Button sellButton;
     public Button closeButton;
-
+    
+    private TestSY _testsy;
     private void Awake()
     {
+        _testsy = FindObjectOfType<TestSY>();
         shopPanel.SetActive(false);
         ShopButtonClicked();
+    }
+
+    private void Update()
+    {
+        SetGold();
     }
 
     private void ShopButtonClicked()
@@ -40,7 +48,7 @@ public class ShopPanel : MonoBehaviour
     
     public void TryOpenShop()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O)) // 테스트용 키 설정
         {
             if (!UIManager.Instance.isShopActive)
             {
@@ -51,5 +59,11 @@ public class ShopPanel : MonoBehaviour
                 UIManager.Instance.CloseShopPanel();
             }
         }
+    }
+
+    private void SetGold()
+    {
+        currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
+        //판매용 골드 로직 추가
     }
 }

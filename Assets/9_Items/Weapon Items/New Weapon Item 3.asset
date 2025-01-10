@@ -19,6 +19,8 @@ MonoBehaviour:
     \uC0DD\uACA8\uB09C\uB2E4."
   dropPercent: 0
   isSellable: 1
+  isStackable: 0
+  isHave: 1
   image: {fileID: 21300000, guid: c434c01d3ac2fd84eb7b8da6039b81e4, type: 3}
   prefab:
   - {fileID: 5730931172267903750, guid: ea5a37be48f3fdf47b9fab8632999015, type: 3}
@@ -28,3 +30,4 @@ MonoBehaviour:
   Rank: 4
   Damage: 7
   sellPrice: 7
+  isInstall: 0
