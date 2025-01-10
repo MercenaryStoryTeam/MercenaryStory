@@ -5,22 +5,64 @@ public class Weapon : MonoBehaviour
     [Header("무기 공격력")]
     public float damage = 10f;
 
-    [Header("적 레이어")]
-    public LayerMask Monster; // 인스펙터에서 몬스터 레이어를 설정
+    [Header("몬스터 레이어")]
+    public LayerMask Monster;
 
-    // OnCollisionEnter 제거 또는 주석 처리
-    /*
-    private void OnCollisionEnter(Collision collision) // 두 오브젝트가 충돌할 때 메서드 호출
+    // Player 스크립트 참조
+    private Player player;
+
+    private void Start()
     {
-        // 충돌한 오브젝트가 적 레이어에 속하는지 확인
-        if ((Monster.value & (1 << collision.gameObject.layer)) != 0)
+        // 방법1: 부모 객체에 붙어있는 Player 스크립트 참조
+        player = GetComponentInParent<Player>();
+
+        // 방법1 실패
+        if (player == null)
         {
-            MonsterTest monster = collision.gameObject.GetComponent<MonsterTest>();
-            if (monster != null)
+            // 방법2: 태그를 이용해 Player 스크립트 참조
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            if (playerObject != null)
             {
-                monster.TakeDamage(damage); // 몬스터에게 데미지 적용
+                player = playerObject.GetComponent<Player>();
+            }
+
+            if (player == null)
+            {
+                Debug.LogError("Player 참조x -> 부모 객체 확인 및 태크 확인");
             }
         }
     }
-    */
+
+    // 콜라이더 충돌 시 호출
+    private void OnTriggerEnter(Collider collider)
+    {
+        // 충돌한 객체의 레이어가 몬스터라면 실행
+        if (((1 << collider.gameObject.layer) & Monster.value) != 0)
+        {
+            // 충돌한 객체에서 MonsterTest 스크립트 참조
+            MonsterTest monsterTest = collider.gameObject.GetComponent<MonsterTest>();
+            if (monsterTest != null)
+            {
+                // 몬스터에게 데미지 적용
+                monsterTest.TakeDamage(damage);
+
+                // 플레이어가 스크립트가 있다면 흡혈 처리
+                if (player != null)
+                {
+                    // Player 스크립트의 SuckBlood 메서드 호출
+                    player.SuckBlood();
+                }
+                else
+                {
+                    Debug.LogWarning("Player 참조x -> Player 스크립트의 SuckBlood 메서드 호출 불가");
+                }
+            }
+            else
+            {
+                Debug.LogError("MonsterTest 참조x -> 충돌한 객체에 MonsterTest 스크립트가 추가되어 있는지 확인 ");
+            }
+        }
+    }
 }
+
+// 중간 완성
