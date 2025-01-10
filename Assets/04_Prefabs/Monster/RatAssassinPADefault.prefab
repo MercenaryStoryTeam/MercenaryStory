@@ -2261,6 +2261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13837d364d90c7c4580730b710035fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   _hp: 10
   _maxHp: 10
   _damage: 3
@@ -2288,8 +2289,8 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 0
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
