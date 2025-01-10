@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class MonsterTest : MonoBehaviour
 {
@@ -12,26 +12,33 @@ public class MonsterTest : MonoBehaviour
     public float maxHp = 100f;
 
     [Header("플레이어 레이어")]
-    public LayerMask playerLayer; // 플레이어 레이어 설정 -> 인스펙터에서 직접 설정해야 됨.
+    public LayerMask playerLayer;
 
     private void Start()
     {
-        currentHp = maxHp; // 현재 체력을 최대 체력으로 초기화
+        // 현재 체력을 최대 체력으로 초기화
+        currentHp = maxHp; 
     }
 
+    // 객체간 충돌에 따른 데미지 처리
     private void OnCollisionEnter(Collision collision)
     {
-        // 충돌한 오브젝트가 플레이어 레이어에 속하는지 확인
+        // 충돌한 객체의 레이어가 플레이어라면 실행
         if ((playerLayer.value & (1 << collision.gameObject.layer)) != 0)
         {
+            // 플레이어 스크립트를 불러와서 변수에 할당
             Player player = collision.gameObject.GetComponent<Player>();
+
+            // 충돌한 객체에 플레이어 스크립트가 있다면 실행
             if (player != null)
             {
-                player.TakeDamage(damage); // 플레이어에게 데미지 적용
+                // 플레이어에게 데미지 적용
+                player.TakeDamage(damage); 
             }
         }
     }
 
+    // 데미지
     public void TakeDamage(float damage)
     {
         // 현재 체력이 0이라면 더 이상 데미지 처리를 하지 않음
@@ -40,16 +47,23 @@ public class MonsterTest : MonoBehaviour
             return;
         }
 
+        // 데미지 처리
         currentHp -= damage;
-        currentHp = Mathf.Clamp(currentHp, 0, maxHp); // 현재 체력을 0과 maxHp 사이로 제한
-        Debug.Log($"Monster HP: {currentHp}/{maxHp} (Received {damage} damage)");
 
+        // 현재 체력을 0과 maxHp 사이로 제한
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+
+        // 메시지 출력
+        Debug.Log($"Monster HP: {currentHp}/{maxHp} (받은 Damage: {damage})");
+
+        // hp가 0이면 die 메서드 호출
         if (currentHp <= 0)
         {
             Die();
         }
     }
 
+    // 죽음
     private void Die()
     {
         Debug.Log("Monster Die");
