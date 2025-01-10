@@ -6,6 +6,12 @@ using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public enum SlotType
+{
+    Inventory,
+    Shop,
+    ShopSell
+}
 public class InventorySlot : MonoBehaviour
 {
     public ItemBase item;
@@ -13,17 +19,45 @@ public class InventorySlot : MonoBehaviour
     public Button itemButton;
     public Text itemCountText;
     
-    private int slotCount = 0;
+    private int count = 0;
+    private SlotType slotType;
 
     private void Awake()
     {
         itemButton.onClick.AddListener(itemButtonClick);
     }
 
+    private void Start()
+    {
+        SetSlotType();
+    }
+
+    private void SetSlotType()
+    {
+        if (transform.parent.name == "Inventory")
+        {
+            slotType = SlotType.Inventory;
+        }
+        else if (transform.parent.name == "HoldSlot")
+        {
+            slotType = SlotType.Shop;
+        }
+        else if (transform.parent.name == "SellSlot")
+        {
+            slotType = SlotType.ShopSell;
+        }
+    }
     private void itemButtonClick()
     {
-        UIManager.Instance.OpenItemInfoPanel();
-        UIManager.Instance.SetItemInfoScreen(item);
+        if (slotType == SlotType.Inventory)
+        {
+            UIManager.Instance.OpenItemInfoPanel();
+            UIManager.Instance.SetItemInfoScreen(item);
+        }
+        else if (slotType == SlotType.Shop)
+        {
+            
+        }
     }
 
     private void Update()
@@ -36,32 +70,35 @@ public class InventorySlot : MonoBehaviour
         if (item == null)
         {
             item = newItem;
+            count = 1;
         }
-        else if(item == newItem && newItem.currentItemCount < 10 && newItem.itemClass == 2)
+        else if(item == newItem && count < 10 && newItem.itemClass == 2)
         {
-            slotCount++;
-            itemCountText.text = newItem.currentItemCount.ToString();
+            count++;
+            itemCountText.text = count.ToString();
         }
-        else if (item == newItem && newItem.currentItemCount >= 10 && newItem.itemClass == 2)
+
+        else
         {
-            item = newItem;
+            {
+                Debug.Log("인벤토리가 가득차 더이상 아이템을 추가할 수 없습니다");
+                return;
+            }
         }
     }
 
     public void RemoveItem()
     {
-        slotCount = 0;
-        item.currentItemCount = 0;
-        if (item.currentItemCount <= 0)
+        count = 0;
+        if (count <= 0)
         {
             item = null;
-            itemCountText.text = item.currentItemCount.ToString();
         }
     }
 
     public bool IsFull()
     {
-        return slotCount >= 10;
+        return count >= 10;
     }
     public void UpdateUI()
     {
@@ -70,7 +107,7 @@ public class InventorySlot : MonoBehaviour
             itemImage.sprite = item.image;
             itemImage.enabled = true;
             itemCountText.enabled = false;
-            if (item.isStackable == true)
+            if (item.itemClass == 2)
             {
                 itemCountText.text = item.currentItemCount.ToString();
                 itemCountText.enabled = true;
