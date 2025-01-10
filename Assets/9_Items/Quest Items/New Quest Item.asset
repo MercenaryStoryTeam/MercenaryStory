@@ -19,8 +19,10 @@ MonoBehaviour:
     \uBAA8\uB978\uB2E4."
   dropPercent: 0
   isSellable: 0
+  isStackable: 0
+  isHave: 1
   image: {fileID: 21300000, guid: 6d0e63fb2b1c2ca428cdde95e7149f79, type: 3}
   prefab:
   - {fileID: 0}
-  currentItemCount: 3
+  currentItemCount: 0
   itemClass: 3
