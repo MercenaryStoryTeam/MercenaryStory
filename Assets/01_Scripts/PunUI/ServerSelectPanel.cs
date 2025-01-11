@@ -29,7 +29,7 @@ public class ServerSelectPanel : MonoBehaviour
 	{
 		if (serverNum == 0)
 		{
-			PanelManager.Instance.popUp.PopUpOpen("서버를 선택해 주세요.");
+			PanelManager.Instance.popUp.PopUpOpen("서버를 선택해 주세요.", () => PanelManager.Instance.popUp.PopUpClose());
 		}
 		else
 		{

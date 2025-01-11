@@ -55,7 +55,11 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
 
-			PanelManager.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () => PanelManager.Instance.PanelOpen("SignIn"));
+			PanelManager.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () =>
+			{
+				PanelManager.Instance.popUp.PopUpClose();
+				PanelManager.Instance.PanelOpen("SignIn");
+			});
 		}
 		catch (FirebaseException e)
 		{
