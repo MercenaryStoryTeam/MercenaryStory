@@ -5,15 +5,15 @@ using UnityEngine;
 public class SwampBee : Monster
 {
     [Header("몬스터 스텟")]
-    public int _hp = 10;
-    public int _maxHp = 10;
+    public int _hp = 16;
+    public int _maxHp = 16;
     public int _damage = 3;
     public float _moveSpeed = 1;
     public float _rotationSpeed = 1;
     public float _attackSpeed = 1;
     
     [Header("순찰")]
-    public Vector3 _patrolPoint = new Vector3(1, 1, 1);
+    public Vector3 _patrolPoint = new Vector3(3, 1, 3);
     public float _patrolRange = 3;
     
     [Header("범위")]

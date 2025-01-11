@@ -65,13 +65,13 @@ public abstract class Monster : MonoBehaviour
 
     public void ChangeState(MonsterStateType newState)
     {
-        print($"State change : {newState}");
+        print($"{gameObject.name} State change : {newState}");
         stateMachine.ChangeState(newState);
     }
 
     public void RevertToExState()
     {
-        print($"Revert To Ex : {stateMachine.CurrentState}");
+        print($"{gameObject.name} Revert To Ex : {stateMachine.CurrentState}");
         stateMachine.RevertToExState();
     }
     
