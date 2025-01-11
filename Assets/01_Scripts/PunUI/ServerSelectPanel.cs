@@ -33,7 +33,7 @@ public class ServerSelectPanel : MonoBehaviour
 		}
 		else
 		{
-			PlayerManager.ConnectLobby();
+			ServerManager.JoinOrCreatePersistentRoom($"Server{serverNum}Room");
 		}
 	}
 }

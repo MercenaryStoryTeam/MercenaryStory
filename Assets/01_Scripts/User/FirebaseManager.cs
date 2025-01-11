@@ -103,6 +103,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		CurrentUserData = userData;
 
 		PanelManager.Instance.popUp.PopUpClose();
+		ServerManager.ConnectLobby();
 		if (CurrentUserData.user_Appearance == 0)
 		{
 			PanelManager.Instance.PanelOpen("CharacterSelect");
