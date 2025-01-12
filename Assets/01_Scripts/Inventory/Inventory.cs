@@ -13,6 +13,7 @@ public class Inventory : MonoBehaviour
     
     private void Update()
     {
+
     }
 
     //테스트용 드롭 구현
@@ -21,11 +22,12 @@ public class Inventory : MonoBehaviour
         int random = UnityEngine.Random.Range(0, allItems.Count);
         return allItems[random];
     }
+
     public void AddItemToInventory(ItemBase newItem)
     {
         if (newItem.itemClass == 1 || newItem.itemClass == 3)
         {
-            foreach (var slot in slots)
+            foreach (InventorySlot slot in slots)
             {
                 if (slot.item == null)
                 {
@@ -43,7 +45,7 @@ public class Inventory : MonoBehaviour
         
         else if (newItem.itemClass == 2)
         {
-            foreach (var slot in slots)
+            foreach (InventorySlot slot in slots)
             {
                 if (slot.item == newItem)
                 {
@@ -55,7 +57,7 @@ public class Inventory : MonoBehaviour
                 }
             }
 
-            foreach (var slot in slots)
+            foreach (InventorySlot slot in slots)
             {
                 if (slot.item == null)
                 {
@@ -69,14 +71,11 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-
-
-
     }
 
     public void RemoveItemFromInventory(ItemBase item)
     {
-        foreach (var slot in slots)
+        foreach (InventorySlot slot in slots)
         {
             if (slot.item == item)
             {
@@ -95,4 +94,45 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public void DeleteItem(InventorySlot slot)
+    {
+        if (slot != null && slot.item != null)
+        {
+            if (slot.item.itemClass == 2)
+            {
+                slot.item.currentItemCount = 0;
+            }
+            
+            myItems.Remove(slot.item);
+            slot.RemoveItem();
+            
+            SlotArray();
+        }
+    }
+
+    public void SlotArray() // 슬롯 정렬
+    {
+        List<ItemBase> items = new List<ItemBase>();
+
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.item != null)
+            {
+                items.Add(slot.item);
+                slot.RemoveItem();
+            }
+        }
+
+        foreach (ItemBase item in items)
+        {
+            foreach (InventorySlot slot in slots)
+            {
+                if (slot.item == null)
+                {
+                    slot.AddItem(item);
+                    break;
+                }
+            }
+        }
+    }
 }
