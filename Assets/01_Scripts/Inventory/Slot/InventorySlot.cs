@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 public enum SlotType
 {
@@ -24,40 +25,8 @@ public class InventorySlot : MonoBehaviour
 
     private void Awake()
     {
-        itemButton.onClick.AddListener(itemButtonClick);
-    }
-
-    private void Start()
-    {
+        itemButton.onClick.AddListener(OnSlotClick);
         SetSlotType();
-    }
-
-    private void SetSlotType()
-    {
-        if (transform.parent.name == "Inventory")
-        {
-            slotType = SlotType.Inventory;
-        }
-        else if (transform.parent.name == "HoldSlot")
-        {
-            slotType = SlotType.Shop;
-        }
-        else if (transform.parent.name == "SellSlot")
-        {
-            slotType = SlotType.ShopSell;
-        }
-    }
-    private void itemButtonClick()
-    {
-        if (slotType == SlotType.Inventory)
-        {
-            UIManager.Instance.OpenItemInfoPanel();
-            UIManager.Instance.SetItemInfoScreen(item);
-        }
-        else if (slotType == SlotType.Shop)
-        {
-            
-        }
     }
 
     private void Update()
@@ -65,48 +34,150 @@ public class InventorySlot : MonoBehaviour
         UpdateUI();
     }
 
-    public void AddItem(ItemBase newItem)
+    private void SetSlotType()
     {
-        if (item == null)
+        // 슬롯 부모 오브젝트 이름에 따라 슬롯 타입 변경
+        if (transform.parent.name == "Slots")
         {
-            item = newItem;
-            count = 1;
+            slotType = SlotType.Inventory;
         }
-        else if(item == newItem && count < 10 && newItem.itemClass == 2)
+        else if (transform.parent.name == "HoldSlots")
         {
-            count++;
-            itemCountText.text = count.ToString();
+            slotType = SlotType.Shop;
+        }
+        else if (transform.parent.name == "SellSlots")
+        {
+            slotType = SlotType.ShopSell;
+            itemButton.enabled = false;
+        }
+    }
+
+    private void OnSlotClick()
+    {
+        if (item == null) return;
+
+        switch (slotType)
+        {
+            case SlotType.Inventory:
+                UIManager.Instance.OpenItemInfoPanel();
+                UIManager.Instance.itemInfo.SetCurrentSlot(this);
+                UIManager.Instance.SetItemInfoScreen(item);
+                break;
+
+            case SlotType.Shop:
+                MoveItemToSellSlot();
+                break;
+        }
+    }
+
+    private void MoveItemToSellSlot()
+    {
+        if (item == null || (item.itemClass == 2 && item.currentItemCount <= 0))
+        {
+            return;
         }
 
-        else
+        if (item.itemClass == 3)  
         {
+            return;
+        }
+
+        List<InventorySlot> sellSlots = UIManager.Instance.shop.sellSlots;
+
+        if (item.itemClass == 1) 
+        {
+            bool existingEquip = false;
+            foreach (InventorySlot slot in sellSlots)
             {
-                Debug.Log("인벤토리가 가득차 더이상 아이템을 추가할 수 없습니다");
-                return;
+                if (slot.item != null && slot.item.name == item.name)
+                {
+                    existingEquip = true;
+                    break;
+                }
+            }
+            
+            if (existingEquip)
+            {
+                return;  
+            }
+        }
+
+        if (item.itemClass == 2) 
+        {
+            InventorySlot existingSellSlot = null;
+            foreach (InventorySlot slot in sellSlots)
+            {
+                if (slot.item != null && slot.item.name == item.name)
+                {
+                    existingSellSlot = slot;
+                    break;
+                }
+            }
+
+            if (existingSellSlot != null)
+            {
+                existingSellSlot.item.currentItemCount++;
+                item.currentItemCount--;
+                if (item.currentItemCount <= 0)
+                {
+                    RemoveItem();
+                }
+            }
+            else
+            {
+                foreach (InventorySlot sellSlot in sellSlots)
+                {
+                    if (sellSlot.item == null)
+                    {
+                        ItemBase sellItem = Instantiate(item);
+                        sellItem.currentItemCount = 1;
+                        sellSlot.AddItem(sellItem);
+                        
+                        item.currentItemCount--;
+                        if (item.currentItemCount <= 0)
+                        {
+                            RemoveItem();
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        else  
+        {
+            foreach (InventorySlot sellSlot in sellSlots)
+            {
+                if (sellSlot.item == null)
+                {
+                    sellSlot.AddItem(item);
+                    RemoveItem();
+                    break;
+                }
             }
         }
     }
 
-    public void RemoveItem()
+    public void AddItem(ItemBase newItem)
     {
-        count = 0;
-        if (count <= 0)
-        {
-            item = null;
-        }
+        item = newItem;
+        UpdateUI();
     }
 
-    public bool IsFull()
+    public void RemoveItem()
     {
-        return count >= 10;
+        item = null;
+        UpdateUI();
     }
-    public void UpdateUI()
+
+    private void UpdateUI()
     {
         if (item != null)
         {
             itemImage.sprite = item.image;
             itemImage.enabled = true;
             itemCountText.enabled = false;
+
             if (item.itemClass == 2)
             {
                 itemCountText.text = item.currentItemCount.ToString();
@@ -119,7 +190,4 @@ public class InventorySlot : MonoBehaviour
             itemCountText.enabled = false;
         }
     }
-    
-    
-
 }
