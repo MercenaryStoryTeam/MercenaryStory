@@ -14,11 +14,11 @@ TagManager:
   - Player
   - Monster
   - Weapon
-  - 
-  - 
-  - 
-  - 
-  - 
+  - User-Movable Path Object
+  - Tree
+  - Mountain
+  - User Portal
+  - Stone
   - 
   - 
   - 
