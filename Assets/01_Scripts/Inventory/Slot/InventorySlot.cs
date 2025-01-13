@@ -89,18 +89,17 @@ public class InventorySlot : MonoBehaviour
 
         if (item.itemClass == 1) 
         {
-            bool currentEquip = false;
+            bool EquipItemMoveSellSlot = false;
             foreach (InventorySlot slot in sellSlots)
             {
                 if (slot.item != null && slot.item.name == item.name)
                 {
-                    currentEquip = true;
-                    canvasGroup.alpha = 0.5f;
+                    EquipItemMoveSellSlot = true;
                     break;
                 }
             }
             
-            if (currentEquip)
+            if (EquipItemMoveSellSlot)
             {
                 return;  
             }
@@ -150,6 +149,7 @@ public class InventorySlot : MonoBehaviour
                 if (sellSlot.item == null)
                 {
                     canvasGroup.alpha = 0.5f;
+                    // UIManager.Instance.shop.sellPrice += 
                     sellSlot.AddItem(item);
                     break;
                 }
