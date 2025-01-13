@@ -86,7 +86,7 @@ public class BossMonster : MonoBehaviour
     {
         if (currentState == BossStateType.Blade)
         {
-            ChangeState(BossStateType.Slash);
+            ChangeState(BossStateType.SlashChase);
         }
     }
     public void OnHungerAnimationEnd()
