@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class BossChargeState : BossState
 {
-    public override void EnterState(Monster boss)
+    public override void EnterState(BossMonster boss)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void ExecuteState(Monster boss)
+    public override void ExecuteState(BossMonster boss)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void ExitState(Monster boss)
+    public override void ExitState(BossMonster boss)
     {
         throw new System.NotImplementedException();
     }
