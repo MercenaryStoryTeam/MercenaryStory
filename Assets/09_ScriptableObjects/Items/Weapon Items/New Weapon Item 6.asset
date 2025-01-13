@@ -29,4 +29,4 @@ MonoBehaviour:
   Rank: 2
   Damage: 4
   sellPrice: 4
-  isInstall: 0
+  isEquiped: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New Weapon Item 4
   m_EditorClassIdentifier: 
   id: 31004
-  name: "\uC2A4\uD398\uC774\uB4DC \uC5D0\uC774"
+  name: "\uC2A4\uD398\uC774\uB4DC \uC5D0\uC5B4"
   description: "\uACE0\uAE09\uC2A4\uB7EC\uC6B4 \uAC80\uC740\uC0C9\uACFC \uD669\uAE08\uC0C9\uC774\n\uB208\uC5D0
     \uB744\uB294 \uAC80\uACFC \uBC29\uD328 \uD55C \uBC8C.\n\uC0AC\uC6A9\uC790\uC5D0\uAC8C
     \uD589\uC6B4\uC744 \uC57D\uC18D\uD55C\uB2E4."
@@ -30,4 +30,4 @@ MonoBehaviour:
   Rank: 5
   Damage: 9
   sellPrice: 9
-  isInstall: 0
+  isEquiped: 0
