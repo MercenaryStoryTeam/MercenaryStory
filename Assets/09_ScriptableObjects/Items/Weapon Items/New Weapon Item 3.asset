@@ -17,15 +17,15 @@ MonoBehaviour:
   description: "\uC131\uC2A4\uB7EC\uC6B4 \uD45C\uC2DD\uC744 \uC0C8\uAE34\n\uBC29\uD328\uC640
     \uAC80 \uD55C \uBC8C.\n\uC7A5\uCC29\uD558\uBA74 \uC660\uC9C0 \uBAA8\uB97C \uACE0\uC591\uAC10\uC774
     \uC0DD\uACA8\uB09C\uB2E4."
-  currentItemCount: 0
+  currentItemCount: 2
   itemClass: 1
   price: 0
   dropPercent: 0
   isHave: 1
   image: {fileID: 21300000, guid: c434c01d3ac2fd84eb7b8da6039b81e4, type: 3}
   prefab:
-  - {fileID: 5730931172267903750, guid: ea5a37be48f3fdf47b9fab8632999015, type: 3}
-  - {fileID: 0}
+  - {fileID: 43365941715927356, guid: 4913bd3043b708449a3dded6f20d0386, type: 3}
+  - {fileID: 8498972350396365555, guid: 0214759f5bd797649a1e4096eeba3185, type: 3}
   Rank: 4
   Damage: 7
   isEquiped: 0

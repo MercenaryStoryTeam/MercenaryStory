@@ -22,7 +22,7 @@ public class ItemBase : ScriptableObject
     
     [Header("Icon&Prefab")]
     public Sprite image; //아이템 아이콘
-    public List<GameObject> prefab; //아이템 프리팹
+    public List<Transform> prefab; //아이템 프리팹
     
 
     private void Awake()
