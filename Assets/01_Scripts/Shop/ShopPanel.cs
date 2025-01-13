@@ -53,16 +53,17 @@ public class ShopPanel : MonoBehaviour
     private void ShopButtonClicked()
     {
         closeButton.onClick.AddListener(CloseButtonClick);
+        sellButton.onClick.AddListener(sellButtonClick);
+    }
+
+    private void sellButtonClick()
+    {
+        //판매 로직 추가
+        UIManager.Instance.CloseShopPanel();
     }
 
     private void CloseButtonClick()
     {
-        foreach (InventorySlot slot in sellSlots)
-        {
-            slot.RemoveItem();
-        }
-        
-        UIManager.Instance.isShopActive = false;
         UIManager.Instance.CloseShopPanel();
     }
 
