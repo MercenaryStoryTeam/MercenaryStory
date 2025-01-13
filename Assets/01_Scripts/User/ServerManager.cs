@@ -31,4 +31,9 @@ public class ServerManager
 		PhotonNetwork.LoadLevel(sceneName);
 		PanelManager.Instance.PanelCloseAll();
 	}
+
+	public static void PlayerSpawn(Transform spawnPoint)
+	{
+		PhotonNetwork.Instantiate("LJW_Player", spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
+	}
 }
