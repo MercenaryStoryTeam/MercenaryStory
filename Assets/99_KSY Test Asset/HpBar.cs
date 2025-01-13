@@ -4,10 +4,10 @@ using UnityEngine.UI;
 public class HpBar : MonoBehaviour
 {
     [Header("필드에 있는 플레이어의 스크립트 참조")]
-    [SerializeField] private Player player; 
+    public Player player; 
 
     [Header("HpBarPanel 참조")]
-    [SerializeField] private Image HpBarPanel; 
+    public Image HpBarPanel; 
 
     private void Update()
     {
