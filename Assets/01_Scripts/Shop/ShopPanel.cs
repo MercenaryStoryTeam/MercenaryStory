@@ -15,6 +15,8 @@ public class ShopPanel : MonoBehaviour
 
     public Button sellButton;
     public Button closeButton;
+
+    [HideInInspector]public float sellPrice;
     
     private TestSY _testsy;
     private InventorySlot selectedSlot;
@@ -58,8 +60,24 @@ public class ShopPanel : MonoBehaviour
 
     private void sellButtonClick()
     {
-        //판매 로직 추가
-        UIManager.Instance.CloseShopPanel();
+        bool isItemInSellSlot = false;
+        
+        foreach (InventorySlot slot in sellSlots)
+        { 
+            if (slot.item != null)
+            {
+                isItemInSellSlot = true;
+                UIManager.Instance.CloseShopPanel();
+                break;
+            }
+        }
+
+        if (!isItemInSellSlot)
+        {
+            PanelManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
+                () => PanelManager.Instance.popUp.PopUpClose());
+        }
+      
     }
 
     private void CloseButtonClick()
@@ -75,14 +93,9 @@ public class ShopPanel : MonoBehaviour
             {
                 UIManager.Instance.OpenShopPanel();
             }
+            
             else
             {
-                foreach (InventorySlot slot in sellSlots)
-                {
-                    slot.RemoveItem();
-                }
-
-                UIManager.Instance.isShopActive = false;
                 UIManager.Instance.CloseShopPanel();
             }
         }
@@ -91,6 +104,6 @@ public class ShopPanel : MonoBehaviour
     private void SetGold()
     {
         currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
-        //판매용 골드 로직 추가
+        sellPriceText.text = "판매 가격: " + sellPrice.ToString();
     }
 }
