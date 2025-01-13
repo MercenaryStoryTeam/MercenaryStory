@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class BossStage : MonoBehaviour
+public class BossStageManager : MonoBehaviour
 {
     public BossMonster bossMonster;
+    private List<Player> Players = new List<Player>();
 
     private void OnDrawGizmos()
     {
