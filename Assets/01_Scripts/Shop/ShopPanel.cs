@@ -7,103 +7,101 @@ using UnityEngine.UI;
 
 public class ShopPanel : MonoBehaviour
 {
-    public GameObject shopPanel;
-    public Text sellPriceText;
-    public Text currentGoldText;
-    public List<InventorySlot> holdSlots;  // 보유 물품 슬롯들
-    public List<InventorySlot> sellSlots;  // 판매할 물품 슬롯들
+	public GameObject shopPanel;
+	public Text sellPriceText;
+	public Text currentGoldText;
+	public List<InventorySlot> holdSlots; // 보유 물품 슬롯들
+	public List<InventorySlot> sellSlots; // 판매할 물품 슬롯들
 
-    public Button sellButton;
-    public Button closeButton;
+	public Button sellButton;
+	public Button closeButton;
 
-    [HideInInspector]public float sellPrice;
-    
-    private TestSY _testsy;
-    private InventorySlot selectedSlot;
-    private InventorySlot sellSlot;
+	[HideInInspector] public float sellPrice;
 
-    private void Awake()
-    {
-        _testsy = FindObjectOfType<TestSY>();
-        shopPanel.SetActive(false);
-        ShopButtonClicked();
-    }
+	private TestSY _testsy;
+	private InventorySlot selectedSlot;
+	private InventorySlot sellSlot;
 
-    private void Update()
-    {
-        SetGold();
-        UpdateHoldSlots(); 
-    }
+	private void Awake()
+	{
+		_testsy = FindObjectOfType<TestSY>();
+		shopPanel.SetActive(false);
+		ShopButtonClicked();
+	}
 
-    private void UpdateHoldSlots()
-    {
-        foreach (InventorySlot holdSlot in holdSlots)
-        {
-            holdSlot.RemoveItem();
-        }
+	private void Update()
+	{
+		SetGold();
+		UpdateHoldSlots();
+	}
 
-        List<InventorySlot> inventorySlots = UIManager.Instance.inventorySystem.slots;
-        for (int i = 0; i < inventorySlots.Count && i < holdSlots.Count; i++)
-        {
-            if (inventorySlots[i].item != null)
-            {
-                holdSlots[i].AddItem(inventorySlots[i].item);
-            }
-        }
-    }
+	private void UpdateHoldSlots()
+	{
+		foreach (InventorySlot holdSlot in holdSlots)
+		{
+			holdSlot.RemoveItem();
+		}
 
-    private void ShopButtonClicked()
-    {
-        closeButton.onClick.AddListener(CloseButtonClick);
-        sellButton.onClick.AddListener(sellButtonClick);
-    }
+		List<InventorySlot> inventorySlots = UIManager.Instance.inventorySystem.slots;
+		for (int i = 0; i < inventorySlots.Count && i < holdSlots.Count; i++)
+		{
+			if (inventorySlots[i].item != null)
+			{
+				holdSlots[i].AddItem(inventorySlots[i].item);
+			}
+		}
+	}
 
-    private void sellButtonClick()
-    {
-        bool isItemInSellSlot = false;
-        
-        foreach (InventorySlot slot in sellSlots)
-        { 
-            if (slot.item != null)
-            {
-                isItemInSellSlot = true;
-                UIManager.Instance.CloseShopPanel();
-                break;
-            }
-        }
+	private void ShopButtonClicked()
+	{
+		closeButton.onClick.AddListener(CloseButtonClick);
+		sellButton.onClick.AddListener(sellButtonClick);
+	}
 
-        if (!isItemInSellSlot)
-        {
-            PanelManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
-                () => PanelManager.Instance.popUp.PopUpClose());
-        }
-      
-    }
+	private void sellButtonClick()
+	{
+		bool isItemInSellSlot = false;
 
-    private void CloseButtonClick()
-    {
-        UIManager.Instance.CloseShopPanel();
-    }
+		foreach (InventorySlot slot in sellSlots)
+		{
+			if (slot.item != null)
+			{
+				isItemInSellSlot = true;
+				UIManager.Instance.CloseShopPanel();
+				break;
+			}
+		}
 
-    public void TryOpenShop()
-    {
-        if (Input.GetKeyDown(KeyCode.O)) // 테스트용 키 설정
-        {
-            if (!UIManager.Instance.isShopActive)
-            {
-                UIManager.Instance.OpenShopPanel();
-            }
-            
-            else
-            {
-                UIManager.Instance.CloseShopPanel();
-            }
-        }
-    }
+		if (!isItemInSellSlot)
+		{
+			// PanelManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.", () => PanelManager.Instance.popUp.PopUpClose());
+		}
+	}
 
-    private void SetGold()
-    {
-        currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
-        sellPriceText.text = "판매 가격: " + sellPrice.ToString();
-    }
+	private void CloseButtonClick()
+	{
+		UIManager.Instance.CloseShopPanel();
+	}
+
+	public void TryOpenShop()
+	{
+		if (Input.GetKeyDown(KeyCode.O)) // 테스트용 키 설정
+		{
+			if (!UIManager.Instance.isShopActive)
+			{
+				UIManager.Instance.OpenShopPanel();
+			}
+
+			else
+			{
+				UIManager.Instance.CloseShopPanel();
+			}
+		}
+	}
+
+	private void SetGold()
+	{
+		currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
+		sellPriceText.text = "판매 가격: " + sellPrice.ToString();
+	}
 }
