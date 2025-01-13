@@ -34,4 +34,12 @@ public class PanelManager : SingletonManager<PanelManager>
 			row.Value.SetActive(row.Key == panelName);
 		}
 	}
+
+	public void PanelCloseAll()
+	{
+		foreach (GameObject panel in panels.Values)
+		{
+			panel.gameObject.SetActive(false);
+		}
+	}
 }

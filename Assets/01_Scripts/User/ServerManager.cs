@@ -25,4 +25,10 @@ public class ServerManager
 
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 	}
+
+	public static void LoadScene(string sceneName)
+	{
+		PhotonNetwork.LoadLevel(sceneName);
+		PanelManager.Instance.PanelCloseAll();
+	}
 }

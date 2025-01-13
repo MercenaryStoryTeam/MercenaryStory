@@ -34,6 +34,7 @@ public class ServerSelectPanel : MonoBehaviour
 		else
 		{
 			ServerManager.JoinOrCreatePersistentRoom($"Server{serverNum}Room");
+			ServerManager.LoadScene("LJW_TownScene");
 		}
 	}
 }
