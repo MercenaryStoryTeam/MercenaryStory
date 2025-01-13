@@ -14,8 +14,8 @@ public class MonsterTest : MonoBehaviour
     [Header("플레이어 레이어")]
     public LayerMask playerLayer;
 
-    [Header("무기 레이어")]
-    public LayerMask weaponLayer;
+    // Player 스크립트 참조
+    private Player player;
 
     private void Start()
     {
@@ -26,33 +26,15 @@ public class MonsterTest : MonoBehaviour
     // 객체간 충돌에 따른 데미지 처리
     private void OnCollisionEnter(Collision collision)
     {
-        // 몬스터가 플레이어에게 데미지를 주는 개념
         // 충돌한 객체의 레이어가 플레이어라면 실행
         if ((playerLayer.value & (1 << collision.gameObject.layer)) != 0)
         {
-            // 플레이어 스크립트를 불러와서 변수에 할당
+            // 충돌한 객체에서 Player 스크립트 참조
             Player player = collision.gameObject.GetComponent<Player>();
-
-            // 충돌한 객체에 플레이어 스크립트가 있다면 실행
             if (player != null)
             {
                 // 플레이어에게 데미지 적용
                 player.TakeDamage(damage);
-            }
-        }
-
-        // 몬스터가 무기의 데미지를 받는 개념
-        // 충돌한 객체의 레이어가 무기라면 실행
-        if ((weaponLayer.value & (1 << collision.gameObject.layer)) != 0)
-        {
-            // 무기 스크립트를 불러와서 변수에 할당
-            Weapon weapon = collision.gameObject.GetComponent<Weapon>();
-
-            // 충돌한 객체에 무기 스크립트가 있다면 실행
-            if (weapon != null)
-            {
-                // 몬스터에게 데미지 적용
-                TakeDamage(weapon.damage);
             }
         }
     }
@@ -82,13 +64,14 @@ public class MonsterTest : MonoBehaviour
         }
     }
 
-    // die
+    // 죽음
     private void Die()
     {
-        // 메시지 출력
         Debug.Log("Monster Die");
 
-        // 비활성화
-        gameObject.SetActive(false);
+        // 삭제
+        Destroy(gameObject);
     }
 }
+
+// 중간 완성
