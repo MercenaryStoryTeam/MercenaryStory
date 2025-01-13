@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public enum BossStateType
+{
+    Slash,
+    Hunger,
+    Blade,
+    Charge,
+    Idle,
+    GetHit,
+    Die
+}
+
+public class BossStateMachine
+{
+    private BossStateType exStateType;
+    private BossState currentState;
+    public BossStateType currentStateType;
+    private readonly BossMonster owner;
+    private readonly Dictionary<BossStateType, BossState> stateInstances;
+
+    public BossState CurrentState => currentState;
+
+    public BossStateMachine(BossMonster owner)
+    {
+        this.owner = owner;
+        stateInstances = new Dictionary<BossStateType, BossState>
+        {
+            { BossStateType.Slash, new BossSlashState() },
+            { BossStateType.Hunger, new BossHungerState() },
+            { BossStateType.Blade, new BossBladeState() },
+            { BossStateType.Charge, new BossChargeState() },
+            { BossStateType.Idle, new BossIdleState() },
+            { BossStateType.Die, new BossDieState() },
+            { BossStateType.GetHit, new BossGetHitState() }
+        };
+    }
+
+    public void ChangeState(BossStateType stateType)
+    {
+        exStateType = currentStateType;
+        currentState?.ExitState(owner);
+        currentState = CreateState(stateType);
+        currentState?.EnterState(owner);
+        currentStateType = stateType;
+    }
+    
+    public void RevertToExState()
+    {
+        if (exStateType != currentStateType)
+        {
+            ChangeState(exStateType);
+        }
+    }
+
+    private BossState CreateState(BossStateType stateType)
+    {
+        if (stateInstances.TryGetValue(stateType, out var state))
+        {
+            return state;
+        }
+        throw new ArgumentException($"Invalid state type: {stateType}");
+    }
+}
