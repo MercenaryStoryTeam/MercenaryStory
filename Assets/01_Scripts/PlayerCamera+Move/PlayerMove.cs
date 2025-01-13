@@ -100,6 +100,7 @@ public class PlayerMove : MonoBehaviourPun
 
 	private void FixedUpdate()
 	{
+		if (false == photonView.IsMine) return;
 		HandlePhysics();
 	}
 
