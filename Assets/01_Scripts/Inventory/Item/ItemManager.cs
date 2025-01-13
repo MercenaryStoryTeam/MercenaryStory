@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using UnityEditor;
 using Input = UnityEngine.Input;
@@ -15,25 +16,28 @@ public class ItemManager : SingletonManager<ItemManager>
     public List<QuestItem> questItems;
     public List<OtherItem> otherItems;
     public List<ItemBase> items;
-    
+    public List<GameObject> weapons;
+    public Transform rightHandParent;
+    private TestSY _testSY;
     protected override void Awake()
     {
         base.Awake();
-        for (int i = 0; i < items.Count; i++)
+        
+        //아이템 장착 테스트
+        _testSY = FindObjectOfType<TestSY>();
+        for (int i = 0; i < weapons.Count; i++)
         {
-            items[i].currentItemCount = 0;
+            weapons[i].SetActive(false);
         }
     }
     
-    public void SetCurrentEquipImage(WeaponItem weapon)
+    public void SetCurrentEquip(ItemBase item)
     {
-        Color equipColor = UIManager.Instance.equipment.currentEquipImage.color;
-        //게임매니저 - 플레이어 - 현재 장착 무기에 따라 장착무기 로직 추가
-        //GameManager.Instance.Player.currentEquip = weapon;
-        UIManager.Instance.equipment.currentEquipImage.sprite = weapon.image;
-        equipColor.a = 1;
-        //if(GameManager.Instance.Player.currentEquip == null) 관련 로직 추가
-        //{equipColor.a = 0f;}
+        item = _testSY.currentWeapon;
+        for (int i = 0; i < item.prefab.Count; i++)
+        {
+            item.prefab[i].gameObject.SetActive(true);
+        }
     }
     
     public string SerializeItems()

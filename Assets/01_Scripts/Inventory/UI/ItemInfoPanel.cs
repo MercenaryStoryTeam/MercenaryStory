@@ -72,7 +72,8 @@ public class ItemInfoPanel : MonoBehaviour
     {
         EquipmentPanel equipment = FindObjectOfType<EquipmentPanel>();
         print("장착");
-        equipment.SetEquipImage(SelectedSlot());
+        equipment.SetEquipImage(currentSelectedSlot);
+        ItemManager.Instance.SetCurrentEquip(currentSelectedSlot.item);
         UIManager.Instance.CloseItemInfoPanel();
     }
 
