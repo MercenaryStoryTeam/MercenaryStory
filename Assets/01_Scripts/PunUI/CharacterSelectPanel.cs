@@ -23,6 +23,6 @@ public class CharacterSelectPanel : MonoBehaviour
 		// server에 userdata 업데이트 해야함
 		FirebaseManager.Instance.UpdateCurrentUserData("user_Appearance",
 			FirebaseManager.Instance.CurrentUserData.user_Appearance);
-		PanelManager.Instance.PanelOpen("ServerSelect");
+		TitleUI.Instance.PanelOpen("ServerSelect");
 	}
 }

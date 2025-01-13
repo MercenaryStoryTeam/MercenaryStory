@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using UnityEngine;
 
-public class PanelManager : SingletonManager<PanelManager>
+public class TitleUI : MonoBehaviour
 {
+	// Singleton pattern
+	private static TitleUI _instance;
 	private Dictionary<string, GameObject> panels;
 	public SignUpPanel signUpPanel;
 	public SignInPanel signInPanel;
@@ -13,9 +12,18 @@ public class PanelManager : SingletonManager<PanelManager>
 	public CharacterSelectPanel characterSelectPanel;
 	public ServerSelectPanel serverSelectPanel;
 
-	protected override void Awake()
+	public static TitleUI Instance
 	{
-		base.Awake();
+		get { return _instance; }
+	}
+
+	private void Awake()
+	{
+		if (_instance == null)
+		{
+			_instance = this;
+		}
+
 		panels = new Dictionary<string, GameObject>
 		{
 			{ "SignUp", signUpPanel.gameObject },

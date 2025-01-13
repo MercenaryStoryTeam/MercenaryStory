@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Firebase;
-using UnityEngine;
 
 public class ExceptionManager
 {
@@ -27,7 +24,7 @@ public class ExceptionManager
 
 	private static void ShowPopup(string message)
 	{
-		PanelManager.Instance.popUp.PopUpOpen(message,
-			() => PanelManager.Instance.popUp.PopUpClose());
+		TitleUI.Instance.popUp.PopUpOpen(message,
+			() => TitleUI.Instance.popUp.PopUpClose());
 	}
 }
