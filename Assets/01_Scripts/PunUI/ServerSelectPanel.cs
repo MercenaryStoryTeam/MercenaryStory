@@ -6,6 +6,9 @@ public class ServerSelectPanel : MonoBehaviour
 	public Button server1Button;
 	public Button server2Button;
 	public Button connectButton;
+	public GameObject appearance1;
+	public GameObject appearance2;
+	public GameObject appearance3;
 
 	private int serverNum = 0;
 
@@ -19,6 +22,18 @@ public class ServerSelectPanel : MonoBehaviour
 	private void Start()
 	{
 		serverNum = 0;
+		switch (FirebaseManager.Instance.CurrentUserData.user_Appearance)
+		{
+			case 1:
+				appearance1.SetActive(true);
+				break;
+			case 2:
+				appearance2.SetActive(true);
+				break;
+			case 3:
+				appearance3.SetActive(true);
+				break;
+		}
 	}
 
 	private void Update()
