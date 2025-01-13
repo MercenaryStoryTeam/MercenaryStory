@@ -11,6 +11,7 @@ public class UIManager : SingletonManager<UIManager>
     public ShopPanel shop;
     public EquipmentPanel equipment;
     public Inventory inventorySystem;
+    public PopUp popUp;
     public InventorySlot slot;
     [HideInInspector]public bool isInventoryActive = false;
     [HideInInspector]public bool isItemInfoActive = false;
@@ -24,6 +25,7 @@ public class UIManager : SingletonManager<UIManager>
         shop = FindObjectOfType<ShopPanel>();
         equipment = FindObjectOfType<EquipmentPanel>();
         inventorySystem = FindObjectOfType<Inventory>();
+        popUp = FindObjectOfType<PopUp>();
     }
 
     #region Inventory
@@ -125,7 +127,7 @@ public class UIManager : SingletonManager<UIManager>
     }
     
     #endregion
-
+    
     // //AnyPanelOpen에 다른 패널 추가되면 사용 예정
     // //현재 앞 순서 if문만 적용되고있음
     // public void CloseAllPanel()
