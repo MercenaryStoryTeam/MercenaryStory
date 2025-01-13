@@ -55,7 +55,11 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
 
-			PanelManager.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () => PanelManager.Instance.PanelOpen("SignIn"));
+			PanelManager.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () =>
+			{
+				PanelManager.Instance.popUp.PopUpClose();
+				PanelManager.Instance.PanelOpen("SignIn");
+			});
 		}
 		catch (FirebaseException e)
 		{
@@ -103,13 +107,14 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		CurrentUserData = userData;
 
 		PanelManager.Instance.popUp.PopUpClose();
+		ServerManager.ConnectLobby();
 		if (CurrentUserData.user_Appearance == 0)
 		{
 			PanelManager.Instance.PanelOpen("CharacterSelect");
 		}
 		else
 		{
-			print("서버 접속 패널 오픈");
+			PanelManager.Instance.PanelOpen("ServerSelect");
 		}
 	}
 

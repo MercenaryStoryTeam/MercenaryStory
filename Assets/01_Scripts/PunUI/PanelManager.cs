@@ -3,41 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class PanelManager : MonoBehaviourPunCallbacks
+public class PanelManager : SingletonManager<PanelManager>
 {
-	// Singleton pattern
-	private static PanelManager _instance;
-
-	public static PanelManager Instance
-	{
-		get { return _instance; }
-	}
-
 	private Dictionary<string, GameObject> panels;
 	public SignUpPanel signUpPanel;
 	public SignInPanel signInPanel;
-	[FormerlySerializedAs("popUpPanel")] public PopUp popUp;
+	public PopUp popUp;
 	public CharacterSelectPanel characterSelectPanel;
+	public ServerSelectPanel serverSelectPanel;
 
-	private void Awake()
+	protected override void Awake()
 	{
-		if (_instance == null)
-		{
-			_instance = this;
-			DontDestroyOnLoad(gameObject);
-		}
-		else
-		{
-			DestroyImmediate(gameObject);
-		}
-
+		base.Awake();
 		panels = new Dictionary<string, GameObject>
 		{
 			{ "SignUp", signUpPanel.gameObject },
 			{ "SignIn", signInPanel.gameObject },
-			{ "CharacterSelect", characterSelectPanel.gameObject }
+			{ "CharacterSelect", characterSelectPanel.gameObject },
+			{ "ServerSelect", serverSelectPanel.gameObject }
 		};
 
 		PanelOpen("SignIn");

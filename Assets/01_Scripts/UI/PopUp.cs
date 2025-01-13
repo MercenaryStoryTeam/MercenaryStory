@@ -10,14 +10,8 @@ public class PopUp : MonoBehaviour
 	private Action callback;
 	public Button closeButton;
 
-	private void Start()
-	{
-		gameObject.SetActive(false);
-	}
-
 	private void Awake()
 	{
-		gameObject.SetActive(false);
 		closeButton.onClick.AddListener(CloseButtonClick);
 	}
 
