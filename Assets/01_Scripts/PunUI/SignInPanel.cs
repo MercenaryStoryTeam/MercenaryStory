@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +16,7 @@ public class SignInPanel : MonoBehaviour
 
 	private void SignUpButtonClick()
 	{
-		PanelManager.Instance.PanelOpen("SignUp");
+		TitleUI.Instance.PanelOpen("SignUp");
 	}
 
 	private void SignInButtonClick()

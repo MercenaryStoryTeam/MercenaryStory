@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.InputSystem.Interactions;
 
 public class ServerManager
 {
@@ -24,5 +21,17 @@ public class ServerManager
 		};
 
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
+	}
+
+	public static void LoadScene(string sceneName)
+	{
+		PhotonNetwork.LoadLevel(sceneName);
+		TitleUI.Instance.PanelCloseAll();
+	}
+
+	public static void PlayerSpawn(Transform spawnPoint)
+	{
+		PhotonNetwork.Instantiate("LJW_Player", spawnPoint.position, Quaternion.identity)
+			.name = PhotonNetwork.NickName;
 	}
 }

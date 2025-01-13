@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Firebase;
 using Firebase.Auth;
@@ -55,10 +54,10 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
 
-			PanelManager.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () =>
+			TitleUI.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () =>
 			{
-				PanelManager.Instance.popUp.PopUpClose();
-				PanelManager.Instance.PanelOpen("SignIn");
+				TitleUI.Instance.popUp.PopUpClose();
+				TitleUI.Instance.PanelOpen("SignIn");
 			});
 		}
 		catch (FirebaseException e)
@@ -70,7 +69,9 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	public async void CheckEmail(string email)
 	{
 		DataSnapshot usersData = await DB.GetReference("users").GetValueAsync();
-		userDictionary = JsonConvert.DeserializeObject<Dictionary<string, UserData>>(usersData.GetRawJsonValue());
+		userDictionary =
+			JsonConvert.DeserializeObject<Dictionary<string, UserData>>(
+				usersData.GetRawJsonValue());
 		if (userDictionary != null)
 		{
 			userList = new List<UserData>(userDictionary.Values);
@@ -78,47 +79,60 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			{
 				if (userData.user_Email == email)
 				{
-					PanelManager.Instance.popUp.PopUpOpen("이미 사용중인 email입니다.",
-						() => PanelManager.Instance.popUp.PopUpClose());
+					TitleUI.Instance.popUp.PopUpOpen("이미 사용중인 email입니다.",
+						() => TitleUI.Instance.popUp.PopUpClose());
 					state = State.EmailNotChecked;
 					return;
 				}
 			}
 		}
 
-		PanelManager.Instance.popUp.PopUpOpen("사용 가능한 email입니다.",
-			() => PanelManager.Instance.popUp.PopUpClose());
+		TitleUI.Instance.popUp.PopUpOpen("사용 가능한 email입니다.",
+			() => TitleUI.Instance.popUp.PopUpClose());
 		state = State.EmailChecked;
 	}
 
 	public async void SignIn(string email, string password)
 	{
-		PanelManager.Instance.popUp.WaitPopUpOpen("로그인 중입니다.");
-		var result = await Auth.SignInWithEmailAndPasswordAsync(email, password);
-		usersRef = DB.GetReference($"users/{result.User.UserId}");
-		DataSnapshot userDataValues = await usersRef.GetValueAsync();
-		UserData userData = null;
-		if (userDataValues.Exists)
+		try
 		{
-			string json = userDataValues.GetRawJsonValue();
-			userData = JsonConvert.DeserializeObject<UserData>(json);
-		}
+			TitleUI.Instance.popUp.WaitPopUpOpen("로그인 중입니다.");
+			var result = await Auth.SignInWithEmailAndPasswordAsync(email, password);
+			usersRef = DB.GetReference($"users/{result.User.UserId}");
+			DataSnapshot userDataValues = await usersRef.GetValueAsync();
+			UserData userData = null;
+			if (userDataValues.Exists)
+			{
+				string json = userDataValues.GetRawJsonValue();
+				userData = JsonConvert.DeserializeObject<UserData>(json);
+			}
 
-		CurrentUserData = userData;
+			CurrentUserData = userData;
 
-		PanelManager.Instance.popUp.PopUpClose();
-		ServerManager.ConnectLobby();
-		if (CurrentUserData.user_Appearance == 0)
-		{
-			PanelManager.Instance.PanelOpen("CharacterSelect");
+			TitleUI.Instance.popUp.PopUpClose();
+			ServerManager.ConnectLobby();
+			if (CurrentUserData.user_Appearance == 0)
+			{
+				TitleUI.Instance.PanelOpen("CharacterSelect");
+			}
+			else
+			{
+				TitleUI.Instance.PanelOpen("ServerSelect");
+			}
 		}
-		else
+		catch (FirebaseException e)
 		{
-			PanelManager.Instance.PanelOpen("ServerSelect");
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			TitleUI.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}",
+				() => TitleUI.Instance.popUp.PopUpClose());
 		}
 	}
 
-	public async void UpdateCurrentUserData(string childName, object value, Action<object> callback = null)
+	public async void UpdateCurrentUserData(string childName, object value,
+		Action<object> callback = null)
 	{
 		DatabaseReference targetRef = usersRef.Child(childName);
 		await targetRef.SetValueAsync(value);

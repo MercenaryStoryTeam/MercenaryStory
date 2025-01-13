@@ -60,7 +60,7 @@ public class SignUpPanel : MonoBehaviour
 
 	private void ShowDialog(string message)
 	{
-		PanelManager.Instance.popUp.PopUpOpen(message, () => PanelManager.Instance.popUp.PopUpClose());
+		TitleUI.Instance.popUp.PopUpOpen(message, () => TitleUI.Instance.popUp.PopUpClose());
 	}
 
 	private bool IsValidPassword(string password)
