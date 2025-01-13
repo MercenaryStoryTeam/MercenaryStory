@@ -16,14 +16,12 @@ MonoBehaviour:
   name: "\uC8FC\uC778\uC758 \uBC1C\uD1B1"
   description: "\uB2AA\uC758 \uC9C0\uBC30\uC790 \uADF8\uB77C\uC904\uC758 \uBC1C\uD1B1\uC774\uB2E4.\n\uBD80\uB7EC\uC84C\uC74C\uC5D0\uB3C4
     \uC8FC\uC778\uC758\n\uAC15\uB300\uD55C \uD798\uC744 \uB290\uB084 \uC218 \uC788\uB2E4."
+  currentItemCount: 0
+  itemClass: 2
+  price: 0
   dropPercent: 0
-  isSellable: 1
-  isStackable: 1
   isHave: 1
   image: {fileID: 21300000, guid: 0410cbb63698a3742803c3cc3fc620da, type: 3}
   prefab:
   - {fileID: 2300998956181542402, guid: 2c2f9d5778ce95e49baefc8948109623, type: 3}
-  currentItemCount: 0
-  itemClass: 2
-  sellPrice: 6
   stackAmount: 10

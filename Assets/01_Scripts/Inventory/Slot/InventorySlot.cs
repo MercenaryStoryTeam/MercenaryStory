@@ -19,8 +19,9 @@ public class InventorySlot : MonoBehaviour
     public Image itemImage;
     public Button itemButton;
     public Text itemCountText;
-    
-    private int count = 0;
+    public CanvasGroup canvasGroup;
+
+    [HideInInspector]public int slotCount = 0;
     private SlotType slotType;
 
     private void Awake()
@@ -78,7 +79,9 @@ public class InventorySlot : MonoBehaviour
         }
 
         if (item.itemClass == 3)  
-        {
+        { 
+            PanelManager.Instance.popUp.PopUpOpen("해당 아이템을\n상인이 원하지 않습니다.",
+                () => PanelManager.Instance.popUp.PopUpClose());
             return;
         }
 
@@ -86,17 +89,17 @@ public class InventorySlot : MonoBehaviour
 
         if (item.itemClass == 1) 
         {
-            bool existingEquip = false;
+            bool EquipItemMoveSellSlot = false;
             foreach (InventorySlot slot in sellSlots)
             {
                 if (slot.item != null && slot.item.name == item.name)
                 {
-                    existingEquip = true;
+                    EquipItemMoveSellSlot = true;
                     break;
                 }
             }
             
-            if (existingEquip)
+            if (EquipItemMoveSellSlot)
             {
                 return;  
             }
@@ -104,24 +107,22 @@ public class InventorySlot : MonoBehaviour
 
         if (item.itemClass == 2) 
         {
-            InventorySlot existingSellSlot = null;
+            InventorySlot currentSellSlot = null;
             foreach (InventorySlot slot in sellSlots)
             {
                 if (slot.item != null && slot.item.name == item.name)
                 {
-                    existingSellSlot = slot;
+                    currentSellSlot = slot;
+                    canvasGroup.alpha = 0.5f;
                     break;
                 }
             }
 
-            if (existingSellSlot != null)
+            if (currentSellSlot != null)
             {
-                existingSellSlot.item.currentItemCount++;
+                currentSellSlot.item.currentItemCount++;
                 item.currentItemCount--;
-                if (item.currentItemCount <= 0)
-                {
-                    RemoveItem();
-                }
+
             }
             else
             {
@@ -131,13 +132,10 @@ public class InventorySlot : MonoBehaviour
                     {
                         ItemBase sellItem = Instantiate(item);
                         sellItem.currentItemCount = 1;
+                        canvasGroup.alpha = 0.5f;
                         sellSlot.AddItem(sellItem);
                         
                         item.currentItemCount--;
-                        if (item.currentItemCount <= 0)
-                        {
-                            RemoveItem();
-                        }
                         break;
                     }
                 }
@@ -150,8 +148,9 @@ public class InventorySlot : MonoBehaviour
             {
                 if (sellSlot.item == null)
                 {
+                    canvasGroup.alpha = 0.5f;
+                    // UIManager.Instance.shop.sellPrice += 
                     sellSlot.AddItem(item);
-                    RemoveItem();
                     break;
                 }
             }
@@ -161,13 +160,11 @@ public class InventorySlot : MonoBehaviour
     public void AddItem(ItemBase newItem)
     {
         item = newItem;
-        UpdateUI();
     }
 
     public void RemoveItem()
     {
         item = null;
-        UpdateUI();
     }
 
     private void UpdateUI()
@@ -180,7 +177,7 @@ public class InventorySlot : MonoBehaviour
 
             if (item.itemClass == 2)
             {
-                itemCountText.text = item.currentItemCount.ToString();
+                itemCountText.text = slotCount.ToString();
                 itemCountText.enabled = true;
             }
         }
@@ -189,5 +186,15 @@ public class InventorySlot : MonoBehaviour
             itemImage.enabled = false;
             itemCountText.enabled = false;
         }
+    }
+
+    public bool IsFull()
+    {
+        if (slotCount >= 10)
+        {
+            return true;
+        }
+        
+        return false;
     }
 }

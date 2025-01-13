@@ -11,6 +11,7 @@ public class UIManager : SingletonManager<UIManager>
     public ShopPanel shop;
     public EquipmentPanel equipment;
     public Inventory inventorySystem;
+    public InventorySlot slot;
     [HideInInspector]public bool isInventoryActive = false;
     [HideInInspector]public bool isItemInfoActive = false;
     [HideInInspector]public bool isShopActive = false;
@@ -23,13 +24,16 @@ public class UIManager : SingletonManager<UIManager>
         shop = FindObjectOfType<ShopPanel>();
         equipment = FindObjectOfType<EquipmentPanel>();
         inventorySystem = FindObjectOfType<Inventory>();
-
     }
 
     #region Inventory
     
     public void OpenInventoryPanel()
     {
+        if (IsAnyPanelOpen())
+        {
+           CloseShopPanel();
+        }
         isInventoryActive = true;
         inventory.panel.SetActive(true);
     }
@@ -46,12 +50,29 @@ public class UIManager : SingletonManager<UIManager>
 
     public void OpenShopPanel()
     {
+        if (IsAnyPanelOpen())
+        {
+            CloseInventoryPanel();
+            CloseItemInfoPanel();
+        }
+        
         isShopActive = true;
         shop.shopPanel.SetActive(true);
     }
 
     public void CloseShopPanel()
     {
+        foreach (InventorySlot slot in shop.sellSlots)
+        {
+            slot.RemoveItem();
+        }
+
+        foreach (InventorySlot slot in shop.holdSlots)
+        {
+            //행동 초기화 로직 추가
+            slot.canvasGroup.alpha = 1f;
+        }
+        
         isShopActive = false;
         shop.shopPanel.SetActive(false);
     }
@@ -76,23 +97,23 @@ public class UIManager : SingletonManager<UIManager>
     {
         if (item.itemClass == 1)
         {
-            itemInfo.firstButton.gameObject.SetActive(true);
-            itemInfo.secondButton.gameObject.SetActive(true);
+            itemInfo.firstOptionButton.enabled = true;
+            itemInfo.secondOptionButton.enabled = true;
             itemInfo.secondOption.SetActive(true);
             itemInfo.firstOptionText.text = "장착";
         }
 
         if (item.itemClass == 2)
         {
-            itemInfo.firstButton.gameObject.SetActive(false);
-            itemInfo.secondButton.gameObject.SetActive(true);
+            itemInfo.firstOptionButton.enabled = false;
+            itemInfo.secondOptionButton.enabled = true;
             itemInfo.secondOption.SetActive(true);
             itemInfo.firstOptionText.text = item.currentItemCount + "개";
         }
 
         if (item.itemClass == 3)
         {
-            itemInfo.firstButton.gameObject.SetActive(false);
+            itemInfo.firstOptionButton.enabled = false;
             itemInfo.secondOption.SetActive(false);
             itemInfo.firstOptionText.text = item.currentItemCount + "개";
         }  
@@ -104,4 +125,24 @@ public class UIManager : SingletonManager<UIManager>
     }
     
     #endregion
+
+    // //AnyPanelOpen에 다른 패널 추가되면 사용 예정
+    // //현재 앞 순서 if문만 적용되고있음
+    // public void CloseAllPanel()
+    // {        
+    //     if (isShopActive)
+    //     {
+    //         CloseInventoryPanel();
+    //     }
+    //     if (isInventoryActive)
+    //     {
+    //         CloseShopPanel();
+    //     }
+    //     
+    // }
+    
+    public bool IsAnyPanelOpen()
+    {
+        return isInventoryActive || isItemInfoActive || isShopActive;
+    }
 }
