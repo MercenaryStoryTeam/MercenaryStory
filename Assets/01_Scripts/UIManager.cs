@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class UIManager : SingletonManager<UIManager>
 {
@@ -9,6 +10,7 @@ public class UIManager : SingletonManager<UIManager>
     public InventoryPanel inventory;
     public ShopPanel shop;
     public EquipmentPanel equipment;
+    public Inventory inventorySystem;
     [HideInInspector]public bool isInventoryActive = false;
     [HideInInspector]public bool isItemInfoActive = false;
     [HideInInspector]public bool isShopActive = false;
@@ -20,6 +22,8 @@ public class UIManager : SingletonManager<UIManager>
         inventory = FindObjectOfType<InventoryPanel>();
         shop = FindObjectOfType<ShopPanel>();
         equipment = FindObjectOfType<EquipmentPanel>();
+        inventorySystem = FindObjectOfType<Inventory>();
+
     }
 
     #region Inventory
@@ -100,5 +104,4 @@ public class UIManager : SingletonManager<UIManager>
     }
     
     #endregion
-
 }

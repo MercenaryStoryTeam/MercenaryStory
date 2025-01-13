@@ -9,6 +9,7 @@ public class InventoryPanel : MonoBehaviour
 {
     public CanvasGroup invenCanvasGroup;
     public GameObject panel;
+    public List<InventorySlot> slots;
     
     public Button invenCloseButton;
     public Text currentGoldText;
@@ -70,4 +71,5 @@ public class InventoryPanel : MonoBehaviour
     {
         currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
     }
+
 }
