@@ -126,7 +126,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		catch (Exception e)
 		{
-			PanelManager.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}");
+			PanelManager.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}",
+				() => PanelManager.Instance.popUp.PopUpClose());
 		}
 	}
 
