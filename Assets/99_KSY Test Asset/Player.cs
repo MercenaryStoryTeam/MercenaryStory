@@ -76,6 +76,9 @@ public class Player : MonoBehaviour
     // 죽음
     private void Die()
     {
+        // die 사운드 재생 (필요에 맞게 수정 가능)
+        SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
+
         Debug.Log("Player Die");
 
         // die 애니 실행
