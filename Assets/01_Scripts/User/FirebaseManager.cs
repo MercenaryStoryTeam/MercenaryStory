@@ -123,26 +123,12 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		catch (FirebaseException e)
 		{
-			switch (e.ErrorCode)
-			{
-				case 37:
-				case 38:
-					PanelManager.Instance.popUp.PopUpOpen("이메일과 비밀번호를 입력해 주세요",
-						() => PanelManager.Instance.popUp.PopUpClose());
-					break;
-				case 1:
-					PanelManager.Instance.popUp.PopUpOpen("이메일과 비밀번호가 일치하지 않거나\n존재하지 않는 이메일입니다.",
-						() => PanelManager.Instance.popUp.PopUpClose());
-					break;
-				case 11:
-					PanelManager.Instance.popUp.PopUpOpen("이메일의 형식이 아닙니다.",
-						() => PanelManager.Instance.popUp.PopUpClose());
-					break;
-				default:
-					PanelManager.Instance.popUp.PopUpOpen(e.Message,
-						() => PanelManager.Instance.popUp.PopUpClose());
-					break;
-			}
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			PanelManager.Instance.popUp.PopUpOpen(e.Message,
+				() => PanelManager.Instance.popUp.PopUpClose());
 		}
 	}
 
