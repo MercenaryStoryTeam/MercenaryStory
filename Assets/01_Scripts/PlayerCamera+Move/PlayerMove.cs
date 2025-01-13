@@ -68,18 +68,15 @@ public class PlayerMove : MonoBehaviour
         animator.applyRootMotion = false;
         bool isScene = IsCurrentSceneSpecial();
         animator.SetBool("Scene", isScene);
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        // SceneManager.sceneLoaded += OnSceneLoaded; // 이제 씬 매니저에서 처리
+
+        // Optional: Make player persist across scenes
+        // DontDestroyOnLoad(gameObject);
     }
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        bool isScene = IsCurrentSceneSpecial();
-        animator.SetBool("Scene", isScene);
+        // SceneManager.sceneLoaded -= OnSceneLoaded; // 이제 씬 매니저에서 처리
     }
 
     private void Update()
@@ -214,9 +211,9 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    private void TransitionToState(State newState)
+    private void TransitionToState(State newState, bool force = false)
     {
-        if (isDead && newState != State.Die) return;
+        if (isDead && newState != State.Die && !force) return;
         if (currentState == newState) return;
         ExitCurrentState();
         currentState = newState;
@@ -245,6 +242,7 @@ public class PlayerMove : MonoBehaviour
 
     private void ExitCurrentState()
     {
+        // 필요 시 상태 종료 로직 구현
     }
 
     private void EnterIdleState()
@@ -323,5 +321,20 @@ public class PlayerMove : MonoBehaviour
         return currentState == State.Attack1
             || currentState == State.Attack2
             || currentState == State.Attack3;
+    }
+
+    // 씬 로드 시 상태를 초기화하는 메서드
+    public void ResetStateOnSceneLoad()
+    {
+        if (currentState == State.Die)
+        {
+            isDead = false;
+            TransitionToState(State.Idle, force: true);
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            animator.ResetTrigger("Die");
+            animator.SetFloat("Speed", 0f);
+        }
     }
 }
