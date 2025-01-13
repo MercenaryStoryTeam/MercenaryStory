@@ -9,6 +9,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 {
 	private static PhotonManager _instance;
 	public ClientState state = 0;
+	public bool IsReadyToGoTown = false;
 
 	public static PhotonManager Instance
 	{
@@ -33,8 +34,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 		if (PhotonNetwork.NetworkClientState != state)
 		{
 			state = PhotonNetwork.NetworkClientState;
-			print($"state: {state}");
+			print($"State changed: {state}");
 		}
+	}
+
+	public override void OnConnectedToMaster()
+	{
+		IsReadyToGoTown = true;
 	}
 
 	public override void OnCreateRoomFailed(short returnCode, string message)

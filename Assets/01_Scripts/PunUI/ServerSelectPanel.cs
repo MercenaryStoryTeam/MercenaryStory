@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,16 +24,14 @@ public class ServerSelectPanel : MonoBehaviour
 		serverNum = 0;
 	}
 
+	private void Update()
+	{
+		connectButton.interactable = PhotonManager.Instance.IsReadyToGoTown && serverNum != 0;
+	}
+
 	private void OnConnectButtonClick()
 	{
-		if (serverNum == 0)
-		{
-			PanelManager.Instance.popUp.PopUpOpen("서버를 선택해 주세요.", () => PanelManager.Instance.popUp.PopUpClose());
-		}
-		else
-		{
-			ServerManager.JoinOrCreatePersistentRoom($"Server{serverNum}Room");
-			ServerManager.LoadScene("LJW_TownScene");
-		}
+		ServerManager.JoinOrCreatePersistentRoom($"Server{serverNum}Room");
+		ServerManager.LoadScene("LJW_TownScene");
 	}
 }
