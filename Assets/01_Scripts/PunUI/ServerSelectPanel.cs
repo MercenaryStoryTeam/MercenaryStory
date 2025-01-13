@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,12 +23,12 @@ public class ServerSelectPanel : MonoBehaviour
 
 	private void Update()
 	{
-		connectButton.interactable = PhotonManager.Instance.IsReadyToGoTown && serverNum != 0;
+		connectButton.interactable =
+			PhotonManager.Instance.isReadyToJoinGameServer && serverNum != 0;
 	}
 
 	private void OnConnectButtonClick()
 	{
 		ServerManager.JoinOrCreatePersistentRoom($"Server{serverNum}Room");
-		ServerManager.LoadScene("LJW_TownScene");
 	}
 }

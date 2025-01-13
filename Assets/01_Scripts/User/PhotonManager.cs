@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -9,7 +6,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 {
 	private static PhotonManager _instance;
 	public ClientState state = 0;
-	public bool IsReadyToGoTown = false;
+	public bool isReadyToJoinGameServer = false;
 
 	public static PhotonManager Instance
 	{
@@ -40,7 +37,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
 	public override void OnConnectedToMaster()
 	{
-		IsReadyToGoTown = true;
+		isReadyToJoinGameServer = true;
+	}
+
+	public override void OnJoinedRoom()
+	{
+		if (PhotonNetwork.CurrentRoom.Name == "Server1Room" ||
+		    PhotonNetwork.CurrentRoom.Name == "Server2Room")
+		{
+			ServerManager.LoadScene("LJW_TownScene");
+		}
 	}
 
 	public override void OnCreateRoomFailed(short returnCode, string message)
