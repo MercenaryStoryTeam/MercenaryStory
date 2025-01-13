@@ -15,6 +15,7 @@ public abstract class Monster : MonoBehaviour
     private float patrolRange;
     private float detectionRange;
     private float attackRange;
+    private float returnRange;
     
     private Vector3 patrolPoint;
     private LayerMask playerLayer;
@@ -22,6 +23,7 @@ public abstract class Monster : MonoBehaviour
     
     private NavMeshAgent agent;
     private MonsterStateMachine stateMachine;
+    public MonsterStateType currentState;
     
     private Animator animator;
     #endregion
@@ -36,11 +38,13 @@ public abstract class Monster : MonoBehaviour
     public float PatrolRange { set => patrolRange = Mathf.Max(0, value); get => patrolRange; }
     public float DetectionRange { set => detectionRange = Mathf.Max(0, value); get => detectionRange; }
     public float AttackRange { set => attackRange = Mathf.Max(0, value); get => attackRange; }
+    public float ReturnRange { set => returnRange = Mathf.Max(0, value); get => returnRange; }
     public Vector3 PatrolPoint { get => patrolPoint; set => patrolPoint = value; }
     public LayerMask PlayerLayer => playerLayer;
     public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
     public NavMeshAgent Agent => agent;
     public Animator Animator { get => animator;  set => animator = value; }
+    public MonsterStateMachine StateMachine => stateMachine;
     
     #endregion
     
@@ -55,18 +59,36 @@ public abstract class Monster : MonoBehaviour
     }
     protected virtual void Update()
     {
+        currentState = stateMachine.currentStateType;
         stateMachine.CurrentState?.ExecuteState(this);
     }
 
     public void ChangeState(MonsterStateType newState)
     {
-        print($"State change : {newState}");
+        print($"{gameObject.name} State change : {newState}");
         stateMachine.ChangeState(newState);
+    }
+
+    public void RevertToExState()
+    {
+        print($"{gameObject.name} Revert To Ex : {stateMachine.CurrentState}");
+        stateMachine.RevertToExState();
     }
     
     public void OnAttackAnimationEnd()
     {
-        ChangeState(MonsterStateType.Chase);
+        if (currentState == MonsterStateType.Attack)
+        {
+            ChangeState(MonsterStateType.Patrol);
+        }
+    }
+    
+    public void GetHitAnimationEnd()
+    {
+        if (currentState == MonsterStateType.GetHit)
+        {
+            ChangeState(MonsterStateType.Patrol);
+        }
     }
 
     public void TakeDamage(int damage)

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class MonsterGetHitState : MonsterState
 {
-    public override void EnterState(Monster entity)
+    public override void EnterState(Monster monster)
     {
-        throw new System.NotImplementedException();
+        monster.Animator.SetTrigger("GetHit");
     }
 
-    public override void ExecuteState(Monster entity)
+    public override void ExecuteState(Monster monster)
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    public override void ExitState(Monster entity)
+    public override void ExitState(Monster monster)
     {
-        throw new System.NotImplementedException();
+        
     }
 }
