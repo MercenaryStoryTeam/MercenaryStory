@@ -16,19 +16,17 @@ public class ItemManager : SingletonManager<ItemManager>
     public List<QuestItem> questItems;
     public List<OtherItem> otherItems;
     public List<ItemBase> items;
-    public List<GameObject> weapons;
-    public Transform rightHandParent;
     private TestSY _testSY;
     protected override void Awake()
     {
         base.Awake();
         
-        //아이템 장착 테스트
-        _testSY = FindObjectOfType<TestSY>();
-        for (int i = 0; i < weapons.Count; i++)
-        {
-            weapons[i].SetActive(false);
-        }
+        // //아이템 장착 테스트
+        // _testSY = FindObjectOfType<TestSY>();
+        // for (int i = 0; i < weapons.Count; i++)
+        // {
+        //     weapons[i].SetActive(false);
+        // }
     }
     
     public void SetCurrentEquip(ItemBase item)
