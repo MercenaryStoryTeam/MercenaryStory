@@ -9,7 +9,6 @@ public class InventoryPanel : MonoBehaviour
 {
     public CanvasGroup invenCanvasGroup;
     public GameObject panel;
-    public List<InventorySlot> slots;
     
     public Button invenCloseButton;
     public Text currentGoldText;

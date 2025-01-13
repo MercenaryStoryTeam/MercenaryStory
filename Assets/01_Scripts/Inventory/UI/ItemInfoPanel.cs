@@ -17,13 +17,12 @@ public class ItemInfoPanel : MonoBehaviour
     public Text itemDescription;
     public Text firstOptionText;
     
-    public Button firstButton;
-    public Button secondButton;
+    public Button firstOptionButton;
+    public Button secondOptionButton;
     public Button closeButton;
 
     public GameObject secondOption;
     
-    private TestSY _testSy;
     private InventorySlot currentSelectedSlot;
 
     private void Awake()
@@ -39,8 +38,8 @@ public class ItemInfoPanel : MonoBehaviour
     
     private void InfoButtonOnClick()
     {
-        firstButton.onClick.AddListener(EquipItemButtonClick);
-        secondButton.onClick.AddListener(RemoveItemButtonClick);
+        firstOptionButton.onClick.AddListener(EquipItemButtonClick);
+        secondOptionButton.onClick.AddListener(RemoveItemButtonClick);
         closeButton.onClick.AddListener(CloseButtonClick);
     }
     
@@ -71,12 +70,9 @@ public class ItemInfoPanel : MonoBehaviour
     
     private void EquipItemButtonClick()
     {
+        EquipmentPanel equipment = FindObjectOfType<EquipmentPanel>();
         print("장착");
-        
-        //테스트용임 나중에 고칠 예정
-        // _testSy.isEquipped = true;
-        // UIManager.Instance.equipment.currentEquipImage.sprite = currentItemImage.sprite;
-        
+        equipment.SetEquipImage(SelectedSlot());
         UIManager.Instance.CloseItemInfoPanel();
     }
 

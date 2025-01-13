@@ -9,10 +9,8 @@ public class EquipmentPanel : MonoBehaviour
 {
     
     public Image currentEquipImage;
-    private TestSY _testSy;
     private void Awake()
     {
-        _testSy = FindObjectOfType<TestSY>();
     }
 
     private void Update()
@@ -20,9 +18,18 @@ public class EquipmentPanel : MonoBehaviour
        UpdateUI();
     }
 
+    public void SetEquipImage(InventorySlot slot)
+    {
+        if (slot.item.itemClass == 1 && slot != null && slot.item != null)
+        {
+            currentEquipImage.sprite = slot.item.image;
+        }
+    }
+    
     private void UpdateUI()
     {
-        if (_testSy.isEquipped == false)
+        print(currentEquipImage);
+        if (currentEquipImage.sprite == null)
         {
             currentEquipImage.enabled = false;
         }
