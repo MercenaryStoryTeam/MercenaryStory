@@ -13,6 +13,7 @@ public class EquipmentPanel : MonoBehaviour
     private void Awake()
     {
         _testSY = FindObjectOfType<TestSY>();
+        currentEquipImage.enabled = false; // 인벤토리 열 때 none 이미지 잠깐 보이는 거 방지
     }
 
     private void Update()

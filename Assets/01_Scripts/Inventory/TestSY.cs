@@ -3,13 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class TestSY : MonoBehaviour
 {
-    private int currentOption;
     private Inventory inventory;
-    public bool isEquipped = false;
     public ItemBase currentWeapon;
     public float myGold = 0;
     

@@ -74,7 +74,8 @@ public class ShopPanel : MonoBehaviour
 
 		if (!isItemInSellSlot)
 		{
-			// PanelManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.", () => PanelManager.Instance.popUp.PopUpClose());
+			UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.", 
+				() => UIManager.Instance.popUp.PopUpClose());
 		}
 	}
 

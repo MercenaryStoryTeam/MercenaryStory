@@ -13,6 +13,7 @@ public class PopUp : MonoBehaviour
 	private void Awake()
 	{
 		closeButton.onClick.AddListener(CloseButtonClick);
+		PopUpClose();
 	}
 
 	private void Update()

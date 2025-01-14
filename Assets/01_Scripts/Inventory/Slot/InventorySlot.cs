@@ -2,10 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Linq;
 
 public enum SlotType
 {
@@ -81,7 +78,8 @@ public class InventorySlot : MonoBehaviour
 
 		if (item.itemClass == 3)
 		{
-			// PanelManager.Instance.popUp.PopUpOpen("해당 아이템을\n상인이 원하지 않습니다.", () => PanelManager.Instance.popUp.PopUpClose());
+			UIManager.Instance.popUp.PopUpOpen("해당 아이템을\n상인이 원하지 않습니다.",
+				() => UIManager.Instance.popUp.PopUpClose());
 			return;
 		}
 
