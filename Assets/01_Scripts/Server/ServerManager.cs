@@ -24,6 +24,7 @@ public class ServerManager
 		};
 
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
+		ChatManager.Instance.ChatStart(roomName);
 	}
 
 	public static void LoadScene(string sceneName)

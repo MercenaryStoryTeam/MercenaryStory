@@ -122,52 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &24703868
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 24703869}
-  - component: {fileID: 24703870}
-  m_Layer: 0
-  m_Name: PhotonManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &24703869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24703868}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &24703870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24703868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26c3b37adaeacdd42b9e68894cd91ad8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  state: 0
-  isReadyToJoinGameServer: 0
 --- !u!1 &59358210
 GameObject:
   m_ObjectHideFlags: 0
@@ -6059,8 +6013,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2089816087}
   - component: {fileID: 2089816088}
+  - component: {fileID: 2089816090}
+  - component: {fileID: 2089816089}
   m_Layer: 0
-  m_Name: FirebaseManager
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6094,6 +6050,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+--- !u!114 &2089816089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089816085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13799f4f923da8a4d9d2f84e601afc70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  currentChannel: 
+  chatPanel: {fileID: 0}
+--- !u!114 &2089816090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089816085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26c3b37adaeacdd42b9e68894cd91ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  isReadyToJoinGameServer: 0
 --- !u!1 &2092515520
 GameObject:
   m_ObjectHideFlags: 0
@@ -6543,5 +6528,4 @@ SceneRoots:
   - {fileID: 127619142}
   - {fileID: 1169491726}
   - {fileID: 2089816087}
-  - {fileID: 24703869}
   - {fileID: 1503444831}

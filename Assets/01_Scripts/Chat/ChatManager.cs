@@ -10,6 +10,10 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 {
 	private static ChatManager _instance;
 	private ChatClient _client;
+	public ChatState state = 0;
+	public string currentChannel;
+
+	public ChatPanel chatPanel;
 
 	public static ChatManager Instance
 	{
@@ -51,6 +55,26 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 		_client.ConnectUsingSettings(chatSettings);
 	}
 
+	public void ChatStart(string roomName)
+	{
+		_client.Subscribe(new string[] { roomName });
+	}
+
+	public void OnChatStateChange(ChatState state)
+	{
+		if (this.state != state)
+		{
+			print($"Chat state changed: {state}");
+			this.state = state;
+		}
+	}
+
+	public void OnSubscribed(string[] channels, bool[] results)
+	{
+		currentChannel = channels[0];
+		print($"채팅 시작. current channel: {currentChannel}");
+	}
+
 	public void DebugReturn(DebugLevel level, string message)
 	{
 	}
@@ -63,19 +87,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 	{
 	}
 
-	public void OnChatStateChange(ChatState state)
-	{
-	}
-
 	public void OnGetMessages(string channelName, string[] senders, object[] messages)
 	{
 	}
 
 	public void OnPrivateMessage(string sender, object message, string channelName)
-	{
-	}
-
-	public void OnSubscribed(string[] channels, bool[] results)
 	{
 	}
 
