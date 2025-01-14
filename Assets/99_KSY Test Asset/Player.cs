@@ -75,9 +75,6 @@ public class Player : MonoBehaviour
         // 현재 체력이 0이하면 die 호출
         if (PlayerData.Instance.currentHp <= 0)
         {
-            // 플레이어가 사망한 위치 저장
-            PlayerData.Instance.SaveDeathPosition();
-
             // die 호출
             Die();
         }
@@ -93,6 +90,9 @@ public class Player : MonoBehaviour
 
         // die 애니메이션 실행
         playerMove.Die();
+
+        // 현재 체력을 최대 체력으로 초기화
+        PlayerData.Instance.currentHp = PlayerData.Instance.maxHp;
 
         // die 상태에서 씬 전환
         // 일정 시간 후 씬 전환
