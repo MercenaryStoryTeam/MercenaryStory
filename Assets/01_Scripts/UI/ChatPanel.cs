@@ -8,11 +8,17 @@ public class ChatPanel : MonoBehaviour
 	public Button sendButton;
 	public RectTransform messageContent;
 	public Text messageEntryPrefab;
+	public Image notification;
 
 	private void Awake()
 	{
 		closeButton.onClick.AddListener(OnCloseButtonClick);
 		sendButton.onClick.AddListener(OnSendButtonClick);
+	}
+
+	private void OnEnable()
+	{
+		notification.gameObject.SetActive(false);
 	}
 
 	private void OnCloseButtonClick()
@@ -33,5 +39,13 @@ public class ChatPanel : MonoBehaviour
 	{
 		var entry = Instantiate(messageEntryPrefab, messageContent);
 		entry.text = $"{nickName}: {message}";
+	}
+
+	public void NotificationOn()
+	{
+		if (!gameObject.activeSelf)
+		{
+			notification.gameObject.SetActive(true);
+		}
 	}
 }

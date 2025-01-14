@@ -1870,7 +1870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &674724812
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7587,6 +7587,7 @@ MonoBehaviour:
   sendButton: {fileID: 3275740683969419989}
   messageContent: {fileID: 753361274}
   messageEntryPrefab: {fileID: 8639304128118789556, guid: fa3fc28c8252fd541825f553dbeffb97, type: 3}
+  notification: {fileID: 674724813}
 --- !u!224 &7205233693026116745
 RectTransform:
   m_ObjectHideFlags: 0

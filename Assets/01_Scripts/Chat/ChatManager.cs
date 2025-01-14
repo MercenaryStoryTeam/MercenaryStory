@@ -92,6 +92,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
 	public void OnGetMessages(string channelName, string[] senders, object[] messages)
 	{
+		chatPanel.NotificationOn();
 		for (int i = 0; i < senders.Length; i++)
 		{
 			chatPanel.ReceiveChatMessage(senders[i], messages[i].ToString());
