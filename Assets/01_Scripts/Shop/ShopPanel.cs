@@ -16,8 +16,9 @@ public class ShopPanel : MonoBehaviour
 	public Button sellButton;
 	public Button closeButton;
 
-	[HideInInspector] public float sellPrice;
-
+	[HideInInspector] public float sellPrice = 0;
+	[HideInInspector] public Dictionary<InventorySlot, int> originalCounts = new Dictionary<InventorySlot, int>();
+		
 	private TestSY _testsy;
 	private InventorySlot selectedSlot;
 	private InventorySlot sellSlot;
@@ -47,9 +48,11 @@ public class ShopPanel : MonoBehaviour
 		{
 			if (inventorySlots[i].item != null)
 			{
-				holdSlots[i].AddItem(inventorySlots[i].item);
+				holdSlots[i].AddItem(inventorySlots[i].item); 
+				holdSlots[i].slotCount = inventorySlots[i].slotCount;
 			}
 		}
+		
 	}
 
 	private void ShopButtonClicked()
@@ -62,16 +65,22 @@ public class ShopPanel : MonoBehaviour
 	{
 		bool isItemInSellSlot = false;
 
-		foreach (InventorySlot slot in sellSlots)
+		for (int i = 0; i < sellSlots.Count; i++)
 		{
-			if (slot.item != null)
+			if (sellSlots[i].item != null)
 			{
+				Inventory inven = FindObjectOfType<Inventory>();
+				print(sellSlots[i]);
+				inven.DeleteItem(sellSlots[i]);
 				isItemInSellSlot = true;
+				_testsy.myGold += sellPrice;
+				sellPrice = 0;
 				UIManager.Instance.CloseShopPanel();
+				print($"{inven.myItems}");
 				break;
 			}
 		}
-
+		
 		if (!isItemInSellSlot)
 		{
 			UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.", 
@@ -81,12 +90,13 @@ public class ShopPanel : MonoBehaviour
 
 	private void CloseButtonClick()
 	{
+		
 		UIManager.Instance.CloseShopPanel();
 	}
 
 	public void TryOpenShop()
 	{
-		if (Input.GetKeyDown(KeyCode.O)) // 테스트용 키 설정
+		if (Input.GetKeyDown(KeyCode.E)) // 테스트용 키 설정
 		{
 			if (!UIManager.Instance.isShopActive)
 			{
