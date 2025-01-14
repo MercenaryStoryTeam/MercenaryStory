@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
         // PlayerMove 스크립트가 없을 경우
         if (playerMove == null)
         {
-            Debug.LogError("PlayerMove 참조x -> PlayerMove 스트립트가 Player 오브젝트에 추가되어 있는지 확인하세요.");
+            Debug.LogError("PlayerMove 참조x -> PlayerMove 스크립트가 Player 오브젝트에 추가되어 있는지 확인하세요.");
         }
     }
 
@@ -75,33 +75,35 @@ public class Player : MonoBehaviour
         // 현재 체력이 0이하면 die 호출
         if (PlayerData.Instance.currentHp <= 0)
         {
+            // 플레이어가 사망한 위치 저장
+            PlayerData.Instance.SaveDeathPosition();
+
+            // die 호출
             Die();
         }
     }
 
-        // 플레이어 die 처리
-        private void Die()
-        {
-            // 사운드 재생
-            SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
+    // 플레이어 die 처리
+    private void Die()
+    {
+        // 사운드 재생
+        SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
 
-            Debug.Log("Player Die");
+        Debug.Log("Player Die");
 
-            // die 애니메이션 실행
-            playerMove.Die();
+        // die 애니메이션 실행
+        playerMove.Die();
 
-            // die 상태에서 씬 전환
-            // 일정 시간 후 씬 전환
-            Invoke("LoadNextScene", loadSceneDelay);
-        }
+        // die 상태에서 씬 전환
+        // 일정 시간 후 씬 전환
+        Invoke("LoadNextScene", loadSceneDelay);
+    }
 
     // 다음 씬으로 전환
     private void LoadNextScene()
     {
         if (!string.IsNullOrEmpty(nextSceneName))
         {
-            // 다음 씬에서 현재 체력을 최대 체력으로 초기화
-            PlayerData.Instance.currentHp = PlayerData.Instance.maxHp;
             SceneManager.LoadSceneAsync(nextSceneName);
         }
         else
@@ -110,5 +112,3 @@ public class Player : MonoBehaviour
         }
     }
 }
-
-// 중간

@@ -751,6 +751,7 @@ MonoBehaviour:
   rotationZ: 0
   fieldOfView: 35
   damping: 3
+  playerTag: Player
 --- !u!114 &550660471
 MonoBehaviour:
   m_ObjectHideFlags: 0
