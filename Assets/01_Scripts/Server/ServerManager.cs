@@ -31,7 +31,9 @@ public class ServerManager
 
 	public static void PlayerSpawn(Transform spawnPoint)
 	{
-		PhotonNetwork.Instantiate("LJW_Player", spawnPoint.position, Quaternion.identity)
-			.name = PhotonNetwork.NickName;
+		PhotonNetwork
+			.Instantiate(
+				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
+				spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
 	}
 }
