@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ChatPanel : MonoBehaviour
 {
+	[Header("채팅 재전송 가능 시간")] public float chatCool = 1f;
 	public Button closeButton;
 	public InputField messageInput;
 	public Button sendButton;
@@ -10,6 +12,8 @@ public class ChatPanel : MonoBehaviour
 	public Text messageEntryPrefab;
 	public Image notification;
 	public Button chatButton;
+
+	private bool isCooldown = false;
 
 	private void Awake()
 	{
@@ -34,11 +38,26 @@ public class ChatPanel : MonoBehaviour
 
 	private void OnSendButtonClick()
 	{
+		if (isCooldown)
+		{
+			UIManager.Instance.popUp.PopUpOpen("아직 메시지를 전송할 수 없습니다.",
+				() => UIManager.Instance.popUp.PopUpClose());
+			return;
+		}
+
 		string message = messageInput.text;
 		if (string.IsNullOrEmpty(message)) return;
 		ChatManager.Instance.SendChatMessage(message);
 		messageInput.text = "";
-		messageInput.ActivateInputField();
+		// messageInput.ActivateInputField();
+		StartCoroutine(SendCooldownCoroutine());
+	}
+
+	private IEnumerator SendCooldownCoroutine()
+	{
+		isCooldown = true;
+		yield return new WaitForSeconds(chatCool);
+		isCooldown = false;
 	}
 
 	public void ReceiveChatMessage(string nickName, string message)

@@ -27,6 +27,7 @@ public class UIManager : SingletonManager<UIManager>
 		equipment = FindObjectOfType<EquipmentPanel>();
 		inventorySystem = FindObjectOfType<Inventory>();
 		popUp = FindObjectOfType<PopUp>();
+		popUp.PopUpClose();
 	}
 
 	#region Inventory
