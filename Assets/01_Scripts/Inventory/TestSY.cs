@@ -6,12 +6,8 @@ using UnityEngine;
 
 public class TestSY : MonoBehaviour
 {
-    private int currentOption;
     private Inventory inventory;
-    public bool isEquipped = false;
     public ItemBase currentWeapon;
-    public Transform weaponRightHand;
-    public Transform weaponLeftHand;
     public float myGold = 0;
     
     private void Awake()
