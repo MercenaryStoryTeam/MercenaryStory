@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ItemInfoPanel : MonoBehaviour
@@ -24,7 +22,6 @@ public class ItemInfoPanel : MonoBehaviour
     public GameObject secondOption;
     
     private InventorySlot currentSelectedSlot;
-
     private void Awake()
     {
         itemInfoPanel.SetActive(false);
@@ -70,10 +67,12 @@ public class ItemInfoPanel : MonoBehaviour
     
     private void EquipItemButtonClick()
     {
-        EquipmentPanel equipment = FindObjectOfType<EquipmentPanel>();
-        print("장착");
-        equipment.SetEquipImage(currentSelectedSlot);
-        ItemManager.Instance.SetCurrentEquip(currentSelectedSlot.item);
+        EquipmentPanel equipPanel = FindObjectOfType<EquipmentPanel>(); 
+        Equipment equipment = FindObjectOfType<Equipment>();
+
+        equipment.SetCurrentEquip(currentSelectedSlot);
+        equipPanel.SetEquipImage(currentSelectedSlot);
+
         UIManager.Instance.CloseItemInfoPanel();
     }
 
