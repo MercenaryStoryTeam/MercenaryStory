@@ -6,10 +6,13 @@ using UnityEngine.SceneManagement;
 public class Teleport : MonoBehaviour
 {
     [Header("전환할 씬 이름")]
-    [SerializeField] private string nextSceneName;
+    public string nextSceneName;
+
+    [Header("씬 로드 지연시간")]
+    public int loadSceneDelay = 1;
 
     [Header("플레이어 레이어")]
-    [SerializeField] private LayerMask playerLayer;
+    public LayerMask playerLayer;
 
     private bool sceneLoaded = false;
 
@@ -22,12 +25,21 @@ public class Teleport : MonoBehaviour
             // 씬 전환 중복 호출 방지
             sceneLoaded = true;
 
+            //-------------------불필요하면 삭제 처리---------------------
+            // Teleport 오브젝트의 마테리얼 색상 변경 (빨간색)
+            Renderer teleportRenderer = GetComponent<Renderer>();
+            if (teleportRenderer != null)
+            {
+                teleportRenderer.material.color = Color.red; 
+            }
+            //-----------------------------------------------------------
+
             // 일정 시간 후 씬 전환
-            Invoke("LoadNextScene", 0f);
+            Invoke("LoadNextScene", loadSceneDelay);
         }
     }
 
-    // 다음 씬으로 전환 처리
+    // 다음 씬으로 전환
     public void LoadNextScene()
     {
         if (!string.IsNullOrEmpty(nextSceneName))
@@ -41,3 +53,5 @@ public class Teleport : MonoBehaviour
         }
     }
 }
+
+//

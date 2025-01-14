@@ -4,19 +4,23 @@ using Cinemachine;
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 public class VirtualCameraController : MonoBehaviour
 {
-    [Header("Ä«¸Ş¶ó ¿ÀÇÁ¼Â (Y=60 °íÁ¤)")]
+    [Header("ì¹´ë©”ë¼ ì˜¤í”„ì…‹ (Y=60 ê³ ì •)")]
     public float offsetX = -42f;
     public float offsetZ = -42f;
     private const float offsetY = 60f;
 
-    [Header("Ä«¸Ş¶ó È¸Àü (Y=45 °íÁ¤)")]
+    [Header("ì¹´ë©”ë¼ íšŒì „ (Y=45 ê³ ì •)")]
     public float rotationX = 45f;
     public float rotationZ = 0f;
     private const float rotationY = 45f;
 
-    [Header("Ä«¸Ş¶ó ¼³Á¤")]
+    [Header("ì¹´ë©”ë¼ ì„¤ì •")]
     [Range(10f, 100f)] public float fieldOfView = 35f;
     [Range(1f, 5f)] public float damping = 3f;
+
+    [Header("í”Œë ˆì´ì–´ íƒœê·¸")]
+    [Tooltip("1.Player íƒœê·¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ë¥¼ Follow ë° LookAt ìë™ í• ë‹¹\n2.ì„¤ì •ì´ ë˜ì–´ì•¼ ì¹´ë©”ë¼ê°€ í”Œë ˆì´ì–´ë¥¼ ë”°ë¼ ì´ë™í•¨")]
+    public string playerTag = "Player";
 
     private CinemachineVirtualCamera vCam;
     private CinemachineTransposer transposer;
@@ -26,28 +30,41 @@ public class VirtualCameraController : MonoBehaviour
         vCam = GetComponent<CinemachineVirtualCamera>();
         if (!vCam)
         {
-            Debug.LogError("CinemachineVirtualCamera°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.LogError("CinemachineVirtualCameraê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             enabled = false;
             return;
+        }
+
+        // Player íƒœê·¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ë¥¼ Follow ë° LookAtìœ¼ë¡œ ìë™ í• ë‹¹
+        // ì„¤ì •ì´ ë˜ì–´ì•¼ ì¹´ë©”ë¼ê°€ í”Œë ˆì´ì–´ë¥¼ ë”°ë¼ ì´ë™í•¨
+        GameObject player = GameObject.FindWithTag(playerTag);
+        if (player != null)
+        {
+            vCam.Follow = player.transform;
+            vCam.LookAt = player.transform;
+        }
+        else
+        {
+            Debug.LogError($"{playerTag} íƒœê·¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
     }
 
     void Start()
     {
-        // Body¸¦ Transposer·Î »ç¿ë (ÀÎ½ºÆåÅÍ¿¡¼­µµ ÁöÁ¤ °¡´É)
+        // Bodyë¥¼ Transposerë¡œ ì‚¬ìš© (ì¸ìŠ¤í™í„°ì—ì„œë„ ì§€ì • ê°€ëŠ¥)
         transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
 
-        // vCam¿¡ ¼³Á¤µÈ Lens FOV
+        // vCamì— ì„¤ì •ëœ Lens FOV
         vCam.m_Lens.FieldOfView = fieldOfView;
 
-        // ¿ÀÇÁ¼Â, È¸Àü, Damping ÃÊ±â ¹İ¿µ
+        // ì˜¤í”„ì…‹, íšŒì „, Damping ì´ˆê¸° ë°˜ì˜
         ConfigureTransposer();
         transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
     }
 
     void LateUpdate()
     {
-        // ¸Å ÇÁ·¹ÀÓ °ª ¹İ¿µ
+        // ë§¤ í”„ë ˆì„ ê°’ ë°˜ì˜
         vCam.m_Lens.FieldOfView = fieldOfView;
         ConfigureTransposer();
         transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
@@ -75,5 +92,3 @@ public class VirtualCameraController : MonoBehaviour
         }
     }
 }
-
-// ³¡
