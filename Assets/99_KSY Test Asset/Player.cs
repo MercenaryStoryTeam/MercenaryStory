@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -9,16 +10,19 @@ public class Player : MonoBehaviour
     public float maxHp = 100f;
 
     [Header("플레이어 흡혈 비율")]
-    public float suckBlood = 3;
+    public float suckBlood = 3f;
 
     // PlayerMove 스크립트 참조
     private PlayerMove playerMove;
 
-    private void Start()
+    private void Awake()
     {
         // 현재 체력을 최대 체력으로 초기화
         currentHp = maxHp;
+    }
 
+    private void Start()
+    {
         // PlayerMove 스크립트 참조
         playerMove = GetComponent<PlayerMove>();
 
@@ -28,7 +32,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 흡혈 
+    // 흡혈 기능
     public void SuckBlood()
     {
         if (currentHp <= 0)
@@ -36,57 +40,72 @@ public class Player : MonoBehaviour
             return;
         }
 
-        // suckBlood 값을 백분율 처리
-        float suckBlood1 = suckBlood / 100f;
+        // suckBlood 값을 백분율로 처리
+        float suckBloodPercentage = suckBlood / 100f;
 
-        // 결과적으로 정수값을 %로 전환해서 사용
-        float healAmount = maxHp * suckBlood1;
+        // 최대 체력의 suckBloodPercentage 만큼 회복
+        float healAmount = maxHp * suckBloodPercentage;
 
         currentHp += healAmount;
-
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
-        Debug.Log($"흡혈 회복량: {healAmount}/Current HP: {currentHp}/{maxHp}");
+        Debug.Log($"흡혈 회복량: {healAmount}/현재 체력: {currentHp}/{maxHp}");
     }
 
-    // 데미지
+    // 데미지 처리
     public void TakeDamage(float damage)
     {
-        // 현재 체력 0이하면 더이상 데미지 처리x -> die하면 데미지 안받는다.
         if (currentHp <= 0)
         {
             return;
         }
 
-        // 현재 체력에서 데미지 처리
         currentHp -= damage;
-
-        // 현재 체력 범위 지정 -> 0과 최대 체력 사이로 제한
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
-        Debug.Log($"Player HP: {currentHp}/{maxHp} (받은 Damage: {damage})");
+        Debug.Log($"플레이어 체력: {currentHp}/{maxHp} (받은 데미지: {damage})");
 
-        // 현재 체력 0이하면 die 메서드 호출
         if (currentHp <= 0)
         {
             Die();
         }
     }
 
-    // 죽음
+    // 플레이어 die 처리
     private void Die()
     {
-        // die 사운드 재생 (필요에 맞게 수정 가능)
+        // 사운드 재생
         SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
 
         Debug.Log("Player Die");
 
-        // die 애니 실행
-        if (playerMove != null)
-        {
-            playerMove.Die();
-        }
+        // die 애니메이션 실행
+        playerMove.Die();
+
+        // 일정 시간 후 씬 전환
+        Invoke("LoadNextScene", 1f);
+    }
+
+    // 목적: die상태에서 씬 전환
+    private void LoadNextScene()
+    {
+        SceneManager.LoadSceneAsync("GameOverScene");
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("씬 로드됨: " + scene.name);
     }
 }
 
-//중간 완성
+//

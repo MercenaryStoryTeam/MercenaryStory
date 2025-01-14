@@ -315,21 +315,6 @@ public class PlayerMove : MonoBehaviourPun
 
         return (camForward * inputZ + camRight * inputX).normalized;
     }
-
-    // 씬 로드 시 상태를 초기화하는 메서드
-    public void ResetStateOnSceneLoad()
-    {
-        if (currentState == State.Die)
-        {
-            isDead = false;
-            TransitionToState(State.Idle, force: true);
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-
-            animator.ResetTrigger("Die");
-            animator.SetFloat("Speed", 0f);
-        }
-    }
 }
 
 //

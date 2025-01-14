@@ -74,7 +74,7 @@ public class MonsterTest : MonoBehaviour
         }
     }
 
-    // 몬스터 die 처리 메서드
+    // 몬스터 die 처리
     private void Die()
     {
         // die 사운드 재생 (필요에 맞게 수정 가능)
