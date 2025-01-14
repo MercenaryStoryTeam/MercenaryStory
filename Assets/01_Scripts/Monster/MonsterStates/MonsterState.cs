@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public abstract class MonsterState
 {
     public abstract void EnterState(Monster entity);
