@@ -6,7 +6,9 @@ using UnityEngine;
 public class Equipment : MonoBehaviour
 {
     public GameObject rightHand;
+    public GameObject panelRightHand;
     public GameObject leftHand;
+    public GameObject panelLeftHand;
     
     private TestSY _testSY;
 
@@ -34,11 +36,18 @@ public class Equipment : MonoBehaviour
             if (slot.item.prefab.Count > 0) 
             {
                 Instantiate(slot.item.prefab[0], rightHand.transform);
-
+                GameObject panelSword = Instantiate(slot.item.prefab[0], panelRightHand.transform);
+                panelSword.layer = LayerMask.NameToLayer("Object");
 
                 if (slot.item.prefab.Count > 1)
                 {
                     Instantiate(slot.item.prefab[1], leftHand.transform);
+                    GameObject panelShield = Instantiate(slot.item.prefab[1], panelLeftHand.transform);
+                    panelShield.layer = LayerMask.NameToLayer("Object");
+                    for (int i = 0; i < panelShield.transform.childCount; i++)
+                    {
+                        panelShield.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("Object");
+                    }
                 }
             
                 Debug.Log($"{slot.item.name} 장착 완료");
@@ -65,11 +74,18 @@ public class Equipment : MonoBehaviour
             {
                 DestroyChildObject();
                 Instantiate(slot.item.prefab[0], rightHand.transform);
-                print($"오른손에 장착한 무기: {slot.item.prefab[0].name}");
+                GameObject panelSword = Instantiate(slot.item.prefab[0], panelRightHand.transform);
+                panelSword.layer = LayerMask.NameToLayer("Object");
+                
                 if (slot.item.prefab.Count > 1)
                 {
                     Instantiate(slot.item.prefab[1], leftHand.transform);
-                    print($"왼손에 장착한 무기: {slot.item.prefab[1].name}");
+                    GameObject panelShield = Instantiate(slot.item.prefab[1], panelLeftHand.transform);
+                    panelShield.layer = LayerMask.NameToLayer("Object");
+                    for (int i = 0; i < panelShield.transform.childCount; i++)
+                    {
+                        panelShield.transform.GetChild(i).gameObject.layer = LayerMask.NameToLayer("Object");
+                    }
                 }
                 Debug.Log($"{slot.item.name} 장착 완료");
             }
@@ -82,13 +98,21 @@ public class Equipment : MonoBehaviour
         for (int i = 0; i < rightHand.transform.childCount; i++)
         {
             Destroy(rightHand.transform.GetChild(i).gameObject);
-            print(rightHand.transform.GetChild(i).gameObject.name);
         }
 
         for (int i = 0; i < leftHand.transform.childCount; i++)
         {
             Destroy(leftHand.transform.GetChild(i).gameObject);
-            print(leftHand.transform.GetChild(i).gameObject.name);
+        }
+
+        for (int i = 0; i < panelRightHand.transform.childCount; i++)
+        {
+            Destroy(panelRightHand.transform.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < panelLeftHand.transform.childCount; i++)
+        {
+            Destroy(panelLeftHand.transform.GetChild(i).gameObject);
         }
     }
     
