@@ -59,19 +59,8 @@ public class UIManager : SingletonManager<UIManager>
 
     public void CloseShopPanel()
     {
-        foreach (InventorySlot slot in shop.sellSlots)
-        {
-            slot.RemoveItem();
-        }
-
-        foreach (InventorySlot slot in shop.holdSlots)
-        {
-            //행동 초기화 로직 추가
-            slot.canvasGroup.alpha = 1f;
-            slot.canvasGroup.interactable = true;
-        }
-        
         isShopActive = false;
+        shop.RestoreOriginalState();
         shop.shopPanel.SetActive(false);
     }
     
