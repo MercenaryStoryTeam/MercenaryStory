@@ -120,3 +120,4 @@ ProjectSettings/Packages/com.unity.testtools.codecoverage
 /Assets/ExternalDependencyManager/
 /Assets/Firebase/
 ProjectSettings/GvhProjectSettings.xml
+ProjectSettings/EditorBuildSettings.asset
