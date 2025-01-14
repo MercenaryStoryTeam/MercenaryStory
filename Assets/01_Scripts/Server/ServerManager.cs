@@ -6,8 +6,11 @@ public class ServerManager
 {
 	public static void ConnectLobby()
 	{
-		PhotonNetwork.NickName = FirebaseManager.Instance.CurrentUserData.user_Name;
+		string nickName = FirebaseManager.Instance.CurrentUserData.user_Name;
+		PhotonNetwork.NickName = nickName;
+		ChatManager.Instance.SetNickName(nickName);
 		PhotonNetwork.ConnectUsingSettings();
+		ChatManager.Instance.ConnectUsingSettings();
 	}
 
 	public static void JoinOrCreatePersistentRoom(string roomName)
