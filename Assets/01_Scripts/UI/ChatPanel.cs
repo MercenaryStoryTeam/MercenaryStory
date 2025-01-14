@@ -9,6 +9,7 @@ public class ChatPanel : MonoBehaviour
 	public RectTransform messageContent;
 	public Text messageEntryPrefab;
 	public Image notification;
+	public Button chatButton;
 
 	private void Awake()
 	{
@@ -19,6 +20,11 @@ public class ChatPanel : MonoBehaviour
 	private void OnEnable()
 	{
 		notification.gameObject.SetActive(false);
+	}
+
+	private void OnDisable()
+	{
+		chatButton.gameObject.SetActive(true);
 	}
 
 	private void OnCloseButtonClick()

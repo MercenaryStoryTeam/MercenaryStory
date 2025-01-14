@@ -7588,6 +7588,7 @@ MonoBehaviour:
   messageContent: {fileID: 753361274}
   messageEntryPrefab: {fileID: 8639304128118789556, guid: fa3fc28c8252fd541825f553dbeffb97, type: 3}
   notification: {fileID: 674724813}
+  chatButton: {fileID: 1168072211}
 --- !u!224 &7205233693026116745
 RectTransform:
   m_ObjectHideFlags: 0

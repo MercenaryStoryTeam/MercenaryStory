@@ -154,6 +154,7 @@ public class UIManager : SingletonManager<UIManager>
 	public void ChatButtonClick()
 	{
 		chatPanel.gameObject.SetActive(true);
+		chatButton.gameObject.SetActive(false);
 	}
 
 	#endregion
