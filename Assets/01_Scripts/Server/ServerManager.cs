@@ -31,6 +31,7 @@ public class ServerManager
 	{
 		PhotonNetwork.LoadLevel(sceneName);
 		TitleUI.Instance.PanelCloseAll();
+		UIManager.Instance.chatButton.gameObject.SetActive(true);
 	}
 
 	public static void PlayerSpawn(Transform spawnPoint)

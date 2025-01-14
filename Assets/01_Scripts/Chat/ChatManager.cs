@@ -43,6 +43,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 		_client.Service();
 	}
 
+	#region Connect
+
 	public void SetNickName(string nickName)
 	{
 		_client.AuthValues = new ChatAuthValues(nickName);
@@ -54,6 +56,10 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 		ChatAppSettings chatSettings = appSettings.GetChatSettings();
 		_client.ConnectUsingSettings(chatSettings);
 	}
+
+	#endregion
+
+	#region Channel Subscribe
 
 	public void ChatStart(string roomName)
 	{
@@ -75,6 +81,25 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 		print($"채팅 시작. current channel: {currentChannel}");
 	}
 
+	#endregion
+
+	#region Message Send & Get
+
+	public void SendChatMessage(string message)
+	{
+		_client.PublishMessage(currentChannel, message);
+	}
+
+	public void OnGetMessages(string channelName, string[] senders, object[] messages)
+	{
+		for (int i = 0; i < senders.Length; i++)
+		{
+			chatPanel.ReceiveChatMessage(senders[i], messages[i].ToString());
+		}
+	}
+
+	#endregion
+
 	public void DebugReturn(DebugLevel level, string message)
 	{
 	}
@@ -84,10 +109,6 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 	}
 
 	public void OnConnected()
-	{
-	}
-
-	public void OnGetMessages(string channelName, string[] senders, object[] messages)
 	{
 	}
 
