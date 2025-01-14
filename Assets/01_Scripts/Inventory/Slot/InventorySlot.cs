@@ -71,7 +71,7 @@ public class InventorySlot : MonoBehaviour
 
 	private void MoveItemToSellSlot()
 	{
-		if (item == null || (item.itemClass == 2 && item.currentItemCount <= 0))
+		if (item == null || (item.itemClass == 2 && slotCount <= 0))
 		{
 			return;
 		}
@@ -94,12 +94,10 @@ public class InventorySlot : MonoBehaviour
 					canvasGroup.alpha = 0.5f;
 					canvasGroup.interactable = false;
 					sellSlot.AddItem(item);
-					UIManager.Instance.shop.sellPrice += sellSlot.item.price;
-					item.currentItemCount--;
+					UIManager.Instance.shop.sellPrice += item.price;
 					break;
 				}
 			} 
-			
 		}
 
 		if (item.itemClass == 2)
@@ -107,19 +105,27 @@ public class InventorySlot : MonoBehaviour
 			InventorySlot currentSellSlot = null;
 			foreach (InventorySlot slot in sellSlots)
 			{
-				if (slot.item != null && slot.item.name == item.name)
+				if (slot.item != null && 
+					slot.item.name == item.name && 
+					UIManager.Instance.shop.originalSlotState.ContainsKey(slot) &&
+					UIManager.Instance.shop.originalSlotState[slot] == this)
 				{
 					currentSellSlot = slot;
-					UIManager.Instance.shop.sellPrice += slot.item.price;
-					canvasGroup.alpha = 0.5f;
 					break;
 				}
 			}
 
 			if (currentSellSlot != null)
 			{
-				currentSellSlot.item.currentItemCount++;
-				item.currentItemCount--;
+				currentSellSlot.slotCount++;
+				slotCount--;
+				UIManager.Instance.shop.sellPrice += item.price;
+				canvasGroup.alpha = 0.5f;
+
+				if (slotCount <= 0)
+				{
+					canvasGroup.interactable = false;
+				}
 			}
 			else
 			{
@@ -127,13 +133,17 @@ public class InventorySlot : MonoBehaviour
 				{
 					if (sellSlot.item == null)
 					{
-						ItemBase sellItem = Instantiate(item);
-						sellItem.currentItemCount = 1;
+						sellSlot.AddItem(item);
+						sellSlot.slotCount = 1;
+						slotCount--;
+						UIManager.Instance.shop.sellPrice += item.price;
 						canvasGroup.alpha = 0.5f;
-						sellSlot.AddItem(sellItem);
-						UIManager.Instance.shop.sellPrice += sellSlot.item.price;
+						UIManager.Instance.shop.originalSlotState[sellSlot] = this;
 
-						item.currentItemCount--;
+						if (slotCount <= 0)
+						{
+							canvasGroup.interactable = false;
+						}
 						break;
 					}
 				}
