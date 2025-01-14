@@ -5,6 +5,8 @@ using UnityEngine;
 public enum BossStateType
 {
     Slash,
+    SlashChase,
+    Bite,
     Hunger,
     Blade,
     Charge,
@@ -29,6 +31,8 @@ public class BossStateMachine
         stateInstances = new Dictionary<BossStateType, BossState>
         {
             { BossStateType.Slash, new BossSlashState() },
+            { BossStateType.SlashChase, new BossSlashChaseState() },
+            { BossStateType.Bite, new BossBiteState() },
             { BossStateType.Hunger, new BossHungerState() },
             { BossStateType.Blade, new BossBladeState() },
             { BossStateType.Charge, new BossChargeState() },
