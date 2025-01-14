@@ -70,4 +70,5 @@ public class InventoryPanel : MonoBehaviour
     {
         currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
     }
+
 }

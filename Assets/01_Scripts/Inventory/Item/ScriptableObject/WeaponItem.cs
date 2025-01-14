@@ -2,20 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "New Weapon Item", menuName = "Items/Weapon Item")]
 [Serializable]
 public class WeaponItem : ItemBase
 {
-    public int Rank;
-    public float Damage;
-    public float sellPrice;
-    public bool isInstall;
+    public int Rank; // 아이템 등급
+    public float Damage; // 공격력
+    public bool isEquiped; // 장착 여부
     private void Awake()
     {
-        isSellable = true;
-        isStackable = false;
-        isInstall = false;
+        isEquiped = false;
     }
     
     

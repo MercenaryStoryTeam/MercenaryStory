@@ -13,6 +13,7 @@ public class Inventory : MonoBehaviour
     
     private void Update()
     {
+
     }
 
     //테스트용 드롭 구현
@@ -21,11 +22,12 @@ public class Inventory : MonoBehaviour
         int random = UnityEngine.Random.Range(0, allItems.Count);
         return allItems[random];
     }
+
     public void AddItemToInventory(ItemBase newItem)
     {
         if (newItem.itemClass == 1 || newItem.itemClass == 3)
         {
-            foreach (var slot in slots)
+            foreach (InventorySlot slot in slots)
             {
                 if (slot.item == null)
                 {
@@ -43,25 +45,27 @@ public class Inventory : MonoBehaviour
         
         else if (newItem.itemClass == 2)
         {
-            foreach (var slot in slots)
+            foreach (InventorySlot slot in slots)
             {
-                if (slot.item == newItem)
+                if (slot.item == newItem && !slot.IsFull())
                 {
                     myItems.Add(newItem);
                     newItem.currentItemCount++;
+                    slot.slotCount++;
                     Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
 
                     return;
                 }
             }
-
-            foreach (var slot in slots)
+            
+            foreach (InventorySlot slot in slots)
             {
                 if (slot.item == null)
                 {
                     slot.AddItem(newItem);
                     myItems.Add(newItem);
                     newItem.currentItemCount++;
+                    slot.slotCount++;
                     newItem.isHave = true;
                     Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
 
@@ -69,30 +73,52 @@ public class Inventory : MonoBehaviour
                 }
             }
         }
-
-
-
     }
 
-    public void RemoveItemFromInventory(ItemBase item)
+    public void DeleteItem(InventorySlot slot)
     {
-        foreach (var slot in slots)
+        if (slot != null && slot.item != null)
         {
-            if (slot.item == item)
+            if (slot.item.itemClass == 2)
             {
-                slot.RemoveItem();
-                if (item.currentItemCount <= 0)
-                {
-                    item.isHave = false;
-                }
+                slot.item.currentItemCount -= slot.slotCount;
+            }
 
-                if (item.itemClass == 2)
+            else if (slot.item.itemClass == 1)
+            {
+                slot.item.currentItemCount--;
+            }
+            
+            Debug.Log($"삭제된 아이템: {slot.item.name}, 삭제되고 남은 아이템 개수: {slot.item.currentItemCount}");
+            myItems.Remove(slot.item);
+            slot.RemoveItem();
+            SlotArray();
+        }
+    }
+
+    public void SlotArray() // 슬롯 정렬
+    {
+        List<ItemBase> items = new List<ItemBase>();
+
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.item != null)
+            {
+                items.Add(slot.item);
+                slot.RemoveItem();
+            }
+        }
+
+        foreach (ItemBase item in items)
+        {
+            foreach (InventorySlot slot in slots)
+            {
+                if (slot.item == null)
                 {
-                    slot.RemoveItem();
-                    myItems.Remove(item);
+                    slot.AddItem(item);
+                    break;
                 }
             }
         }
     }
-
 }

@@ -7,12 +7,9 @@ using UnityEngine;
 [Serializable]
 public class OtherItem : ItemBase
 {
-    public float sellPrice;
     public int stackAmount = 10;
     private void Awake()
     {
-        isSellable = true;
-        isStackable = true;
         itemClass = 2;
     }
 }

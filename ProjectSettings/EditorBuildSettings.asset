@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/1_Scripts/PlayerCamera+Move/Camera_Move.unity
-    guid: 48d1bea05dfb1a64eb20c29b03938c8d
+  - enabled: 1
+    path: Assets/00_Scenes/Camera+Move.unity
+    guid: 07b6e3876157ce54185c49bc3cf7ed97
+  - enabled: 1
+    path: Assets/00_Scenes/Practice.unity
+    guid: 6d0d582e581502c4ab5ec834798367a6
   m_configObjects: {}

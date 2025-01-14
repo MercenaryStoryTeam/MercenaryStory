@@ -17,17 +17,16 @@ public class ItemInfoPanel : MonoBehaviour
     public Text itemDescription;
     public Text firstOptionText;
     
-    public Button firstButton;
-    public Button secondButton;
+    public Button firstOptionButton;
+    public Button secondOptionButton;
     public Button closeButton;
 
     public GameObject secondOption;
     
-    // private Inventory inventory;
-    private TestSY _testSy;
+    private InventorySlot currentSelectedSlot;
+
     private void Awake()
     {
-        // inventory = FindObjectOfType<Inventory>();
         itemInfoPanel.SetActive(false);
         InfoButtonOnClick();
     }
@@ -39,8 +38,8 @@ public class ItemInfoPanel : MonoBehaviour
     
     private void InfoButtonOnClick()
     {
-        firstButton.onClick.AddListener(EquipItemButtonClick);
-        secondButton.onClick.AddListener(RemoveItemButtonClick);
+        firstOptionButton.onClick.AddListener(EquipItemButtonClick);
+        secondOptionButton.onClick.AddListener(RemoveItemButtonClick);
         closeButton.onClick.AddListener(CloseButtonClick);
     }
     
@@ -51,18 +50,34 @@ public class ItemInfoPanel : MonoBehaviour
 
     private void RemoveItemButtonClick()
     {
-        print("아이템 삭제");
+        Inventory inventory = FindObjectOfType<Inventory>();
+        inventory.DeleteItem(currentSelectedSlot);
         UIManager.Instance.CloseItemInfoPanel();
+    }
+
+    private InventorySlot SelectedSlot()
+    {
+        Inventory inventory = FindObjectOfType<Inventory>();
+        foreach (InventorySlot slot in inventory.slots)
+        {
+            if (slot.item != null && slot.item.name == itemName.text)
+            {
+                return slot;
+            }
+        }
+        return null;
     }
     
     private void EquipItemButtonClick()
     {
+        EquipmentPanel equipment = FindObjectOfType<EquipmentPanel>();
         print("장착");
-        
-        //테스트용임 나중에 고칠 예정
-        // _testSy.isEquipped = true;
-        // UIManager.Instance.equipment.currentEquipImage.sprite = currentItemImage.sprite;
-        
+        equipment.SetEquipImage(SelectedSlot());
         UIManager.Instance.CloseItemInfoPanel();
+    }
+
+    public void SetCurrentSlot(InventorySlot slot)
+    {
+        currentSelectedSlot = slot;
     }
 }
