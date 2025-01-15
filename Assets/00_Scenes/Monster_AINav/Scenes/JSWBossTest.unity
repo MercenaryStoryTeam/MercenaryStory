@@ -4533,7 +4533,6 @@ MonoBehaviour:
   rotationZ: 0
   fieldOfView: 11
   damping: 3
-  playerTag: Player
 --- !u!114 &111925285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13858,8 +13857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Practice
-  loadSceneDelay: 1
+  currentHp: 0
+  maxHp: 100
   suckBlood: 3
 --- !u!114 &381069092
 MonoBehaviour:
@@ -36615,6 +36614,67 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.098439604, y: -0.02180608, z: 0.020949617}
     m_Extent: {x: 0.12868682, y: 0.07049145, z: 0.106851086}
   m_DirtyAABB: 0
+--- !u!1001 &956427760
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3917713134838844751, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4401516545361303541, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_Name
+      value: Minion
+      objectReference: {fileID: 0}
+    - target: {fileID: 4401516545361303541, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+      propertyPath: m_TagString
+      value: Minion
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
 --- !u!1 &960776182
 GameObject:
   m_ObjectHideFlags: 0
@@ -59909,7 +59969,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1517304248}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a88e10e9fa516b4da99895133b172b3, type: 3}
+  m_Script: {fileID: 11500000, guid: f20533b34324c164abfd371ee3138220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 2089326443}
@@ -80980,7 +81040,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c35f58c53a9a5cc45bbf8e49b44aaae3, type: 3}
+  m_Script: {fileID: 11500000, guid: 22e10ad2d81f86c41860db26e6048e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2089719236
@@ -84257,3 +84317,4 @@ SceneRoots:
   - {fileID: 381069096}
   - {fileID: 111925286}
   - {fileID: 1517304253}
+  - {fileID: 956427760}
