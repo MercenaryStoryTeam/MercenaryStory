@@ -17,12 +17,14 @@ public class TestSY : MonoBehaviour
 
     private void Update()
     {
+
         UIManager.Instance.inventory.TryOpenInventory();
         UIManager.Instance.shop.TryOpenShop();
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
-                playerTest.TestDrop(InventoryManger.Instance.RandomDropItems());
+            ItemBase randomItem = InventoryManger.Instance.RandomDropItems();
+            playerTest.TestDrop(randomItem);
         }
     }
     

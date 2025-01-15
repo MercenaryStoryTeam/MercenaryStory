@@ -192,7 +192,7 @@ public class ShopPanel : MonoBehaviour
 
 	public void TryOpenShop()
 	{
-		if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetKeyDown(KeyCode.O))
 		{
 			if (!UIManager.Instance.isShopActive)
 			{
