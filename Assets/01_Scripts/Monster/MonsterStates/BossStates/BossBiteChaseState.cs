@@ -26,6 +26,6 @@ public class BossBiteChaseState : BossState
 
     public override void ExitState(BossMonster boss)
     {
-        throw new System.NotImplementedException();
+        boss.Animator.SetBool("IsMoving", false);
     }
 }
