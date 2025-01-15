@@ -52,7 +52,6 @@ public class Equipment : MonoBehaviour
             
                 Debug.Log($"{slot.item.name} 장착 완료");
             }
-
         }
 
         else
@@ -89,7 +88,6 @@ public class Equipment : MonoBehaviour
                 }
                 Debug.Log($"{slot.item.name} 장착 완료");
             }
-
         }
     }
 

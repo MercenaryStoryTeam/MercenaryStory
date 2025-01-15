@@ -24,12 +24,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
         return allItems[random];
     }
 
-    public float DropProbabillity(ItemBase item)
-    {
-        float probabillity = item.dropPercent / 100;
-        
-        return probabillity;
-    }
 
     public void AddItemToInventory(ItemBase newItem)
     {
