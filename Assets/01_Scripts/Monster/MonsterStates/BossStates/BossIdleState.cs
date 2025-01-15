@@ -14,7 +14,7 @@ public class BossIdleState : BossState
     {
         if (Time.time - stateEnterTime < minStateTime) return;
         if (boss.playerList.Count == 0) return;
-        if (boss.bitePossible&&boss.minionList.Count > 0)
+        if (boss.minionList.Count > 0)
         {
             boss.ChangeState(BossStateType.BiteChase);
         }

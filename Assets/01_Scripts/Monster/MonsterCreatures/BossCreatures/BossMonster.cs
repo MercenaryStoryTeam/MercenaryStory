@@ -18,17 +18,17 @@ public class BossMonster : MonoBehaviour
 
     public bool chargePossible = true;
     public bool slashPossible = true;
-    public bool hungerPossible = false;
-    public bool bitePossible = true;
+    public bool hungerPossible = true;
 
     public int chargeCooltime = 5;
     public int slashCooltime = 6;
     public int hungerCooltime = 13;
-
+    public GameObject minionPrefab;
     public int slashCount = 0;
     public BossStateType currentState;
     public List<Player> playerList = new List<Player>();
     public List<Minion> minionList = new List<Minion>();
+    public List<Transform> nestList = new List<Transform>();
     private NavMeshAgent agent;
     private BossStateMachine stateMachine;
     private LayerMask playerLayer;
@@ -43,6 +43,8 @@ public class BossMonster : MonoBehaviour
     public NavMeshAgent Agent => agent;
     public BossStateMachine StateMachine => stateMachine;
     public LayerMask PlayerLayer => playerLayer;
+    public int MinionLayer { get; set; }
+
     #endregion
     
     protected virtual void Start()
@@ -51,6 +53,7 @@ public class BossMonster : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
         playerLayer = LayerMask.GetMask("Player");
+        MinionLayer = LayerMask.GetMask("Minion");
         stateMachine = new BossStateMachine(this);
         stateMachine.ChangeState(BossStateType.Idle);
     }
@@ -58,9 +61,14 @@ public class BossMonster : MonoBehaviour
     protected virtual void Update()
     {
         currentState = stateMachine.currentStateType;
-        if (playerList.Count == 0)
+        if (playerList.Count == 0 && currentState != BossStateType.Idle)
         {
-            stateMachine.ChangeState(BossStateType.Idle);
+            ChangeState(BossStateType.Idle);
+        }
+
+        if (((float)hp / (float)maxHp) <= 0.3f && hungerPossible)
+        {
+            ChangeState(BossStateType.Hunger);
         }
         stateMachine.CurrentState?.ExecuteState(this);
     }
@@ -116,10 +124,18 @@ public class BossMonster : MonoBehaviour
         hp -= damage;
         if (hp <= 0)
         {
-            stateMachine.ChangeState(BossStateType.Die);
+            ChangeState(BossStateType.Die);
         }
     }
 
+    public void SpawnMinion()
+    {
+        foreach (Transform nest in nestList)
+        {
+            GameObject minion= Instantiate(minionPrefab, nest);
+            minionList.Add(minion.GetComponent<Minion>());
+        }
+    }
     public void StartCoolDown()
     {
         if (stateMachine.currentStateType == BossStateType.Charge)
