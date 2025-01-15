@@ -14,7 +14,6 @@ public class Teleport : MonoBehaviour
     public LayerMask playerLayer;
 
     private bool sceneLoaded = false;
-    public PlayerPosition playerPosition;
 
     // 콜라이더 충돌 시 호출
     private void OnTriggerEnter(Collider collider)
@@ -26,13 +25,14 @@ public class Teleport : MonoBehaviour
             sceneLoaded = true;
 
             // 현재 씬에서 플레이어 위치 저장
-            if (playerPosition != null)
+            PlayerData playerData = PlayerData.Instance;
+            if (playerData != null)
             {
-                playerPosition.SavePosition();
+                playerData.SavePosition();
             }
             else
             {
-                Debug.LogError("PlayerPosition 스크립트가 인스펙터에 할당되지 않았습니다.");
+                Debug.LogError("PlayerData 싱글톤 인스턴스를 참조할 수 없습니다.");
             }
 
             // Teleport 오브젝트 마테리얼 색상 변경 (빨간색)
