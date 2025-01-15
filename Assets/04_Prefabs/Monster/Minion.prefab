@@ -991,7 +991,7 @@ GameObject:
   - component: {fileID: 3917713134838844751}
   - component: {fileID: 6971202247448221493}
   - component: {fileID: 4335761900689827607}
-  - component: {fileID: 2042217834834958232}
+  - component: {fileID: 3464057673324560543}
   m_Layer: 15
   m_Name: Minion
   m_TagString: Untagged
@@ -1026,7 +1026,7 @@ Animator:
   m_GameObject: {fileID: 4401516545361303541}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eac36f1100f74cf99dbcb5d73ff4dfaa, type: 3}
-  m_Controller: {fileID: 9100000, guid: 738ed0fe2f26baa42943852a73d5845e, type: 2}
+  m_Controller: {fileID: 9100000, guid: d3a83af98bf3cc145afb12ace012c8fe, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1059,7 +1059,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2042217834834958232
+--- !u!114 &3464057673324560543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1068,20 +1068,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 4401516545361303541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e6e533978c459449fba781c4e04f42, type: 3}
+  m_Script: {fileID: 11500000, guid: 09658112d68e0ef4bbd0ea3cc8030b88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 13
+  maxHp: 13
+  damage: 3
+  moveSpeed: 1
+  rotationSpeed: 1
+  attackSpeed: 1
+  attackRange: 2
+  playerList: []
+  animator: {fileID: 0}
+  agent: {fileID: 0}
+  target: {fileID: 0}
   currentState: 0
-  _hp: 13
-  _maxHp: 13
-  _damage: 3
-  _moveSpeed: 1
-  _rotationSpeed: 1
-  _attackSpeed: 1
-  _patrolRange: 3
-  _detectionRange: 3
-  _attackRange: 2
-  _returnRange: 10
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &4587785653938087335
 GameObject:
   m_ObjectHideFlags: 0

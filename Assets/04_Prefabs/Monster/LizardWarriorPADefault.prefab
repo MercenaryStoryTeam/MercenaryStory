@@ -1275,7 +1275,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5863903103509005198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c35f58c53a9a5cc45bbf8e49b44aaae3, type: 3}
+  m_Script: {fileID: 11500000, guid: 22e10ad2d81f86c41860db26e6048e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 3000
@@ -1288,15 +1288,16 @@ MonoBehaviour:
   slashAttackRange: 7
   chargePossible: 1
   slashPossible: 1
-  hungerPossible: 0
-  bitePossible: 1
+  hungerPossible: 1
   chargeCooltime: 5
   slashCooltime: 6
   hungerCooltime: 13
+  minionPrefab: {fileID: 0}
   slashCount: 0
   currentState: 0
   playerList: []
   minionList: []
+  nestList: []
   TargetTransform: {fileID: 0}
   CenterPoint: {x: 0, y: 0, z: 0}
   Animator: {fileID: 0}
