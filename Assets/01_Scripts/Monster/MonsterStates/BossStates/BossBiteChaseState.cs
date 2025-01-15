@@ -1,20 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class BossBiteChaseState : BossState
 {
-    public override void EnterState(BossMonster Boss)
+    public override void EnterState(BossMonster boss)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void ExecuteState(BossMonster Boss)
+    public override void ExecuteState(BossMonster boss)
     {
         throw new System.NotImplementedException();
     }
 
-    public override void ExitState(BossMonster Boss)
+    public override void ExitState(BossMonster boss)
     {
         throw new System.NotImplementedException();
     }
