@@ -7,30 +7,49 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    // 사운드 매니저 싱글톤 처리
-    public static SoundManager Instance { get; private set; }
+    // Singleton 인스턴스
+    public static SoundManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                    // 새 GameObject 생성 및 SoundManager 스크립트 추가
+                    GameObject soundManagerObj = new GameObject("SoundManager");
+                    _instance = soundManagerObj.AddComponent<SoundManager>();
+                    // 씬 전환시 기존 사운드 매니저 사용
+                    DontDestroyOnLoad(soundManagerObj);
+            }
+            return _instance;
+        }
+    }
+
+    // 사운드 매니저 기능 구현
+    private static SoundManager _instance;
 
     // 사운드 이름과 AudioClip을 저장하기 위한 딕셔너리
     private Dictionary<string, AudioClip> audioClips;
 
-    // 오디오 소스 컴포넌트 추가를 위한 변수 선언
     private AudioSource audioSource;
 
-    private void Awake()
+    void Awake()
     {
         // Singleton 설정
-        if (Instance == null)
+        if (_instance == null)
         {
-            Instance = this;
+            _instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log("SoundManager: Singleton 인스턴스 설정 완료.");
         }
         // 씬 전환시 사운드 매니저 추가 생성 x
-        else
+        else if (_instance != this)
         {
+            Debug.LogWarning("SoundManager: 이미 인스턴스가 존재하여 삭제");
             Destroy(gameObject);
+            return;
         }
 
-        // AudioSource 컴포넌트 추가
+        // AudioSource 컴포넌트 가져오기 또는 추가
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -46,7 +65,7 @@ public class SoundManager : MonoBehaviour
     private void LoadAllAudioClips()
     {
         audioClips = new Dictionary<string, AudioClip>();
-        // Audio는 Resources 폴더 내의 서브폴더 이름
+        // "Audio"는 Resources 폴더 내의 서브폴더 이름
         AudioClip[] clips = Resources.LoadAll<AudioClip>("Audio");
 
         Debug.Log($"SoundManager: Resources/Audio/ 폴더에서 {clips.Length}개의 AudioClip을 로드했습니다.");
@@ -67,7 +86,7 @@ public class SoundManager : MonoBehaviour
         Debug.Log($"SoundManager: 총 {audioClips.Count}개의 AudioClip 로드됨.");
     }
 
-    // 다른 스크립트에서 이름으로 사운드 재생
+    // 이름으로 사운드 재생
     public void PlaySound(string clipName)
     {
         if (audioClips.ContainsKey(clipName))
