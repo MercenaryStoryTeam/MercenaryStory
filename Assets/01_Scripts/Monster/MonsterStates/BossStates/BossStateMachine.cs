@@ -48,8 +48,8 @@ public class BossStateMachine
         exStateType = currentStateType;
         currentState?.ExitState(owner);
         currentState = CreateState(stateType);
-        currentState?.EnterState(owner);
         currentStateType = stateType;
+        currentState?.EnterState(owner);
     }
     
     public void RevertToExState()

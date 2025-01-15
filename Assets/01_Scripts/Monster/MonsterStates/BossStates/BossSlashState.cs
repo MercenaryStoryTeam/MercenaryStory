@@ -14,6 +14,5 @@ public class BossSlashState : BossState
 
     public override void ExitState(BossMonster boss)
     {
-        
     }
 }
