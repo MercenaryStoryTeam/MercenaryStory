@@ -15,7 +15,7 @@ public class VirtualCameraController : MonoBehaviour
     private const float rotationY = 45f;
 
     [Header("카메라 설정")]
-    [Range(10f, 100f)] public float fieldOfView = 35f;
+    [Range(10f, 100f)] public float fieldOfView = 11f;
     [Range(1f, 5f)] public float damping = 3f;
 
     [Header("플레이어 태그")]

@@ -31,6 +31,13 @@ public class PlayerData : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             currentHp = maxHp;
+
+            // 초기 플레이어 위치 설정
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                position = player.transform.position;
+            }
         }
         else
         {
