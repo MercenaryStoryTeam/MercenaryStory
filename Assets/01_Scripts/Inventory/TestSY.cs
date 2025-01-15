@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class TestSY : MonoBehaviour
 {
-    private Inventory inventory;
     public ItemBase currentWeapon;
     public float myGold = 0;
     
+    private PlayerTestSY playerTest;
     private void Awake()
     {
-        inventory = FindObjectOfType<Inventory>();
+        playerTest = FindObjectOfType<PlayerTestSY>();
     }
 
     private void Update()
@@ -22,11 +22,7 @@ public class TestSY : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ItemBase randomItem = inventory.RandomDropItems();
-            if (randomItem != null)
-            {
-                inventory.AddItemToInventory(randomItem);
-            }
+                playerTest.TestDrop(InventoryManger.Instance.RandomDropItems());
         }
     }
     
