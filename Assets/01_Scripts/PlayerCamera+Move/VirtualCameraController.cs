@@ -4,17 +4,17 @@ using Cinemachine;
 [RequireComponent(typeof(CinemachineVirtualCamera))]
 public class VirtualCameraController : MonoBehaviour
 {
-    [Header("Ä«¸Ş¶ó ¿ÀÇÁ¼Â (Y=60 °íÁ¤)")]
+    [Header("ì¹´ë©”ë¼ ì˜¤í”„ì…‹ (Y=60 ê³ ì •)")]
     public float offsetX = -42f;
     public float offsetZ = -42f;
     private const float offsetY = 60f;
 
-    [Header("Ä«¸Ş¶ó È¸Àü (Y=45 °íÁ¤)")]
+    [Header("ì¹´ë©”ë¼ íšŒì „ (Y=45 ê³ ì •)")]
     public float rotationX = 45f;
     public float rotationZ = 0f;
     private const float rotationY = 45f;
 
-    [Header("Ä«¸Ş¶ó ¼³Á¤")]
+    [Header("ì¹´ë©”ë¼ ì„¤ì •")]
     [Range(10f, 100f)] public float fieldOfView = 35f;
     [Range(1f, 5f)] public float damping = 3f;
 
@@ -26,7 +26,7 @@ public class VirtualCameraController : MonoBehaviour
         vCam = GetComponent<CinemachineVirtualCamera>();
         if (!vCam)
         {
-            Debug.LogError("CinemachineVirtualCamera°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            Debug.LogError("CinemachineVirtualCameraê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             enabled = false;
             return;
         }
@@ -34,20 +34,20 @@ public class VirtualCameraController : MonoBehaviour
 
     void Start()
     {
-        // Body¸¦ Transposer·Î »ç¿ë (ÀÎ½ºÆåÅÍ¿¡¼­µµ ÁöÁ¤ °¡´É)
+        // Bodyë¥¼ Transposerë¡œ ì„¤ì • (ì¸ìŠ¤í™í„°ì—ì„œë„ ì„¤ì • ê°€ëŠ¥)
         transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
 
-        // vCam¿¡ ¼³Á¤µÈ Lens FOV
+        // vCamì˜ ê¸°ë³¸ì ì¸ Lens FOV
         vCam.m_Lens.FieldOfView = fieldOfView;
 
-        // ¿ÀÇÁ¼Â, È¸Àü, Damping ÃÊ±â ¹İ¿µ
+        // ì˜¤í”„ì…‹, íšŒì „, Damping ì´ˆê¸° ë°˜ì˜
         ConfigureTransposer();
         transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
     }
 
     void LateUpdate()
     {
-        // ¸Å ÇÁ·¹ÀÓ °ª ¹İ¿µ
+        // ê°’ ë³€ê²½ì‹œ ì¦‰ì‹œ ë°˜ì˜
         vCam.m_Lens.FieldOfView = fieldOfView;
         ConfigureTransposer();
         transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
@@ -75,5 +75,3 @@ public class VirtualCameraController : MonoBehaviour
         }
     }
 }
-
-// ³¡
