@@ -6,10 +6,12 @@ using UnityEngine;
 public class PlayerTestSY : MonoBehaviour
 {
     private float interactRange = 3f;
-
+    private MonsterTest monster;
+    
     private List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems = new List<(GameObject droppedLightLine, ItemBase droppedItem)>();
     private void Awake()
     {
+        monster = FindObjectOfType<MonsterTest>();
     }
 
     private void Update()
@@ -39,9 +41,15 @@ public class PlayerTestSY : MonoBehaviour
 
     }
 
+    public void InvenSceneTestDrop(ItemBase item)
+    {
+        GameObject itemLightLine = Instantiate(item.dropLightLine, transform.position, Quaternion.identity);
+        droppedItems.Add((itemLightLine, item));
+    }
+
     public void TestDrop(ItemBase item)
     {
-        GameObject itemLightLine = Instantiate(item.dropLightLine, /*몬스터*/transform.position, Quaternion.identity);
+        GameObject itemLightLine = Instantiate(item.dropLightLine, monster.transform.position, Quaternion.identity);
         droppedItems.Add((itemLightLine, item));
     }
 }

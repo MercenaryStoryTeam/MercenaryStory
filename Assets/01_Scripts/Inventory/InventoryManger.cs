@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class InventoryManger : SingletonManager<InventoryManger>
 {
@@ -18,7 +19,8 @@ public class InventoryManger : SingletonManager<InventoryManger>
     //테스트용 드롭 구현
     public ItemBase RandomDropItems()
     {
-        int random = UnityEngine.Random.Range(0, allItems.Count);
+        int random = Random.Range(0, allItems.Count);
+        // Random.
         return allItems[random];
     }
 

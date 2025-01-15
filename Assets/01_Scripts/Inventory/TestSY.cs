@@ -21,10 +21,10 @@ public class TestSY : MonoBehaviour
         UIManager.Instance.inventory.TryOpenInventory();
         UIManager.Instance.shop.TryOpenShop();
         
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             ItemBase randomItem = InventoryManger.Instance.RandomDropItems();
-            playerTest.TestDrop(randomItem);
+            playerTest.InvenSceneTestDrop(randomItem);
         }
     }
     
