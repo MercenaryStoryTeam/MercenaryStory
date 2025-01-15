@@ -16,7 +16,6 @@ public class InventoryPanel : MonoBehaviour
     private void Awake()
     {
         _testsy = FindObjectOfType<TestSY>();
-        panel.SetActive(false);
         ButtonOnClick();
     }
 

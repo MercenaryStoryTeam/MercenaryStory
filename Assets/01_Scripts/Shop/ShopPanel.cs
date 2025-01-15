@@ -22,7 +22,6 @@ public class ShopPanel : MonoBehaviour
 		
 	private TestSY _testsy;
 	private InventorySlot sellSlot;
-	private Inventory myInventory;
 	private Dictionary<InventorySlot, ItemState> itemStates = new Dictionary<InventorySlot, ItemState>();
 
 	private struct ItemState
@@ -35,7 +34,6 @@ public class ShopPanel : MonoBehaviour
 	private void Awake()
 	{
 		_testsy = FindObjectOfType<TestSY>();
-		myInventory = FindObjectOfType<Inventory>();
 		shopPanel.SetActive(false);
 		ShopButtonClicked();
 		SaveOriginalState();
@@ -108,7 +106,7 @@ public class ShopPanel : MonoBehaviour
 			holdSlot.RemoveItem();
 		}
 
-		List<InventorySlot> inventorySlots = UIManager.Instance.inventorySystem.slots;
+		List<InventorySlot> inventorySlots = UIManager.Instance.inventoryMangerSystem.slots;
 		for (int i = 0; i < inventorySlots.Count && i < holdSlots.Count; i++)
 		{
 			if (inventorySlots[i].item != null)
@@ -131,7 +129,6 @@ public class ShopPanel : MonoBehaviour
 		//판매 버튼 누르면 인벤토리 슬롯 업데이트 안되고 있음
 		
 		bool isItemToSell = false;
-		print(myInventory.myItems.Count);
 
 		foreach (InventorySlot slot in sellSlots)
 		{
@@ -164,14 +161,14 @@ public class ShopPanel : MonoBehaviour
 
 						for (int i = 0; i < sellSlot.slotCount; i++)
 						{
-							myInventory.myItems.Remove(sellSlot.item);
+							InventoryManger.Instance.myItems.Remove(sellSlot.item);
 						}
 					}
 
 					else
 					{
 						sellSlot.item.currentItemCount--;
-						myInventory.myItems.Remove(sellSlot.item);
+						InventoryManger.Instance.myItems.Remove(sellSlot.item);
 					}
 
 					_testsy.myGold += sellPrice;
@@ -184,7 +181,7 @@ public class ShopPanel : MonoBehaviour
 			}
 		}
 		
-		myInventory.SlotArray();
+		InventoryManger.Instance.SlotArray();
 		UIManager.Instance.CloseShopPanel();
 	}
 

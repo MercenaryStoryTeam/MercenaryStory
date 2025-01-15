@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class ItemBase : ScriptableObject
@@ -21,7 +22,8 @@ public class ItemBase : ScriptableObject
     
     [Header("Icon&Prefab")]
     public Sprite image; //아이템 아이콘
-    public List<GameObject> prefab; //아이템 프리팹
+    public List<GameObject> equipPrefab; //아이템 프리팹
+    public GameObject dropLightLine; //빛 기둥 프리팹
     
 
     private void Awake()

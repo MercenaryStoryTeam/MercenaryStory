@@ -27,22 +27,22 @@ public class Equipment : MonoBehaviour
                 return;
             }
 
-            if (slot.item.prefab == null || slot.item.prefab.Count == 0)
+            if (slot.item.equipPrefab == null || slot.item.equipPrefab.Count == 0)
             {
                 Debug.Log("프리팹 리스트가 비어있거나 아이템이 할당되지 않음");
                 return;
             }
         
-            if (slot.item.prefab.Count > 0) 
+            if (slot.item.equipPrefab.Count > 0) 
             {
-                Instantiate(slot.item.prefab[0], rightHand.transform);
-                GameObject panelSword = Instantiate(slot.item.prefab[0], panelRightHand.transform);
+                Instantiate(slot.item.equipPrefab[0], rightHand.transform);
+                GameObject panelSword = Instantiate(slot.item.equipPrefab[0], panelRightHand.transform);
                 panelSword.layer = LayerMask.NameToLayer("Object");
 
-                if (slot.item.prefab.Count > 1)
+                if (slot.item.equipPrefab.Count > 1)
                 {
-                    Instantiate(slot.item.prefab[1], leftHand.transform);
-                    GameObject panelShield = Instantiate(slot.item.prefab[1], panelLeftHand.transform);
+                    Instantiate(slot.item.equipPrefab[1], leftHand.transform);
+                    GameObject panelShield = Instantiate(slot.item.equipPrefab[1], panelLeftHand.transform);
                     panelShield.layer = LayerMask.NameToLayer("Object");
                     for (int i = 0; i < panelShield.transform.childCount; i++)
                     {
@@ -64,23 +64,23 @@ public class Equipment : MonoBehaviour
                 return;
             }
 
-            if (slot.item.prefab == null || slot.item.prefab.Count == 0)
+            if (slot.item.equipPrefab == null || slot.item.equipPrefab.Count == 0)
             {
                 Debug.Log("프리팹 리스트가 비어있거나 아이템이 할당되지 않음");
                 return;
             }
         
-            if (slot.item.prefab.Count > 0)
+            if (slot.item.equipPrefab.Count > 0)
             {
                 DestroyChildObject();
-                Instantiate(slot.item.prefab[0], rightHand.transform);
-                GameObject panelSword = Instantiate(slot.item.prefab[0], panelRightHand.transform);
+                Instantiate(slot.item.equipPrefab[0], rightHand.transform);
+                GameObject panelSword = Instantiate(slot.item.equipPrefab[0], panelRightHand.transform);
                 panelSword.layer = LayerMask.NameToLayer("Object");
                 
-                if (slot.item.prefab.Count > 1)
+                if (slot.item.equipPrefab.Count > 1)
                 {
-                    Instantiate(slot.item.prefab[1], leftHand.transform);
-                    GameObject panelShield = Instantiate(slot.item.prefab[1], panelLeftHand.transform);
+                    Instantiate(slot.item.equipPrefab[1], leftHand.transform);
+                    GameObject panelShield = Instantiate(slot.item.equipPrefab[1], panelLeftHand.transform);
                     panelShield.layer = LayerMask.NameToLayer("Object");
                     for (int i = 0; i < panelShield.transform.childCount; i++)
                     {
