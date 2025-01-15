@@ -9,21 +9,8 @@ public class Player : MonoBehaviour
     [Header("씬 로드 지연시간")]
     public int loadSceneDelay = 1;
 
-    [Header("플레이어 흡혈 비율")]
-    public float suckBlood = 3f;
-
     // PlayerMove 스크립트 참조
     private PlayerMove playerMove;
-
-    // 즉시 처리를 위해 Awkake 사용
-    private void Awake()
-    {
-        // PlayerData 스크립트가 없을 경우
-        if (PlayerData.Instance == null)
-        {
-            Debug.LogError("PlayerData 스크립트가 존재하지 않습니다. PlayerData를 씬에 추가하세요.");
-        }
-    }
 
     private void Start()
     {
@@ -47,7 +34,7 @@ public class Player : MonoBehaviour
         }
 
         // suckBlood 값을 백분율로 처리
-        float suckBloodPercentage = suckBlood / 100f;
+        float suckBloodPercentage = PlayerData.Instance.suckBlood / 100f;
 
         // 최대 체력의 suckBloodPercentage 만큼 회복
         float healAmount = PlayerData.Instance.maxHp * suckBloodPercentage;
