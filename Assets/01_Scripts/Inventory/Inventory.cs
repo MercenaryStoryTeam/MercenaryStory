@@ -95,26 +95,27 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void SlotArray() // 슬롯 정렬
+    public void SlotArray()
     {
-        List<ItemBase> items = new List<ItemBase>();
+        List<(ItemBase item, int count)> items = new List<(ItemBase, int)>();
 
         foreach (InventorySlot slot in slots)
         {
             if (slot.item != null)
             {
-                items.Add(slot.item);
+                items.Add((slot.item, slot.slotCount));
                 slot.RemoveItem();
             }
         }
 
-        foreach (ItemBase item in items)
+        foreach (var itemInfo in items)
         {
             foreach (InventorySlot slot in slots)
             {
                 if (slot.item == null)
                 {
-                    slot.AddItem(item);
+                    slot.AddItem(itemInfo.item);
+                    slot.slotCount = itemInfo.count;
                     break;
                 }
             }

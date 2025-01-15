@@ -31,12 +31,11 @@ public class UIManager : SingletonManager<UIManager>
     
     public void OpenInventoryPanel()
     {
-        if (IsAnyPanelOpen())
+        if (!IsAnyPanelOpen())
         {
-           CloseShopPanel();
+            isInventoryActive = true;
+            inventory.panel.SetActive(true);
         }
-        isInventoryActive = true;
-        inventory.panel.SetActive(true);
     }
 
     public void CloseInventoryPanel()
@@ -51,30 +50,17 @@ public class UIManager : SingletonManager<UIManager>
 
     public void OpenShopPanel()
     {
-        if (IsAnyPanelOpen())
+        if (!IsAnyPanelOpen())
         {
-            CloseInventoryPanel();
-            CloseItemInfoPanel();
+            isShopActive = true;
+            shop.shopPanel.SetActive(true);
         }
-        
-        isShopActive = true;
-        shop.shopPanel.SetActive(true);
     }
 
     public void CloseShopPanel()
     {
-        foreach (InventorySlot slot in shop.sellSlots)
-        {
-            slot.RemoveItem();
-        }
-
-        foreach (InventorySlot slot in shop.holdSlots)
-        {
-            //행동 초기화 로직 추가
-            slot.canvasGroup.alpha = 1f;
-        }
-        
         isShopActive = false;
+        shop.RestoreOriginalState();
         shop.shopPanel.SetActive(false);
     }
     
@@ -126,21 +112,6 @@ public class UIManager : SingletonManager<UIManager>
     }
     
     #endregion
-    
-    // //AnyPanelOpen에 다른 패널 추가되면 사용 예정
-    // //현재 앞 순서 if문만 적용되고있음
-    // public void CloseAllPanel()
-    // {        
-    //     if (isShopActive)
-    //     {
-    //         CloseInventoryPanel();
-    //     }
-    //     if (isInventoryActive)
-    //     {
-    //         CloseShopPanel();
-    //     }
-    //     
-    // }
     
     public bool IsAnyPanelOpen()
     {

@@ -16,23 +16,89 @@ public class ShopPanel : MonoBehaviour
 	public Button sellButton;
 	public Button closeButton;
 
-	[HideInInspector] public float sellPrice;
-
+	public bool isSellButtonClicked = false;
+	[HideInInspector] public float sellPrice = 0;
+	[HideInInspector] public Dictionary<InventorySlot, InventorySlot> originalSlotState = new Dictionary<InventorySlot, InventorySlot>();
+		
 	private TestSY _testsy;
-	private InventorySlot selectedSlot;
 	private InventorySlot sellSlot;
+	private Inventory myInventory;
+	private Dictionary<InventorySlot, ItemState> itemStates = new Dictionary<InventorySlot, ItemState>();
+
+	private struct ItemState
+	{
+		public int originalCount;
+		public bool wasInteractable;
+		public float originalAlpha;
+	}
 
 	private void Awake()
 	{
 		_testsy = FindObjectOfType<TestSY>();
+		myInventory = FindObjectOfType<Inventory>();
 		shopPanel.SetActive(false);
 		ShopButtonClicked();
+		SaveOriginalState();
+	}
+
+	private void SaveOriginalState()
+	{
+		foreach (InventorySlot slot in holdSlots)
+		{
+			itemStates[slot] = new ItemState
+			{
+				originalCount = slot.slotCount,
+				wasInteractable = slot.canvasGroup.interactable,
+				originalAlpha = slot.canvasGroup.alpha
+			};
+		}
+	}
+
+	public void RestoreOriginalState()
+	{
+		if (!isSellButtonClicked)
+		{
+			foreach (InventorySlot slot in holdSlots)
+			{
+				if (itemStates.ContainsKey(slot))
+				{
+					var state = itemStates[slot];
+					slot.slotCount = state.originalCount;
+					slot.canvasGroup.interactable = true;
+					slot.canvasGroup.alpha = 1f;
+				}
+			}
+		
+			foreach (InventorySlot slot in sellSlots)
+			{
+				slot.RemoveItem();
+				slot.slotCount = 0;
+			}
+		
+			originalSlotState.Clear();
+			sellPrice = 0;
+			UpdateHoldSlots();
+		}
+
+		else
+		{
+			isSellButtonClicked = false;
+			sellPrice = 0;
+			foreach (InventorySlot slot in holdSlots)
+			{
+				if (itemStates.ContainsKey(slot))
+				{
+					slot.canvasGroup.interactable = true;
+					slot.canvasGroup.alpha = 1f;
+				}
+			}
+			UpdateHoldSlots();
+		}
 	}
 
 	private void Update()
 	{
 		SetGold();
-		UpdateHoldSlots();
 	}
 
 	private void UpdateHoldSlots()
@@ -47,9 +113,11 @@ public class ShopPanel : MonoBehaviour
 		{
 			if (inventorySlots[i].item != null)
 			{
-				holdSlots[i].AddItem(inventorySlots[i].item);
+				holdSlots[i].AddItem(inventorySlots[i].item); 
+				holdSlots[i].slotCount = inventorySlots[i].slotCount;
 			}
 		}
+		
 	}
 
 	private void ShopButtonClicked()
@@ -60,23 +128,64 @@ public class ShopPanel : MonoBehaviour
 
 	private void sellButtonClick()
 	{
-		bool isItemInSellSlot = false;
+		//판매 버튼 누르면 인벤토리 슬롯 업데이트 안되고 있음
+		
+		bool isItemToSell = false;
+		print(myInventory.myItems.Count);
 
 		foreach (InventorySlot slot in sellSlots)
 		{
 			if (slot.item != null)
 			{
-				isItemInSellSlot = true;
-				UIManager.Instance.CloseShopPanel();
+				isItemToSell = true;
 				break;
+			}
+
+			if (!isItemToSell)
+			{
+				UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
+					() => UIManager.Instance.popUp.PopUpClose());
+
+				return;
 			}
 		}
 
-		if (!isItemInSellSlot)
+		print(isItemToSell);
+
+		foreach (InventorySlot sellSlot in sellSlots)
 		{
-			UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.", 
-				() => UIManager.Instance.popUp.PopUpClose());
+			if (sellSlot.item != null)
+			{
+				if (originalSlotState.TryGetValue(sellSlot, out InventorySlot originalSlot))
+				{
+					if (sellSlot.item.itemClass == 2)
+					{
+						sellSlot.item.currentItemCount -= sellSlot.slotCount;
+
+						for (int i = 0; i < sellSlot.slotCount; i++)
+						{
+							myInventory.myItems.Remove(sellSlot.item);
+						}
+					}
+
+					else
+					{
+						sellSlot.item.currentItemCount--;
+						myInventory.myItems.Remove(sellSlot.item);
+					}
+
+					_testsy.myGold += sellPrice;
+					sellPrice = 0;
+					isSellButtonClicked = true;
+				}
+				
+				sellSlot.RemoveItem();				
+				sellSlot.slotCount = 0;
+			}
 		}
+		
+		myInventory.SlotArray();
+		UIManager.Instance.CloseShopPanel();
 	}
 
 	private void CloseButtonClick()
@@ -86,13 +195,13 @@ public class ShopPanel : MonoBehaviour
 
 	public void TryOpenShop()
 	{
-		if (Input.GetKeyDown(KeyCode.O)) // 테스트용 키 설정
+		if (Input.GetKeyDown(KeyCode.E))
 		{
 			if (!UIManager.Instance.isShopActive)
 			{
 				UIManager.Instance.OpenShopPanel();
+				UpdateHoldSlots();
 			}
-
 			else
 			{
 				UIManager.Instance.CloseShopPanel();
