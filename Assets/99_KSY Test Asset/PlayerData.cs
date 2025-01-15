@@ -30,6 +30,13 @@ public class PlayerData : MonoBehaviour
     // 씬 전환 시 저장 및 로드할 플레이어 위치 참조를 위한 변수
     private Vector3 position;
 
+    // 원래 이동 속도를 저장
+    // 슬로우 효과 종료시
+    // 이속 복원할 때 사용
+    [HideInInspector]
+    public float originalMoveSpeed;
+
+    // 즉시 호출
     private void Awake()
     {
         if (Instance == null)
@@ -37,6 +44,7 @@ public class PlayerData : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             currentHp = maxHp;
+            originalMoveSpeed = moveSpeed;
 
             // 초기 플레이어 위치 설정
             GameObject player = GameObject.FindGameObjectWithTag("Player");
