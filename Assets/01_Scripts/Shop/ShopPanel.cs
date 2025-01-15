@@ -77,7 +77,6 @@ public class ShopPanel : MonoBehaviour
 			sellPrice = 0;
 			UpdateHoldSlots();
 		}
-
 		else
 		{
 			isSellButtonClicked = false;
@@ -126,10 +125,7 @@ public class ShopPanel : MonoBehaviour
 
 	private void sellButtonClick()
 	{
-		//판매 버튼 누르면 인벤토리 슬롯 업데이트 안되고 있음
-		
 		bool isItemToSell = false;
-
 		foreach (InventorySlot slot in sellSlots)
 		{
 			if (slot.item != null)
@@ -137,17 +133,16 @@ public class ShopPanel : MonoBehaviour
 				isItemToSell = true;
 				break;
 			}
-
-			if (!isItemToSell)
-			{
-				UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
-					() => UIManager.Instance.popUp.PopUpClose());
-
-				return;
-			}
 		}
 
-		print(isItemToSell);
+		if (!isItemToSell)
+		{
+			UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
+				() => UIManager.Instance.popUp.PopUpClose());
+			return;
+		}
+
+		bool needsReorganize = false;
 
 		foreach (InventorySlot sellSlot in sellSlots)
 		{
@@ -155,33 +150,59 @@ public class ShopPanel : MonoBehaviour
 			{
 				if (originalSlotState.TryGetValue(sellSlot, out InventorySlot originalSlot))
 				{
+					int holdSlotIndex = holdSlots.IndexOf(originalSlot);
+					InventorySlot inventorySlot = UIManager.Instance.inventoryMangerSystem.slots[holdSlotIndex];
+
 					if (sellSlot.item.itemClass == 2)
 					{
 						sellSlot.item.currentItemCount -= sellSlot.slotCount;
-
+						
 						for (int i = 0; i < sellSlot.slotCount; i++)
 						{
 							InventoryManger.Instance.myItems.Remove(sellSlot.item);
 						}
-					}
 
-					else
+						if (inventorySlot != null)
+						{
+							if (inventorySlot.slotCount <= sellSlot.slotCount)
+							{
+								inventorySlot.RemoveItem();
+								inventorySlot.slotCount = 0;
+								needsReorganize = true;
+							}
+							else
+							{
+								inventorySlot.slotCount -= sellSlot.slotCount;
+							}
+						}
+					}
+					else if (sellSlot.item.itemClass == 1)
 					{
 						sellSlot.item.currentItemCount--;
+						if (inventorySlot != null)
+						{
+							inventorySlot.RemoveItem();
+							inventorySlot.slotCount = 0;
+							needsReorganize = true;
+						}
 						InventoryManger.Instance.myItems.Remove(sellSlot.item);
 					}
 
-					_testsy.myGold += sellPrice;
-					sellPrice = 0;
-					isSellButtonClicked = true;
+					sellSlot.RemoveItem();
+					sellSlot.slotCount = 0;
 				}
-				
-				sellSlot.RemoveItem();				
-				sellSlot.slotCount = 0;
 			}
 		}
 		
-		InventoryManger.Instance.SlotArray();
+		_testsy.myGold += sellPrice;
+		sellPrice = 0;
+		isSellButtonClicked = true;
+		
+		if (needsReorganize)
+		{
+			InventoryManger.Instance.SlotArray();
+		}
+		UpdateHoldSlots();
 		UIManager.Instance.CloseShopPanel();
 	}
 
