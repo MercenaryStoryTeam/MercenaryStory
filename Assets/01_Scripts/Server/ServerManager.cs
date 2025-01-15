@@ -6,11 +6,8 @@ public class ServerManager
 {
 	public static void ConnectLobby()
 	{
-		string nickName = FirebaseManager.Instance.CurrentUserData.user_Name;
-		PhotonNetwork.NickName = nickName;
-		ChatManager.Instance.SetNickName(nickName);
+		PhotonNetwork.NickName = FirebaseManager.Instance.CurrentUserData.user_Name;
 		PhotonNetwork.ConnectUsingSettings();
-		ChatManager.Instance.ConnectUsingSettings();
 	}
 
 	public static void JoinOrCreatePersistentRoom(string roomName)
@@ -24,14 +21,12 @@ public class ServerManager
 		};
 
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
-		ChatManager.Instance.ChatStart(roomName);
 	}
 
 	public static void LoadScene(string sceneName)
 	{
 		PhotonNetwork.LoadLevel(sceneName);
 		TitleUI.Instance.PanelCloseAll();
-		UIManager.Instance.chatButton.gameObject.SetActive(true);
 	}
 
 	public static void PlayerSpawn(Transform spawnPoint)

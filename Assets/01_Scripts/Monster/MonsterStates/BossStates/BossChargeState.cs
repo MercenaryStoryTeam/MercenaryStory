@@ -1,3 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class BossChargeState : BossState
 {
     public override void EnterState(BossMonster boss)

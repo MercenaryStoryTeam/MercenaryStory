@@ -1,17 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 // 목적: 플레이어의 장소간 이동 
 public class Teleport : MonoBehaviour
 {
     [Header("전환할 씬 이름")]
-    public string nextSceneName;
-
-    [Header("씬 로드 지연시간")]
-    public float loadSceneDelay = 1f; 
+    [SerializeField] private string nextSceneName;
 
     [Header("플레이어 레이어")]
-    public LayerMask playerLayer;
+    [SerializeField] private LayerMask playerLayer;
 
     private bool sceneLoaded = false;
 
@@ -19,35 +17,17 @@ public class Teleport : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         // 충돌한 객체의 레이어가 플레이어라면 실행
-        if (!sceneLoaded && ((1 << collider.gameObject.layer) & playerLayer) != 0)
+        if (!sceneLoaded && (playerLayer.value & (1 << collider.gameObject.layer)) != 0)
         {
             // 씬 전환 중복 호출 방지
             sceneLoaded = true;
 
-            // 현재 씬에서 플레이어 위치 저장
-            PlayerData playerData = PlayerData.Instance;
-            if (playerData != null)
-            {
-                playerData.SavePosition();
-            }
-            else
-            {
-                Debug.LogError("PlayerData 싱글톤 인스턴스를 참조할 수 없습니다.");
-            }
-
-            // Teleport 오브젝트 마테리얼 색상 변경 (빨간색)
-            Renderer teleportRenderer = GetComponent<Renderer>();
-            if (teleportRenderer != null)
-            {
-                teleportRenderer.material.color = Color.red;
-            }
-
             // 일정 시간 후 씬 전환
-            Invoke("LoadNextScene", loadSceneDelay);
+            Invoke("LoadNextScene", 0f);
         }
     }
 
-    // 다음 씬으로 전환
+    // 다음 씬으로 전환 처리
     public void LoadNextScene()
     {
         if (!string.IsNullOrEmpty(nextSceneName))
@@ -61,5 +41,3 @@ public class Teleport : MonoBehaviour
         }
     }
 }
-
-// 완성

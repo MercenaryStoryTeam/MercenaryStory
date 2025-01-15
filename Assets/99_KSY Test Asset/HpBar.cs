@@ -14,7 +14,7 @@ public class HpBar : MonoBehaviour
         if (player != null && HpBarPanel != null)
         {
             // Fill Amount를 현재 체력 비율로 설정
-            HpBarPanel.fillAmount = PlayerData.Instance.currentHp / PlayerData.Instance.maxHp;
+            HpBarPanel.fillAmount = player.currentHp / player.maxHp;
         }
     }
 }

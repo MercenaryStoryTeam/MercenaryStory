@@ -47,7 +47,6 @@ public class InventoryPanel : MonoBehaviour
             else
             {
                 UIManager.Instance.CloseInventoryPanel();
-                UIManager.Instance.CloseItemInfoPanel();
             }
         }
     }

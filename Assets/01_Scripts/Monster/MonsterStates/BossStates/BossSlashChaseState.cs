@@ -1,27 +1,22 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossSlashChaseState : BossState
 {
-    public override void EnterState(BossMonster boss)
+    public override void EnterState(BossMonster Boss)
     {
-        int targetNum = Random.Range(0,boss.playerList.Count);
-        boss.TargetTransform = boss.playerList[targetNum].transform;
-        boss.Agent.SetDestination(boss.TargetTransform.position);
-        boss.Animator.SetBool("IsMoving", true);
+        
+        Boss.Agent.SetDestination(Boss.TargetTransform.position);
     }
 
-    public override void ExecuteState(BossMonster boss)
+    public override void ExecuteState(BossMonster Boss)
     {
-        Collider[] targets = Physics.OverlapSphere(boss.TargetTransform.position, boss.slashAttackRange, boss.PlayerLayer);
-        boss.TargetTransform = targets[0].transform;
-        if (targets.Length > 0)
-        {
-            boss.ChangeState(BossStateType.Slash);
-        }
+        Collider[] targets = Physics.OverlapSphere(Boss.TargetTransform.position, Boss.SlashAttackRange);
     }
 
-    public override void ExitState(BossMonster boss)
+    public override void ExitState(BossMonster Boss)
     {
-        boss.Animator.SetBool("IsMoving", false);
+        throw new System.NotImplementedException();
     }
 }

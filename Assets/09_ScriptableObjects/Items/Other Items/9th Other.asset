@@ -19,7 +19,7 @@ MonoBehaviour:
     \uBB34\uB2AC\uCC98\uB7FC \uC0C8\uACA8\uC838 \uC788\uB2E4."
   currentItemCount: 0
   itemClass: 2
-  price: 5
+  price: 0
   dropPercent: 0
   isHave: 1
   image: {fileID: 21300000, guid: e2eb3607bb53e9345b0e2de7ec4a4888, type: 3}
