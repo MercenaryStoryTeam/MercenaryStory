@@ -24,6 +24,11 @@ public class ServerManager
 		};
 
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
+		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: roomName,
+			currentParty: "");
+		FirebaseManager.Instance.UpdateCurrentUserData("user_CurrentServer",
+			FirebaseManager.Instance.CurrentUserData.user_CurrentServer);
+		FirebaseManager.Instance.UpdateCurrentUserData("user_CurrentParty", "");
 		ChatManager.Instance.ChatStart(roomName);
 	}
 
@@ -40,5 +45,10 @@ public class ServerManager
 			.Instantiate(
 				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
 				spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
+	}
+
+	public static string GetServerName()
+	{
+		return PhotonNetwork.CurrentRoom.Name;
 	}
 }
