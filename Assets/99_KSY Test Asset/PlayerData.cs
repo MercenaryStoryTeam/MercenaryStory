@@ -18,6 +18,12 @@ public class PlayerData : MonoBehaviour
     [Header("경험치")]
     public int exp = 0;
 
+    [Header("이동 속도")]
+    public float moveSpeed = 5f;
+
+    [Header("플레이어 흡혈 비율")]
+    public float suckBlood = 3f;
+
     // 현재 플레이어 위치 참조를 위한 변수
     private Transform playerTransform;
 

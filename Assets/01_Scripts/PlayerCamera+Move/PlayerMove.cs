@@ -7,20 +7,17 @@ using Photon.Pun;
 [RequireComponent(typeof(Animator))]
 public class PlayerMove : MonoBehaviourPun
 {
-    [Header("이동 속도")]
-    [SerializeField] private float moveSpeed = 5f;
-
     [Header("Virtual Camera 할당")]
-    [SerializeField] private Transform cameraTransform;
+    public Transform cameraTransform;
 
     [Header("Die 애니메이션 재생 시간")]
-    [SerializeField] private float dieAnimationDuration = 2f;
+    public float dieAnimationDuration = 2f;
 
     [Header("콤보 타이머")]
-    [SerializeField] private float comboResetTime = 1.0f;
+    public float comboResetTime = 1.0f;
 
     [Header("씬 목록")]
-    [SerializeField] private List<string> specialScenes = new List<string>();
+    public List<string> specialScenes = new List<string>();
 
     private Rigidbody rb;
     private Animator animator;
@@ -109,7 +106,7 @@ public class PlayerMove : MonoBehaviourPun
             float inputX = Input.GetAxisRaw("Horizontal");
             float inputZ = Input.GetAxisRaw("Vertical");
             movementInput = CalculateMovementDirection(inputX, inputZ);
-            currentSpeed = moveSpeed;
+            currentSpeed = PlayerData.Instance.moveSpeed;
 
             if (movementInput.sqrMagnitude > moveThreshold)
             {
@@ -122,7 +119,7 @@ public class PlayerMove : MonoBehaviourPun
                     TransitionToState(State.Idle);
             }
 
-            float normalizedSpeed = (movementInput.magnitude * currentSpeed) / moveSpeed;
+            float normalizedSpeed = (movementInput.magnitude * currentSpeed) / PlayerData.Instance.moveSpeed;
             animator.SetFloat("Speed", normalizedSpeed);
         }
         else
