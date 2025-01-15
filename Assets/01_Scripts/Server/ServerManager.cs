@@ -24,11 +24,15 @@ public class ServerManager
 		};
 
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
+
 		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: roomName,
 			currentParty: "");
+
 		FirebaseManager.Instance.UpdateCurrentUserData("user_CurrentServer",
 			FirebaseManager.Instance.CurrentUserData.user_CurrentServer);
+
 		FirebaseManager.Instance.UpdateCurrentUserData("user_CurrentParty", "");
+
 		ChatManager.Instance.ChatStart(roomName);
 	}
 
@@ -37,6 +41,7 @@ public class ServerManager
 		PhotonNetwork.LoadLevel(sceneName);
 		TitleUI.Instance.PanelCloseAll();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
+		UIManager.Instance.partyButton.gameObject.SetActive(true);
 	}
 
 	public static void PlayerSpawn(Transform spawnPoint)
