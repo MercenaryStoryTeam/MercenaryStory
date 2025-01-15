@@ -19,6 +19,11 @@ public class InventoryPanel : MonoBehaviour
         ButtonOnClick();
     }
 
+    private void Start()
+    {
+        UIManager.Instance.CloseInventoryPanel();
+    }
+
     private void Update()
     {
         InteractableController();

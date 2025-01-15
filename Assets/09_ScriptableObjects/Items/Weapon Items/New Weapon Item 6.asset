@@ -23,8 +23,8 @@ MonoBehaviour:
   dropPercent: 0
   isHave: 1
   image: {fileID: 21300000, guid: 7a7cb22a23b4b184f8f571ea14b72367, type: 3}
-  prefab:
-  - {fileID: 7380884172882110819, guid: f53b0172051fd7c439e7eccda9de1b15, type: 3}
+  equipPrefab: []
+  dropLightLine: {fileID: 8785617817843426895, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
   Rank: 2
   Damage: 4
   isEquiped: 0

@@ -22,6 +22,6 @@ MonoBehaviour:
   dropPercent: 0
   isHave: 1
   image: {fileID: 21300000, guid: 9dd37670ec907c742a4ae63b2f430827, type: 3}
-  prefab:
-  - {fileID: 2300998956181542402, guid: 2c2f9d5778ce95e49baefc8948109623, type: 3}
+  equipPrefab: []
+  dropLightLine: {fileID: 7160412547922342061, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
   stackAmount: 10
