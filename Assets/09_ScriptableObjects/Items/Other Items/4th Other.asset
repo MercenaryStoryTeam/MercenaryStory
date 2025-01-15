@@ -16,12 +16,12 @@ MonoBehaviour:
   name: "\uBA40\uB85D \uB09A\uC2DC \uBC14\uB298"
   description: "\uBA40\uB85D\uB4E4\uC774 \uC0AC\uC6A9\uD558\uB294 \uB09A\uC2DC \uBC14\uB298\uC774\uB2E4.\n\uBB38\uD654
     \uC218\uC900\uC5D0 \uB9DE\uC9C0 \uC54A\uB294\n\uC815\uAD50\uD568\uC774 \uB3CB\uBCF4\uC778\uB2E4."
-  currentItemCount: 0
+  currentItemCount: 2
   itemClass: 2
   price: 3
   dropPercent: 0
   isHave: 1
   image: {fileID: 21300000, guid: 7b9e19db70d2fd54d9adb2b3c13cbbfd, type: 3}
   equipPrefab: []
-  dropLightLine: {fileID: 7160412547922342061, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
+  dropLightLine: {fileID: 6349039886756410821, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
   stackAmount: 10

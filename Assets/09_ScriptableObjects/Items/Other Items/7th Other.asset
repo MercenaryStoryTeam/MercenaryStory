@@ -23,5 +23,5 @@ MonoBehaviour:
   isHave: 1
   image: {fileID: 21300000, guid: 129bd2eb4dd489a45b2b507cc03986cb, type: 3}
   equipPrefab: []
-  dropLightLine: {fileID: 7160412547922342061, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
+  dropLightLine: {fileID: 6349039886756410821, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
   stackAmount: 10
