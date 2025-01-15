@@ -95,6 +95,7 @@ public class InventorySlot : MonoBehaviour
 					canvasGroup.interactable = false;
 					sellSlot.AddItem(item);
 					UIManager.Instance.shop.sellPrice += item.price;
+					UIManager.Instance.shop.originalSlotState[sellSlot] = this;
 					break;
 				}
 			} 
@@ -106,7 +107,7 @@ public class InventorySlot : MonoBehaviour
 			foreach (InventorySlot slot in sellSlots)
 			{
 				if (slot.item != null && 
-					slot.item.name == item.name && 
+					slot.item == item && 
 					UIManager.Instance.shop.originalSlotState.ContainsKey(slot) &&
 					UIManager.Instance.shop.originalSlotState[slot] == this)
 				{
@@ -115,7 +116,7 @@ public class InventorySlot : MonoBehaviour
 				}
 			}
 
-			if (currentSellSlot != null)
+			if (currentSellSlot != null && currentSellSlot.slotCount < 10)
 			{
 				currentSellSlot.slotCount++;
 				slotCount--;
@@ -127,7 +128,8 @@ public class InventorySlot : MonoBehaviour
 					canvasGroup.interactable = false;
 				}
 			}
-			else
+			
+			else if(currentSellSlot == null)
 			{
 				foreach (InventorySlot sellSlot in sellSlots)
 				{

@@ -1,4 +1,3 @@
-using Firebase.Auth;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,12 +16,13 @@ public class ShopPanel : MonoBehaviour
 	public Button sellButton;
 	public Button closeButton;
 
+	public bool isSellButtonClicked = false;
 	[HideInInspector] public float sellPrice = 0;
 	[HideInInspector] public Dictionary<InventorySlot, InventorySlot> originalSlotState = new Dictionary<InventorySlot, InventorySlot>();
 		
 	private TestSY _testsy;
-	private InventorySlot selectedSlot;
 	private InventorySlot sellSlot;
+	private Inventory myInventory;
 	private Dictionary<InventorySlot, ItemState> itemStates = new Dictionary<InventorySlot, ItemState>();
 
 	private struct ItemState
@@ -35,6 +35,7 @@ public class ShopPanel : MonoBehaviour
 	private void Awake()
 	{
 		_testsy = FindObjectOfType<TestSY>();
+		myInventory = FindObjectOfType<Inventory>();
 		shopPanel.SetActive(false);
 		ShopButtonClicked();
 		SaveOriginalState();
@@ -55,26 +56,44 @@ public class ShopPanel : MonoBehaviour
 
 	public void RestoreOriginalState()
 	{
-		foreach (InventorySlot slot in holdSlots)
+		if (!isSellButtonClicked)
 		{
-			if (itemStates.ContainsKey(slot))
+			foreach (InventorySlot slot in holdSlots)
 			{
-				var state = itemStates[slot];
-				slot.slotCount = state.originalCount;
-				slot.canvasGroup.interactable = true;
-				slot.canvasGroup.alpha = 1f;
+				if (itemStates.ContainsKey(slot))
+				{
+					var state = itemStates[slot];
+					slot.slotCount = state.originalCount;
+					slot.canvasGroup.interactable = true;
+					slot.canvasGroup.alpha = 1f;
+				}
 			}
-		}
 		
-		foreach (InventorySlot slot in sellSlots)
+			foreach (InventorySlot slot in sellSlots)
+			{
+				slot.RemoveItem();
+				slot.slotCount = 0;
+			}
+		
+			originalSlotState.Clear();
+			sellPrice = 0;
+			UpdateHoldSlots();
+		}
+
+		else
 		{
-			slot.RemoveItem();
-			slot.slotCount = 0;
+			isSellButtonClicked = false;
+			sellPrice = 0;
+			foreach (InventorySlot slot in holdSlots)
+			{
+				if (itemStates.ContainsKey(slot))
+				{
+					slot.canvasGroup.interactable = true;
+					slot.canvasGroup.alpha = 1f;
+				}
+			}
+			UpdateHoldSlots();
 		}
-		
-		originalSlotState.Clear();
-		sellPrice = 0;
-		UpdateHoldSlots();
 	}
 
 	private void Update()
@@ -109,14 +128,64 @@ public class ShopPanel : MonoBehaviour
 
 	private void sellButtonClick()
 	{
-		foreach(InventorySlot slot in sellSlots)
+		//판매 버튼 누르면 인벤토리 슬롯 업데이트 안되고 있음
+		
+		bool isItemToSell = false;
+		print(myInventory.myItems.Count);
+
+		foreach (InventorySlot slot in sellSlots)
 		{
-            if (slot.item == null)
-            {
-                UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
-                    () => UIManager.Instance.popUp.PopUpClose());
-            }
-        }
+			if (slot.item != null)
+			{
+				isItemToSell = true;
+				break;
+			}
+
+			if (!isItemToSell)
+			{
+				UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
+					() => UIManager.Instance.popUp.PopUpClose());
+
+				return;
+			}
+		}
+
+		print(isItemToSell);
+
+		foreach (InventorySlot sellSlot in sellSlots)
+		{
+			if (sellSlot.item != null)
+			{
+				if (originalSlotState.TryGetValue(sellSlot, out InventorySlot originalSlot))
+				{
+					if (sellSlot.item.itemClass == 2)
+					{
+						sellSlot.item.currentItemCount -= sellSlot.slotCount;
+
+						for (int i = 0; i < sellSlot.slotCount; i++)
+						{
+							myInventory.myItems.Remove(sellSlot.item);
+						}
+					}
+
+					else
+					{
+						sellSlot.item.currentItemCount--;
+						myInventory.myItems.Remove(sellSlot.item);
+					}
+
+					_testsy.myGold += sellPrice;
+					sellPrice = 0;
+					isSellButtonClicked = true;
+				}
+				
+				sellSlot.RemoveItem();				
+				sellSlot.slotCount = 0;
+			}
+		}
+		
+		myInventory.SlotArray();
+		UIManager.Instance.CloseShopPanel();
 	}
 
 	private void CloseButtonClick()
