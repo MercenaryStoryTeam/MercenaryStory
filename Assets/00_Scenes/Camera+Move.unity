@@ -988,7 +988,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550660467}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b4c32f0d7042b9408147ff8fccf6ccb, type: 3}
   m_Name: 
@@ -1115,11 +1115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de85654e48e732348ad3aa1473c2896f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Practice
+  nextSceneName: 
   loadSceneDelay: 1
   playerLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
 --- !u!1 &662621454
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,6 +1838,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5280160688927695621, guid: ff1cac93ff61e30469512aab810a7202, type: 3}
   m_PrefabInstance: {fileID: 476715403}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1114053634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1114053636}
+  - component: {fileID: 1114053635}
+  m_Layer: 0
+  m_Name: PlayerInputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1114053635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114053634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1114053636
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114053634}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 218.93709, y: 254.2374, z: 93.51286}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1282335325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2710,7 +2754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c4e98d9deeecf419d1ace6a3c44e21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 100
   currentHp: 0
   maxHp: 100
   playerLayer:
@@ -3363,7 +3407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slowAmountPercentage: 20
-  damagePerSecondPercentage: 1
+  damagePerSecondPercentage: 0.5
   duration: 10
 --- !u!1001 &2038434464
 PrefabInstance:
@@ -21460,7 +21504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Practice
+  nextSceneName: KSY_Test
   loadSceneDelay: 1
 --- !u!4 &2355789709690827343
 Transform:
@@ -37474,7 +37518,7 @@ MonoBehaviour:
   damage: 10
   Monster:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
 --- !u!136 &4454629180249320029
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -43777,7 +43821,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!137 &5259805753258109561
 SkinnedMeshRenderer:
@@ -57287,6 +57331,7 @@ GameObject:
   - component: {fileID: 7327844130000236773}
   - component: {fileID: 2353092340591187454}
   - component: {fileID: 7736056571850604537}
+  - component: {fileID: 7736056571850604538}
   m_Layer: 6
   m_Name: Main_Player2
   m_TagString: Player
@@ -59923,14 +59968,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7032734782226714084}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b73040a00fe648742b88ee371bd3be76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 550660469}
+  cameraTransform: {fileID: 0}
   dieAnimationDuration: 2
-  comboResetTime: 3
+  comboResetTime: 1
   specialScenes: []
 --- !u!1 &7329063201068026095
 GameObject:
@@ -62985,6 +63030,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2353092340591187454}
   HpBarPanel: {fileID: 910577593}
+--- !u!114 &7736056571850604538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7032734782226714084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3ebfb24796d1544bb905199c76cf31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillCooldownTime: 2
+  loadSceneDelay: 2
 --- !u!1 &7744125781523886068
 GameObject:
   m_ObjectHideFlags: 0
@@ -74188,6 +74247,7 @@ SceneRoots:
   - {fileID: 841449226}
   - {fileID: 1850691361}
   - {fileID: 119855037}
+  - {fileID: 1114053636}
   - {fileID: 1282335329}
   - {fileID: 1648711748}
   - {fileID: 662621455}
