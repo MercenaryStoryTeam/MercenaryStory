@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3442355511025044989}
   - component: {fileID: 3501203538067650475}
   - component: {fileID: 6213811166947882250}
+  - component: {fileID: 1230957884087113533}
   m_Layer: 6
   m_Name: PT_Sword_02_a
   m_TagString: Untagged
@@ -130,3 +131,25 @@ CapsuleCollider:
   m_Height: 0.75
   m_Direction: 1
   m_Center: {x: 0, y: -0.45, z: 0}
+--- !u!114 &1230957884087113533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5011439781131301672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d04e1edd8befabe45b39ee5b1d160f9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
