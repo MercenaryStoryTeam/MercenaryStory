@@ -192,8 +192,14 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			partyDictionary =
 				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
 					partiesData.GetRawJsonValue());
-
-			partyList = new List<PartyData>(partyDictionary.Values);
+			if (partyDictionary != null)
+			{
+				partyList = new List<PartyData>(partyDictionary.Values);
+			}
+			else
+			{
+				print("파티 없음");
+			}
 		}
 		catch (FirebaseException e)
 		{
