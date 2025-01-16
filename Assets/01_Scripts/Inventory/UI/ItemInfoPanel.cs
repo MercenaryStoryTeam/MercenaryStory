@@ -47,22 +47,9 @@ public class ItemInfoPanel : MonoBehaviour
 
     private void RemoveItemButtonClick()
     {
-        Inventory inventory = FindObjectOfType<Inventory>();
-        inventory.DeleteItem(currentSelectedSlot);
+        InventoryManger inventoryManger = FindObjectOfType<InventoryManger>();
+        inventoryManger.DeleteItem(currentSelectedSlot);
         UIManager.Instance.CloseItemInfoPanel();
-    }
-
-    private InventorySlot SelectedSlot()
-    {
-        Inventory inventory = FindObjectOfType<Inventory>();
-        foreach (InventorySlot slot in inventory.slots)
-        {
-            if (slot.item != null && slot.item.name == itemName.text)
-            {
-                return slot;
-            }
-        }
-        return null;
     }
     
     public void EquipButtonClick()
