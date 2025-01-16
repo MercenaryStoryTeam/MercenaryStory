@@ -18,7 +18,7 @@ public class ItemBase : ScriptableObject
     public int dropPercent; //아이템 드랍률
     
     [Header("bool")]
-    public bool isHave; //아이템 보유 여부 -> 구현에 필요 없으면 삭제 예정
+    public bool isEquipped; //장비 아이템 장착 여부
     
     [Header("Icon&Prefab")]
     public Sprite image; //아이템 아이콘
@@ -28,6 +28,6 @@ public class ItemBase : ScriptableObject
 
     private void Awake()
     {
-        isHave = false;
+        
     }
 }
