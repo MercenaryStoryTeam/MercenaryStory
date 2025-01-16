@@ -63042,7 +63042,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3ebfb24796d1544bb905199c76cf31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCooldown: 5
+  skills:
+  - name: Rush
+    triggerName: Rush
+    cooldown: 0
+    isOnCooldown: 0
+  - name: Parry
+    triggerName: Parry
+    cooldown: 0
+    isOnCooldown: 0
+  - name: Skill1
+    triggerName: Skill1
+    cooldown: 0
+    isOnCooldown: 0
+  - name: Skill2
+    triggerName: Skill2
+    cooldown: 0
+    isOnCooldown: 0
 --- !u!1 &7744125781523886068
 GameObject:
   m_ObjectHideFlags: 0
