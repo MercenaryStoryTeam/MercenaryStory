@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
         PlayerFsm playerMove = GetComponent<PlayerFsm>();
         if (playerMove != null)
         {
-            // Die 상태 처리
+            // Die 상태 애니 구현
             playerMove.Die();
         }
         else
@@ -61,6 +61,9 @@ public class Player : MonoBehaviour
 
         // 체력을 최대값으로 복원
         PlayerData.Instance.currentHp = PlayerData.Instance.maxHp;
+
+        // 플레이어의 위치 값을 여기다가 넣으면 될 듯
+        // 없으면 초기씬 초기값으로 다음씬에서 스폰
 
         // 지정된 딜레이 후 다음 씬으로 로드
         Invoke("LoadNextScene", loadSceneDelay);

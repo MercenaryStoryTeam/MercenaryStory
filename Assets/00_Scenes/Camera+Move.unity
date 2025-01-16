@@ -980,7 +980,6 @@ MonoBehaviour:
   rotationZ: 0
   fieldOfView: 11
   damping: 3
-  playerTag: Player
 --- !u!114 &550660471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1119,7 +1118,7 @@ MonoBehaviour:
   loadSceneDelay: 1
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1 &662621454
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,11 +1625,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &886711243 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5531684311002989278, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
-  m_PrefabInstance: {fileID: 1302237570}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &910577591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1976,8 +1970,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 886711243}
   - {fileID: 1011413591}
+  - {fileID: 1302237571}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1996,6 +1990,30 @@ PrefabInstance:
     - target: {fileID: 106256695887672485, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460820352086665266, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460820352086665266, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460820352086665266, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460820352086665266, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460820352086665266, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4460820352086665266, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5531684311002989278, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
       propertyPath: m_Pivot.x
@@ -2089,6 +2107,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7089292422084258333, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8925707184425475632, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
       propertyPath: m_Name
       value: SkillWindowUI
@@ -2102,6 +2124,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+--- !u!224 &1302237571 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4460820352086665266, guid: 3cdf1c78d4ee5a64188106924b25b1cf, type: 3}
+  m_PrefabInstance: {fileID: 1302237570}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1350307664
 GameObject:
   m_ObjectHideFlags: 0
@@ -57328,10 +57355,10 @@ GameObject:
   - component: {fileID: 5323869551526002806}
   - component: {fileID: 5248531118157474246}
   - component: {fileID: 3993583337906212589}
+  - component: {fileID: 7736056571850604537}
+  - component: {fileID: 2353092340591187454}
   - component: {fileID: 7736056571850604538}
   - component: {fileID: 7736056571850604539}
-  - component: {fileID: 2353092340591187454}
-  - component: {fileID: 7736056571850604537}
   m_Layer: 6
   m_Name: Main_Player2
   m_TagString: Player
@@ -63039,25 +63066,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 7032734782226714084}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc3ebfb24796d1544bb905199c76cf31, type: 3}
+  m_Script: {fileID: 11500000, guid: 743d1fb050f9fe546bbcec6de8bd1bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skills:
   - name: Rush
     triggerName: Rush
-    cooldown: 0
+    cooldown: 2
+    speedBoost: 2
+    duration: 0.1
     isOnCooldown: 0
   - name: Parry
     triggerName: Parry
-    cooldown: 0
+    cooldown: 1
+    speedBoost: 0
+    duration: 0
     isOnCooldown: 0
   - name: Skill1
     triggerName: Skill1
-    cooldown: 0
+    cooldown: 1
+    speedBoost: 0
+    duration: 0
     isOnCooldown: 0
   - name: Skill2
     triggerName: Skill2
-    cooldown: 0
+    cooldown: 1
+    speedBoost: 0
+    duration: 0
     isOnCooldown: 0
 --- !u!1 &7744125781523886068
 GameObject:

@@ -40,7 +40,7 @@ public class PlayerFsm : MonoBehaviour
     private int attackCombo = 0;
     private float lastAttackTime = 0f;
 
-    private SkillManager skillManager;
+    private SkillFsm skillFsm;
 
     private void Awake()
     {
@@ -77,11 +77,11 @@ public class PlayerFsm : MonoBehaviour
         bool isScene = IsCurrentSceneSpecial();
         animator.SetBool("Scene", isScene);
 
-        // SkillManager 초기화
-        skillManager = GetComponent<SkillManager>();
-        if (skillManager == null)
+        // SkillFsm 초기화
+        skillFsm = GetComponent<SkillFsm>();
+        if (skillFsm == null)
         {
-            Debug.LogError("PlayerFsm의 GameObject에 SkillManager 컴포넌트가 없습니다.");
+            Debug.LogError("PlayerFsm의 GameObject에 SkillFsm 스크립트가 없습니다.");
             enabled = false;
             return;
         }
@@ -256,7 +256,6 @@ public class PlayerFsm : MonoBehaviour
                 EnterAttackState(3);
                 break;
             case State.Skill:
-                // SkillManager가 상태를 전환
                 break;
             case State.Die:
                 EnterDieState();

@@ -8,6 +8,7 @@ public class PlayerInputManager : MonoBehaviour
     public static System.Action OnRightClickInput;
     public static System.Action OnShiftLeftClickInput;
     public static System.Action OnShiftRightClickInput;
+    public static System.Action OnBInput; 
 
     void Update()
     {
@@ -44,6 +45,11 @@ public class PlayerInputManager : MonoBehaviour
         if (Input.GetButtonDown("Jump"))
         {
             OnSkillInput?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.B)) 
+        {
+            OnBInput?.Invoke();
         }
     }
 }

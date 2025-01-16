@@ -8,7 +8,7 @@ public class Teleport : MonoBehaviour
     public string nextSceneName;
 
     [Header("씬 로드 지연시간")]
-    public float loadSceneDelay = 1f; 
+    public float loadSceneDelay = 1f;
 
     [Header("플레이어 레이어")]
     public LayerMask playerLayer;
@@ -62,4 +62,3 @@ public class Teleport : MonoBehaviour
     }
 }
 
-// 완성
