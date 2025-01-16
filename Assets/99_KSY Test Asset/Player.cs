@@ -39,19 +39,33 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 플레이어 die 처리
     private void Die()
     {
+        // 사운드 재생
         SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
+
+        // 디버그 메시지 출력
         Debug.Log("Player Die");
 
-        // FSMManager를 통해 Die 상태 처리
-        FSMManager.Instance.TriggerDie();
+        // PlayerMove 스크립트 참조
+        PlayerFsm playerMove = GetComponent<PlayerFsm>();
+        if (playerMove != null)
+        {
+            // Die 상태 처리
+            playerMove.Die();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerMove 스크립트를 찾을 수 없습니다.");
+        }
 
+        // 체력을 최대값으로 복원
         PlayerData.Instance.currentHp = PlayerData.Instance.maxHp;
 
+        // 지정된 딜레이 후 다음 씬으로 로드
         Invoke("LoadNextScene", loadSceneDelay);
     }
+
 
     // 다음 씬으로 전환
     private void LoadNextScene()

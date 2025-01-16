@@ -1115,7 +1115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de85654e48e732348ad3aa1473c2896f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: 
+  nextSceneName: Camera+Move
   loadSceneDelay: 1
   playerLayer:
     serializedVersion: 2
@@ -21504,8 +21504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: KSY_Test
-  loadSceneDelay: 1
+  nextSceneName: Camera+Move
+  loadSceneDelay: 2
 --- !u!4 &2355789709690827343
 Transform:
   m_ObjectHideFlags: 0
@@ -59968,7 +59968,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7032734782226714084}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b73040a00fe648742b88ee371bd3be76, type: 3}
   m_Name: 
@@ -63037,13 +63037,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7032734782226714084}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc3ebfb24796d1544bb905199c76cf31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   skillCooldownTime: 2
   loadSceneDelay: 2
+  rb: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!1 &7744125781523886068
 GameObject:
   m_ObjectHideFlags: 0

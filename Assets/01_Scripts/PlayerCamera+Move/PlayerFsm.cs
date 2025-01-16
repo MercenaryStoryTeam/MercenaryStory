@@ -5,7 +5,7 @@ using Photon.Pun;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
-public class PlayerMove : MonoBehaviourPun
+public class PlayerFsm : MonoBehaviour
 {
     [Header("Virtual Camera 할당")]
     public Transform cameraTransform;
