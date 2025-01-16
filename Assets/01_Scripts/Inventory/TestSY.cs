@@ -10,7 +10,7 @@ public class TestSY : MonoBehaviour
     public float myGold = 0;
     
     private PlayerTestSY playerTest;
-    private void Awake()
+    private void Start ()
     {
         playerTest = FindObjectOfType<PlayerTestSY>();
     }

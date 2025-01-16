@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    public GameObject panelRightHand;
-    public GameObject panelLeftHand;
     public GameObject panelCharacter; // UI용 캐릭터 이미지를 가지고 있는 부모 오브젝트
     
     private TestSY _testSY;
@@ -28,7 +26,11 @@ public class Equipment : MonoBehaviour
     {
         _testSY = FindObjectOfType<TestSY>();
     }
-    
+
+    private void Start()
+    {
+    }
+
     public void SetCurrentEquip(InventorySlot slot)
     {
             if (slot.item == null)
@@ -66,7 +68,7 @@ public class Equipment : MonoBehaviour
         {
             if (child.gameObject.activeSelf)
             {
-                Transform rightHand = child.Find("Sword");
+                Transform rightHand = child.FindDeepChild("Sword");
 
                 GameObject panelSword = Instantiate(item.equipPrefab[0], rightHand);
                 panelSword.layer = LayerMask.NameToLayer("Object");
@@ -82,7 +84,7 @@ public class Equipment : MonoBehaviour
             {
                 if (child.gameObject.activeSelf)
                 {
-                    Transform leftHand = child.Find("Shield");
+                    Transform leftHand = child.FindDeepChild("Shield");
                     
                     GameObject panelShield = Instantiate(item.equipPrefab[1], leftHand);
                     panelShield.layer = LayerMask.NameToLayer("Object");
@@ -95,7 +97,8 @@ public class Equipment : MonoBehaviour
     {
         DestroyChildObject();
         GameObject playerPrefab = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}");
-        equipmentParent = playerPrefab.transform.Find("Sword");
+        equipmentParent = playerPrefab.transform.FindDeepChild("Sword");
+        print(equipmentParent.parent.name);
         
         if (item is WeaponItem weapon)
         {
@@ -184,7 +187,7 @@ public class Equipment : MonoBehaviour
     private void SetShieldClass(ItemBase item)
     {
         GameObject playerPrefab = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}");
-        equipmentParent = playerPrefab.transform.Find("Shield");
+        equipmentParent = playerPrefab.transform.FindDeepChild("Shield");
         
         if (item is WeaponItem weapon)
         {
@@ -234,8 +237,8 @@ public class Equipment : MonoBehaviour
     private void DestroyChildObject()
     {
         GameObject playerPrefab = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}");
-        GameObject findShield = playerPrefab.transform.Find("Shield").gameObject;
-        GameObject findSword = playerPrefab.transform.Find("Sword").gameObject;
+        GameObject findShield = playerPrefab.transform.FindDeepChild("Shield").gameObject;
+        GameObject findSword = playerPrefab.transform.FindDeepChild("Sword").gameObject;
         
         for (int i = 0; i < findShield.transform.childCount; i++)
         {
@@ -246,16 +249,41 @@ public class Equipment : MonoBehaviour
         { 
             DestroyImmediate(findSword.transform.GetChild(i).gameObject);
         }
-            
-
-        for (int i = 0; i < panelRightHand.transform.childCount; i++)
+        
+        foreach (Transform child in panelCharacter.transform)
         {
-            Destroy(panelRightHand.transform.GetChild(i).gameObject);
+            if (child.gameObject.activeSelf)
+            {
+                if (child.gameObject.activeSelf)
+                {
+                    Transform leftHand = child.FindDeepChild("Shield");
+                    for (int i = 0; i < leftHand.childCount; i++)
+                    {
+                        Destroy(leftHand.transform.GetChild(i).gameObject);
+                    }
+                }
+            }
         }
-
-        for (int i = 0; i < panelLeftHand.transform.childCount; i++)
+        
+        foreach (Transform child in panelCharacter.transform)
         {
-            Destroy(panelLeftHand.transform.GetChild(i).gameObject);
+            if (child.gameObject.activeSelf)
+            {
+                if (child.gameObject.activeSelf)
+                {
+                    Transform rightHand = child.FindDeepChild("Sword");
+                    for (int i = 0; i < rightHand.childCount; i++)
+                    {
+                        Destroy(rightHand.transform.GetChild(i).gameObject);
+
+                    }
+                }
+            }
+
+            else
+            {
+                return;
+            }
         }
     }
     

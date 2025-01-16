@@ -21,6 +21,7 @@ public class EquipmentPanel : MonoBehaviour
         thirdCharacter.SetActive(false);
         
         currentEquipImage.enabled = false; // 인벤토리 열 때 none 이미지 잠깐 보이는 거 방지
+        
     }
 
     private void Start()
@@ -48,10 +49,11 @@ public class EquipmentPanel : MonoBehaviour
     {
         if (slot.item.itemClass == 1 && slot != null && slot.item != null)
         {
-            if (_testSY.currentWeapon == null)
+            int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+            if (currentWeaponId == 0 || currentWeaponId == null)
             {
                 currentEquipImage.sprite = slot.item.image;
-                _testSY.currentWeapon = slot.item;
+                FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = slot.item.id;
 
                 slot.RemoveItem();
                 Debug.Log($"현재 장착한 장비 아이템: {_testSY.currentWeapon.name}");
