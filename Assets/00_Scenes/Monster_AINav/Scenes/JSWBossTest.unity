@@ -398,7 +398,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3828198}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1588,7 +1588,7 @@ GameObject:
   - component: {fileID: 39871115}
   - component: {fileID: 39871117}
   - component: {fileID: 39871116}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2221,7 +2221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 52163169}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2658,7 +2658,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 58364672}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3059,7 +3059,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 68135229}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3639,7 +3639,7 @@ GameObject:
   - component: {fileID: 82418509}
   - component: {fileID: 82418511}
   - component: {fileID: 82418510}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4063,7 +4063,7 @@ GameObject:
   - component: {fileID: 88252192}
   - component: {fileID: 88252191}
   - component: {fileID: 88252190}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: 1 Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4475,7 +4475,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 107020371}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5159,7 +5159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 120368842}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5377,7 +5377,7 @@ GameObject:
   - component: {fileID: 123270277}
   - component: {fileID: 123270279}
   - component: {fileID: 123270278}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (26)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5916,7 +5916,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 143583200}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5949,7 +5949,7 @@ GameObject:
   - component: {fileID: 145187937}
   - component: {fileID: 145187939}
   - component: {fileID: 145187938}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (30)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6192,7 +6192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 154372507}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6223,7 +6223,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 161233844}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6744,7 +6744,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 172271902}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6861,7 +6861,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 173338154}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7790,7 +7790,7 @@ GameObject:
   - component: {fileID: 192175024}
   - component: {fileID: 192175026}
   - component: {fileID: 192175025}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7962,7 +7962,7 @@ GameObject:
   - component: {fileID: 195811824}
   - component: {fileID: 195811826}
   - component: {fileID: 195811825}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8278,7 +8278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 199632799}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8309,7 +8309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 201530431}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8624,7 +8624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 219560730}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8657,7 +8657,7 @@ GameObject:
   - component: {fileID: 219630925}
   - component: {fileID: 219630927}
   - component: {fileID: 219630926}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8829,7 +8829,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 227055552}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8862,7 +8862,7 @@ GameObject:
   - component: {fileID: 227285424}
   - component: {fileID: 227285426}
   - component: {fileID: 227285425}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Vegetation_Modular_Tree_Foliage_Fir_Small_01 (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10310,7 +10310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 278262329}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10343,7 +10343,7 @@ GameObject:
   - component: {fileID: 286040330}
   - component: {fileID: 286040332}
   - component: {fileID: 286040331}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (30)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11130,7 +11130,7 @@ GameObject:
   - component: {fileID: 299935379}
   - component: {fileID: 299935381}
   - component: {fileID: 299935380}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (25)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11335,7 +11335,7 @@ GameObject:
   - component: {fileID: 309982148}
   - component: {fileID: 309982150}
   - component: {fileID: 309982149}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Vegetation_Modular_Tree_Foliage_Fir_Small_01 (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12501,7 +12501,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 328525187}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12918,7 +12918,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 346347143}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13256,7 +13256,7 @@ GameObject:
   - component: {fileID: 352989682}
   - component: {fileID: 352989684}
   - component: {fileID: 352989683}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: pillar4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13342,7 +13342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -13776,7 +13776,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 373106658}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Floor stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14415,7 +14415,7 @@ GameObject:
   - component: {fileID: 389705781}
   - component: {fileID: 389705783}
   - component: {fileID: 389705782}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14860,7 +14860,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 398786591}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15415,7 +15415,7 @@ GameObject:
   - component: {fileID: 414310256}
   - component: {fileID: 414310258}
   - component: {fileID: 414310257}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (25)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15729,7 +15729,7 @@ GameObject:
   - component: {fileID: 416910191}
   - component: {fileID: 416910193}
   - component: {fileID: 416910192}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16166,7 +16166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430634748}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17917,7 +17917,7 @@ GameObject:
   - component: {fileID: 484078224}
   - component: {fileID: 484078226}
   - component: {fileID: 484078225}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Vegetation_Modular_Tree_Foliage_Fir_Small_01 (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19375,7 +19375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -19448,7 +19448,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 514510628}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: trap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20821,7 +20821,7 @@ GameObject:
   - component: {fileID: 557997098}
   - component: {fileID: 557997100}
   - component: {fileID: 557997099}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: pillar2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21020,7 +21020,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 558891716}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21564,7 +21564,7 @@ GameObject:
   - component: {fileID: 575765742}
   - component: {fileID: 575765744}
   - component: {fileID: 575765743}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Base_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21706,7 +21706,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 587237311}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22477,7 +22477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 600533252}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23499,7 +23499,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 633892521}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24911,7 +24911,7 @@ GameObject:
   - component: {fileID: 667692652}
   - component: {fileID: 667692654}
   - component: {fileID: 667692653}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25393,7 +25393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -26390,7 +26390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -27799,7 +27799,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 728318671}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Nest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27837,7 +27837,7 @@ GameObject:
   - component: {fileID: 732268575}
   - component: {fileID: 732268577}
   - component: {fileID: 732268576}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28102,7 +28102,7 @@ GameObject:
   - component: {fileID: 744302706}
   - component: {fileID: 744302705}
   - component: {fileID: 744302704}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Toxic Swamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28582,7 +28582,7 @@ GameObject:
   - component: {fileID: 761561534}
   - component: {fileID: 761561536}
   - component: {fileID: 761561535}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29265,7 +29265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 779048969}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29731,7 +29731,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 786577288}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30155,7 +30155,7 @@ GameObject:
   - component: {fileID: 800645408}
   - component: {fileID: 800645410}
   - component: {fileID: 800645409}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31332,7 +31332,7 @@ GameObject:
   - component: {fileID: 812037762}
   - component: {fileID: 812037764}
   - component: {fileID: 812037763}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31885,7 +31885,7 @@ GameObject:
   - component: {fileID: 829819883}
   - component: {fileID: 829819885}
   - component: {fileID: 829819884}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Underwater_Temple_Stone_Stairs_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34654,7 +34654,7 @@ GameObject:
   - component: {fileID: 906603879}
   - component: {fileID: 906603881}
   - component: {fileID: 906603880}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35077,7 +35077,7 @@ GameObject:
   - component: {fileID: 916609556}
   - component: {fileID: 916609558}
   - component: {fileID: 916609557}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35352,7 +35352,7 @@ GameObject:
   - component: {fileID: 924297718}
   - component: {fileID: 924297720}
   - component: {fileID: 924297719}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35730,7 +35730,7 @@ GameObject:
   - component: {fileID: 937105678}
   - component: {fileID: 937105680}
   - component: {fileID: 937105679}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35990,7 +35990,7 @@ GameObject:
   - component: {fileID: 938453182}
   - component: {fileID: 938453184}
   - component: {fileID: 938453183}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Underwater_Temple_Stone_Stairs_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36158,7 +36158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 939990074}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36191,7 +36191,7 @@ GameObject:
   - component: {fileID: 942403964}
   - component: {fileID: 942403966}
   - component: {fileID: 942403965}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36686,7 +36686,7 @@ GameObject:
   - component: {fileID: 960776183}
   - component: {fileID: 960776185}
   - component: {fileID: 960776184}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36955,7 +36955,7 @@ GameObject:
   - component: {fileID: 963170989}
   - component: {fileID: 963170991}
   - component: {fileID: 963170990}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Base_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37350,7 +37350,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 979950224}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37848,7 +37848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -38099,7 +38099,7 @@ GameObject:
   - component: {fileID: 1010934654}
   - component: {fileID: 1010934656}
   - component: {fileID: 1010934655}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38274,7 +38274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -38622,7 +38622,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1019193605}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38836,7 +38836,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1028267015}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Spiketrap3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39152,7 +39152,7 @@ GameObject:
   - component: {fileID: 1041770306}
   - component: {fileID: 1041770308}
   - component: {fileID: 1041770307}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39233,7 +39233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1043133636}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39532,12 +39532,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1055134124}
-  - component: {fileID: 1055134129}
-  - component: {fileID: 1055134128}
   - component: {fileID: 1055134127}
   - component: {fileID: 1055134126}
   - component: {fileID: 1055134125}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: wall4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39631,30 +39629,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1055134128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055134123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ca002da428252441b92f28d83c8a65f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1055134129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1055134123}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1055860878
 GameObject:
   m_ObjectHideFlags: 0
@@ -39921,12 +39895,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1062957333}
-  - component: {fileID: 1062957338}
-  - component: {fileID: 1062957337}
   - component: {fileID: 1062957336}
   - component: {fileID: 1062957335}
   - component: {fileID: 1062957334}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: wall3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40020,30 +39992,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1062957337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1062957332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ca002da428252441b92f28d83c8a65f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1062957338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1062957332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1067893453
 GameObject:
   m_ObjectHideFlags: 0
@@ -40141,7 +40089,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1070359780}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40174,7 +40122,7 @@ GameObject:
   - component: {fileID: 1071736042}
   - component: {fileID: 1071736044}
   - component: {fileID: 1071736043}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40513,7 +40461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1077703041}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40632,7 +40580,7 @@ GameObject:
   - component: {fileID: 1081931333}
   - component: {fileID: 1081931335}
   - component: {fileID: 1081931334}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41065,7 +41013,7 @@ GameObject:
   - component: {fileID: 1088162255}
   - component: {fileID: 1088162257}
   - component: {fileID: 1088162256}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: pillar3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41642,7 +41590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1107155011}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41953,7 +41901,7 @@ GameObject:
   - component: {fileID: 1116556444}
   - component: {fileID: 1116556446}
   - component: {fileID: 1116556445}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Vegetation_Modular_Tree_Foliage_Fir_Small_01 (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42218,7 +42166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1123302270}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42699,7 +42647,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1132013212}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Spiketrap4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43656,7 +43604,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1168296541}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43689,7 +43637,7 @@ GameObject:
   - component: {fileID: 1168824083}
   - component: {fileID: 1168824085}
   - component: {fileID: 1168824084}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43773,7 +43721,7 @@ GameObject:
   - component: {fileID: 1169493246}
   - component: {fileID: 1169493248}
   - component: {fileID: 1169493247}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44390,7 +44338,7 @@ GameObject:
   - component: {fileID: 1176838847}
   - component: {fileID: 1176838849}
   - component: {fileID: 1176838848}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44690,7 +44638,7 @@ GameObject:
   - component: {fileID: 1185316302}
   - component: {fileID: 1185316304}
   - component: {fileID: 1185316303}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46043,7 +45991,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1224173675}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46614,7 +46562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1230618617}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46923,7 +46871,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -47392,7 +47340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1259858142}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47511,7 +47459,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1262761173}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Spiketrap2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47824,7 +47772,7 @@ GameObject:
   - component: {fileID: 1271656392}
   - component: {fileID: 1271656394}
   - component: {fileID: 1271656393}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48817,7 +48765,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1292345562}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49025,7 +48973,7 @@ GameObject:
   - component: {fileID: 1296009291}
   - component: {fileID: 1296009293}
   - component: {fileID: 1296009292}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49243,7 +49191,7 @@ GameObject:
   - component: {fileID: 1300008028}
   - component: {fileID: 1300008030}
   - component: {fileID: 1300008029}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49764,7 +49712,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1311275200}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50152,7 +50100,7 @@ GameObject:
   - component: {fileID: 1319863432}
   - component: {fileID: 1319863434}
   - component: {fileID: 1319863433}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51337,6 +51285,17 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.19848686, y: 0.01383359, z: -0.0031840876}
     m_Extent: {x: 0.044851452, y: 0.1224393, z: 0.11122497}
   m_DirtyAABB: 0
+--- !u!114 &1344292427 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3464057673324560543, guid: 944c78688e99c9945ac8c70820ff4994, type: 3}
+  m_PrefabInstance: {fileID: 956427760}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09658112d68e0ef4bbd0ea3cc8030b88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1344848202
 GameObject:
   m_ObjectHideFlags: 0
@@ -52210,7 +52169,7 @@ GameObject:
   - component: {fileID: 1358243786}
   - component: {fileID: 1358243788}
   - component: {fileID: 1358243787}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53470,7 +53429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1374653665}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53683,7 +53642,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1384462381}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53903,7 +53862,7 @@ GameObject:
   - component: {fileID: 1389099093}
   - component: {fileID: 1389099095}
   - component: {fileID: 1389099094}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (27)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55020,12 +54979,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1423118887}
-  - component: {fileID: 1423118892}
-  - component: {fileID: 1423118891}
   - component: {fileID: 1423118890}
   - component: {fileID: 1423118889}
   - component: {fileID: 1423118888}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55119,30 +55076,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1423118891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423118886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ca002da428252441b92f28d83c8a65f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1423118892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1423118886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1425656685
 GameObject:
   m_ObjectHideFlags: 0
@@ -55424,7 +55357,7 @@ GameObject:
   - component: {fileID: 1426836530}
   - component: {fileID: 1426836532}
   - component: {fileID: 1426836531}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55508,7 +55441,7 @@ GameObject:
   - component: {fileID: 1427288746}
   - component: {fileID: 1427288748}
   - component: {fileID: 1427288747}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55591,7 +55524,7 @@ GameObject:
   - component: {fileID: 1429795983}
   - component: {fileID: 1429795985}
   - component: {fileID: 1429795984}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55851,7 +55784,7 @@ GameObject:
   - component: {fileID: 1432134254}
   - component: {fileID: 1432134256}
   - component: {fileID: 1432134255}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56380,7 +56313,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1440981978}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56499,7 +56432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1443291197}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57386,7 +57319,7 @@ GameObject:
   - component: {fileID: 1462553315}
   - component: {fileID: 1462553317}
   - component: {fileID: 1462553316}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (26)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58613,7 +58546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1490396975}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58733,7 +58666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1492347561}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58764,7 +58697,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1493453526}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59973,7 +59906,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 2089326443}
-  minions: []
+  minions:
+  - {fileID: 1344292427}
 --- !u!33 &1517304252
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -60011,7 +59945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -60086,7 +60020,7 @@ GameObject:
   - component: {fileID: 1525409847}
   - component: {fileID: 1525409849}
   - component: {fileID: 1525409848}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: pillar1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60616,7 +60550,7 @@ GameObject:
   - component: {fileID: 1538074333}
   - component: {fileID: 1538074335}
   - component: {fileID: 1538074334}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (25)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60882,7 +60816,7 @@ GameObject:
   - component: {fileID: 1543822660}
   - component: {fileID: 1543822662}
   - component: {fileID: 1543822661}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61777,7 +61711,7 @@ GameObject:
   - component: {fileID: 1567519250}
   - component: {fileID: 1567519252}
   - component: {fileID: 1567519251}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61945,7 +61879,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1569269278}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62780,7 +62714,7 @@ GameObject:
   - component: {fileID: 1585904685}
   - component: {fileID: 1585904687}
   - component: {fileID: 1585904686}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (26)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63025,7 +62959,7 @@ GameObject:
   - component: {fileID: 1594306589}
   - component: {fileID: 1594306591}
   - component: {fileID: 1594306590}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63484,7 +63418,7 @@ GameObject:
   - component: {fileID: 1606455916}
   - component: {fileID: 1606455918}
   - component: {fileID: 1606455917}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64232,7 +64166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1627617258}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64841,7 +64775,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1642942878}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65129,7 +65063,7 @@ GameObject:
   - component: {fileID: 1659138755}
   - component: {fileID: 1659138757}
   - component: {fileID: 1659138756}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65211,7 +65145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1659577198}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65420,7 +65354,7 @@ GameObject:
   - component: {fileID: 1663856366}
   - component: {fileID: 1663856368}
   - component: {fileID: 1663856367}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (30)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66124,7 +66058,7 @@ GameObject:
   - component: {fileID: 1687732492}
   - component: {fileID: 1687732494}
   - component: {fileID: 1687732493}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66657,7 +66591,7 @@ GameObject:
   - component: {fileID: 1698163874}
   - component: {fileID: 1698163876}
   - component: {fileID: 1698163875}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Vegetation_Modular_Tree_Foliage_Fir_Small_01 (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66795,7 +66729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -67347,7 +67281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1715015255}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67914,7 +67848,7 @@ GameObject:
   - component: {fileID: 1739700394}
   - component: {fileID: 1739700396}
   - component: {fileID: 1739700395}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68095,7 +68029,7 @@ GameObject:
   - component: {fileID: 1743229725}
   - component: {fileID: 1743229727}
   - component: {fileID: 1743229726}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69268,7 +69202,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1768669678}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70422,7 +70356,7 @@ GameObject:
   - component: {fileID: 1806076685}
   - component: {fileID: 1806076687}
   - component: {fileID: 1806076686}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (30)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70633,7 +70567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1812299432}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70664,7 +70598,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1812373738}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70876,7 +70810,7 @@ GameObject:
   - component: {fileID: 1824788592}
   - component: {fileID: 1824788594}
   - component: {fileID: 1824788593}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70958,7 +70892,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1827105570}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71759,7 +71693,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1848479133}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71912,7 +71846,7 @@ GameObject:
   - component: {fileID: 1851766630}
   - component: {fileID: 1851766629}
   - component: {fileID: 1851766628}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Main Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72429,7 +72363,7 @@ GameObject:
   - component: {fileID: 1867588348}
   - component: {fileID: 1867588350}
   - component: {fileID: 1867588349}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73334,7 +73268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1893929493}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73365,7 +73299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1894808166}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73515,7 +73449,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1902988109}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73884,7 +73818,7 @@ GameObject:
   - component: {fileID: 1911810875}
   - component: {fileID: 1911810877}
   - component: {fileID: 1911810876}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (26)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74057,7 +73991,7 @@ GameObject:
   - component: {fileID: 1916484830}
   - component: {fileID: 1916484832}
   - component: {fileID: 1916484831}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74421,7 +74355,7 @@ GameObject:
   - component: {fileID: 1924504423}
   - component: {fileID: 1924504425}
   - component: {fileID: 1924504424}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74601,7 +74535,7 @@ GameObject:
   - component: {fileID: 1927600845}
   - component: {fileID: 1927600847}
   - component: {fileID: 1927600846}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75232,12 +75166,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1941679815}
-  - component: {fileID: 1941679820}
-  - component: {fileID: 1941679819}
   - component: {fileID: 1941679818}
   - component: {fileID: 1941679817}
   - component: {fileID: 1941679816}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75331,30 +75263,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1941679819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1941679814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ca002da428252441b92f28d83c8a65f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1941679820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1941679814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8233d90336aea43098adf6dbabd606a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1946344559
 GameObject:
   m_ObjectHideFlags: 0
@@ -75452,7 +75360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1946452858}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75663,7 +75571,7 @@ GameObject:
   - component: {fileID: 1948609497}
   - component: {fileID: 1948609499}
   - component: {fileID: 1948609498}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Base_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76005,7 +75913,7 @@ GameObject:
   - component: {fileID: 1965850812}
   - component: {fileID: 1965850814}
   - component: {fileID: 1965850813}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Underwater_Temple_Stone_Stairs_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76350,7 +76258,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1971567107}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: plant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76866,7 +76774,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1990015430}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77844,7 +77752,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2008669013}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78149,7 +78057,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2015195446}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78268,7 +78176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2020178469}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78301,7 +78209,7 @@ GameObject:
   - component: {fileID: 2022237396}
   - component: {fileID: 2022237398}
   - component: {fileID: 2022237397}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79166,7 +79074,7 @@ GameObject:
   - component: {fileID: 2048495573}
   - component: {fileID: 2048495575}
   - component: {fileID: 2048495574}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79506,7 +79414,7 @@ GameObject:
   - component: {fileID: 2054429319}
   - component: {fileID: 2054429321}
   - component: {fileID: 2054429320}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79949,7 +79857,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -80207,7 +80115,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2072125065}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Spiketrap1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80255,7 +80163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2072302953}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80959,7 +80867,7 @@ GameObject:
   - component: {fileID: 2088963302}
   - component: {fileID: 2088963304}
   - component: {fileID: 2088963303}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Base_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81745,7 +81653,7 @@ GameObject:
   - component: {fileID: 2103926021}
   - component: {fileID: 2103926023}
   - component: {fileID: 2103926022}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Prop_Fantasy_Dungeon_Floor_Trap_Spike_01 (25)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82692,7 +82600,7 @@ GameObject:
   - component: {fileID: 2126923592}
   - component: {fileID: 2126923594}
   - component: {fileID: 2126923593}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Underwater_Temple_Stone_Stairs_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83122,7 +83030,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2131016112}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83596,7 +83504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_Layer
-      value: 6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1189422364011162, guid: 6f65b76c628f14a8cb695d3fb4b9285a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -84210,7 +84118,7 @@ GameObject:
   - component: {fileID: 4689314781331689081}
   - component: {fileID: 7419466785546795699}
   - component: {fileID: 8157892608642901562}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Nest1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84229,7 +84137,7 @@ GameObject:
   - component: {fileID: 4689314781787917401}
   - component: {fileID: 7419466784927250579}
   - component: {fileID: 8157892608019358746}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Nest5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84248,7 +84156,7 @@ GameObject:
   - component: {fileID: 4689314780350738435}
   - component: {fileID: 7419466786377794761}
   - component: {fileID: 8157892607376693312}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Nest3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84267,7 +84175,7 @@ GameObject:
   - component: {fileID: 4689314780831889470}
   - component: {fileID: 7419466786051575028}
   - component: {fileID: 8157892607063314557}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Nest2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84286,7 +84194,7 @@ GameObject:
   - component: {fileID: 4689314780465981277}
   - component: {fileID: 7419466785754780567}
   - component: {fileID: 8157892607219568414}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Nest4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
