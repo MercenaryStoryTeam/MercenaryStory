@@ -157,11 +157,11 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			partiesRef = DB.GetReference($"parties/{CurrentPartyData.party_Id}");
 			PartyData partyData = new PartyData(CurrentUserData.user_CurrentServer, party_Name,
 				party_Size, CurrentUserData);
-			string partyDataJson = JsonConvert.SerializeObject(partyData);
 			CurrentPartyData = partyData;
+			partiesRef = DB.GetReference($"parties/{CurrentPartyData.party_Id}");
+			string partyDataJson = JsonConvert.SerializeObject(partyData);
 			await partiesRef.SetRawJsonValueAsync(partyDataJson);
 
 			DatabaseReference targetRef = usersRef.Child("users_CurrentParty");
