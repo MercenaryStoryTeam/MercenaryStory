@@ -14,7 +14,7 @@ public class UserData
 	public float user_RankCurrentEXP { get; set; }
 	public float user_HP { get; set; }
 	public int user_weapon_item_Id { get; set; }
-	public List<ItemData> user_Inventory { get; set; }
+	public List<SlotData> user_Inventory { get; set; }
 	public float user_Gold { get; set; }
 
 
@@ -35,13 +35,13 @@ public class UserData
 		user_RankCurrentEXP = 0;
 		user_HP = 100;
 		user_weapon_item_Id = 31000;
-		user_Inventory = new List<ItemData>();
+		user_Inventory = new List<SlotData>();
 	}
 
 	// SignIn
 	public UserData(string id, string email, string name, int appearance,
 		string currentServer, string currentParty, int rank, float rankCurrentExp, float hp,
-		int weaponItemId, List<ItemData> inventory, float gold)
+		int weaponItemId, List<SlotData> inventory, float gold)
 	{
 		user_Id = id;
 		user_Email = email;
@@ -66,7 +66,7 @@ public class UserData
 		float? rankCurrentExp = null,
 		float? hp = null,
 		int? weaponItemId = null,
-		List<ItemData> inventory = null,
+		List<SlotData> inventory = null,
 		float? gold = null)
 	{
 		if (appearance.HasValue) user_Appearance = appearance.Value;
