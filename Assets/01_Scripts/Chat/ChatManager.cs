@@ -66,6 +66,11 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 		_client.Subscribe(new string[] { roomName });
 	}
 
+	public void ChatFinish(string roomName)
+	{
+		_client.Unsubscribe(new string[] { roomName });
+	}
+
 	public void OnChatStateChange(ChatState state)
 	{
 		if (this.state != state)
