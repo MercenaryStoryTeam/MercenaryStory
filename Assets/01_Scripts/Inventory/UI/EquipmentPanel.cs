@@ -7,13 +7,36 @@ using UnityEngine.UI;
 
 public class EquipmentPanel : MonoBehaviour
 {
-    
     public Image currentEquipImage;
+    public GameObject firstCharacter;
+    public GameObject secondCharacter;
+    public GameObject thirdCharacter;
+    
     private TestSY _testSY;
     private void Awake()
     {
         _testSY = FindObjectOfType<TestSY>();
+        firstCharacter.SetActive(false);
+        secondCharacter.SetActive(false);
+        thirdCharacter.SetActive(false);
+        
         currentEquipImage.enabled = false; // 인벤토리 열 때 none 이미지 잠깐 보이는 거 방지
+    }
+
+    private void Start()
+    {
+        switch (FirebaseManager.Instance.CurrentUserData.user_Appearance)
+        {
+            case 1:
+                firstCharacter.SetActive(true);
+                break;
+            case 2:
+                secondCharacter.SetActive(true);
+                break;
+            case 3:
+                thirdCharacter.SetActive(true);
+                break;
+        }
     }
 
     private void Update()

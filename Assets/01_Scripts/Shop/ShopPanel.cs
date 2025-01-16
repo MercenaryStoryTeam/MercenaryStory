@@ -229,7 +229,17 @@ public class ShopPanel : MonoBehaviour
 
 	private void SetGold()
 	{
-		currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
-		sellPriceText.text = "판매 가격: " + sellPrice.ToString();
+		if (FirebaseManager.Instance.CurrentUserData != null)
+		{
+			float gold = FirebaseManager.Instance.CurrentUserData.user_Gold;
+		
+			currentGoldText.text = "보유 골드: " + gold.ToString();
+			sellPriceText.text = "판매 가격: " + sellPrice.ToString();
+		}
+
+		else
+		{
+			return;
+		}
 	}
 }

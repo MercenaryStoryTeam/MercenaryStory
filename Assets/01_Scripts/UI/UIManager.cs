@@ -8,7 +8,7 @@ public class UIManager : SingletonManager<UIManager>
 	public InventoryPanel inventory;
 	public ShopPanel shop;
 	public EquipmentPanel equipment;
-	[FormerlySerializedAs("inventorySystem")] public InventoryManger inventoryMangerSystem;
+	public InventoryManger inventoryMangerSystem;
 	public PopUp popUp;
 	public InventorySlot slot;
 	[HideInInspector] public bool isInventoryActive = false;
