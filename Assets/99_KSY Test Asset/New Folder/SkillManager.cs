@@ -1,99 +1,97 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using static SkillManager;
 
 public class SkillManager : MonoBehaviour
 {
     private Animator animator;
-    private Rigidbody rb;
+
+    //System.Serializable -> 인스펙터에서 Skill 내부 데이터 확인 가능 
+    // name, triggerName, cooldown 등
+    [System.Serializable]
+    public class Skill
+    {
+        // 스킬 이름
+        public string name;          
+
+        // Animator 트리거 이름
+        public string triggerName;  
+        
+        // 쿨다운
+        public float cooldown;
+
+        // HideInInspector -> 인스펙터에서 숨김 처리
+        // 스킬이 쿨다운 상태인지 여부
+        [HideInInspector] public bool isOnCooldown = false; 
+    }
+
+    // 스킬 리스트 (Inspector에서 설정 가능)
+    [Header("스킬 설정")]
+    public List<Skill> skills;
 
     private void Awake()
     {
+        // Animator 컴포넌트 초기화
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
 
+        // Animator가 존재하지 않으면 오류 출력
         if (animator == null)
         {
             Debug.LogError("Animator 컴포넌트가 없습니다.");
+            enabled = false; // 스크립트 비활성화
         }
     }
 
+    // PlayerInputManager에서 설정된 입력 이벤트에 
+    // 트리거 연결
     private void OnEnable()
     {
-        PlayerInputManager.OnSkillInput += ExecuteRush;
-        PlayerInputManager.OnRightClickInput += ExecuteParry;
-        PlayerInputManager.OnShiftLeftClickInput += ExecuteSkill1;
-        PlayerInputManager.OnShiftRightClickInput += ExecuteSkill2;
+        PlayerInputManager.OnSkillInput += () => TriggerSkill("Rush"); 
+        PlayerInputManager.OnRightClickInput += () => TriggerSkill("Parry"); 
+        PlayerInputManager.OnShiftLeftClickInput += () => TriggerSkill("Skill1"); 
+        PlayerInputManager.OnShiftRightClickInput += () => TriggerSkill("Skill2"); 
     }
 
     private void OnDisable()
     {
-        PlayerInputManager.OnSkillInput -= ExecuteRush;
-        PlayerInputManager.OnRightClickInput -= ExecuteParry;
-        PlayerInputManager.OnShiftLeftClickInput -= ExecuteSkill1;
-        PlayerInputManager.OnShiftRightClickInput -= ExecuteSkill2;
+        PlayerInputManager.OnSkillInput -= () => TriggerSkill("Rush");
+        PlayerInputManager.OnRightClickInput -= () => TriggerSkill("Parry");
+        PlayerInputManager.OnShiftLeftClickInput -= () => TriggerSkill("Skill1");
+        PlayerInputManager.OnShiftRightClickInput -= () => TriggerSkill("Skill2");
     }
 
-    private void ExecuteRush()
+    private void TriggerSkill(string skillName)
     {
-        Debug.Log("Rush 스킬 실행");
-        if (animator != null)
+        // skills 리스트에서 name이 skillName인 스킬 찾기
+        Skill skill = skills.Find(s => s.name == skillName);
+
+        // 해당 스킬이 리스트에 등록되어 있지 않은 경우
+        if (skill == null)
         {
-            Debug.Log("Animator에 Rush 트리거 설정");
-            animator.SetTrigger("Rush");
-            StartCoroutine(RushCoroutine());
+            Debug.LogWarning($"{skillName} 스킬이 SkillManager에 등록되어 있지 않습니다.");
+            return; // 실행 중단
         }
-    }
 
-    private void ExecuteParry()
-    {
-        Debug.Log("Parry 스킬 실행");
-        if (animator != null)
+        // 스킬이 쿨다운 상태인지 확인
+        if (skill.isOnCooldown)
         {
-            Debug.Log("Animator에 Parry 트리거 설정");
-            animator.SetTrigger("Parry");
-            StartCoroutine(ParryCoroutine());
+            Debug.Log($"{skillName} 스킬은 쿨다운 중입니다."); // 쿨다운 중 경고 출력
+            return; // 실행 중단
         }
+
+        // 스킬 발동: Animator에 설정된 트리거 활성화
+        animator.SetTrigger(skill.triggerName);
+
+        // 쿨다운 처리 코루틴 실행
+        StartCoroutine(CooldownCoroutine(skill));
     }
 
-    private void ExecuteSkill1()
+    private IEnumerator CooldownCoroutine(Skill skill)
     {
-        Debug.Log("Skill1 스킬 실행");
-        if (animator != null)
-        {
-            Debug.Log("Animator에 Skill1 트리거 설정");
-            animator.SetTrigger("Skill1");
-            StartCoroutine(Skill1Coroutine());
-        }
-    }
-
-    private void ExecuteSkill2()
-    {
-        Debug.Log("Skill2 스킬 실행");
-        if (animator != null)
-        {
-            Debug.Log("Animator에 Skill2 트리거 설정");
-            animator.SetTrigger("Skill2");
-            StartCoroutine(Skill2Coroutine());
-        }
-    }
-
-    private IEnumerator RushCoroutine()
-    {
-        yield return new WaitForSeconds(1f);
-    }
-
-    private IEnumerator ParryCoroutine()
-    {
-        yield return new WaitForSeconds(1f);
-    }
-
-    private IEnumerator Skill1Coroutine()
-    {
-        yield return null;
-    }
-
-    private IEnumerator Skill2Coroutine()
-    {
-        yield return null;
+        skill.isOnCooldown = true; // 스킬을 쿨다운 상태로 설정
+        yield return new WaitForSeconds(skill.cooldown); // 쿨다운 시간만큼 대기
+        skill.isOnCooldown = false; // 쿨다운 상태 해제
+        Debug.Log($"{skill.name} 스킬 쿨다운 종료"); // 쿨다운 종료 로그 출력
     }
 }
