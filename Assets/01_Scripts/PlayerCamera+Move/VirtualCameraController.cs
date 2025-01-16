@@ -15,12 +15,8 @@ public class VirtualCameraController : MonoBehaviour
     private const float rotationY = 45f;
 
     [Header("카메라 설정")]
-    [Range(10f, 100f)] public float fieldOfView = 11f;
+    [Range(10f, 100f)] public float fieldOfView = 35f;
     [Range(1f, 5f)] public float damping = 3f;
-
-    [Header("플레이어 태그")]
-    [Tooltip("1.Player 태그를 가진 오브젝트를 Follow 및 LookAt 자동 할당\n2.설정이 되어야 카메라가 플레이어를 따라 이동함")]
-    public string playerTag = "Player";
 
     private CinemachineVirtualCamera vCam;
     private CinemachineTransposer transposer;
@@ -34,27 +30,14 @@ public class VirtualCameraController : MonoBehaviour
             enabled = false;
             return;
         }
-
-        // Player 태그를 가진 오브젝트를 Follow 및 LookAt으로 자동 할당
-        // 설정이 되어야 카메라가 플레이어를 따라 이동함
-        GameObject player = GameObject.FindWithTag(playerTag);
-        if (player != null)
-        {
-            vCam.Follow = player.transform;
-            vCam.LookAt = player.transform;
-        }
-        else
-        {
-            Debug.LogError($"{playerTag} 태그를 가진 오브젝트가 존재하지 않습니다.");
-        }
     }
 
     void Start()
     {
-        // Body를 Transposer로 사용 (인스펙터에서도 지정 가능)
+        // Body를 Transposer로 설정 (인스펙터에서도 설정 가능)
         transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
 
-        // vCam에 설정된 Lens FOV
+        // vCam의 기본적인 Lens FOV
         vCam.m_Lens.FieldOfView = fieldOfView;
 
         // 오프셋, 회전, Damping 초기 반영
@@ -64,7 +47,7 @@ public class VirtualCameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        // 매 프레임 값 반영
+        // 값 변경시 즉시 반영
         vCam.m_Lens.FieldOfView = fieldOfView;
         ConfigureTransposer();
         transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);

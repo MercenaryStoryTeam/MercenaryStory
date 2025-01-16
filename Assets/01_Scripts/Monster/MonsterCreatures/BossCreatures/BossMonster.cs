@@ -18,22 +18,21 @@ public class BossMonster : MonoBehaviour
 
     public bool chargePossible = true;
     public bool slashPossible = true;
-    public bool hungerPossible = false;
-    public bool bitePossible = true;
+    public bool hungerPossible = true;
 
     public int chargeCooltime = 5;
     public int slashCooltime = 6;
     public int hungerCooltime = 13;
-
+    public GameObject minionPrefab;
     public int slashCount = 0;
-
+    public BossStateType currentState;
     public List<Player> playerList = new List<Player>();
     public List<Minion> minionList = new List<Minion>();
+    public List<Transform> nestList = new List<Transform>();
     private NavMeshAgent agent;
     private BossStateMachine stateMachine;
     private LayerMask playerLayer;
     
-    public BossStateType currentState;
     [HideInInspector] public Transform TargetTransform;
     [HideInInspector] public Vector3 CenterPoint;
     [HideInInspector] public Animator Animator;
@@ -44,6 +43,8 @@ public class BossMonster : MonoBehaviour
     public NavMeshAgent Agent => agent;
     public BossStateMachine StateMachine => stateMachine;
     public LayerMask PlayerLayer => playerLayer;
+    public int MinionLayer { get; set; }
+
     #endregion
     
     protected virtual void Start()
@@ -52,6 +53,7 @@ public class BossMonster : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
         playerLayer = LayerMask.GetMask("Player");
+        MinionLayer = LayerMask.GetMask("Minion");
         stateMachine = new BossStateMachine(this);
         stateMachine.ChangeState(BossStateType.Idle);
     }
@@ -59,6 +61,15 @@ public class BossMonster : MonoBehaviour
     protected virtual void Update()
     {
         currentState = stateMachine.currentStateType;
+        if (playerList.Count == 0 && currentState != BossStateType.Idle)
+        {
+            ChangeState(BossStateType.Idle);
+        }
+
+        if (((float)hp / (float)maxHp) <= 0.3f && hungerPossible)
+        {
+            ChangeState(BossStateType.Hunger);
+        }
         stateMachine.CurrentState?.ExecuteState(this);
     }
 
@@ -68,24 +79,12 @@ public class BossMonster : MonoBehaviour
         stateMachine.ChangeState(newState);
     }
 
-    public void RevertToExState()
-    {
-        print($"{gameObject.name} Revert To Ex : {stateMachine.CurrentState}");
-        stateMachine.RevertToExState();
-    }
-
     #region 애니메이션 끝날 때 호출하는 함수
-    public void OnChargeAnimationEnd()
-    {
-        if (currentState == BossStateType.Charge)
-        {
-            ChangeState(BossStateType.Idle);
-        }
-    }
     public void OnSlashAnimationEnd()
     {
-        if (currentState == BossStateType.Slash)
+        if (stateMachine.currentStateType == BossStateType.Slash)
         {
+            print("slash animation end");
             slashCount++;
             if (slashCount == 3)
             {
@@ -98,14 +97,14 @@ public class BossMonster : MonoBehaviour
     }
     public void OnBiteAnimationEnd()
     {
-        if (currentState == BossStateType.Bite)
+        if (stateMachine.currentStateType == BossStateType.Bite)
         {
             ChangeState(BossStateType.Idle);
         }
     }
     public void OnHungerAnimationEnd()
     {
-        if (currentState == BossStateType.Hunger)
+        if (stateMachine.currentStateType == BossStateType.Hunger)
         {
             ChangeState(BossStateType.Idle);
         }
@@ -113,7 +112,7 @@ public class BossMonster : MonoBehaviour
     
     public void GetHitAnimationEnd()
     {
-        if (currentState == BossStateType.GetHit)
+        if (stateMachine.currentStateType == BossStateType.GetHit)
         {
             ChangeState(BossStateType.Idle);
         }
@@ -125,34 +124,41 @@ public class BossMonster : MonoBehaviour
         hp -= damage;
         if (hp <= 0)
         {
-            stateMachine.ChangeState(BossStateType.Die);
+            ChangeState(BossStateType.Die);
         }
     }
 
+    public void SpawnMinion()
+    {
+        foreach (Transform nest in nestList)
+        {
+            GameObject minion= Instantiate(minionPrefab, nest);
+            minionList.Add(minion.GetComponent<Minion>());
+        }
+    }
     public void StartCoolDown()
     {
-        print("StartCool");
-        if (currentState == BossStateType.Charge)
+        if (stateMachine.currentStateType == BossStateType.Charge)
         {
-            
+            print("charge cooldown");
             StartCoroutine(ChargeCoolDown());
         }
 
-        else if (currentState == BossStateType.Slash)
+        else if (stateMachine.currentStateType == BossStateType.Slash && slashCount == 0)
         {
-            print("StartSlashCool");
+            print("slash cooldown");
             StartCoroutine(SlashCoolDown());
         }
 
-        else if (currentState == BossStateType.Hunger)
+        else if (stateMachine.currentStateType == BossStateType.Hunger)
         {
+            print("hunger cooldown");
             StartCoroutine(HungerCoolDown());
         }
     }
 
     IEnumerator SlashCoolDown()
     {
-        
         slashPossible = false;
         yield return new WaitForSeconds(slashCooltime);
         print("EndSlashCool");
@@ -163,6 +169,7 @@ public class BossMonster : MonoBehaviour
     {
         chargePossible = false;
         yield return new WaitForSeconds(chargeCooltime);
+        print("EndChargeCool");
         chargePossible = true;
     }
     
@@ -170,16 +177,16 @@ public class BossMonster : MonoBehaviour
     {
         hungerPossible = false;
         yield return new WaitForSeconds(hungerCooltime);
+        print("EndHungerCool");
         hungerPossible = true;
     }
     
     private void OnDrawGizmos()
     {
-        if(currentState == BossStateType.SlashChase)
         // 도륙내기 감지 범위
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, slashDetectionRange);
-    
+
         // 도륙내기 공격 범위
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, slashAttackRange);

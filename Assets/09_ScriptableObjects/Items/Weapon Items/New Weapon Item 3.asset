@@ -17,9 +17,9 @@ MonoBehaviour:
   description: "\uC131\uC2A4\uB7EC\uC6B4 \uD45C\uC2DD\uC744 \uC0C8\uAE34\n\uBC29\uD328\uC640
     \uAC80 \uD55C \uBC8C.\n\uC7A5\uCC29\uD558\uBA74 \uC660\uC9C0 \uBAA8\uB97C \uACE0\uC591\uAC10\uC774
     \uC0DD\uACA8\uB09C\uB2E4."
-  currentItemCount: 0
+  currentItemCount: 4
   itemClass: 1
-  price: 7
+  price: 0
   dropPercent: 0
   isEquipped: 0
   image: {fileID: 21300000, guid: 8a1efc99930969742b01bc49c4399853, type: 3}

@@ -1,12 +1,21 @@
+using UnityEngine;
+
 public class BossIdleState : BossState
 {
+    private float minStateTime = 0.2f;
+    private float stateEnterTime;
     public override void EnterState(BossMonster boss)
     {
+        boss.Agent.ResetPath();
+        stateEnterTime = Time.time;
+        boss.Animator.SetBool("Idle",true);
     }
 
     public override void ExecuteState(BossMonster boss)
     {
-        if (boss.bitePossible&&boss.minionList.Count > 0)
+        if (Time.time - stateEnterTime < minStateTime) return;
+        if (boss.playerList.Count == 0) return;
+        if (boss.minionList.Count > 0)
         {
             boss.ChangeState(BossStateType.BiteChase);
         }
@@ -22,6 +31,6 @@ public class BossIdleState : BossState
 
     public override void ExitState(BossMonster boss)
     {
-        
+        boss.Animator.SetBool("Idle",false);
     }
 }

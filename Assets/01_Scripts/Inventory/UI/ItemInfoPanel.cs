@@ -35,7 +35,7 @@ public class ItemInfoPanel : MonoBehaviour
     
     private void InfoButtonOnClick()
     {
-        firstOptionButton.onClick.AddListener(EquipButtonClick);
+        firstOptionButton.onClick.AddListener(EquipItemButtonClick);
         secondOptionButton.onClick.AddListener(RemoveItemButtonClick);
         closeButton.onClick.AddListener(CloseButtonClick);
     }
@@ -52,7 +52,7 @@ public class ItemInfoPanel : MonoBehaviour
         UIManager.Instance.CloseItemInfoPanel();
     }
     
-    public void EquipButtonClick()
+    private void EquipItemButtonClick()
     {
         EquipmentPanel equipPanel = FindObjectOfType<EquipmentPanel>(); 
         Equipment equipment = FindObjectOfType<Equipment>();

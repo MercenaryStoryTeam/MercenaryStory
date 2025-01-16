@@ -527,7 +527,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -540,7 +540,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 1
+      - time: 0.99469495
         functionName: OnSlashAnimationEnd
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: c35f58c53a9a5cc45bbf8e49b44aaae3, type: 3}

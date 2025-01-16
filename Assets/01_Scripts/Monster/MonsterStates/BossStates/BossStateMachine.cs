@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum BossStateType
 {
-    Charge,
     Slash,
     SlashChase,
     Bite,
     BiteChase,
     Hunger,
+    Charge,
     Idle,
     GetHit,
-    Die,
-    Return
+    Die
 }
 
 public class BossStateMachine
@@ -38,8 +38,7 @@ public class BossStateMachine
             { BossStateType.Charge, new BossChargeState() },
             { BossStateType.Idle, new BossIdleState() },
             { BossStateType.Die, new BossDieState() },
-            { BossStateType.GetHit, new BossGetHitState() },
-            { BossStateType.Return, new BossReturnToCenterState() }
+            { BossStateType.GetHit, new BossGetHitState() }
         };
     }
 
@@ -48,8 +47,8 @@ public class BossStateMachine
         exStateType = currentStateType;
         currentState?.ExitState(owner);
         currentState = CreateState(stateType);
-        currentState?.EnterState(owner);
         currentStateType = stateType;
+        currentState?.EnterState(owner);
     }
     
     public void RevertToExState()

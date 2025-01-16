@@ -50,6 +50,7 @@ public abstract class Monster : MonoBehaviour
     
     protected virtual void Start()
     {
+        patrolPoint = transform.position;
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.speed = MoveSpeed;
