@@ -18,12 +18,25 @@ public class PlayerData : MonoBehaviour
     [Header("경험치")]
     public int exp = 0;
 
+    [Header("이동 속도")]
+    public float moveSpeed = 5f;
+
+    [Header("플레이어 흡혈 비율")]
+    public float suckBlood = 3f;
+
     // 현재 플레이어 위치 참조를 위한 변수
     private Transform playerTransform;
 
     // 씬 전환 시 저장 및 로드할 플레이어 위치 참조를 위한 변수
     private Vector3 position;
 
+    // 원래 이동 속도를 저장
+    // 슬로우 효과 종료시
+    // 이속 복원할 때 사용
+    [HideInInspector]
+    public float originalMoveSpeed;
+
+    // 즉시 호출
     private void Awake()
     {
         if (Instance == null)
@@ -31,6 +44,7 @@ public class PlayerData : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             currentHp = maxHp;
+            originalMoveSpeed = moveSpeed;
 
             // 초기 플레이어 위치 설정
             GameObject player = GameObject.FindGameObjectWithTag("Player");

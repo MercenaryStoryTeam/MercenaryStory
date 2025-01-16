@@ -538,7 +538,7 @@ MonoBehaviour:
   offsetZ: -42
   rotationX: 45
   rotationZ: 0
-  fieldOfView: 35
+  fieldOfView: 11
   damping: 3
   playerTag: Player
 --- !u!114 &550660471
@@ -58619,7 +58619,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b73040a00fe648742b88ee371bd3be76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   cameraTransform: {fileID: 550660469}
   dieAnimationDuration: 2
   comboResetTime: 3
