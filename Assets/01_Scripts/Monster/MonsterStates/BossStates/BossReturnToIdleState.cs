@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossReturnToIdleState : MonoBehaviour
+public class BossReturnToIdleState : BossState
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void EnterState(BossMonster boss)
+    {
+        boss.Agent.SetDestination(boss.CenterPoint);
+        boss.Animator.SetBool("IsMoving", true);
+    }
+
+    public override void ExecuteState(BossMonster boss)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void ExitState(BossMonster boss)
     {
-        
+        boss.Animator.SetBool("IsMoving", false);
     }
 }

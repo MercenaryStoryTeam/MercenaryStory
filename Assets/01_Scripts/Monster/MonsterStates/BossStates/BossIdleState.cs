@@ -6,6 +6,7 @@ public class BossIdleState : BossState
     private float stateEnterTime;
     public override void EnterState(BossMonster boss)
     {
+        boss.Agent.ResetPath();
         stateEnterTime = Time.time;
         boss.Animator.SetBool("Idle",true);
     }
