@@ -50,6 +50,15 @@ public class ServerManager
 			.Instantiate(
 				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
 				spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
+		
+		InventoryManger.Instance.AddItemToInventory(InventoryManger.Instance.basicWeapon);
+	}
+	
+	public static GameObject PlayerEquip(int rarity, string equipmentName, Transform parent)
+	{
+		GameObject equipmentPrefab = PhotonNetwork.Instantiate(
+			$"Equipment/{rarity}/{equipmentName}", parent.position, Quaternion.identity);
+		return equipmentPrefab;
 	}
 
 	public static string GetServerName()

@@ -6,27 +6,25 @@ using UnityEngine;
 
 public class TestSY : MonoBehaviour
 {
-    private Inventory inventory;
     public ItemBase currentWeapon;
     public float myGold = 0;
     
-    private void Awake()
+    private PlayerTestSY playerTest;
+    private void Start ()
     {
-        inventory = FindObjectOfType<Inventory>();
+        playerTest = FindObjectOfType<PlayerTestSY>();
     }
 
     private void Update()
     {
+
         UIManager.Instance.inventory.TryOpenInventory();
         UIManager.Instance.shop.TryOpenShop();
         
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            ItemBase randomItem = inventory.RandomDropItems();
-            if (randomItem != null)
-            {
-                inventory.AddItemToInventory(randomItem);
-            }
+            ItemBase randomItem = InventoryManger.Instance.RandomDropItems();
+            playerTest.InvenSceneTestDrop(randomItem);
         }
     }
     

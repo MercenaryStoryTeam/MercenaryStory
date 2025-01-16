@@ -22,7 +22,6 @@ public class ShopPanel : MonoBehaviour
 		
 	private TestSY _testsy;
 	private InventorySlot sellSlot;
-	private Inventory myInventory;
 	private Dictionary<InventorySlot, ItemState> itemStates = new Dictionary<InventorySlot, ItemState>();
 
 	private struct ItemState
@@ -35,7 +34,6 @@ public class ShopPanel : MonoBehaviour
 	private void Awake()
 	{
 		_testsy = FindObjectOfType<TestSY>();
-		myInventory = FindObjectOfType<Inventory>();
 		shopPanel.SetActive(false);
 		ShopButtonClicked();
 		SaveOriginalState();
@@ -79,7 +77,6 @@ public class ShopPanel : MonoBehaviour
 			sellPrice = 0;
 			UpdateHoldSlots();
 		}
-
 		else
 		{
 			isSellButtonClicked = false;
@@ -108,7 +105,7 @@ public class ShopPanel : MonoBehaviour
 			holdSlot.RemoveItem();
 		}
 
-		List<InventorySlot> inventorySlots = UIManager.Instance.inventorySystem.slots;
+		List<InventorySlot> inventorySlots = UIManager.Instance.inventoryMangerSystem.slots;
 		for (int i = 0; i < inventorySlots.Count && i < holdSlots.Count; i++)
 		{
 			if (inventorySlots[i].item != null)
@@ -128,11 +125,7 @@ public class ShopPanel : MonoBehaviour
 
 	private void sellButtonClick()
 	{
-		//판매 버튼 누르면 인벤토리 슬롯 업데이트 안되고 있음
-		
 		bool isItemToSell = false;
-		print(myInventory.myItems.Count);
-
 		foreach (InventorySlot slot in sellSlots)
 		{
 			if (slot.item != null)
@@ -140,17 +133,16 @@ public class ShopPanel : MonoBehaviour
 				isItemToSell = true;
 				break;
 			}
-
-			if (!isItemToSell)
-			{
-				UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
-					() => UIManager.Instance.popUp.PopUpClose());
-
-				return;
-			}
 		}
 
-		print(isItemToSell);
+		if (!isItemToSell)
+		{
+			UIManager.Instance.popUp.PopUpOpen("판매할 수 있는\n아이템이 없습니다.",
+				() => UIManager.Instance.popUp.PopUpClose());
+			return;
+		}
+
+		bool needsReorganize = false;
 
 		foreach (InventorySlot sellSlot in sellSlots)
 		{
@@ -158,33 +150,59 @@ public class ShopPanel : MonoBehaviour
 			{
 				if (originalSlotState.TryGetValue(sellSlot, out InventorySlot originalSlot))
 				{
+					int holdSlotIndex = holdSlots.IndexOf(originalSlot);
+					InventorySlot inventorySlot = UIManager.Instance.inventoryMangerSystem.slots[holdSlotIndex];
+
 					if (sellSlot.item.itemClass == 2)
 					{
 						sellSlot.item.currentItemCount -= sellSlot.slotCount;
-
+						
 						for (int i = 0; i < sellSlot.slotCount; i++)
 						{
-							myInventory.myItems.Remove(sellSlot.item);
+							InventoryManger.Instance.myItems.Remove(sellSlot.item);
+						}
+
+						if (inventorySlot != null)
+						{
+							if (inventorySlot.slotCount <= sellSlot.slotCount)
+							{
+								inventorySlot.RemoveItem();
+								inventorySlot.slotCount = 0;
+								needsReorganize = true;
+							}
+							else
+							{
+								inventorySlot.slotCount -= sellSlot.slotCount;
+							}
 						}
 					}
-
-					else
+					else if (sellSlot.item.itemClass == 1)
 					{
 						sellSlot.item.currentItemCount--;
-						myInventory.myItems.Remove(sellSlot.item);
+						if (inventorySlot != null)
+						{
+							inventorySlot.RemoveItem();
+							inventorySlot.slotCount = 0;
+							needsReorganize = true;
+						}
+						InventoryManger.Instance.myItems.Remove(sellSlot.item);
 					}
 
-					_testsy.myGold += sellPrice;
-					sellPrice = 0;
-					isSellButtonClicked = true;
+					sellSlot.RemoveItem();
+					sellSlot.slotCount = 0;
 				}
-				
-				sellSlot.RemoveItem();				
-				sellSlot.slotCount = 0;
 			}
 		}
 		
-		myInventory.SlotArray();
+		_testsy.myGold += sellPrice;
+		sellPrice = 0;
+		isSellButtonClicked = true;
+		
+		if (needsReorganize)
+		{
+			InventoryManger.Instance.SlotArray();
+		}
+		UpdateHoldSlots();
 		UIManager.Instance.CloseShopPanel();
 	}
 
@@ -195,7 +213,7 @@ public class ShopPanel : MonoBehaviour
 
 	public void TryOpenShop()
 	{
-		if (Input.GetKeyDown(KeyCode.E))
+		if (Input.GetKeyDown(KeyCode.O))
 		{
 			if (!UIManager.Instance.isShopActive)
 			{
@@ -211,7 +229,17 @@ public class ShopPanel : MonoBehaviour
 
 	private void SetGold()
 	{
-		currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
-		sellPriceText.text = "판매 가격: " + sellPrice.ToString();
+		if (FirebaseManager.Instance.CurrentUserData != null)
+		{
+			float gold = FirebaseManager.Instance.CurrentUserData.user_Gold;
+		
+			currentGoldText.text = "보유 골드: " + gold.ToString();
+			sellPriceText.text = "판매 가격: " + sellPrice.ToString();
+		}
+
+		else
+		{
+			return;
+		}
 	}
 }

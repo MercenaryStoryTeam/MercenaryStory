@@ -21,10 +21,11 @@ MonoBehaviour:
   itemClass: 1
   price: 6
   dropPercent: 0
-  isHave: 1
+  isEquipped: 0
   image: {fileID: 21300000, guid: 682530ffd460f124183195933e237f5e, type: 3}
-  prefab:
+  equipPrefab:
   - {fileID: 1640572854395205642, guid: b7edd902aef344f4d94f8590f7dcf6d2, type: 3}
-  Rank: 3
+  dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
+  rank: 3
   Damage: 6
   isEquiped: 0

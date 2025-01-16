@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class ItemBase : ScriptableObject
@@ -17,15 +18,16 @@ public class ItemBase : ScriptableObject
     public int dropPercent; //아이템 드랍률
     
     [Header("bool")]
-    public bool isHave; //아이템 보유 여부 -> 구현에 필요 없으면 삭제 예정
+    public bool isEquipped; //장비 아이템 장착 여부
     
     [Header("Icon&Prefab")]
     public Sprite image; //아이템 아이콘
-    public List<GameObject> prefab; //아이템 프리팹
+    public List<GameObject> equipPrefab; //아이템 프리팹
+    public GameObject dropLightLine; //빛 기둥 프리팹
     
 
     private void Awake()
     {
-        isHave = false;
+        
     }
 }
