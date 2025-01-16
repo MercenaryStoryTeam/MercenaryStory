@@ -57328,10 +57328,10 @@ GameObject:
   - component: {fileID: 5323869551526002806}
   - component: {fileID: 5248531118157474246}
   - component: {fileID: 3993583337906212589}
-  - component: {fileID: 7327844130000236773}
+  - component: {fileID: 7736056571850604538}
+  - component: {fileID: 7736056571850604539}
   - component: {fileID: 2353092340591187454}
   - component: {fileID: 7736056571850604537}
-  - component: {fileID: 7736056571850604538}
   m_Layer: 6
   m_Name: Main_Player2
   m_TagString: Player
@@ -59961,22 +59961,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.28102836, y: -0.023900352, z: 0.074461654}
     m_Extent: {x: 0.19351399, y: 0.084483996, z: 0.14484055}
   m_DirtyAABB: 0
---- !u!114 &7327844130000236773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7032734782226714084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b73040a00fe648742b88ee371bd3be76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 550660469}
-  dieAnimationDuration: 2
-  comboResetTime: 1
-  specialScenes: []
 --- !u!1 &7329063201068026095
 GameObject:
   m_ObjectHideFlags: 0
@@ -63037,15 +63021,28 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7032734782226714084}
-  m_Enabled: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b73040a00fe648742b88ee371bd3be76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 550660469}
+  dieAnimationDuration: 2
+  comboResetTime: 1
+  specialScenes: []
+--- !u!114 &7736056571850604539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7032734782226714084}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc3ebfb24796d1544bb905199c76cf31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCooldownTime: 2
-  loadSceneDelay: 2
-  rb: {fileID: 0}
-  animator: {fileID: 0}
+  skillCooldown: 5
 --- !u!1 &7744125781523886068
 GameObject:
   m_ObjectHideFlags: 0

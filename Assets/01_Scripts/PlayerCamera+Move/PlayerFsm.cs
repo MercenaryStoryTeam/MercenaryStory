@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using Photon.Pun;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
@@ -24,13 +23,14 @@ public class PlayerFsm : MonoBehaviour
     private Vector3 movementInput;
     private const float moveThreshold = 0.05f;
 
-    private enum State
+    public enum State
     {
         Idle,
         Moving,
         Attack1,
         Attack2,
         Attack3,
+        Skill, // 스킬 상태 추가
         Die
     }
 
@@ -39,6 +39,8 @@ public class PlayerFsm : MonoBehaviour
     private bool isDead = false;
     private int attackCombo = 0;
     private float lastAttackTime = 0f;
+
+    private SkillManager skillManager;
 
     private void Awake()
     {
@@ -74,11 +76,19 @@ public class PlayerFsm : MonoBehaviour
 
         bool isScene = IsCurrentSceneSpecial();
         animator.SetBool("Scene", isScene);
+
+        // SkillManager 초기화
+        skillManager = GetComponent<SkillManager>();
+        if (skillManager == null)
+        {
+            Debug.LogError("PlayerFsm의 GameObject에 SkillManager 컴포넌트가 없습니다.");
+            enabled = false;
+            return;
+        }
     }
 
     private void Update()
     {
-        //if (!photonView.IsMine) return;
         if (!isDead)
         {
             HandleInput();
@@ -88,7 +98,6 @@ public class PlayerFsm : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if (!photonView.IsMine) return;
         HandlePhysics();
     }
 
@@ -100,13 +109,13 @@ public class PlayerFsm : MonoBehaviour
 
     private void HandleInput()
     {
-        bool canProcessMovement = (currentState != State.Die);
+        bool canProcessMovement = (currentState != State.Die && currentState != State.Skill);
         if (canProcessMovement)
         {
             float inputX = Input.GetAxisRaw("Horizontal");
             float inputZ = Input.GetAxisRaw("Vertical");
             movementInput = CalculateMovementDirection(inputX, inputZ);
-            currentSpeed = PlayerData.Instance.moveSpeed;
+            currentSpeed = PlayerData.Instance.moveSpeed; // PlayerData는 싱글턴으로 가정
 
             if (movementInput.sqrMagnitude > moveThreshold)
             {
@@ -128,7 +137,8 @@ public class PlayerFsm : MonoBehaviour
             animator.SetFloat("Speed", 0f);
         }
 
-        if (Input.GetMouseButtonDown(0) && !isDead)
+        // 공격 입력 처리 시 현재 상태가 Moving이나 Skill이 아닌지 확인
+        if (Input.GetMouseButtonDown(0) && !isDead && currentState != State.Moving && currentState != State.Skill)
         {
             HandleAttackInput();
         }
@@ -175,6 +185,9 @@ public class PlayerFsm : MonoBehaviour
             case State.Attack3:
                 // 공격 상태
                 break;
+            case State.Skill:
+                // 스킬 상태
+                break;
         }
     }
 
@@ -196,6 +209,9 @@ public class PlayerFsm : MonoBehaviour
             case State.Attack3:
                 // 공격 중 물리 처리
                 break;
+            case State.Skill:
+                // 스킬 중 물리 처리 (필요 시 구현)
+                break;
             case State.Die:
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
@@ -215,12 +231,11 @@ public class PlayerFsm : MonoBehaviour
         }
     }
 
-    private void TransitionToState(State newState, bool force = false)
+    public void TransitionToState(State newState, bool force = false)
     {
         if (isDead && newState != State.Die && !force) return;
         if (currentState == newState) return;
 
-        // 상태 변경 전 정리(필요 시)
         currentState = newState;
 
         switch (currentState)
@@ -239,6 +254,9 @@ public class PlayerFsm : MonoBehaviour
                 break;
             case State.Attack3:
                 EnterAttackState(3);
+                break;
+            case State.Skill:
+                // SkillManager가 상태를 전환
                 break;
             case State.Die:
                 EnterDieState();
@@ -301,6 +319,14 @@ public class PlayerFsm : MonoBehaviour
             TransitionToState(State.Idle);
     }
 
+    public void OnSkillAnimationEnd()
+    {
+        if (movementInput.sqrMagnitude > moveThreshold)
+            TransitionToState(State.Moving);
+        else
+            TransitionToState(State.Idle);
+    }
+
     private Vector3 CalculateMovementDirection(float inputX, float inputZ)
     {
         Vector3 camForward = cameraTransform.forward;
@@ -312,6 +338,39 @@ public class PlayerFsm : MonoBehaviour
 
         return (camForward * inputZ + camRight * inputX).normalized;
     }
-}
 
-//
+    public void TransitionToSkillState(string skillName)
+    {
+        if (currentState == State.Die) return;
+
+        currentState = State.Skill;
+
+        float skillAnimationDuration = GetSkillAnimationDuration(skillName);
+        Invoke("ExitSkillState", skillAnimationDuration);
+    }
+
+    private float GetSkillAnimationDuration(string skillName)
+    {
+        switch (skillName)
+        {
+            case "Rush":
+                return 1f;
+            case "Parry":
+                return 1f;
+            case "Skill1":
+                return 1f;
+            case "Skill2":
+                return 1f;
+            default:
+                return 1f;
+        }
+    }
+
+    private void ExitSkillState()
+    {
+        if (movementInput.sqrMagnitude > moveThreshold)
+            TransitionToState(State.Moving);
+        else
+            TransitionToState(State.Idle);
+    }
+}

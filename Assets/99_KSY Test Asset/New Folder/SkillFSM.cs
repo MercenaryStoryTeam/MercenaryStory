@@ -2,16 +2,18 @@ using UnityEngine;
 
 public class SkillFSM
 {
-    private enum State { Ready, Casting, Cooldown }
+    public enum State { Ready, Casting, Cooldown }
     private State currentState;
     private Animator animator;
     private float cooldownTime;
     private float lastSkillTime;
+    private string animationTrigger;
 
-    public SkillFSM(Animator animator, float cooldownTime)
+    public SkillFSM(Animator animator, float cooldownTime, string animationTrigger)
     {
         this.animator = animator;
         this.cooldownTime = cooldownTime;
+        this.animationTrigger = animationTrigger;
         currentState = State.Ready;
     }
 
@@ -20,7 +22,7 @@ public class SkillFSM
         if (currentState != State.Ready) return;
 
         currentState = State.Casting;
-        animator.SetTrigger("Skill");
+        animator.SetTrigger(animationTrigger);
         lastSkillTime = Time.time;
         currentState = State.Cooldown;
     }
@@ -36,5 +38,10 @@ public class SkillFSM
     public bool IsInCooldown()
     {
         return currentState == State.Cooldown;
+    }
+
+    public string GetAnimationTrigger()
+    {
+        return animationTrigger;
     }
 }

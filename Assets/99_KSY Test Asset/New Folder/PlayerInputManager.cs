@@ -5,6 +5,9 @@ public class PlayerInputManager : MonoBehaviour
     public static System.Action<Vector2> OnMoveInput;
     public static System.Action OnAttackInput;
     public static System.Action OnSkillInput;
+    public static System.Action OnRightClickInput;
+    public static System.Action OnShiftLeftClickInput;
+    public static System.Action OnShiftRightClickInput;
 
     void Update()
     {
@@ -14,12 +17,31 @@ public class PlayerInputManager : MonoBehaviour
             OnMoveInput?.Invoke(movement);
         }
 
-        if (Input.GetMouseButtonDown(0)) // 일반 공격 입력
+        if (Input.GetMouseButtonDown(0))
         {
-            OnAttackInput?.Invoke();
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                OnShiftLeftClickInput?.Invoke();
+            }
+            else
+            {
+                OnAttackInput?.Invoke();
+            }
         }
 
-        if (Input.GetButtonDown("Jump")) // 스페이스 입력
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                OnShiftRightClickInput?.Invoke();
+            }
+            else
+            {
+                OnRightClickInput?.Invoke();
+            }
+        }
+
+        if (Input.GetButtonDown("Jump"))
         {
             OnSkillInput?.Invoke();
         }
