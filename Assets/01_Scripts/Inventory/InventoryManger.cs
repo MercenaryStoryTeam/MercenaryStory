@@ -9,8 +9,14 @@ public class InventoryManger : SingletonManager<InventoryManger>
     public List<ItemBase> myItems;
     public List<ItemBase> allItems;
     public List<InventorySlot> slots;
+
+    public ItemBase basicWeapon; //캐릭터 생성시 인벤토리에 추가될 양손검 아이템
     
-    
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     private void Update()
     {
 
@@ -24,7 +30,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
         return allItems[random];
     }
 
-
     public void AddItemToInventory(ItemBase newItem)
     {
         if (newItem.itemClass == 1 || newItem.itemClass == 3)
@@ -36,7 +41,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
                     slot.AddItem(newItem);
                     myItems.Add(newItem);
                     newItem.currentItemCount++;
-                    newItem.isHave = true;
                     Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
 
                     break;
@@ -68,7 +72,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
                     myItems.Add(newItem);
                     newItem.currentItemCount++;
                     slot.slotCount++;
-                    newItem.isHave = true;
                     Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
 
                     break;
@@ -123,5 +126,21 @@ public class InventoryManger : SingletonManager<InventoryManger>
                 }
             }
         }
+    }
+    
+    // 서버에 올릴 때 사용하면 된다.
+    // ServerManager.JoinOrCreatePersistentRoom();에서
+    public void UpdateSlotData()
+    {
+        // 제대로 될 지 모르겠다. 디버그 필수!!!!
+        UserData currentUserData = FirebaseManager.Instance.CurrentUserData;
+        currentUserData.user_Inventory.Clear();
+        // SlotData slotData = new SlotData();
+        // foreach (var slot in slots)
+        // {
+        //     slotData.item_Id = slot.item.id;
+        //     slotData.item_Stack = slot.slotCount;
+        //     currentUserData.user_Inventory.Add(slotData);
+        // }
     }
 }
