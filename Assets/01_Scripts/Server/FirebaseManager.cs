@@ -73,8 +73,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		catch (Exception e)
 		{
-			UIManager.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}",
-				() => UIManager.Instance.popUp.PopUpClose());
+			ExceptionManager.HandleException(e);
 		}
 	}
 
@@ -138,8 +137,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		catch (Exception e)
 		{
-			UIManager.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}",
-				() => UIManager.Instance.popUp.PopUpClose());
+			ExceptionManager.HandleException(e);
 		}
 	}
 
@@ -159,7 +157,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			partiesRef = DB.GetReference($"parties/{party_Name}");
+			partiesRef = DB.GetReference($"parties/{CurrentPartyData.party_Id}");
 			PartyData partyData = new PartyData(CurrentUserData.user_CurrentServer, party_Name,
 				party_Size, CurrentUserData);
 			string partyDataJson = JsonConvert.SerializeObject(partyData);
@@ -182,8 +180,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		catch (Exception e)
 		{
-			UIManager.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}",
-				() => UIManager.Instance.popUp.PopUpClose());
+			ExceptionManager.HandleException(e);
 		}
 	}
 
@@ -204,8 +201,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		catch (Exception e)
 		{
-			UIManager.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}",
-				() => UIManager.Instance.popUp.PopUpClose());
+			ExceptionManager.HandleException(e);
 		}
 	}
 
@@ -252,8 +248,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		catch (Exception e)
 		{
-			UIManager.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}",
-				() => UIManager.Instance.popUp.PopUpClose());
+			ExceptionManager.HandleException(e);
 		}
 	}
 
