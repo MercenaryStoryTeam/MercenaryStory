@@ -24,7 +24,7 @@ public class InventorySlot : MonoBehaviour
 
 	private void Awake()
 	{
-		itemButton.onClick.AddListener(OnSlotClick);
+		itemButton.onClick.AddListener(OnSlotClicked);
 		SetSlotType();
 	}
 
@@ -51,7 +51,7 @@ public class InventorySlot : MonoBehaviour
 		}
 	}
 
-	private void OnSlotClick()
+	private void OnSlotClicked()
 	{
 		if (item == null) return;
 
@@ -71,7 +71,7 @@ public class InventorySlot : MonoBehaviour
 
 	private void MoveItemToSellSlot()
 	{
-		if (item == null || (item.itemClass == 2 && item.currentItemCount <= 0))
+		if (item == null || (item.itemClass == 2 && slotCount <= 0))
 		{
 			return;
 		}
@@ -87,20 +87,18 @@ public class InventorySlot : MonoBehaviour
 
 		if (item.itemClass == 1)
 		{
-			bool EquipItemMoveSellSlot = false;
-			foreach (InventorySlot slot in sellSlots)
+			foreach (InventorySlot sellSlot in sellSlots)
 			{
-				if (slot.item != null && slot.item.name == item.name)
+				if (sellSlot.item == null)
 				{
-					EquipItemMoveSellSlot = true;
+					canvasGroup.alpha = 0.5f;
+					canvasGroup.interactable = false;
+					sellSlot.AddItem(item);
+					UIManager.Instance.shop.sellPrice += item.price;
+					UIManager.Instance.shop.originalSlotState[sellSlot] = this;
 					break;
 				}
-			}
-
-			if (EquipItemMoveSellSlot)
-			{
-				return;
-			}
+			} 
 		}
 
 		if (item.itemClass == 2)
@@ -108,47 +106,48 @@ public class InventorySlot : MonoBehaviour
 			InventorySlot currentSellSlot = null;
 			foreach (InventorySlot slot in sellSlots)
 			{
-				if (slot.item != null && slot.item.name == item.name)
+				if (slot.item != null && 
+					slot.item == item && 
+					UIManager.Instance.shop.originalSlotState.ContainsKey(slot) &&
+					UIManager.Instance.shop.originalSlotState[slot] == this)
 				{
 					currentSellSlot = slot;
-					canvasGroup.alpha = 0.5f;
 					break;
 				}
 			}
 
-			if (currentSellSlot != null)
+			if (currentSellSlot != null && currentSellSlot.slotCount < 10)
 			{
-				currentSellSlot.item.currentItemCount++;
-				item.currentItemCount--;
+				currentSellSlot.slotCount++;
+				slotCount--;
+				UIManager.Instance.shop.sellPrice += item.price;
+				canvasGroup.alpha = 0.5f;
+
+				if (slotCount <= 0)
+				{
+					canvasGroup.interactable = false;
+				}
 			}
-			else
+			
+			else if(currentSellSlot == null)
 			{
 				foreach (InventorySlot sellSlot in sellSlots)
 				{
 					if (sellSlot.item == null)
 					{
-						ItemBase sellItem = Instantiate(item);
-						sellItem.currentItemCount = 1;
+						sellSlot.AddItem(item);
+						sellSlot.slotCount = 1;
+						slotCount--;
+						UIManager.Instance.shop.sellPrice += item.price;
 						canvasGroup.alpha = 0.5f;
-						sellSlot.AddItem(sellItem);
+						UIManager.Instance.shop.originalSlotState[sellSlot] = this;
 
-						item.currentItemCount--;
+						if (slotCount <= 0)
+						{
+							canvasGroup.interactable = false;
+						}
 						break;
 					}
-				}
-			}
-		}
-
-		else
-		{
-			foreach (InventorySlot sellSlot in sellSlots)
-			{
-				if (sellSlot.item == null)
-				{
-					canvasGroup.alpha = 0.5f;
-					// UIManager.Instance.shop.sellPrice += 
-					sellSlot.AddItem(item);
-					break;
 				}
 			}
 		}

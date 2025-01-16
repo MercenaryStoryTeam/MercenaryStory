@@ -35,7 +35,7 @@ public class ItemInfoPanel : MonoBehaviour
     
     private void InfoButtonOnClick()
     {
-        firstOptionButton.onClick.AddListener(EquipItemButtonClick);
+        firstOptionButton.onClick.AddListener(EquipButtonClick);
         secondOptionButton.onClick.AddListener(RemoveItemButtonClick);
         closeButton.onClick.AddListener(CloseButtonClick);
     }
@@ -47,12 +47,25 @@ public class ItemInfoPanel : MonoBehaviour
 
     private void RemoveItemButtonClick()
     {
-        InventoryManger inventoryManger = FindObjectOfType<InventoryManger>();
-        inventoryManger.DeleteItem(currentSelectedSlot);
+        Inventory inventory = FindObjectOfType<Inventory>();
+        inventory.DeleteItem(currentSelectedSlot);
         UIManager.Instance.CloseItemInfoPanel();
     }
+
+    private InventorySlot SelectedSlot()
+    {
+        Inventory inventory = FindObjectOfType<Inventory>();
+        foreach (InventorySlot slot in inventory.slots)
+        {
+            if (slot.item != null && slot.item.name == itemName.text)
+            {
+                return slot;
+            }
+        }
+        return null;
+    }
     
-    private void EquipItemButtonClick()
+    public void EquipButtonClick()
     {
         EquipmentPanel equipPanel = FindObjectOfType<EquipmentPanel>(); 
         Equipment equipment = FindObjectOfType<Equipment>();

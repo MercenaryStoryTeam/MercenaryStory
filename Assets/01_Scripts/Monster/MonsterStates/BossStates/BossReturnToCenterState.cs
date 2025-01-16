@@ -1,8 +1,8 @@
-public class BossChargeState : BossState
+public class BossReturnToCenterState : BossState
 {
     public override void EnterState(BossMonster boss)
     {
-        throw new System.NotImplementedException();
+        boss.Agent.SetDestination(boss.CenterPoint);
     }
 
     public override void ExecuteState(BossMonster boss)
