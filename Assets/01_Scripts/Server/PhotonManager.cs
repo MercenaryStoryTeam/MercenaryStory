@@ -42,8 +42,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedRoom()
 	{
-		if (PhotonNetwork.CurrentRoom.Name == "Server1Room" ||
-		    PhotonNetwork.CurrentRoom.Name == "Server2Room")
+		if (PhotonNetwork.CurrentRoom.Name == "1" || PhotonNetwork.CurrentRoom.Name == "2")
 		{
 			ServerManager.LoadScene("LJW_TownScene");
 		}

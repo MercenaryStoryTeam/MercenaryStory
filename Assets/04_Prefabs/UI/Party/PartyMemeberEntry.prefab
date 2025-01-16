@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8350121884071894859}
   - component: {fileID: 3706569708705577967}
   m_Layer: 5
-  m_Name: SizeText
+  m_Name: RoleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: "\uD30C\uD2F0\uC7A5"
 --- !u!1 &6871284859354835869
 GameObject:
   m_ObjectHideFlags: 0
@@ -91,9 +91,9 @@ GameObject:
   - component: {fileID: 786814379487776961}
   - component: {fileID: 1724504287608683699}
   - component: {fileID: 1489144340109481327}
-  - component: {fileID: 5895865228168725634}
+  - component: {fileID: -6535966847737261854}
   m_Layer: 5
-  m_Name: PartyEntry
+  m_Name: PartyMemeberEntry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
---- !u!114 &5895865228168725634
+--- !u!114 &-6535966847737261854
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -215,10 +215,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6871284859354835869}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c333af142937424e82599fe715f766d, type: 3}
+  m_Script: {fileID: 11500000, guid: 22a345f0ae34ac24ca47788c36e9c2af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizeText: {fileID: 3706569708705577967}
+  roleText: {fileID: 3706569708705577967}
   nameText: {fileID: 4327807992287701482}
 --- !u!1 &8735947364052738556
 GameObject:
@@ -298,4 +298,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Party Name
+  m_Text: User Name

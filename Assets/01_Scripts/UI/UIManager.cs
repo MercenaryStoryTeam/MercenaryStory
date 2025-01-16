@@ -18,6 +18,11 @@ public class UIManager : SingletonManager<UIManager>
 	public ChatPanel chatPanel;
 	public Button chatButton;
 
+	// Party
+	public PartyPanel partyPanel;
+	public PartyCreatePanel partyCreatePanel;
+	public Button partyButton;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -126,6 +131,32 @@ public class UIManager : SingletonManager<UIManager>
 	{
 		chatPanel.gameObject.SetActive(true);
 		chatButton.gameObject.SetActive(false);
+	}
+
+	#endregion
+
+	#region Party Management
+
+	public void OpenPartyPanel()
+	{
+		partyPanel.gameObject.SetActive(true);
+		// party create panel은 비활성화 해야함
+		partyCreatePanel.gameObject.SetActive(false);
+	}
+
+	public void OpenPartyCreatePanel()
+	{
+		partyCreatePanel.gameObject.SetActive(true);
+	}
+
+	public void ClosePartyPanel()
+	{
+		partyPanel.gameObject.SetActive(false);
+	}
+
+	public void ClosePartyCreatePanel()
+	{
+		partyCreatePanel.gameObject.SetActive(false);
 	}
 
 	#endregion

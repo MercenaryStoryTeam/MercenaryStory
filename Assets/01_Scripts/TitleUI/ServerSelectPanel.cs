@@ -44,6 +44,6 @@ public class ServerSelectPanel : MonoBehaviour
 
 	private void OnConnectButtonClick()
 	{
-		ServerManager.JoinOrCreatePersistentRoom($"Server{serverNum}Room");
+		ServerManager.JoinOrCreatePersistentRoom(serverNum.ToString());
 	}
 }

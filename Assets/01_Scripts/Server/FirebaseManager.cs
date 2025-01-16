@@ -15,7 +15,12 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	private DatabaseReference usersRef;
 	private Dictionary<string, UserData> userDictionary;
 	private List<UserData> userList;
+	private DatabaseReference partiesRef;
+	private Dictionary<string, PartyData> partyDictionary;
+	private List<PartyData> partyList;
+
 	public UserData CurrentUserData { get; private set; }
+	public PartyData CurrentPartyData { get; private set; }
 
 	public enum State
 	{
@@ -41,6 +46,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
+	#region User Management
+
 	public async void SignUp(string email, string password, string user_Name,
 		Action<FirebaseUser, UserData> callback = null)
 	{
@@ -54,15 +61,19 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
 
-			TitleUI.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () =>
+			UIManager.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () =>
 			{
-				TitleUI.Instance.popUp.PopUpClose();
+				UIManager.Instance.popUp.PopUpClose();
 				TitleUI.Instance.PanelOpen("SignIn");
 			});
 		}
 		catch (FirebaseException e)
 		{
-			Debug.LogError(e.Message);
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
 		}
 	}
 
@@ -79,16 +90,16 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			{
 				if (userData.user_Email == email)
 				{
-					TitleUI.Instance.popUp.PopUpOpen("이미 사용중인 email입니다.",
-						() => TitleUI.Instance.popUp.PopUpClose());
+					UIManager.Instance.popUp.PopUpOpen("이미 사용중인 email입니다.",
+						() => UIManager.Instance.popUp.PopUpClose());
 					state = State.EmailNotChecked;
 					return;
 				}
 			}
 		}
 
-		TitleUI.Instance.popUp.PopUpOpen("사용 가능한 email입니다.",
-			() => TitleUI.Instance.popUp.PopUpClose());
+		UIManager.Instance.popUp.PopUpOpen("사용 가능한 email입니다.",
+			() => UIManager.Instance.popUp.PopUpClose());
 		state = State.EmailChecked;
 	}
 
@@ -96,7 +107,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			TitleUI.Instance.popUp.WaitPopUpOpen("로그인 중입니다.");
+			UIManager.Instance.popUp.WaitPopUpOpen("로그인 중입니다.");
 			var result = await Auth.SignInWithEmailAndPasswordAsync(email, password);
 			usersRef = DB.GetReference($"users/{result.User.UserId}");
 			DataSnapshot userDataValues = await usersRef.GetValueAsync();
@@ -109,7 +120,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 			CurrentUserData = userData;
 
-			TitleUI.Instance.popUp.PopUpClose();
+			UIManager.Instance.popUp.PopUpClose();
 			ServerManager.ConnectLobby();
 			if (CurrentUserData.user_Appearance == 0)
 			{
@@ -126,8 +137,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 		catch (Exception e)
 		{
-			TitleUI.Instance.popUp.PopUpOpen($"오류 발생.\n다시 시도해 주세요.\n{e.Message}",
-				() => TitleUI.Instance.popUp.PopUpClose());
+			ExceptionManager.HandleException(e);
 		}
 	}
 
@@ -138,4 +148,124 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		await targetRef.SetValueAsync(value);
 		callback?.Invoke(value);
 	}
+
+	#endregion
+
+	#region Party Management
+
+	public async void CreateParty(string party_Name, int party_Size)
+	{
+		try
+		{
+			PartyData partyData = new PartyData(CurrentUserData.user_CurrentServer, party_Name,
+				party_Size, CurrentUserData);
+			CurrentPartyData = partyData;
+			partiesRef = DB.GetReference($"parties/{CurrentPartyData.party_Id}");
+			string partyDataJson = JsonConvert.SerializeObject(partyData);
+			await partiesRef.SetRawJsonValueAsync(partyDataJson);
+
+			DatabaseReference targetRef = usersRef.Child("users_CurrentParty");
+			await targetRef.SetValueAsync(party_Name);
+
+			UIManager.Instance.popUp.PopUpOpen("파티가 생성되었습니다.", () =>
+			{
+				UIManager.Instance.popUp.PopUpClose();
+				// Update party list
+				UIManager.Instance.ClosePartyCreatePanel();
+			});
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	public async void UpdateParty()
+	{
+		try
+		{
+			DataSnapshot partiesData = await DB.GetReference("parties").GetValueAsync();
+			partyDictionary =
+				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
+					partiesData.GetRawJsonValue());
+			if (partyDictionary != null)
+			{
+				partyList = new List<PartyData>(partyDictionary.Values);
+			}
+			else
+			{
+				print("파티 없음");
+			}
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	public async void JoinParty(string name)
+	{
+		try
+		{
+			DataSnapshot partiesData = await DB.GetReference("parties").GetValueAsync();
+			partyDictionary =
+				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
+					partiesData.GetRawJsonValue());
+
+			if (partyDictionary == null)
+			{
+				UIManager.Instance.popUp.PopUpOpen("파티가 존재하지 않습니다.\n새로고침 해주세요.",
+					() => UIManager.Instance.popUp.PopUpClose());
+			}
+			else
+			{
+				partyList = new List<PartyData>(partyDictionary.Values);
+				foreach (PartyData partyData in partyList)
+				{
+					if (partyData.party_Name == name)
+					{
+						if (partyData.party_Members.Count < partyData.party_size)
+						{
+							// 가입
+							partyData.party_Members.Add(CurrentUserData);
+							CurrentPartyData = partyData;
+							CurrentPartyData.AddMember(CurrentUserData);
+						}
+						else
+						{
+							UIManager.Instance.popUp.PopUpOpen("파티가 가득 찼습니다.",
+								() => UIManager.Instance.popUp.PopUpClose());
+						}
+					}
+				}
+			}
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	public async void ExitParty()
+	{
+	}
+
+	public List<PartyData> GetPartyList()
+	{
+		return partyList;
+	}
+
+	#endregion
 }

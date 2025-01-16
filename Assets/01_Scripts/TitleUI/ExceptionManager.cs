@@ -1,4 +1,6 @@
+using System;
 using Firebase;
+using UnityEngine;
 
 public class ExceptionManager
 {
@@ -22,9 +24,15 @@ public class ExceptionManager
 		}
 	}
 
+	public static void HandleException(Exception e)
+	{
+		ShowPopup(e.Message);
+	}
+
 	private static void ShowPopup(string message)
 	{
-		TitleUI.Instance.popUp.PopUpOpen(message,
-			() => TitleUI.Instance.popUp.PopUpClose());
+		UIManager.Instance.popUp.PopUpOpen(message,
+			() => UIManager.Instance.popUp.PopUpClose());
+		Debug.LogWarning(message);
 	}
 }
