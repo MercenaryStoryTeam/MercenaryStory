@@ -10,11 +10,11 @@ public class SkillFsm : MonoBehaviour
     public class Skill
     {
         public string name;          
-        public string triggerName;  
+        public string triggerName;   
         public float cooldown;       
-        public float speedBoost = 1f;
-        public float duration = 0f;
-        public GameObject particleEffect;
+        public float speedBoost = 1f; 
+        public float duration = 0f;   
+        public GameObject particleEffect; 
 
         [HideInInspector] public bool isOnCooldown = false;
     }
@@ -89,7 +89,7 @@ public class SkillFsm : MonoBehaviour
 
     public void TriggerSkill(string skillName)
     {
-        // 이미 Destroy된 Animator가 아니라면 null 체크
+        // Animator null 체크
         if (animator == null)
         {
             Debug.LogWarning("[SkillFsm] Animator가 null이므로 스킬을 사용할 수 없습니다.");
@@ -115,7 +115,7 @@ public class SkillFsm : MonoBehaviour
         // 파티클 이펙트 활성화
         if (skill.particleEffect != null)
         {
-            ActivateSkillParticle(skill.particleEffect, transform.position);
+            ActivateSkillParticle(skill.particleEffect);
         }
 
         // Rush 스킬이면 이동 속도 증가
@@ -124,19 +124,28 @@ public class SkillFsm : MonoBehaviour
             ApplySpeedBoost(skill.speedBoost, skill.duration);
         }
 
-        // 쿨다운
+        // 쿨다운 시작
         StartCoroutine(CooldownCoroutine(skill));
     }
 
-    private void ActivateSkillParticle(GameObject particleEffect, Vector3 position)
+    private void ActivateSkillParticle(GameObject particleEffect)
     {
-        particleEffect.transform.position = position;
+        // 1) 파티클 오브젝트가 가진 localPosition 값(오프셋)을 부모 트랜스폼 기준의 월드 좌표로 변환
+        Vector3 localOffset = particleEffect.transform.localPosition;
+        Vector3 finalPosition = transform.TransformPoint(localOffset);
+
+        // 2) 최종 위치 적용
+        particleEffect.transform.position = finalPosition;
+
+        // 3) 파티클 오브젝트 활성화
         particleEffect.SetActive(true);
 
+        // 4) 파티클 재생 시간 뒤 비활성화
         ParticleSystem ps = particleEffect.GetComponent<ParticleSystem>();
         if (ps != null)
         {
-            StartCoroutine(DeactivateParticleAfterDuration(particleEffect, ps.main.duration + ps.main.startLifetime.constantMax));
+            float duration = ps.main.duration + ps.main.startLifetime.constantMax;
+            StartCoroutine(DeactivateParticleAfterDuration(particleEffect, duration));
         }
     }
 
@@ -175,11 +184,17 @@ public class SkillFsm : MonoBehaviour
         Debug.Log($"[SkillFsm] {skill.name} 스킬 쿨다운 종료");
     }
 
-    /// <summary>
-    /// 부활 또는 새 씬에서 새 Animator를 받아올 수 있도록 하는 메서드 (필요시 사용)
-    /// </summary>
+    // 플레이어 객체가 재활성화되었을 때 새로운 Animator를 받아올 수 있도록 하는 메서드
     public void SetAnimator(Animator newAnimator)
     {
+        if (newAnimator == null)
+        {
+            Debug.LogError("Animator가 null입니다. 설정할 수 없습니다.");
+            return;
+        }
+
         animator = newAnimator;
     }
 }
+
+//
