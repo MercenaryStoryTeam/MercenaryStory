@@ -102,12 +102,24 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
+    private void OnEnable()
+    {
+        // 콤보 공격 이벤트 등록
+        PlayerInputManager.OnAttackInput += HandleAttackInput;
+    }
+
+    private void OnDisable()
+    {
+        // 콤보 공격 이벤트 해제
+        PlayerInputManager.OnAttackInput -= HandleAttackInput;
+    }
+
     private void Update()
     {
         if (!isDead)
         {
-            HandleInput();
-            HandleState();
+            HandleMovementInput();   // 이동 입력만 처리
+            HandleState();          // 현재 상태 FSM 처리
         }
     }
 
@@ -122,21 +134,22 @@ public class PlayerFsm : MonoBehaviourPun
         return specialScenes.Contains(currentSceneName);
     }
 
-    private void HandleInput()
+    /// <summary>
+    /// 이동 입력만 별도 처리 (콤보 공격은 PlayerInputManager 이벤트 사용)
+    /// </summary>
+    private void HandleMovementInput()
     {
-        // Hit 상태도 이동 가능하도록 수정
+        // Skill, Die 상태가 아닐 때만 이동 처리 (Hit 상태도 이동 가능)
         bool canProcessMovement = (currentState != State.Die && currentState != State.Skill);
 
         if (canProcessMovement)
         {
-            // 기본 이동키 입력
+            // PlayerInputManager에서 넘어온 이동 벡터를 매 프레임마다 받을 수도 있음
+            // 여기서는 기존처럼 직접 Input을 써도 되지만, 요청에 따라 콤보 부분만 개선하므로 이동은 그대로 두었습니다.
             float inputX = Input.GetAxisRaw("Horizontal");
             float inputZ = Input.GetAxisRaw("Vertical");
-
-            // 기본 마우스 클릭 입력
             movementInput = CalculateMovementDirection(inputX, inputZ);
 
-            // Player의 moveSpeed를 참조하여 현재 이동 속도 설정
             currentSpeed = player != null ? player.moveSpeed : 0f;
 
             if (movementInput.sqrMagnitude > moveThreshold)
@@ -150,7 +163,6 @@ public class PlayerFsm : MonoBehaviourPun
                     TransitionToState(State.Idle);
             }
 
-            // baseMoveSpeed가 기준이므로, 현재 이동 속도 대비 비율 계산
             float normalizedSpeed = (movementInput.magnitude * currentSpeed) /
                                     (player != null ? player.moveSpeed : 1f);
             animator.SetFloat("Speed", normalizedSpeed);
@@ -161,22 +173,22 @@ public class PlayerFsm : MonoBehaviourPun
             animator.SetFloat("Speed", 0f);
         }
 
-        // 공격 입력 처리 시 현재 상태가 Moving, Skill이 아닌지 확인
-        // (Hit 상태에서도 공격을 막고 싶다면 여기서 조건을 추가하면 됨)
-        if (Input.GetMouseButtonDown(0) && !isDead && currentState != State.Moving &&
-            currentState != State.Skill)
-        {
-            HandleAttackInput();
-        }
-
+        // 콤보 리셋 확인
         if (Time.time - lastAttackTime > comboResetTime)
         {
             attackCombo = 0;
         }
     }
 
+    /// <summary>
+    /// 플레이어가 공격을 시도할 때 호출되는 콤보 처리 함수
+    /// </summary>
     private void HandleAttackInput()
     {
+        // 기존 조건: 사망이거나, 이동 중이거나, 스킬 중이면 공격 불가
+        if (isDead || currentState == State.Moving || currentState == State.Skill)
+            return;
+
         lastAttackTime = Time.time;
         attackCombo++;
         if (attackCombo > 3)
@@ -215,7 +227,7 @@ public class PlayerFsm : MonoBehaviourPun
                 // 스킬 상태
                 break;
             case State.Hit:
-                // 피격 상태 (이제 별도 이동 막거나 전환 처리하지 않음)
+                // 피격 상태
                 break;
         }
     }
@@ -236,7 +248,7 @@ public class PlayerFsm : MonoBehaviourPun
             case State.Attack1:
             case State.Attack2:
             case State.Attack3:
-                // 공격 중 물리 처리
+                // 공격 중 물리 처리(애니메이션 루트모션 또는 관성 등)
                 break;
             case State.Skill:
                 // 스킬 중 물리 처리
@@ -246,8 +258,7 @@ public class PlayerFsm : MonoBehaviourPun
                 rb.angularVelocity = Vector3.zero;
                 break;
             case State.Hit:
-                // 피격 중에도 이동 가능하도록 별도 처리하지 않음
-                // (원한다면 MovePlayer() 호출도 가능)
+                // 피격 중에도 이동 가능하게 했으므로 추가 제어 없음
                 break;
         }
     }
@@ -289,6 +300,7 @@ public class PlayerFsm : MonoBehaviourPun
                 EnterAttackState(3);
                 break;
             case State.Skill:
+                // 스킬 상태 진입
                 break;
             case State.Die:
                 EnterDieState();
@@ -351,7 +363,6 @@ public class PlayerFsm : MonoBehaviourPun
     /// </summary>
     public void TakeDamage()
     {
-        // 이미 죽었거나, 다른 이유로 피격 불가라면 무시
         if (isDead || currentState == State.Hit) return;
         TransitionToState(State.Hit);
     }
@@ -382,11 +393,11 @@ public class PlayerFsm : MonoBehaviourPun
             TransitionToState(State.Idle);
     }
 
-    // Hit 애니메이션 이벤트 - 별도 처리 없이 둠
+    // Hit 애니메이션 이벤트
     public void OnHitAnimationEnd()
     {
         // Hit 애니 끝나도 자동 복귀하지 않음.
-        // (원하는 경우 주석 해제해서 복귀 로직 추가 가능)
+        // 원한다면 아래 주석을 해제하여 자동 복귀 로직을 추가 가능
         // if (movementInput.sqrMagnitude > moveThreshold)
         //     TransitionToState(State.Moving);
         // else
