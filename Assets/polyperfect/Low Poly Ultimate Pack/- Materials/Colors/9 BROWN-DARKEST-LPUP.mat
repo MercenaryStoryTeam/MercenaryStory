@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: 9 BROWN-DARKEST-LPUP
   m_Shader: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 2100000, guid: 67dd000422c7ded448412528401133b8, type: 2}
+  m_Parent: {fileID: 2100000, guid: 6c27c86bf07535f4dbda98b5a9e87425, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -26,5 +26,5 @@ Material:
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _Color: {r: 0.33988965, g: 0.34130573, b: 0.3584906, a: 1}
+    - _Color: {r: 0.990566, g: 0.5295049, b: 0.22895159, a: 1}
   m_BuildTextureStacks: []
