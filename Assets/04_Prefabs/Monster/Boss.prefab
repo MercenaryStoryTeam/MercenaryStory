@@ -1242,7 +1242,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5863903103508586440}
   - {fileID: 5863903103508586472}
@@ -1295,7 +1295,7 @@ MonoBehaviour:
   chargeCooltime: 5
   slashCooltime: 6
   hungerCooltime: 13
-  minionPrefab: {fileID: 0}
+  minionPrefab: {fileID: 4401516545361303541, guid: ce4ac5036db59954597bcadcb70111c8, type: 3}
   slashCount: 0
   currentState: 0
   playerList: []
