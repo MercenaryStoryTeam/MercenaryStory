@@ -74,6 +74,7 @@ public class Equipment : MonoBehaviourPunCallbacks
         }
 
         Debug.Log($"아이템을 찾음 {item.name}");
+        
         if (item != null)
         {
             SetSwordClass(item);
@@ -93,17 +94,7 @@ public class Equipment : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
-    private void SetParent(string parentName)
-    {
-        Transform parent = GameObject.Find(parentName).transform;
-        if (parent != null)
-        {
-            transform.SetParent(parent);
-            transform.localPosition = Vector3.zero;
-            transform.localRotation = Quaternion.identity;
-        }
-    }
+
 
     private void SetPanelSwordCharacter(ItemBase item)
     {
@@ -114,7 +105,7 @@ public class Equipment : MonoBehaviourPunCallbacks
                 Transform rightHand = child.FindDeepChild("Sword");
 
                 GameObject panelSword = Instantiate(item.equipPrefab[0], rightHand);
-                panelSword.layer = LayerMask.NameToLayer("Object");
+                // panelSword.layer = LayerMask.NameToLayer("Object");
             }
         }
     }
@@ -130,7 +121,8 @@ public class Equipment : MonoBehaviourPunCallbacks
                     Transform leftHand = child.FindDeepChild("Shield");
                     
                     GameObject panelShield = Instantiate(item.equipPrefab[1], leftHand);
-                    panelShield.layer = LayerMask.NameToLayer("Object");
+                    // panelShield.layer = LayerMask.NameToLayer("Object");
+
                 }
             }
         }
@@ -285,47 +277,31 @@ public class Equipment : MonoBehaviourPunCallbacks
         
         for (int i = 0; i < findShield.transform.childCount; i++)
         {
-            DestroyImmediate(findShield.transform.GetChild(i).gameObject);
+            Destroy(findShield.transform.GetChild(i).gameObject);
         }
         
         for (int i = 0; i < findSword.transform.childCount; i++)
         { 
-            DestroyImmediate(findSword.transform.GetChild(i).gameObject);
+            Destroy(findSword.transform.GetChild(i).gameObject);
         }
         
         foreach (Transform child in panelCharacter.transform)
         {
             if (child.gameObject.activeSelf)
             {
-                if (child.gameObject.activeSelf)
-                {
-                    Transform leftHand = child.FindDeepChild("Shield");
-                    for (int i = 0; i < leftHand.childCount; i++)
-                    {
-                        Destroy(leftHand.transform.GetChild(i).gameObject);
-                    }
-                }
-            }
-        }
-        
-        foreach (Transform child in panelCharacter.transform)
-        {
-            if (child.gameObject.activeSelf)
-            {
-                if (child.gameObject.activeSelf)
-                {
-                    Transform rightHand = child.FindDeepChild("Sword");
-                    for (int i = 0; i < rightHand.childCount; i++)
-                    {
-                        Destroy(rightHand.transform.GetChild(i).gameObject);
+                Transform leftHand = child.FindDeepChild("Shield");
+                Transform rightHand = child.FindDeepChild("Sword");
 
-                    }
+                for (int i = 0; i < leftHand.childCount; i++) 
+                { 
+                    Destroy(leftHand.transform.GetChild(i).gameObject);
                 }
-            }
-
-            else
-            {
-                return;
+                
+                for (int i = 0; i < rightHand.childCount; i++)
+                {
+                    Destroy(rightHand.transform.GetChild(i).gameObject);
+                }
+                
             }
         }
     }
