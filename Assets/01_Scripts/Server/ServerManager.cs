@@ -28,10 +28,10 @@ public class ServerManager
 		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: roomName,
 			currentParty: "");
 
-		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentServer",
+		FirebaseManager.Instance.UpdateCurrentUserData("user_CurrentServer",
 			FirebaseManager.Instance.CurrentUserData.user_CurrentServer);
 
-		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentParty", "");
+		FirebaseManager.Instance.UpdateCurrentUserData("user_CurrentParty", "");
 
 		ChatManager.Instance.ChatStart(roomName);
 	}
@@ -50,24 +50,56 @@ public class ServerManager
 			.Instantiate(
 				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
 				spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
-
-		InventoryManger.Instance.AddItemToInventory(InventoryManger.Instance.basicWeapon);
+		
 	}
-
+	
 	public static GameObject PlayerEquip(int rarity, string equipmentName, Transform parent)
 	{
+		// GameObject equipmentPrefab = PhotonNetwork.Instantiate(
+		// 	$"Equipment/{rarity}/{equipmentName}", parent.position, parent.rotation);
+		//
+		// equipmentPrefab.GetComponent<PhotonView>().RPC("SetParent", RpcTarget.All, parent.name);
+		// return equipmentPrefab;
+		Debug.Log($"PlayerEquip 시작 - Rarity: {rarity}, Equipment: {equipmentName}");
+    
+		string prefabPath = $"Equipment/{rarity}/{equipmentName}";
+		Debug.Log($"프리팹 경로: {prefabPath}");
+
 		GameObject equipmentPrefab = PhotonNetwork.Instantiate(
-			$"Equipment/{rarity}/{equipmentName}", parent.position, Quaternion.identity);
+			prefabPath, 
+			parent.position, 
+			Quaternion.identity);
+
+		if (equipmentPrefab == null)
+		{
+			Debug.LogError($"장비 프리팹 생성 실패: {prefabPath}");
+			return null;
+		}
+
+		Debug.Log($"장비 프리팹 생성 성공: {equipmentPrefab.name}");
+
+		PhotonView photonView = equipmentPrefab.GetComponent<PhotonView>();
+		if (photonView == null)
+		{
+			Debug.LogError($"PhotonView 컴포넌트 없음: {equipmentPrefab.name}");
+			return equipmentPrefab;
+		}
+
+		PhotonView parentView = parent.GetComponent<PhotonView>();
+		if (parentView == null)
+		{
+			Debug.LogError($"Parent에 PhotonView 컴포넌트 없음: {parent.name}");
+			return equipmentPrefab;
+		}
+
+		photonView.RPC("SetEquip", RpcTarget.All, parentView.ViewID);
+		Debug.Log("RPC 호출 완료");
+    
 		return equipmentPrefab;
 	}
 
 	public static string GetServerName()
 	{
 		return PhotonNetwork.CurrentRoom.Name;
-	}
-
-	public static bool GetIsParty()
-	{
-		return FirebaseManager.Instance.CurrentUserData.user_CurrentParty != "";
 	}
 }
