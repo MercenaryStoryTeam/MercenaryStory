@@ -28,10 +28,10 @@ public class ServerManager
 		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: roomName,
 			currentParty: "");
 
-		FirebaseManager.Instance.UpdateCurrentUserData("user_CurrentServer",
+		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentServer",
 			FirebaseManager.Instance.CurrentUserData.user_CurrentServer);
 
-		FirebaseManager.Instance.UpdateCurrentUserData("user_CurrentParty", "");
+		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentParty", "");
 
 		ChatManager.Instance.ChatStart(roomName);
 	}
@@ -50,10 +50,10 @@ public class ServerManager
 			.Instantiate(
 				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
 				spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
-		
+
 		InventoryManger.Instance.AddItemToInventory(InventoryManger.Instance.basicWeapon);
 	}
-	
+
 	public static GameObject PlayerEquip(int rarity, string equipmentName, Transform parent)
 	{
 		GameObject equipmentPrefab = PhotonNetwork.Instantiate(
@@ -64,5 +64,10 @@ public class ServerManager
 	public static string GetServerName()
 	{
 		return PhotonNetwork.CurrentRoom.Name;
+	}
+
+	public static bool GetIsParty()
+	{
+		return FirebaseManager.Instance.CurrentUserData.user_CurrentParty != "";
 	}
 }

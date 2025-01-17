@@ -141,12 +141,23 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UpdateCurrentUserData(string childName, object value,
+	public async void UploadCurrentUserData(string childName, object value,
 		Action<object> callback = null)
 	{
-		DatabaseReference targetRef = usersRef.Child(childName);
-		await targetRef.SetValueAsync(value);
-		callback?.Invoke(value);
+		try
+		{
+			DatabaseReference targetRef = usersRef.Child(childName);
+			await targetRef.SetValueAsync(value);
+			callback?.Invoke(value);
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
 	}
 
 	#endregion
@@ -157,21 +168,28 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
+			// Create PartyData
 			PartyData partyData = new PartyData(CurrentUserData.user_CurrentServer, party_Name,
 				party_Size, CurrentUserData);
 			CurrentPartyData = partyData;
+
+			// Set current user's party data
+			CurrentUserData.UpdateUserData(currentParty: CurrentPartyData.party_Id);
+
+			// Upload UserData
+			UploadCurrentUserData("user_CurrentParty", CurrentPartyData.party_Id);
+
+			// Upload PartyData
 			partiesRef = DB.GetReference($"parties/{CurrentPartyData.party_Id}");
 			string partyDataJson = JsonConvert.SerializeObject(partyData);
 			await partiesRef.SetRawJsonValueAsync(partyDataJson);
-
-			DatabaseReference targetRef = usersRef.Child("users_CurrentParty");
-			await targetRef.SetValueAsync(party_Name);
 
 			UIManager.Instance.popUp.PopUpOpen("파티가 생성되었습니다.", () =>
 			{
 				UIManager.Instance.popUp.PopUpClose();
 				// Update party list
 				UIManager.Instance.ClosePartyCreatePanel();
+				UIManager.Instance.OpenPartyPanel();
 			});
 		}
 		catch (FirebaseException e)
@@ -260,6 +278,36 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 	public async void ExitParty()
 	{
+		try
+		{
+			// 1. 로컬에서 현재 유저의 파티 정보를 받기
+			string partyId = CurrentUserData.user_CurrentParty;
+			// 2. 로컬에서 현재 파티의 정보 중 역할 확인
+			// 현재 파티의 파티장 id와 현재 유저의 id 비교
+
+			if (CurrentPartyData.party_Owner.user_Id == CurrentUserData.user_Id)
+			{
+			}
+
+			// 파티장이라면
+			// 3. 서버에서 해당 파티의 각 멤버들의 파티 정보 삭제
+			// -- 일단은 파티창 열 때 업데이트 되니까 그거 믿고 각 멤버들에게 공지 안함 --
+			// 4. 서버에서 해당 파티 삭제
+			// 5. 로컬에서 현재 유저의 파티 정보 삭제
+
+			// 파티원이라면
+			// 3. 서버에서 해당 파티의 해당 멤버 삭제
+			// 4. 로컬에서 현재 유저의 파티 정보 삭제
+			// 5. 서버에 현재 유저 정보 업데이트
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
 	}
 
 	public List<PartyData> GetPartyList()
