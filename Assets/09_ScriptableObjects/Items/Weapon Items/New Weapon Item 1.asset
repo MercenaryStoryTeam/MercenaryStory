@@ -17,7 +17,7 @@ MonoBehaviour:
   description: "\uC2E0\uC131\uD55C \uCD95\uBCF5\uC73C\uB85C \uAC15\uD654\uB41C\n\uAC80\uACFC
     \uBC29\uD328 \uD55C \uBC8C.\n\uB9CC\uC9C0\uBA74 \uC190\uC774 \uB530\uB054\uD560
     \uC218 \uC788\uB2E4."
-  currentItemCount: 3
+  currentItemCount: 0
   itemClass: 1
   price: 0
   dropPercent: 0

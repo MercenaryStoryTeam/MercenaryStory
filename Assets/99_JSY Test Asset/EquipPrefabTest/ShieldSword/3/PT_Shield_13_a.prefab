@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 97251886540942164}
   - component: {fileID: 2651674569741598}
   - component: {fileID: 6182955265157159976}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: PT_Shield_13_a_handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5435815801698558073}
   - component: {fileID: 3234353724555756673}
   - component: {fileID: 5399099435553502232}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: PT_Shield_13_a_body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3933492966701803025}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: PT_Shield_13_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
