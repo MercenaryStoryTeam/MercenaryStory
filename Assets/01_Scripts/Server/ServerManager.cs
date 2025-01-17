@@ -58,6 +58,13 @@ public class ServerManager
 	public static GameObject PlayerEquip(int rarity, string equipmentName, Transform parent)
 	{		
 		string prefabPath = $"Equipment/{rarity}/{equipmentName}";
+		GameObject prefab = Resources.Load<GameObject>(prefabPath);
+		
+		if (prefab == null)
+		{
+			Debug.LogError($"프리팹을 찾을 수 없음: {prefabPath}");
+			return null;
+		}
 		
 		GameObject equipmentPrefab = 
 			PhotonNetwork.Instantiate(prefabPath,parent.position, Quaternion.identity);
@@ -68,7 +75,9 @@ public class ServerManager
 			return null;
 		}
 		
-		equipmentPrefab.transform.SetParent(parent, true);
+		equipmentPrefab.transform.SetParent(parent);
+		equipmentPrefab.transform.localPosition = prefab.transform.localPosition;
+		equipmentPrefab.transform.localRotation = prefab.transform.localRotation;
 		
 		return equipmentPrefab;
 	}
