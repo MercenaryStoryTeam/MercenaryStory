@@ -284,21 +284,48 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			string partyId = CurrentUserData.user_CurrentParty;
 			// 2. 로컬에서 현재 파티의 정보 중 역할 확인
 			// 현재 파티의 파티장 id와 현재 유저의 id 비교
+			// 3. 서버에서 해당 파티 정보 받아와서 역직렬화
+			DataSnapshot partiesData = await DB.GetReference("parties").GetValueAsync();
+			partyDictionary =
+				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
+					partiesData.GetRawJsonValue());
 
-			if (CurrentPartyData.party_Owner.user_Id == CurrentUserData.user_Id)
+			// 파티를 나가는 상황에서 파티가 비어있을 경우가 있을 수 있다.
+			// 파티장이 파티를 터트리고, 파티원들에게 업데이트 되지 않은 상황
+			if (partyDictionary == null)
 			{
+				UIManager.Instance.popUp.PopUpOpen("파티가 그새 사라졌습니다.", () =>
+				{
+					UIManager.Instance.popUp.PopUpClose();
+					UIManager.Instance.OpenPartyPanel();
+				});
 			}
-
-			// 파티장이라면
-			// 3. 서버에서 해당 파티의 각 멤버들의 파티 정보 삭제
-			// -- 일단은 파티창 열 때 업데이트 되니까 그거 믿고 각 멤버들에게 공지 안함 --
-			// 4. 서버에서 해당 파티 삭제
-			// 5. 로컬에서 현재 유저의 파티 정보 삭제
-
-			// 파티원이라면
-			// 3. 서버에서 해당 파티의 해당 멤버 삭제
-			// 4. 로컬에서 현재 유저의 파티 정보 삭제
-			// 5. 서버에 현재 유저 정보 업데이트
+			// 현재 파티가 정상적으로 존재하는 경우
+			else
+			{
+				// 파티장이라면
+				if (CurrentPartyData.party_Owner.user_Id == CurrentUserData.user_Id)
+				{
+					// 4. 로컬에서 해당 파티의 파티원들 id 받기
+					List<string> partyMemberIds = new List<string>();
+					foreach (UserData userData in CurrentPartyData.party_Members)
+					{
+						partyMemberIds.Add(userData.user_Id);
+					}
+					// 5. 서버에서 멤버들의 유저데이터에 접근해 파티 정보 삭제
+					
+					// -- 일단은 파티창 열 때 업데이트 되니까 그거 믿고 각 멤버들에게 공지 안함 --
+					// 4. 서버에서 해당 파티 삭제
+					// 5. 로컬에서 현재 유저의 파티 정보 삭제
+				}
+				// 파티원이라면
+				else
+				{
+					// 3. 서버에서 해당 파티의 해당 멤버 삭제
+					// 4. 로컬에서 현재 유저의 파티 정보 삭제
+					// 5. 서버에 현재 유저 정보 업데이트
+				}
+			}
 		}
 		catch (FirebaseException e)
 		{
