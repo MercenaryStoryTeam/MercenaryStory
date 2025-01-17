@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4239253263218834073}
   - component: {fileID: 5996217162326293022}
   - component: {fileID: 8688819428145895557}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: PT_Longsword_03_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
