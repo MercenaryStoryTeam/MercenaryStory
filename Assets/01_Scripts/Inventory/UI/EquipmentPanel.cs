@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon.StructWrapping;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,16 +12,16 @@ public class EquipmentPanel : MonoBehaviour
     public GameObject firstCharacter;
     public GameObject secondCharacter;
     public GameObject thirdCharacter;
+    public ItemBase currentItem; //현재 장착중인 아이템. 플레이어 스크립트에 넣어야할드 ㅅ
     
     private TestSY _testSY;
+    
     private void Awake()
     {
         _testSY = FindObjectOfType<TestSY>();
         firstCharacter.SetActive(false);
         secondCharacter.SetActive(false);
         thirdCharacter.SetActive(false);
-        
-        currentEquipImage.enabled = false; // 인벤토리 열 때 none 이미지 잠깐 보이는 거 방지
         
     }
 
@@ -38,6 +39,8 @@ public class EquipmentPanel : MonoBehaviour
                 thirdCharacter.SetActive(true);
                 break;
         }
+
+        currentEquipImage.sprite = currentItem.image;
     }
 
     private void Update()
@@ -47,30 +50,23 @@ public class EquipmentPanel : MonoBehaviour
 
     public void SetEquipImage(InventorySlot slot)
     {
-        if (slot.item.itemClass == 1 && slot != null && slot.item != null)
+        if (currentItem != null)
         {
+            ItemBase beforeWeapon = currentItem;
+            currentItem = slot.item;
             int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
-            if (currentWeaponId == 0 || currentWeaponId == null)
+            currentWeaponId = slot.item.id;
+            currentEquipImage.sprite = slot.item.image;
+            
+            slot.RemoveItem();
+            print(beforeWeapon);
+            print($"현재 장착한 아이템: {currentItem.name}, 장착한 아이탬 개수: {currentItem.currentItemCount}");
+            if (beforeWeapon != null)
             {
-                currentEquipImage.sprite = slot.item.image;
-                FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = slot.item.id;
-
-                slot.RemoveItem();
-                Debug.Log($"현재 장착한 장비 아이템: {_testSY.currentWeapon.name}");
-            }
-            else
-            {
-                ItemBase beforeWeapon = _testSY.currentWeapon;
-
-                _testSY.currentWeapon = slot.item;
-                currentEquipImage.sprite = _testSY.currentWeapon.image;
-                slot.RemoveItem();
-                
                 slot.AddItem(beforeWeapon);
-                
-                Debug.Log($"현재 장착한 장비 아이템: {_testSY.currentWeapon.name}");
             }
         }
+        
     }
     
 

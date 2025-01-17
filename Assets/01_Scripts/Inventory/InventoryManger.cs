@@ -11,10 +11,13 @@ public class InventoryManger : SingletonManager<InventoryManger>
     public List<InventorySlot> slots;
 
     public ItemBase basicWeapon; //캐릭터 생성시 인벤토리에 추가될 양손검 아이템
-    
+    public ItemBase basicEquipWeapon; //캐릭터 생성시 장착 중일 한손검 + 방패 아이템
     protected override void Awake()
     {
         base.Awake();
+        AddItemToInventory(basicWeapon);
+        
+        //AddItemToInventory();
     }
 
     private void Update()
@@ -22,11 +25,16 @@ public class InventoryManger : SingletonManager<InventoryManger>
 
     }
 
+    public void SetBasicItem(ItemBase item, ItemBase setItem)
+    {
+        AddItemToInventory(item);
+        
+    }
+
     //테스트용 드롭 구현
     public ItemBase RandomDropItems()
     {
         int random = Random.Range(0, allItems.Count);
-        // Random.
         return allItems[random];
     }
 
