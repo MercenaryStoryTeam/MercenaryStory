@@ -77,12 +77,6 @@ public class InventoryPanel : MonoBehaviour
             float gold = FirebaseManager.Instance.CurrentUserData.user_Gold;
             currentGoldText.text = "보유 골드: " + gold.ToString();
         
-            // currentGoldText.text = "보유 골드: " + _testsy.myGold.ToString();
-        }
-
-        else
-        {
-            return;
         }
     }
 

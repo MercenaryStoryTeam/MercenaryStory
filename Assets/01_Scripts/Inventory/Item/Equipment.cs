@@ -82,8 +82,6 @@ public class Equipment : MonoBehaviourPunCallbacks
             SetPanelSwordCharacter(item);
             Debug.Log("SetPanelSwordCharacter() 완료");
             
-            item.isEquipped = true;
-
             if (item.equipPrefab.Count > 1)
             {
                 SetShieldClass(item);
@@ -105,7 +103,6 @@ public class Equipment : MonoBehaviourPunCallbacks
                 Transform rightHand = child.FindDeepChild("Sword");
 
                 GameObject panelSword = Instantiate(item.equipPrefab[0], rightHand);
-                // panelSword.layer = LayerMask.NameToLayer("Object");
             }
         }
     }
@@ -121,7 +118,6 @@ public class Equipment : MonoBehaviourPunCallbacks
                     Transform leftHand = child.FindDeepChild("Shield");
                     
                     GameObject panelShield = Instantiate(item.equipPrefab[1], leftHand);
-                    // panelShield.layer = LayerMask.NameToLayer("Object");
 
                 }
             }

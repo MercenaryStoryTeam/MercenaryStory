@@ -57,6 +57,9 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 			usersRef = DB.GetReference($"users/{result.User.UserId}");
 			UserData userData = new UserData(result.User.UserId, email, user_Name);
+				userData.user_Inventory.Add(InventoryManger.Instance.SetBasicItem(InventoryManger.Instance.basicWeapon, 
+				InventoryManger.Instance.basicEquipWeapon));
+			
 			string userDataJson = JsonConvert.SerializeObject(userData);
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
