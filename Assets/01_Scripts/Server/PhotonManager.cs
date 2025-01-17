@@ -44,7 +44,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 	{
 		if (PhotonNetwork.CurrentRoom.Name == "1" || PhotonNetwork.CurrentRoom.Name == "2")
 		{
-			ServerManager.LoadScene("TownSceneTestSY");
+			ServerManager.LoadScene("LJW_TownScene");
 		}
 	}
 
