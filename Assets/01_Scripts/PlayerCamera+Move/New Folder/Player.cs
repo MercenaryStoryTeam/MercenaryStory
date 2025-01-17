@@ -3,37 +3,76 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    // FirebaseManager에서 현재 체력 값을 가져옴
+    [Header("플레이어 현재 체력")]//
+    public float currentHp;
+
+    [Header("플레이어 최대 체력")]
+    public float maxHp;
+
+    [Header("골드")]//
+    public int gold = 0;
+
+    [Header("경험치")]//
+    public int exp = 0;
+
+    [Header("이동 속도")]
+    public float moveSpeed = 5f;
+
+    [Header("플레이어 흡혈 비율")]
+    public float suckBlood = 3f;
+
     [Header("플레이어 사망시 전환할 씬 이름")]
     public string nextSceneName;
 
     [Header("씬 로드 지연시간")]
     public int loadSceneDelay = 1;
 
+    // 이동 속도 슬로우 비율 할당
+    [HideInInspector]
+    public float originalMoveSpeed;
+
+    private void Awake()
+    {
+        // 싱글톤 제거 후 데이터 지속성을 위해 Player 오브젝트를 유지
+        DontDestroyOnLoad(gameObject);
+
+        // 원래 이동 속도 저장
+        originalMoveSpeed = moveSpeed;
+    }
+
+    private void Start()
+    {
+        maxHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+       currentHp = maxHp;
+    }
+
     // 흡혈 처리
+    // Weapon 스크립트에서 SuckBlood 메서드 호출
     public void SuckBlood()
     {
-        if (PlayerData.Instance.currentHp >= PlayerData.Instance.maxHp) return;
+        if (currentHp >= maxHp) return;
 
-        float suckBloodPercentage = PlayerData.Instance.suckBlood / 100f;
-        float healAmount = PlayerData.Instance.maxHp * suckBloodPercentage;
+        float suckBloodPercentage = suckBlood / 100f;
+        float healAmount = maxHp * suckBloodPercentage;
 
-        PlayerData.Instance.currentHp += healAmount;
-        PlayerData.Instance.currentHp = Mathf.Clamp(PlayerData.Instance.currentHp, 0, PlayerData.Instance.maxHp);
+        currentHp += healAmount;
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
-        Debug.Log($"흡혈 회복량: {healAmount}/현재 체력: {PlayerData.Instance.currentHp}/{PlayerData.Instance.maxHp}");
+        Debug.Log($"흡혈 회복량: {healAmount}/현재 체력: {currentHp}/{maxHp}");
     }
 
     // 데미지 처리
     public void TakeDamage(float damage)
     {
-        if (PlayerData.Instance.currentHp <= 0) return;
+        if (currentHp <= 0) return;
 
-        PlayerData.Instance.currentHp -= damage;
-        PlayerData.Instance.currentHp = Mathf.Clamp(PlayerData.Instance.currentHp, 0, PlayerData.Instance.maxHp);
+        currentHp -= damage;
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
-        Debug.Log($"플레이어 체력: {PlayerData.Instance.currentHp}/{PlayerData.Instance.maxHp} (받은 데미지: {damage})");
+        Debug.Log($"플레이어 체력: {currentHp}/{maxHp} (받은 데미지: {damage})");
 
-        if (PlayerData.Instance.currentHp <= 0)
+        if (currentHp <= 0)
         {
             Die();
         }
@@ -41,13 +80,12 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        // 사운드 재생
+        // 사운드 재생 
         SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
 
-        // 디버그 메시지 출력
         Debug.Log("Player Die");
 
-        // PlayerMove 스크립트 참조
+        // PlayerFsm 스크립트 참조
         PlayerFsm playerMove = GetComponent<PlayerFsm>();
         if (playerMove != null)
         {
@@ -60,15 +98,11 @@ public class Player : MonoBehaviour
         }
 
         // 체력을 최대값으로 복원
-        PlayerData.Instance.currentHp = PlayerData.Instance.maxHp;
+        currentHp = maxHp;
 
-        // 플레이어의 위치 값을 여기다가 넣으면 될 듯
-        // 없으면 초기씬 초기값으로 다음씬에서 스폰
-
-        // 지정된 딜레이 후 다음 씬으로 로드
+        // 일정 시간 이후 다음씬 로드
         Invoke("LoadNextScene", loadSceneDelay);
     }
-
 
     // 다음 씬으로 전환
     private void LoadNextScene()
