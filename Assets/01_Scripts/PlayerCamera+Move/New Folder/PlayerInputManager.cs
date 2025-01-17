@@ -51,5 +51,15 @@ public class PlayerInputManager : MonoBehaviour
         {
             OnBInput?.Invoke();
         }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            UIManager.Instance.inventory.TryOpenInventory();
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            UIManager.Instance.shop.TryOpenShop();
+        }
     }
 }
