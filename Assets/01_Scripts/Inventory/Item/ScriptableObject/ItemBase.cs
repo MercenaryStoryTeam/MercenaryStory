@@ -17,9 +17,6 @@ public class ItemBase : ScriptableObject
     public float price; //아이템 가격 / 퀘스트 아이템 = -1
     public int dropPercent; //아이템 드랍률
     
-    [Header("bool")]
-    public bool isEquipped; //장비 아이템 장착 여부
-    
     [Header("Icon&Prefab")]
     public Sprite image; //아이템 아이콘
     public List<GameObject> equipPrefab; //아이템 프리팹

@@ -82,8 +82,6 @@ public class Equipment : MonoBehaviourPunCallbacks
             SetPanelSwordCharacter(item);
             Debug.Log("SetPanelSwordCharacter() 완료");
             
-            item.isEquipped = true;
-
             if (item.equipPrefab.Count > 1)
             {
                 SetShieldClass(item);
