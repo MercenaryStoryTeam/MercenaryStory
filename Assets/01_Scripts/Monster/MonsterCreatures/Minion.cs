@@ -31,7 +31,7 @@ public class Minion : MonoBehaviour
         agent.speed = moveSpeed;
         playerLayer = LayerMask.GetMask("Player");
         stateMachine = new MinionStateMachine(this);
-        stateMachine.ChangeState(MinionStateType.Chase);
+        ChangeState(MinionStateType.Chase);
     }
     protected virtual void Update()
     {
@@ -75,6 +75,5 @@ public class Minion : MonoBehaviour
         // 공격 범위
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, attackRange);
-    
     }
 }
