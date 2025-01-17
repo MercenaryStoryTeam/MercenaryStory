@@ -48,14 +48,14 @@ Material:
     - _CausticsPower: 1
     - _CausticsScale: 12
     - _CausticsSpeed: 0.1
-    - _DistanceCutoff: 0.113
+    - _DistanceCutoff: 0.081
     - _EdgeFoamSize: 0.1
     - _GlintPower: 50
     - _GlintScale: 20
     - _GlintSpeed: 0.01
-    - _ReflectionPower: 0.589
+    - _ReflectionPower: 0.146
     - _SunSpecularPower: 30
-    - _WaterDepth: 0.033
+    - _WaterDepth: 0.017
     - _Wave1Amps: 0.1
     - _Wave1Dir: 0
     - _Wave1Length: 1.5
