@@ -33,6 +33,9 @@ public class BossMonster : MonoBehaviour
     private BossStateMachine stateMachine;
     private LayerMask playerLayer;
     
+    [Header("드랍 아이템")]
+    public List<ItemBase> dropItems;
+    
     [HideInInspector] public Transform TargetTransform;
     [HideInInspector] public Vector3 CenterPoint;
     [HideInInspector] public Animator Animator;
