@@ -22,6 +22,7 @@ public class UIManager : SingletonManager<UIManager>
 	// Party
 	public PartyPanel partyPanel;
 	public PartyCreatePanel partyCreatePanel;
+	public PartyMemberPanel partyMemberPanel;
 	public Button partyButton;
 
 	protected override void Awake()
@@ -140,7 +141,18 @@ public class UIManager : SingletonManager<UIManager>
 
 	public void OpenPartyPanel()
 	{
-		partyPanel.gameObject.SetActive(true);
+		// party member 확인 후 파티에 가입되어 있는 지 확인 후 맞는 패널을 열어야 함.
+		if (!ServerManager.GetIsParty())
+		{
+			partyPanel.gameObject.SetActive(true);
+			partyMemberPanel.gameObject.SetActive(false);
+		}
+		else
+		{
+			partyPanel.gameObject.SetActive(false);
+			partyMemberPanel.gameObject.SetActive(true);
+		}
+
 		// party create panel은 비활성화 해야함
 		partyCreatePanel.gameObject.SetActive(false);
 	}
