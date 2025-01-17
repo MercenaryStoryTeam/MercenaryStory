@@ -3,18 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    // FirebaseManager에서 현재 체력 값을 가져옴
     [Header("플레이어 현재 체력")]//
-    public float currentHp;
+    public float currentHp = 0f;
 
     [Header("플레이어 최대 체력")]
-    public float maxHp;
+    public float maxHp = 0f;
 
     [Header("골드")]//
-    public int gold = 0;
+    public float gold = 0f;
 
     [Header("경험치")]//
-    public int exp = 0;
+    public float exp = 0f;
 
     [Header("이동 속도")]
     public float moveSpeed = 5f;
@@ -32,19 +31,13 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public float originalMoveSpeed;
 
-    private void Awake()
-    {
-        // 싱글톤 제거 후 데이터 지속성을 위해 Player 오브젝트를 유지
-        DontDestroyOnLoad(gameObject);
-
-        // 원래 이동 속도 저장
-        originalMoveSpeed = moveSpeed;
-    }
-
     private void Start()
     {
-        maxHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+       maxHp = FirebaseManager.Instance.CurrentUserData.user_HP;
        currentHp = maxHp;
+      
+       // 원래 이동 속도 저장
+       originalMoveSpeed = moveSpeed;
     }
 
     // 흡혈 처리
