@@ -16,11 +16,11 @@ MonoBehaviour:
   name: "\uCD08\uBCF4\uC790\uC758 \uD55C\uC190\uAC80"
   description: "\uBAA8\uD5D8 \uC785\uBB38\uC790\uB97C \uC704\uD55C\n\uAC80\uACFC
     \uBC29\uD328 \uD55C \uBC8C."
-  currentItemCount: 2
+  currentItemCount: 0
   itemClass: 1
   price: 0
   dropPercent: 0
-  isEquipped: 0
+  isEquipped: 1
   image: {fileID: 21300000, guid: 30664f7519bdb7a458f770f043c58281, type: 3}
   equipPrefab:
   - {fileID: 5011439781131301672, guid: 2b907b50578398c4c99c4755286a2b6c, type: 3}

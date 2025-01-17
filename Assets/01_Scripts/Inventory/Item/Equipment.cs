@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
 
-public class Equipment : MonoBehaviour
+public class Equipment : MonoBehaviourPunCallbacks
 {
     public GameObject panelCharacter; // UI용 캐릭터 이미지를 가지고 있는 부모 오브젝트
     
@@ -31,36 +32,69 @@ public class Equipment : MonoBehaviour
     {
     }
 
+    [PunRPC]
     public void SetCurrentEquip(InventorySlot slot)
     {
-            if (slot.item == null)
-            {
-                Debug.Log("아이템이 없음");
-                return;
-            }
-
-            if (slot.item.equipPrefab == null || slot.item.equipPrefab.Count == 0)
-            {
-                Debug.Log("프리팹 리스트가 비어있거나 아이템이 할당되지 않음");
-                return;
-            }
+        if (!photonView.IsMine) return;
         
-            if (slot.item.equipPrefab.Count > 0) 
-            {
-                SetSwordClass(slot.item);
-                SetPanelSwordCharacter(slot.item);
-                slot.item.isEquipped = true;
+        if (slot.item == null)
+        {
+            Debug.Log("아이템이 없음");
+            return;
+        }
 
-                if (slot.item.equipPrefab.Count > 1)
-                {
-                    SetShieldClass(slot.item);
-                    SetPanelShieldCharacter(slot.item);
-                }
-            
-                Debug.Log($"{slot.item.name} 장착 완료");
-            }
+        if (slot.item.equipPrefab == null || slot.item.equipPrefab.Count == 0)
+        {
+            Debug.Log("프리팹 리스트가 비어있거나 아이템이 할당되지 않음");
+            return;
+        }
         
+        if (slot.item.equipPrefab.Count > 0) 
+        {
+            photonView.RPC("NetworkSetEquipment", RpcTarget.All, slot.item.id);
+        }
     }
+
+    [PunRPC]
+    private void NetworkSetEquipment(int itemId)
+    {
+        Debug.Log($"전달받은 아아템 아이디: {itemId}");
+        Debug.Log($"allItems 개수: {InventoryManger.Instance.allItems.Count}");
+
+        foreach (var testitem in InventoryManger.Instance.allItems)
+        {
+            Debug.Log($"등록된 아이템 Id: {testitem.id}, Name: {testitem.name}");
+        }
+        
+        ItemBase item = InventoryManger.Instance.allItems.Find(x => x.id == itemId);
+        if (item == null)
+        {
+            Debug.LogError($"ID가 {itemId}인 아이템을 찾을 수 없음");
+            return;
+        }
+
+        Debug.Log($"아이템을 찾음 {item.name}");
+        
+        if (item != null)
+        {
+            SetSwordClass(item);
+            Debug.Log("SetSwordClass() 완료");
+            SetPanelSwordCharacter(item);
+            Debug.Log("SetPanelSwordCharacter() 완료");
+            
+            item.isEquipped = true;
+
+            if (item.equipPrefab.Count > 1)
+            {
+                SetShieldClass(item);
+                Debug.Log("SetShieldClass() 완료");
+                SetPanelShieldCharacter(item);
+                Debug.Log("SetPanelShieldCharacter() 완료");
+            }
+        }
+    }
+
+
 
     private void SetPanelSwordCharacter(ItemBase item)
     {
@@ -71,7 +105,7 @@ public class Equipment : MonoBehaviour
                 Transform rightHand = child.FindDeepChild("Sword");
 
                 GameObject panelSword = Instantiate(item.equipPrefab[0], rightHand);
-                panelSword.layer = LayerMask.NameToLayer("Object");
+                // panelSword.layer = LayerMask.NameToLayer("Object");
             }
         }
     }
@@ -87,7 +121,8 @@ public class Equipment : MonoBehaviour
                     Transform leftHand = child.FindDeepChild("Shield");
                     
                     GameObject panelShield = Instantiate(item.equipPrefab[1], leftHand);
-                    panelShield.layer = LayerMask.NameToLayer("Object");
+                    // panelShield.layer = LayerMask.NameToLayer("Object");
+
                 }
             }
         }
@@ -242,47 +277,31 @@ public class Equipment : MonoBehaviour
         
         for (int i = 0; i < findShield.transform.childCount; i++)
         {
-            DestroyImmediate(findShield.transform.GetChild(i).gameObject);
+            Destroy(findShield.transform.GetChild(i).gameObject);
         }
         
         for (int i = 0; i < findSword.transform.childCount; i++)
         { 
-            DestroyImmediate(findSword.transform.GetChild(i).gameObject);
+            Destroy(findSword.transform.GetChild(i).gameObject);
         }
         
         foreach (Transform child in panelCharacter.transform)
         {
             if (child.gameObject.activeSelf)
             {
-                if (child.gameObject.activeSelf)
-                {
-                    Transform leftHand = child.FindDeepChild("Shield");
-                    for (int i = 0; i < leftHand.childCount; i++)
-                    {
-                        Destroy(leftHand.transform.GetChild(i).gameObject);
-                    }
-                }
-            }
-        }
-        
-        foreach (Transform child in panelCharacter.transform)
-        {
-            if (child.gameObject.activeSelf)
-            {
-                if (child.gameObject.activeSelf)
-                {
-                    Transform rightHand = child.FindDeepChild("Sword");
-                    for (int i = 0; i < rightHand.childCount; i++)
-                    {
-                        Destroy(rightHand.transform.GetChild(i).gameObject);
+                Transform leftHand = child.FindDeepChild("Shield");
+                Transform rightHand = child.FindDeepChild("Sword");
 
-                    }
+                for (int i = 0; i < leftHand.childCount; i++) 
+                { 
+                    Destroy(leftHand.transform.GetChild(i).gameObject);
                 }
-            }
-
-            else
-            {
-                return;
+                
+                for (int i = 0; i < rightHand.childCount; i++)
+                {
+                    Destroy(rightHand.transform.GetChild(i).gameObject);
+                }
+                
             }
         }
     }

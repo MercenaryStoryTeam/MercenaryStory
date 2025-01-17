@@ -51,16 +51,28 @@ public class ServerManager
 				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
 				spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
 
-		InventoryManger.Instance.AddItemToInventory(InventoryManger.Instance.basicWeapon);
+		InventoryManger.Instance.SetBasicItem(InventoryManger.Instance.basicWeapon,
+			InventoryManger.Instance.basicEquipWeapon);
 	}
 
 	public static GameObject PlayerEquip(int rarity, string equipmentName, Transform parent)
-	{
-		GameObject equipmentPrefab = PhotonNetwork.Instantiate(
-			$"Equipment/{rarity}/{equipmentName}", parent.position, Quaternion.identity);
+	{		
+		string prefabPath = $"Equipment/{rarity}/{equipmentName}";
+		
+		GameObject equipmentPrefab = 
+			PhotonNetwork.Instantiate(prefabPath,parent.position, Quaternion.identity);
+		
+		if (equipmentPrefab == null)
+		{
+			Debug.LogError($"장비 프리팹 생성 실패: {prefabPath}");
+			return null;
+		}
+		
+		equipmentPrefab.transform.SetParent(parent, true);
+		
 		return equipmentPrefab;
 	}
-
+	
 	public static string GetServerName()
 	{
 		return PhotonNetwork.CurrentRoom.Name;

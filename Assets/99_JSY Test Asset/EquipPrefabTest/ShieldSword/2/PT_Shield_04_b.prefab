@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3945849132837434247}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: PT_Shield_04_b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 5127053128362865167}
   - component: {fileID: 3106792948887351686}
   - component: {fileID: 960707394869647910}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: PT_Shield_04_b_body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 8093805663308384152}
   - component: {fileID: 1092665994741772714}
   - component: {fileID: 4450959040839945677}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: PT_Shield_04_b_handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
