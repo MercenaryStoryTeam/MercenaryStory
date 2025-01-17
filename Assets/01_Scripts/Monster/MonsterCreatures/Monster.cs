@@ -1,8 +1,9 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class Monster : MonoBehaviour
+public abstract class Monster : MonoBehaviourPun
 {
     #region 변수
     private int hp;
