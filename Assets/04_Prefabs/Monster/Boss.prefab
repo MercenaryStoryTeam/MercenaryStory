@@ -1222,7 +1222,7 @@ GameObject:
   - component: {fileID: 15105945353806592}
   - component: {fileID: 4245762024720595860}
   m_Layer: 0
-  m_Name: LizardWarriorPADefault
+  m_Name: Boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
