@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    [Header("전환할 씬 이름")]
+    [Header("플레이어 사망시 전환할 씬 이름")]
     public string nextSceneName;
 
     [Header("씬 로드 지연시간")]

@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using Photon.Pun;
+using Cinemachine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
-public class PlayerFsm : MonoBehaviour
+public class PlayerFsm : MonoBehaviourPun
 {
-    [Header("Virtual Camera 할당")]
+    [Header("Virtual Camera 할당 (자동으로 할당됩니다)")]
     public Transform cameraTransform;
 
     [Header("Die 애니메이션 재생 시간")]
@@ -30,7 +32,7 @@ public class PlayerFsm : MonoBehaviour
         Attack1,
         Attack2,
         Attack3,
-        Skill, // 스킬 상태 추가
+        Skill,
         Die
     }
 
@@ -57,18 +59,30 @@ public class PlayerFsm : MonoBehaviour
             Debug.LogWarning("Rigidbody useGravity is disabled.");
         }
 
+        // Virtual Camera를 자동으로 찾아 할당
         if (!cameraTransform)
         {
-            Camera mainCamera = Camera.main;
-            if (mainCamera)
+            var vCam = FindObjectOfType<CinemachineVirtualCamera>();
+            if (vCam)
             {
-                cameraTransform = mainCamera.transform;
+                cameraTransform = vCam.transform;
+                Debug.Log("Cinemachine Virtual Camera가 자동 할당되었습니다.");
             }
             else
             {
-                Debug.LogError("No Main Camera found.");
-                enabled = false;
-                return;
+                Debug.LogWarning("Cinemachine Virtual Camera가 발견되지 않아 Main Camera로 할당을 시도합니다.");
+                Camera mainCamera = Camera.main;
+                if (mainCamera)
+                {
+                    cameraTransform = mainCamera.transform;
+                    Debug.Log("Main Camera가 자동 할당되었습니다.");
+                }
+                else
+                {
+                    Debug.LogError("씬에 Camera가 없습니다. 카메라를 수동으로 할당하세요.");
+                    enabled = false;
+                    return;
+                }
             }
         }
 
