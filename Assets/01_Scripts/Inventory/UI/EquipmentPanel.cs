@@ -39,7 +39,7 @@ public class EquipmentPanel : MonoBehaviour
                 thirdCharacter.SetActive(true);
                 break;
         }
-
+        
         currentEquipImage.sprite = currentItem.image;
     }
 

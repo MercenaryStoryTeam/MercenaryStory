@@ -15,9 +15,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
     protected override void Awake()
     {
         base.Awake();
-        AddItemToInventory(basicWeapon);
         
-        //AddItemToInventory();
     }
 
     private void Update()
@@ -27,8 +25,9 @@ public class InventoryManger : SingletonManager<InventoryManger>
 
     public void SetBasicItem(ItemBase item, ItemBase setItem)
     {
+        myItems.Add(setItem);
+        setItem.currentItemCount++;
         AddItemToInventory(item);
-        
     }
 
     //테스트용 드롭 구현
@@ -49,7 +48,8 @@ public class InventoryManger : SingletonManager<InventoryManger>
                     slot.AddItem(newItem);
                     myItems.Add(newItem);
                     newItem.currentItemCount++;
-                    Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
+                    Debug.Log($"추가한 {newItem.name}의 개수: {newItem.currentItemCount}");
+                    Debug.Log($"현재 가지고 있는 아이템 개수: {myItems.Count}");
 
                     break;
                 }
