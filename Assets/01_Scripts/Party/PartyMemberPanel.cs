@@ -32,5 +32,6 @@ public class PartyMemberPanel : MonoBehaviour
 
 	private void ExitButtonClick()
 	{
+		FirebaseManager.Instance.ExitParty();
 	}
 }
