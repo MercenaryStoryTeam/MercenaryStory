@@ -10,23 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23bef77b82bc2db42982d329f7ec5352, type: 3}
-  m_Name: New Weapon Item 3
+  m_Name: Milestone
   m_EditorClassIdentifier: 
-  id: 31003
-  name: "\uC131\uC804\uC0AC"
-  description: "\uC131\uC2A4\uB7EC\uC6B4 \uD45C\uC2DD\uC744 \uC0C8\uAE34\n\uBC29\uD328\uC640
-    \uAC80 \uD55C \uBC8C.\n\uC7A5\uCC29\uD558\uBA74 \uC660\uC9C0 \uBAA8\uB97C \uACE0\uC591\uAC10\uC774
-    \uC0DD\uACA8\uB09C\uB2E4."
+  id: 32004
+  name: "\uC774\uC815\uD45C"
+  description: "\uADE0\uD615 \uC7A1\uD78C \uBAA8\uC591\uC0C8\uB97C \uAC00\uC9C4 \uC591\uC190\uAC80.\n\uC0AC\uC6A9\uC790\uAC00
+    \uD754\uB4E4\uB9AC\uC9C0 \uC54A\uAC8C\n\uBBFF\uC74C\uACFC \uC548\uC815\uAC10\uC744
+    \uC81C\uACF5\uD55C\uB2E4."
   currentItemCount: 0
   itemClass: 1
   price: 0
   dropPercent: 0
   isEquipped: 0
-  image: {fileID: 21300000, guid: 8a1efc99930969742b01bc49c4399853, type: 3}
+  image: {fileID: 21300000, guid: 29bde09c3c3db2040bf9af9bd30bd898, type: 3}
   equipPrefab:
-  - {fileID: 8498972350396365555, guid: 0214759f5bd797649a1e4096eeba3185, type: 3}
-  - {fileID: 43365941715927356, guid: 4913bd3043b708449a3dded6f20d0386, type: 3}
+  - {fileID: 8121962011013668580, guid: b7564ad1efbf58d4985505c89f5c43ee, type: 3}
   dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
-  rank: 4
-  Damage: 7
+  rank: 5
+  Damage: 10
   isEquiped: 0

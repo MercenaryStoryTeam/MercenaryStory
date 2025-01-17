@@ -10,18 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e804f3bed573f6d4ab65407c0f951f71, type: 3}
-  m_Name: 3st Other
+  m_Name: Spider Thread
   m_EditorClassIdentifier: 
-  id: 33120
-  name: "\uC0DD\uC120 \uBF08\uB2E4\uADC0"
-  description: "\uBA40\uB85D\uB4E4\uC774 \uC544\uC26C\uC6B4\uB4EF \uB4E4\uACE0 \uC788\uB358\n\uB2E4
-    \uBA39\uACE0 \uB0A8\uC740 \uC0DD\uC120 \uBF08\uB2E4\uADC0\uC774\uB2E4."
-  currentItemCount: 0
+  id: 33141
+  name: "\uAC70\uBBF8\uC904 \uC2E4\uD0C0\uB798"
+  description: "\uB3C5\uAC70\uBBF8\uAC00 \uB0B4\uBFDC\uB294 \uAC70\uBBF8\uC904 \uBB49\uCE58\uB2E4."
+  currentItemCount: 4
   itemClass: 2
   price: 0
   dropPercent: 0
   isHave: 1
-  image: {fileID: 21300000, guid: 9dd37670ec907c742a4ae63b2f430827, type: 3}
+  image: {fileID: 21300000, guid: f66b62e1e837ac34b9336ca36b82598d, type: 3}
   equipPrefab: []
   dropLightLine: {fileID: 6349039886756410821, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
   stackAmount: 10

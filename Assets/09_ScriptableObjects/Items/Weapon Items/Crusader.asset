@@ -10,21 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23bef77b82bc2db42982d329f7ec5352, type: 3}
-  m_Name: New Weapon Item 5
+  m_Name: Crusader
   m_EditorClassIdentifier: 
-  id: 32000
-  name: "\uCD08\uBCF4\uC790\uC758 \uC591\uC190\uAC80"
-  description: "\uBAA8\uD5D8 \uC785\uBB38\uB2E4\uB97C \uC704\uD55C\n\uCEE4\uB2E4\uB780
-    \uAC80 \uD55C \uC790\uB8E8."
+  id: 31003
+  name: "\uC131\uC804\uC0AC"
+  description: "\uC131\uC2A4\uB7EC\uC6B4 \uD45C\uC2DD\uC744 \uC0C8\uAE34\n\uBC29\uD328\uC640
+    \uAC80 \uD55C \uBC8C.\n\uC7A5\uCC29\uD558\uBA74 \uC660\uC9C0 \uBAA8\uB97C \uACE0\uC591\uAC10\uC774
+    \uC0DD\uACA8\uB09C\uB2E4."
   currentItemCount: 0
   itemClass: 1
   price: 0
   dropPercent: 0
-  isEquipped: 1
-  image: {fileID: 21300000, guid: 17cb7023b96379b45aae42d2d52c7086, type: 3}
+  isEquipped: 0
+  image: {fileID: 21300000, guid: 8a1efc99930969742b01bc49c4399853, type: 3}
   equipPrefab:
-  - {fileID: 6979130633480749635, guid: 8ce0a7b621729504c86c102d0dab83b4, type: 3}
+  - {fileID: 8498972350396365555, guid: 0214759f5bd797649a1e4096eeba3185, type: 3}
+  - {fileID: 43365941715927356, guid: 4913bd3043b708449a3dded6f20d0386, type: 3}
   dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
-  rank: 1
-  Damage: 2
+  rank: 4
+  Damage: 7
   isEquiped: 0
