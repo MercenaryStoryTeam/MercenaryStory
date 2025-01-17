@@ -9,12 +9,18 @@ public class SkillFsm : MonoBehaviour
     [System.Serializable]
     public class Skill
     {
-        public string name;           // 스킬 이름
-        public string triggerName;    // Animator 트리거 이름
-        public float cooldown;        // 쿨다운 시간
-        public float speedBoost = 1f; // 이동 속도 증가 배율
-        public float duration = 0f;   // 이동 속도 증가 지속 시간
-        public GameObject particleEffect; // 비활성화된 파티클 오브젝트 (프리팹 대신)
+        // 스킬 이름
+        public string name;
+        // Animator 트리거 이름
+        public string triggerName;
+        // 쿨다운 시간
+        public float cooldown;
+        // 이동 속도 증가 배율
+        public float speedBoost = 1f;
+        // 이동 속도 증가 지속 시간
+        public float duration = 0f;
+        // 비활성화된 파티클 오브젝트
+        public GameObject particleEffect;     
 
         [HideInInspector] public bool isOnCooldown = false; // 쿨다운 상태
     }
@@ -24,6 +30,9 @@ public class SkillFsm : MonoBehaviour
 
     private bool isSpeedBoostActive = false;
 
+    [Header("참조 설정")]
+    [SerializeField] private Player player; 
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -32,6 +41,16 @@ public class SkillFsm : MonoBehaviour
         {
             Debug.LogError("Animator 컴포넌트가 없습니다.");
             enabled = false;
+        }
+
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+            if (player == null)
+            {
+                Debug.LogError("Player 오브젝트를 찾을 수 없습니다.");
+                enabled = false;
+            }
         }
     }
 
@@ -57,7 +76,7 @@ public class SkillFsm : MonoBehaviour
 
         if (skill == null)
         {
-            Debug.LogWarning($"{skillName} 스킬이 SkillManager에 등록되어 있지 않습니다.");
+            Debug.LogWarning($"{skillName} 스킬이 SkillFsm에 등록되어 있지 않습니다.");
             return;
         }
 
@@ -116,12 +135,12 @@ public class SkillFsm : MonoBehaviour
     {
         isSpeedBoostActive = true;
 
-        float originalSpeed = PlayerData.Instance.moveSpeed;
-        PlayerData.Instance.moveSpeed *= speedBoost;
+        float originalSpeed = player.moveSpeed;
+        player.moveSpeed *= speedBoost;
 
         yield return new WaitForSeconds(duration);
 
-        PlayerData.Instance.moveSpeed = originalSpeed;
+        player.moveSpeed = originalSpeed;
         isSpeedBoostActive = false;
         Debug.Log("Rush 이동 속도 상승 효과 종료");
     }
@@ -134,5 +153,3 @@ public class SkillFsm : MonoBehaviour
         Debug.Log($"{skill.name} 스킬 쿨다운 종료");
     }
 }
-
-//

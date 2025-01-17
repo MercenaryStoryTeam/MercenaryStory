@@ -20,10 +20,17 @@ public class PlayerFsm : MonoBehaviourPun
     [Header("씬 목록")]
     public List<string> specialScenes = new List<string>();
 
+    // Player에서 이동 속도를 참조하기 때문에 여기서 직접 선언하지 않음
+    // [Header("이동 속도")]
+    // public float moveSpeed = 5f;
+
     private Rigidbody rb;
     private Animator animator;
     private Vector3 movementInput;
     private const float moveThreshold = 0.05f;
+
+    // 현재 이동 속도
+    private float currentSpeed;
 
     public enum State
     {
@@ -37,12 +44,12 @@ public class PlayerFsm : MonoBehaviourPun
     }
 
     private State currentState = State.Idle;
-    private float currentSpeed;
     private bool isDead = false;
     private int attackCombo = 0;
     private float lastAttackTime = 0f;
 
     private SkillFsm skillFsm;
+    private Player player; // Player 스크립트 참조를 위한 변수
 
     private void Awake()
     {
@@ -66,23 +73,11 @@ public class PlayerFsm : MonoBehaviourPun
             if (vCam)
             {
                 cameraTransform = vCam.transform;
-                Debug.Log("Cinemachine Virtual Camera가 자동 할당되었습니다.");
+                Debug.Log("Virtual Camera가 자동 할당되었습니다.");
             }
             else
             {
-                Debug.LogWarning("Cinemachine Virtual Camera가 발견되지 않아 Main Camera로 할당을 시도합니다.");
-                Camera mainCamera = Camera.main;
-                if (mainCamera)
-                {
-                    cameraTransform = mainCamera.transform;
-                    Debug.Log("Main Camera가 자동 할당되었습니다.");
-                }
-                else
-                {
-                    Debug.LogError("씬에 Camera가 없습니다. 카메라를 수동으로 할당하세요.");
-                    enabled = false;
-                    return;
-                }
+                Debug.LogError("씬에 Virtual Camera가 없습니다. 카메라를 수동으로 할당하세요.");
             }
         }
 
@@ -91,13 +86,21 @@ public class PlayerFsm : MonoBehaviourPun
         bool isScene = IsCurrentSceneSpecial();
         animator.SetBool("Scene", isScene);
 
-        // SkillFsm 초기화
+        // SkillFsm 스크립트 참조
         skillFsm = GetComponent<SkillFsm>();
         if (skillFsm == null)
         {
             Debug.LogError("PlayerFsm의 GameObject에 SkillFsm 스크립트가 없습니다.");
             enabled = false;
             return;
+        }
+
+        // Player 스크립트 참조
+        player = GetComponent<Player>();
+        if (player == null)
+        {
+            Debug.LogError("PlayerFsm의 GameObject에 Player 스크립트가 없습니다.");
+            enabled = false;
         }
     }
 
@@ -126,10 +129,15 @@ public class PlayerFsm : MonoBehaviourPun
         bool canProcessMovement = (currentState != State.Die && currentState != State.Skill);
         if (canProcessMovement)
         {
+            // 기본 이동키 입력
             float inputX = Input.GetAxisRaw("Horizontal");
             float inputZ = Input.GetAxisRaw("Vertical");
+
+            // 기본 마우스 클릭 입력
             movementInput = CalculateMovementDirection(inputX, inputZ);
-            currentSpeed = PlayerData.Instance.moveSpeed; // PlayerData는 싱글턴으로 가정
+
+            // Player의 moveSpeed를 참조하여 현재 이동 속도 설정
+            currentSpeed = player != null ? player.moveSpeed : 0f;
 
             if (movementInput.sqrMagnitude > moveThreshold)
             {
@@ -142,7 +150,8 @@ public class PlayerFsm : MonoBehaviourPun
                     TransitionToState(State.Idle);
             }
 
-            float normalizedSpeed = (movementInput.magnitude * currentSpeed) / PlayerData.Instance.moveSpeed;
+            // baseMoveSpeed가 기준이므로, 현재 이동 속도 대비 비율 계산
+            float normalizedSpeed = (movementInput.magnitude * currentSpeed) / (player != null ? player.moveSpeed : 1f);
             animator.SetFloat("Speed", normalizedSpeed);
         }
         else
@@ -190,17 +199,15 @@ public class PlayerFsm : MonoBehaviourPun
     {
         switch (currentState)
         {
+            // 이동/정지 상태
             case State.Idle:
             case State.Moving:
-                // 이동/정지 상태
                 break;
             case State.Attack1:
             case State.Attack2:
             case State.Attack3:
-                // 공격 상태
                 break;
             case State.Skill:
-                // 스킬 상태
                 break;
         }
     }
