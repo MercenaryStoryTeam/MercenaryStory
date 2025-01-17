@@ -12,6 +12,9 @@ public class InventoryManger : SingletonManager<InventoryManger>
 
     public ItemBase basicWeapon; //캐릭터 생성시 인벤토리에 추가될 양손검 아이템
     public ItemBase basicEquipWeapon; //캐릭터 생성시 장착 중일 한손검 + 방패 아이템
+
+    public SlotData currentSlotData;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -23,13 +26,15 @@ public class InventoryManger : SingletonManager<InventoryManger>
 
     }
 
-    public void SetBasicItem(ItemBase item, ItemBase setItem)
+    public SlotData SetBasicItem(ItemBase item, ItemBase setItem)
     {
         myItems.Add(setItem);
         setItem.currentItemCount++;
         AddItemToInventory(item);
+        currentSlotData = new SlotData(item.id, 1);
+        return currentSlotData;
     }
-
+    
     //테스트용 드롭 구현
     public ItemBase RandomDropItems()
     {
@@ -142,12 +147,12 @@ public class InventoryManger : SingletonManager<InventoryManger>
         // 제대로 될 지 모르겠다. 디버그 필수!!!!
         UserData currentUserData = FirebaseManager.Instance.CurrentUserData;
         currentUserData.user_Inventory.Clear();
-        // SlotData slotData = new SlotData();
-        // foreach (var slot in slots)
-        // {
-        //     slotData.item_Id = slot.item.id;
-        //     slotData.item_Stack = slot.slotCount;
-        //     currentUserData.user_Inventory.Add(slotData);
-        // }
+        SlotData slotData = new SlotData();
+        foreach (var slot in slots)
+        {
+            slotData.item_Id = slot.item.id;
+            slotData.item_Stack = slot.slotCount;
+            currentUserData.user_Inventory.Add(slotData);
+        }
     }
 }
