@@ -3,18 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    // FirebaseManager에서 현재 체력 값을 가져옴
-    [Header("플레이어 현재 체력")]//
-    public float currentHp;
+    [Header("플레이어 현재 체력")] //
+    public float currentHp = 0f;
 
     [Header("플레이어 최대 체력")]
-    public float maxHp;
+    public float maxHp = 100f;
 
-    [Header("골드")]//
-    public int gold = 0;
+    [Header("골드")] //
+    public float gold = 0f;
 
-    [Header("경험치")]//
-    public int exp = 0;
+    [Header("경험치")] //
+    public float exp = 0f;
 
     [Header("이동 속도")]
     public float moveSpeed = 5f;
@@ -32,19 +31,15 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public float originalMoveSpeed;
 
-    private void Awake()
+    private void Start()
     {
-        // 싱글톤 제거 후 데이터 지속성을 위해 Player 오브젝트를 유지
-        DontDestroyOnLoad(gameObject);
+        maxHp = FirebaseManager.Instance.CurrentUserData.user_HP; 
+        currentHp = maxHp;
+
+        // maxHp = currentHp;
 
         // 원래 이동 속도 저장
         originalMoveSpeed = moveSpeed;
-    }
-
-    private void Start()
-    {
-        maxHp = FirebaseManager.Instance.CurrentUserData.user_HP;
-       currentHp = maxHp;
     }
 
     // 흡혈 처리
@@ -65,16 +60,27 @@ public class Player : MonoBehaviour
     // 데미지 처리
     public void TakeDamage(float damage)
     {
-        if (currentHp <= 0) return;
+        if (currentHp <= 0) return; // 이미 0 이하라면 사망 처리된 상태이므로 무시
 
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
         Debug.Log($"플레이어 체력: {currentHp}/{maxHp} (받은 데미지: {damage})");
 
+        // 체력이 0 이하라면 사망 처리
         if (currentHp <= 0)
         {
             Die();
+        }
+        else
+        {
+            // 체력이 남아 있다면 피격 애니메이션 FSM 실행
+            PlayerFsm playerFsm = GetComponent<PlayerFsm>();
+            if (playerFsm != null)
+            {
+                // PlayerFsm의 TakeDamage() -> Hit 상태 전환
+                playerFsm.TakeDamage();
+            }
         }
     }
 
@@ -94,10 +100,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("PlayerMove 스크립트를 찾을 수 없습니다.");
+            Debug.LogWarning("PlayerFsm 스크립트를 찾을 수 없습니다.");
         }
 
-        // 체력을 최대값으로 복원
+        // 체력을 최대값으로 복원 (죽은 뒤 부활 시나리오?)
         currentHp = maxHp;
 
         // 일정 시간 이후 다음씬 로드
