@@ -6,17 +6,22 @@ public class MinionIdleState : MinionState
 {
     public override void EnterState(Minion minion)
     {
+        minion.agent.isStopped = true;
         minion.agent.ResetPath();
-        minion.animator.SetTrigger("Idle");
+        minion.animator.SetBool("Idle", true);
     }
 
     public override void ExecuteState(Minion minion)
     {
-        
+        if (minion.playerList.Count > 0)
+        {
+            minion.ChangeState(MinionStateType.Chase);
+        }
     }
 
     public override void ExitState(Minion minion)
     {
-        throw new System.NotImplementedException();
+        minion.animator.SetBool("Idle", false);
+        minion.agent.isStopped = false;
     }
 }

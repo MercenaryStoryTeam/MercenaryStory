@@ -36,6 +36,10 @@ public class Minion : MonoBehaviour
     protected virtual void Update()
     {
         currentState = stateMachine.currentStateType;
+        if (playerList.Count == 0)
+        {
+            ChangeState(MinionStateType.Idle);
+        }
         stateMachine.CurrentState?.ExecuteState(this);
     }
 
@@ -49,7 +53,7 @@ public class Minion : MonoBehaviour
     {
         if (currentState == MinionStateType.Attack)
         {
-            ChangeState(MinionStateType.Chase);
+            ChangeState(MinionStateType.Idle);
         }
     }
     
@@ -57,7 +61,7 @@ public class Minion : MonoBehaviour
     {
         if (currentState == MinionStateType.GetHit)
         {
-            ChangeState(MinionStateType.Chase);
+            ChangeState(MinionStateType.Idle);
         }
     }
 
@@ -73,7 +77,7 @@ public class Minion : MonoBehaviour
     private void OnDrawGizmos()
     {
         // 공격 범위
-        Gizmos.color = Color.yellow;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

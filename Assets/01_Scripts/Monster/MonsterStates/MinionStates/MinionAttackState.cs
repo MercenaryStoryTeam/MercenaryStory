@@ -6,7 +6,7 @@ public class MinionAttackState : MinionState
 {
     public override void EnterState(Minion minion)
     {
-        minion.agent.ResetPath();
+        minion.agent.isStopped = true;
         minion.animator.SetTrigger("Attack");
     }
 
@@ -22,6 +22,6 @@ public class MinionAttackState : MinionState
 
     public override void ExitState(Minion minion)
     {
-        
+        minion.agent.isStopped = false;
     }
 }
