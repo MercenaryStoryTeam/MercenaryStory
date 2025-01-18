@@ -549,6 +549,50 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000001, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &92942698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 92942700}
+  - component: {fileID: 92942699}
+  m_Layer: 0
+  m_Name: ObjectPoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &92942699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92942698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde57abe8f38368408c140802a3cc064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &92942700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92942698}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.953589, y: 2.5464315, z: 16.01919}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &227285423
 GameObject:
   m_ObjectHideFlags: 0
@@ -3321,7 +3365,7 @@ GameObject:
   - component: {fileID: 1406096121}
   m_Layer: 0
   m_Name: DetectCollider
-  m_TagString: Untagged
+  m_TagString: DetectCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4203,6 +4247,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[0]
+      value: 
+      objectReference: {fileID: 831020774}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[1]
+      value: 
+      objectReference: {fileID: 1404233891}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[2]
+      value: 
+      objectReference: {fileID: 2113970336}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[3]
+      value: 
+      objectReference: {fileID: 1164064706}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[4]
+      value: 
+      objectReference: {fileID: 348052678}
     - target: {fileID: 5863903103508586478, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.000058
@@ -4249,7 +4317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5863903103509005198, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7921146964834960163, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
       propertyPath: sceneViewId
@@ -5959,6 +6027,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
+  detectCollider: {fileID: 0}
 --- !u!4 &3518083998678710058
 Transform:
   m_ObjectHideFlags: 0
@@ -7738,3 +7807,4 @@ SceneRoots:
   - {fileID: 34462836}
   - {fileID: 3917713135184373839}
   - {fileID: 1406096118}
+  - {fileID: 92942700}
