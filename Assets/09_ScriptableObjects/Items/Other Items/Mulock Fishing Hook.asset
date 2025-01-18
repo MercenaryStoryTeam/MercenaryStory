@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e804f3bed573f6d4ab65407c0f951f71, type: 3}
-  m_Name: 10th Other
+  m_Name: Mulock Fishing Hook
   m_EditorClassIdentifier: 
-  id: 33151
-  name: "\uC8FC\uC778\uC758 \uBC1C\uD1B1"
-  description: "\uB2AA\uC758 \uC9C0\uBC30\uC790 \uADF8\uB77C\uC904\uC758 \uBC1C\uD1B1\uC774\uB2E4.\n\uBD80\uB7EC\uC84C\uC74C\uC5D0\uB3C4
-    \uC8FC\uC778\uC758\n\uAC15\uB300\uD55C \uD798\uC744 \uB290\uB084 \uC218 \uC788\uB2E4."
+  id: 33121
+  name: "\uBA40\uB85D \uB09A\uC2DC \uBC14\uB298"
+  description: "\uBA40\uB85D\uB4E4\uC774 \uC0AC\uC6A9\uD558\uB294 \uB09A\uC2DC \uBC14\uB298\uC774\uB2E4.\n\uBB38\uD654
+    \uC218\uC900\uC5D0 \uB9DE\uC9C0 \uC54A\uB294\n\uC815\uAD50\uD568\uC774 \uB3CB\uBCF4\uC778\uB2E4."
   currentItemCount: 2
   itemClass: 2
   price: 0
   dropPercent: 0
   isHave: 1
-  image: {fileID: 21300000, guid: 0410cbb63698a3742803c3cc3fc620da, type: 3}
+  image: {fileID: 21300000, guid: 7b9e19db70d2fd54d9adb2b3c13cbbfd, type: 3}
   equipPrefab: []
   dropLightLine: {fileID: 6349039886756410821, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
   stackAmount: 10

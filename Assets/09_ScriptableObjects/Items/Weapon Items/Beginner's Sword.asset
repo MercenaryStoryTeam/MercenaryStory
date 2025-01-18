@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23bef77b82bc2db42982d329f7ec5352, type: 3}
-  m_Name: New Weapon Item 7
+  m_Name: Beginner's Sword
   m_EditorClassIdentifier: 
-  id: 32002
-  name: "\uB300\uACF5\uC138"
-  description: "\uCE7C\uB0A0 \uB05D\uC73C\uB85C \uC3E0\uB9B0 \uBAA8\uC591\uC758 \uC591\uC190\uAC80.\n\uAC80\uC744
-    \uC950\uACE0, \uB05D\uC5C6\uB294 \uACF5\uACA9\uC744\n\uC774\uC5B4\uB098\uAC00\uC57C
-    \uD55C\uB2E4."
+  id: 31000
+  name: "\uCD08\uBCF4\uC790\uC758 \uD55C\uC190\uAC80"
+  description: "\uBAA8\uD5D8 \uC785\uBB38\uC790\uB97C \uC704\uD55C\n\uAC80\uACFC
+    \uBC29\uD328 \uD55C \uBC8C."
   currentItemCount: 0
   itemClass: 1
   price: 0
   dropPercent: 0
-  isEquipped: 0
-  image: {fileID: 21300000, guid: 682530ffd460f124183195933e237f5e, type: 3}
+  isEquipped: 1
+  image: {fileID: 21300000, guid: 30664f7519bdb7a458f770f043c58281, type: 3}
   equipPrefab:
-  - {fileID: 1640572854395205642, guid: b7edd902aef344f4d94f8590f7dcf6d2, type: 3}
+  - {fileID: 5011439781131301672, guid: 2b907b50578398c4c99c4755286a2b6c, type: 3}
+  - {fileID: 3765347977031324441, guid: f5f5196cecb44b64c983374517dee18c, type: 3}
   dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
-  rank: 3
-  Damage: 6
+  rank: 1
+  Damage: 1
   isEquiped: 0

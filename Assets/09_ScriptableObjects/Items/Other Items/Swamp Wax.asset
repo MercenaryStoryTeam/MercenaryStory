@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e804f3bed573f6d4ab65407c0f951f71, type: 3}
-  m_Name: 6th Other
+  m_Name: Swamp Wax
   m_EditorClassIdentifier: 
   id: 33131
   name: "\uB2AA\uC9C0 \uBC00\uB78D"

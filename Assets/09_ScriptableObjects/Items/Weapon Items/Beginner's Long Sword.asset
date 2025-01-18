@@ -10,22 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23bef77b82bc2db42982d329f7ec5352, type: 3}
-  m_Name: New Weapon Item
+  m_Name: Beginner's Long Sword
   m_EditorClassIdentifier: 
-  id: 31000
-  name: "\uCD08\uBCF4\uC790\uC758 \uD55C\uC190\uAC80"
-  description: "\uBAA8\uD5D8 \uC785\uBB38\uC790\uB97C \uC704\uD55C\n\uAC80\uACFC
-    \uBC29\uD328 \uD55C \uBC8C."
+  id: 32000
+  name: "\uCD08\uBCF4\uC790\uC758 \uC591\uC190\uAC80"
+  description: "\uBAA8\uD5D8 \uC785\uBB38\uB2E4\uB97C \uC704\uD55C\n\uCEE4\uB2E4\uB780
+    \uAC80 \uD55C \uC790\uB8E8."
   currentItemCount: 0
   itemClass: 1
   price: 0
   dropPercent: 0
   isEquipped: 1
-  image: {fileID: 21300000, guid: 30664f7519bdb7a458f770f043c58281, type: 3}
+  image: {fileID: 21300000, guid: 17cb7023b96379b45aae42d2d52c7086, type: 3}
   equipPrefab:
-  - {fileID: 5011439781131301672, guid: 2b907b50578398c4c99c4755286a2b6c, type: 3}
-  - {fileID: 3765347977031324441, guid: f5f5196cecb44b64c983374517dee18c, type: 3}
+  - {fileID: 6979130633480749635, guid: 8ce0a7b621729504c86c102d0dab83b4, type: 3}
   dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
   rank: 1
-  Damage: 1
+  Damage: 2
   isEquiped: 0

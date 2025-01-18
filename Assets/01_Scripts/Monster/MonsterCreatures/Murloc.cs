@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Murloc : Monster
 {
@@ -18,6 +19,9 @@ public class Murloc : Monster
     public float _detectionRange = 3;
     public float _attackRange = 2;
     public float _returnRange = 10;
+
+    [Header("드랍 아이템")]
+    public List<ItemBase> dropItems;
     
     public void Awake()
     {

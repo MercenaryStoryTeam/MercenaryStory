@@ -42,16 +42,14 @@ public class InventoryPanel : MonoBehaviour
 
     public void TryOpenInventory()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+
+        if (!UIManager.Instance.isInventoryActive)
         {
-            if (!UIManager.Instance.isInventoryActive)
-            {
-                UIManager.Instance.OpenInventoryPanel();
-            }
-            else
-            {
-                UIManager.Instance.CloseInventoryPanel();
-            }
+            UIManager.Instance.OpenInventoryPanel();
+        }
+        else 
+        {
+            UIManager.Instance.CloseInventoryPanel();
         }
     }
 

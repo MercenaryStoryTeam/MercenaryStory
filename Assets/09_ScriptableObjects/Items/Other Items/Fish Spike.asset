@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e804f3bed573f6d4ab65407c0f951f71, type: 3}
-  m_Name: 4th Other
+  m_Name: Fish Spike
   m_EditorClassIdentifier: 
-  id: 33121
-  name: "\uBA40\uB85D \uB09A\uC2DC \uBC14\uB298"
-  description: "\uBA40\uB85D\uB4E4\uC774 \uC0AC\uC6A9\uD558\uB294 \uB09A\uC2DC \uBC14\uB298\uC774\uB2E4.\n\uBB38\uD654
-    \uC218\uC900\uC5D0 \uB9DE\uC9C0 \uC54A\uB294\n\uC815\uAD50\uD568\uC774 \uB3CB\uBCF4\uC778\uB2E4."
-  currentItemCount: 2
+  id: 33120
+  name: "\uC0DD\uC120 \uBF08\uB2E4\uADC0"
+  description: "\uBA40\uB85D\uB4E4\uC774 \uC544\uC26C\uC6B4\uB4EF \uB4E4\uACE0 \uC788\uB358\n\uB2E4
+    \uBA39\uACE0 \uB0A8\uC740 \uC0DD\uC120 \uBF08\uB2E4\uADC0\uC774\uB2E4."
+  currentItemCount: 0
   itemClass: 2
   price: 0
   dropPercent: 0
   isHave: 1
-  image: {fileID: 21300000, guid: 7b9e19db70d2fd54d9adb2b3c13cbbfd, type: 3}
+  image: {fileID: 21300000, guid: 9dd37670ec907c742a4ae63b2f430827, type: 3}
   equipPrefab: []
   dropLightLine: {fileID: 6349039886756410821, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
   stackAmount: 10

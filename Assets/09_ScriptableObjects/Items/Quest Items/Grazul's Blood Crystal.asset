@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c6c91bfb0673cf4fa271309815282fd, type: 3}
-  m_Name: New Quest Item
+  m_Name: Grazul's Blood Crystal
   m_EditorClassIdentifier: 
   id: 34000
   name: "\uADF8\uB77C\uC904\uC758 \uD53C \uACB0\uC815"

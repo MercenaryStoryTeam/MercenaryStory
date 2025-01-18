@@ -213,18 +213,17 @@ public class ShopPanel : MonoBehaviour
 
 	public void TryOpenShop()
 	{
-		if (Input.GetKeyDown(KeyCode.O))
+
+		if (!UIManager.Instance.isShopActive)
 		{
-			if (!UIManager.Instance.isShopActive)
-			{
-				UIManager.Instance.OpenShopPanel();
-				UpdateHoldSlots();
-			}
-			else
-			{
-				UIManager.Instance.CloseShopPanel();
-			}
+			UIManager.Instance.OpenShopPanel(); 
+			UpdateHoldSlots();
 		}
+		else
+		{ 
+			UIManager.Instance.CloseShopPanel();
+		}
+		
 	}
 
 	private void SetGold()
