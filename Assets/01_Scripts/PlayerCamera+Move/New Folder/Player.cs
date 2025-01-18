@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public float currentHp = 0f;
 
     [Header("플레이어 최대 체력")]
-    public float maxHp = 100f;
+    public float maxHp = 0;
 
     [Header("골드")] //
     public float gold = 0f;
@@ -33,10 +33,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        maxHp = FirebaseManager.Instance.CurrentUserData.user_HP; 
-        currentHp = maxHp;
-
-        // maxHp = currentHp;
+        currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+        maxHp = currentHp;
 
         // 원래 이동 속도 저장
         originalMoveSpeed = moveSpeed;
@@ -103,7 +101,7 @@ public class Player : MonoBehaviour
             Debug.LogWarning("PlayerFsm 스크립트를 찾을 수 없습니다.");
         }
 
-        // 체력을 최대값으로 복원 (죽은 뒤 부활 시나리오?)
+        // 체력을 최대값으로 복원 (죽은 뒤 부활 시나리오)
         currentHp = maxHp;
 
         // 일정 시간 이후 다음씬 로드

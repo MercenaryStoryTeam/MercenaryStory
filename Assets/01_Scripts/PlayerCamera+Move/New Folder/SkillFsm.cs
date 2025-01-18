@@ -1,6 +1,16 @@
 using UnityEngine;
+using UnityEngine.UI; // UI 관련 네임스페이스 추가
 using System.Collections;
 using System.Collections.Generic;
+
+// 스킬 유형을 정의하는 Enum
+public enum SkillType
+{
+    Rush,
+    Parry,
+    Skill1,
+    Skill2
+}
 
 public class SkillFsm : MonoBehaviour
 {
@@ -9,14 +19,44 @@ public class SkillFsm : MonoBehaviour
     [System.Serializable]
     public class Skill
     {
-        public string name;          
-        public string triggerName;   
-        public float cooldown;       
-        public float speedBoost = 1f; 
-        public float duration = 0f;   
-        public GameObject particleEffect; 
+        public SkillType skillType; // 드롭다운으로 선택할 스킬 유형
+
+        public float cooldown;
+        public float speedBoost = 1f;
+        public float duration = 0f;
+        public GameObject particleEffect;
+
+        [Header("쿨타임바")]
+        public Image cooldownImage; // 쿨타임바 이미지 추가
 
         [HideInInspector] public bool isOnCooldown = false;
+
+        // 선택된 SkillType에 따라 스킬 이름 반환
+        public string Name
+        {
+            get { return skillType.ToString(); }
+        }
+
+        // 선택된 SkillType에 따라 트리거 이름 반환
+        public string TriggerName
+        {
+            get
+            {
+                switch (skillType)
+                {
+                    case SkillType.Rush:
+                        return "Rush";
+                    case SkillType.Parry:
+                        return "Parry";
+                    case SkillType.Skill1:
+                        return "Skill1";
+                    case SkillType.Skill2:
+                        return "Skill2";
+                    default:
+                        return "";
+                }
+            }
+        }
     }
 
     [Header("스킬 설정")]
@@ -47,6 +87,15 @@ public class SkillFsm : MonoBehaviour
                 return;
             }
         }
+
+        // 초기 쿨타임바 설정
+        foreach (var skill in skills)
+        {
+            if (skill.cooldownImage != null)
+            {
+                skill.cooldownImage.fillAmount = 0f; // 스킬 사용 전 쿨타임바 비움
+            }
+        }
     }
 
     private void OnEnable()
@@ -69,25 +118,25 @@ public class SkillFsm : MonoBehaviour
 
     private void OnSkillInput()
     {
-        TriggerSkill("Rush");
+        TriggerSkill(SkillType.Rush);
     }
 
     private void OnRightClickInput()
     {
-        TriggerSkill("Parry");
+        TriggerSkill(SkillType.Parry);
     }
 
     private void OnShiftLeftClickInput()
     {
-        TriggerSkill("Skill1");
+        TriggerSkill(SkillType.Skill1);
     }
 
     private void OnShiftRightClickInput()
     {
-        TriggerSkill("Skill2");
+        TriggerSkill(SkillType.Skill2);
     }
 
-    public void TriggerSkill(string skillName)
+    public void TriggerSkill(SkillType skillType)
     {
         // Animator null 체크
         if (animator == null)
@@ -96,21 +145,21 @@ public class SkillFsm : MonoBehaviour
             return;
         }
 
-        Skill skill = skills.Find(s => s.name == skillName);
+        Skill skill = skills.Find(s => s.skillType == skillType);
         if (skill == null)
         {
-            Debug.LogWarning($"[SkillFsm] {skillName} 스킬이 등록되어 있지 않습니다.");
+            Debug.LogWarning($"[SkillFsm] {skillType} 스킬이 등록되어 있지 않습니다.");
             return;
         }
 
         if (skill.isOnCooldown)
         {
-            Debug.Log($"[SkillFsm] {skillName} 스킬은 쿨다운 중입니다.");
+            Debug.Log($"[SkillFsm] {skill.Name} 스킬은 쿨다운 중입니다.");
             return;
         }
 
         // 스킬 실행
-        animator.SetTrigger(skill.triggerName);
+        animator.SetTrigger(skill.TriggerName);
 
         // 파티클 이펙트 활성화
         if (skill.particleEffect != null)
@@ -119,7 +168,7 @@ public class SkillFsm : MonoBehaviour
         }
 
         // Rush 스킬이면 이동 속도 증가
-        if (skillName == "Rush")
+        if (skillType == SkillType.Rush)
         {
             ApplySpeedBoost(skill.speedBoost, skill.duration);
         }
@@ -179,9 +228,35 @@ public class SkillFsm : MonoBehaviour
     private IEnumerator CooldownCoroutine(Skill skill)
     {
         skill.isOnCooldown = true;
-        yield return new WaitForSeconds(skill.cooldown);
+
+        // 쿨타임바 활성화 및 초기화
+        if (skill.cooldownImage != null)
+        {
+            skill.cooldownImage.fillAmount = 1f; // 쿨타임 시작 시 채움
+        }
+
+        float elapsed = 0f;
+        float totalCooldown = skill.cooldown;
+
+        while (elapsed < totalCooldown)
+        {
+            elapsed += Time.deltaTime;
+            if (skill.cooldownImage != null)
+            {
+                skill.cooldownImage.fillAmount = 1f - (elapsed / totalCooldown);
+            }
+            yield return null;
+        }
+
+        // 쿨타임 종료
         skill.isOnCooldown = false;
-        Debug.Log($"[SkillFsm] {skill.name} 스킬 쿨다운 종료");
+        Debug.Log($"[SkillFsm] {skill.Name} 스킬 쿨다운 종료");
+
+        // 쿨타임바 비활성화
+        if (skill.cooldownImage != null)
+        {
+            skill.cooldownImage.fillAmount = 0f;
+        }
     }
 
     // 플레이어 객체가 재활성화되었을 때 새로운 Animator를 받아올 수 있도록 하는 메서드
@@ -196,5 +271,3 @@ public class SkillFsm : MonoBehaviour
         animator = newAnimator;
     }
 }
-
-//
