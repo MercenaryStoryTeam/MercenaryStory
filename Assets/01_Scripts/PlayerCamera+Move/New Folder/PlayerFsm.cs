@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using Photon.Pun;
 using Cinemachine;
+using UnityEngine.InputSystem.HID;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
@@ -28,6 +29,7 @@ public class PlayerFsm : MonoBehaviourPun
     // 현재 이동 속도
     private float currentSpeed;
 
+    // 상태 유형
     public enum State
     {
         Idle,
@@ -35,9 +37,8 @@ public class PlayerFsm : MonoBehaviourPun
         Attack1,
         Attack2,
         Attack3,
-        Skill,
         Die,
-        Hit // 피격 상태
+        Hit
     }
 
     private State currentState = State.Idle;
@@ -45,8 +46,12 @@ public class PlayerFsm : MonoBehaviourPun
     private int attackCombo = 0;
     private float lastAttackTime = 0f;
 
-    private SkillFsm skillFsm;
-    private Player player; // Player 스크립트 참조를 위한 변수
+    // Player 스크립트 참조: 이동 속도, HP 관리 등 플레이어 전반의 데이터를 가져오기 위함
+    private Player player;
+
+    // 이동 및 공격 잠금 상태
+    private bool isMovementLocked = false;
+    private bool isAttackLocked = false;
 
     private void Awake()
     {
@@ -84,16 +89,7 @@ public class PlayerFsm : MonoBehaviourPun
         bool isScene = IsCurrentSceneSpecial();
         animator.SetBool("Scene", isScene);
 
-        // SkillFsm 스크립트 참조
-        skillFsm = GetComponent<SkillFsm>();
-        if (skillFsm == null)
-        {
-            Debug.LogError("PlayerFsm의 GameObject에 SkillFsm 스크립트가 없습니다.");
-            enabled = false;
-            return;
-        }
-
-        // Player 스크립트 참조
+        // Player 스크립트 참조 (이동 속도, 스탯 등 활용)
         player = GetComponent<Player>();
         if (player == null)
         {
@@ -104,7 +100,6 @@ public class PlayerFsm : MonoBehaviourPun
 
     private void OnEnable()
     {
-        // 콤보 공격 이벤트 등록
         PlayerInputManager.OnAttackInput += HandleAttackInput;
     }
 
@@ -118,8 +113,8 @@ public class PlayerFsm : MonoBehaviourPun
     {
         if (!isDead)
         {
-            HandleMovementInput();   // 이동 입력만 처리
-            HandleState();          // 현재 상태 FSM 처리
+            HandleMovementInput();   
+            HandleState();           
         }
     }
 
@@ -134,18 +129,14 @@ public class PlayerFsm : MonoBehaviourPun
         return specialScenes.Contains(currentSceneName);
     }
 
-    /// <summary>
-    /// 이동 입력만 별도 처리 (콤보 공격은 PlayerInputManager 이벤트 사용)
-    /// </summary>
+    // 이동 입력만 별도 처리 (콤보 공격은 PlayerInputManager 이벤트 사용)
     private void HandleMovementInput()
     {
-        // Skill, Die 상태가 아닐 때만 이동 처리 (Hit 상태도 이동 가능)
-        bool canProcessMovement = (currentState != State.Die && currentState != State.Skill);
+        // Die 상태가 아닐 때만 이동 처리 (Hit 상태도 이동 가능)
+        bool canProcessMovement = (currentState != State.Die) && !isMovementLocked;
 
         if (canProcessMovement)
         {
-            // PlayerInputManager에서 넘어온 이동 벡터를 매 프레임마다 받을 수도 있음
-            // 여기서는 기존처럼 직접 Input을 써도 되지만, 요청에 따라 콤보 부분만 개선하므로 이동은 그대로 두었습니다.
             float inputX = Input.GetAxisRaw("Horizontal");
             float inputZ = Input.GetAxisRaw("Vertical");
             movementInput = CalculateMovementDirection(inputX, inputZ);
@@ -180,13 +171,11 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
-    /// <summary>
-    /// 플레이어가 공격을 시도할 때 호출되는 콤보 처리 함수
-    /// </summary>
+    // 플레이어가 공격을 시도할 때 호출되는 콤보 처리 함수
     private void HandleAttackInput()
     {
-        // 기존 조건: 사망이거나, 이동 중이거나, 스킬 중이면 공격 불가
-        if (isDead || currentState == State.Moving || currentState == State.Skill)
+        // 사망이거나, 이동 중이거나, 공격 잠금 중이면 공격 불가
+        if (isDead || currentState == State.Moving || isAttackLocked)
             return;
 
         lastAttackTime = Time.time;
@@ -216,18 +205,14 @@ public class PlayerFsm : MonoBehaviourPun
         {
             case State.Idle:
             case State.Moving:
-                // 이동/정지 상태
                 break;
             case State.Attack1:
             case State.Attack2:
             case State.Attack3:
-                // 공격 상태
-                break;
-            case State.Skill:
-                // 스킬 상태
                 break;
             case State.Hit:
-                // 피격 상태
+                break;
+            case State.Die:
                 break;
         }
     }
@@ -248,17 +233,12 @@ public class PlayerFsm : MonoBehaviourPun
             case State.Attack1:
             case State.Attack2:
             case State.Attack3:
-                // 공격 중 물리 처리(애니메이션 루트모션 또는 관성 등)
                 break;
-            case State.Skill:
-                // 스킬 중 물리 처리
+            case State.Hit:
                 break;
             case State.Die:
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
-                break;
-            case State.Hit:
-                // 피격 중에도 이동 가능하게 했으므로 추가 제어 없음
                 break;
         }
     }
@@ -275,6 +255,7 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
+    // 상태 관리
     public void TransitionToState(State newState, bool force = false)
     {
         if (isDead && newState != State.Die && !force) return;
@@ -299,14 +280,11 @@ public class PlayerFsm : MonoBehaviourPun
             case State.Attack3:
                 EnterAttackState(3);
                 break;
-            case State.Skill:
-                // 스킬 상태 진입
+            case State.Hit:
+                EnterHitState();
                 break;
             case State.Die:
                 EnterDieState();
-                break;
-            case State.Hit:
-                EnterHitState();
                 break;
         }
     }
@@ -350,20 +328,18 @@ public class PlayerFsm : MonoBehaviourPun
         gameObject.SetActive(false);
     }
 
-    /// <summary>
-    /// 피격 상태로 전환
-    /// </summary>
+    // 피격 상태로 전환
     private void EnterHitState()
     {
         animator.SetTrigger("Hit");
     }
 
-    /// <summary>
-    /// 외부에서 호출해 피격 상태로 만들기
-    /// </summary>
+    // 공격을 받았을 때 호출
     public void TakeDamage()
     {
+        // 이미 die 상태거나 현재 hit 상태라면, 메서드를 종료
         if (isDead || currentState == State.Hit) return;
+        // hit 상태로 전환
         TransitionToState(State.Hit);
     }
 
@@ -375,7 +351,7 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
-    // 공격 애니메이션 이벤트
+    // Attack 애니메이션 종료 이후 처리
     public void OnAttackAnimationEnd()
     {
         if (movementInput.sqrMagnitude > moveThreshold)
@@ -384,24 +360,10 @@ public class PlayerFsm : MonoBehaviourPun
             TransitionToState(State.Idle);
     }
 
-    // 스킬 애니메이션 이벤트
-    public void OnSkillAnimationEnd()
-    {
-        if (movementInput.sqrMagnitude > moveThreshold)
-            TransitionToState(State.Moving);
-        else
-            TransitionToState(State.Idle);
-    }
-
-    // Hit 애니메이션 이벤트
+    // Hit 애니메이션 종료 이후 처리
     public void OnHitAnimationEnd()
     {
-        // Hit 애니 끝나도 자동 복귀하지 않음.
-        // 원한다면 아래 주석을 해제하여 자동 복귀 로직을 추가 가능
-        // if (movementInput.sqrMagnitude > moveThreshold)
-        //     TransitionToState(State.Moving);
-        // else
-        //     TransitionToState(State.Idle);
+
     }
 
     private Vector3 CalculateMovementDirection(float inputX, float inputZ)
@@ -416,38 +378,22 @@ public class PlayerFsm : MonoBehaviourPun
         return (camForward * inputZ + camRight * inputX).normalized;
     }
 
-    public void TransitionToSkillState(string skillName)
+    // 이동 및 공격을 잠금
+    public void LockMovementAndAttack()
     {
-        if (currentState == State.Die) return;
+        isMovementLocked = true;
+        isAttackLocked = true;
+        animator.SetFloat("Speed", 0f);
+        rb.velocity = Vector3.zero;
 
-        currentState = State.Skill;
-
-        float skillAnimationDuration = GetSkillAnimationDuration(skillName);
-        Invoke("ExitSkillState", skillAnimationDuration);
+        // 현재 상태를 Idle로 전환
+        TransitionToState(State.Idle);
     }
 
-    private float GetSkillAnimationDuration(string skillName)
+    // 이동 및 공격을 잠금 해제
+    public void UnlockMovementAndAttack()
     {
-        switch (skillName)
-        {
-            case "Rush":
-                return 1f;
-            case "Parry":
-                return 1f;
-            case "Skill1":
-                return 1f;
-            case "Skill2":
-                return 1f;
-            default:
-                return 1f;
-        }
-    }
-
-    private void ExitSkillState()
-    {
-        if (movementInput.sqrMagnitude > moveThreshold)
-            TransitionToState(State.Moving);
-        else
-            TransitionToState(State.Idle);
+        isMovementLocked = false;
+        isAttackLocked = false;
     }
 }

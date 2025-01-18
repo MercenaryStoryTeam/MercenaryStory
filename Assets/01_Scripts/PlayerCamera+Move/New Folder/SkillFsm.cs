@@ -1,9 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI; // UI 관련 네임스페이스 추가
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-// 스킬 유형을 정의하는 Enum
+// 스킬 유형 
+// 확장 가능
 public enum SkillType
 {
     Rush,
@@ -19,25 +20,32 @@ public class SkillFsm : MonoBehaviour
     [System.Serializable]
     public class Skill
     {
-        public SkillType skillType; // 드롭다운으로 선택할 스킬 유형
+        // 스킬 유형 드롭다운 방식으로 설정
+        public SkillType skillType; 
 
+        // 쿨타임 
         public float cooldown;
+        
+        // Rush 스킬만 해당 
         public float speedBoost = 1f;
         public float duration = 0f;
+
+        // 이펙트
         public GameObject particleEffect;
 
         [Header("쿨타임바")]
-        public Image cooldownImage; // 쿨타임바 이미지 추가
+        public Image cooldownImage; 
 
+        // 쿨타임 작동 여부 체크를 위한 개념
         [HideInInspector] public bool isOnCooldown = false;
 
-        // 선택된 SkillType에 따라 스킬 이름 반환
+        // 인스펙터에서 드롭다운으로 스킬을 선택할 때, ToString을 사용하여 선택된 스킬의 이름을 문자열로 나타냄
         public string Name
         {
             get { return skillType.ToString(); }
         }
 
-        // 선택된 SkillType에 따라 트리거 이름 반환
+        // 선택된 스킬 유형에 따라 애니메이터에서 사용할 트리거 이름을 반환
         public string TriggerName
         {
             get
@@ -93,14 +101,13 @@ public class SkillFsm : MonoBehaviour
         {
             if (skill.cooldownImage != null)
             {
-                skill.cooldownImage.fillAmount = 0f; // 스킬 사용 전 쿨타임바 비움
+                skill.cooldownImage.fillAmount = 0f; 
             }
         }
     }
 
     private void OnEnable()
     {
-        // 반드시 메서드 형식으로 구독
         PlayerInputManager.OnSkillInput += OnSkillInput;
         PlayerInputManager.OnRightClickInput += OnRightClickInput;
         PlayerInputManager.OnShiftLeftClickInput += OnShiftLeftClickInput;
@@ -109,7 +116,6 @@ public class SkillFsm : MonoBehaviour
 
     private void OnDisable()
     {
-        // 반드시 구독 해제
         PlayerInputManager.OnSkillInput -= OnSkillInput;
         PlayerInputManager.OnRightClickInput -= OnRightClickInput;
         PlayerInputManager.OnShiftLeftClickInput -= OnShiftLeftClickInput;
@@ -177,16 +183,17 @@ public class SkillFsm : MonoBehaviour
         StartCoroutine(CooldownCoroutine(skill));
     }
 
+    // 파티클 설정
     private void ActivateSkillParticle(GameObject particleEffect)
     {
-        // 1) 파티클 오브젝트가 가진 localPosition 값(오프셋)을 부모 트랜스폼 기준의 월드 좌표로 변환
-        Vector3 localOffset = particleEffect.transform.localPosition;
-        Vector3 finalPosition = transform.TransformPoint(localOffset);
+        // 1) 파티클 위치 조정
+        Vector3 relativePosition = particleEffect.transform.localPosition;
+        Vector3 finalPosition = transform.TransformPoint(relativePosition);
 
         // 2) 최종 위치 적용
         particleEffect.transform.position = finalPosition;
 
-        // 3) 파티클 오브젝트 활성화
+        // 3) 파티클 활성화
         particleEffect.SetActive(true);
 
         // 4) 파티클 재생 시간 뒤 비활성화
@@ -210,6 +217,7 @@ public class SkillFsm : MonoBehaviour
         StartCoroutine(SpeedBoostCoroutine(speedBoost, duration));
     }
 
+    // Rush 스킬의 시각적 효과를 위한 설정
     private IEnumerator SpeedBoostCoroutine(float speedBoost, float duration)
     {
         isSpeedBoostActive = true;
@@ -232,7 +240,7 @@ public class SkillFsm : MonoBehaviour
         // 쿨타임바 활성화 및 초기화
         if (skill.cooldownImage != null)
         {
-            skill.cooldownImage.fillAmount = 1f; // 쿨타임 시작 시 채움
+            skill.cooldownImage.fillAmount = 1f; 
         }
 
         float elapsed = 0f;

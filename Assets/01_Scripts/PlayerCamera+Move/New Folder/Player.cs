@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // 체력이 남아 있다면 피격 애니메이션 FSM 실행
+            // 체력이 남아 있다면 PlayerFsm 실행
             PlayerFsm playerFsm = GetComponent<PlayerFsm>();
             if (playerFsm != null)
             {
@@ -89,19 +89,19 @@ public class Player : MonoBehaviour
 
         Debug.Log("Player Die");
 
-        // PlayerFsm 스크립트 참조
-        PlayerFsm playerMove = GetComponent<PlayerFsm>();
-        if (playerMove != null)
+        // PlayerFsm 실행
+        PlayerFsm playerFsm = GetComponent<PlayerFsm>();
+        if (playerFsm != null)
         {
             // Die 상태 애니 구현
-            playerMove.Die();
+            playerFsm.Die();
         }
         else
         {
             Debug.LogWarning("PlayerFsm 스크립트를 찾을 수 없습니다.");
         }
 
-        // 체력을 최대값으로 복원 (죽은 뒤 부활 시나리오)
+        // 체력을 최대값으로 복원
         currentHp = maxHp;
 
         // 일정 시간 이후 다음씬 로드
