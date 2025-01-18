@@ -12,11 +12,10 @@ public class MinionDieState : MinionState
 
     public override void ExecuteState(Minion minion)
     {
-        throw new System.NotImplementedException();
     }
 
     public override void ExitState(Minion minion)
     {
-        throw new System.NotImplementedException();
+        
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,21 +32,14 @@ public class MinionStateMachine
         };
     }
         public void ChangeState(MinionStateType stateType)
-    {
+    { 
         exStateType = currentStateType;
         currentState?.ExitState(owner);
         currentState = CreateState(stateType);
-        currentState?.EnterState(owner);
         currentStateType = stateType;
+        currentState?.EnterState(owner);
     }
     
-    public void RevertToExState()
-    {
-        if (exStateType != currentStateType)
-        {
-            ChangeState(exStateType);
-        }
-    }
         private MinionState CreateState(MinionStateType stateType)
     {
         if (stateInstances.TryGetValue(stateType, out var state))

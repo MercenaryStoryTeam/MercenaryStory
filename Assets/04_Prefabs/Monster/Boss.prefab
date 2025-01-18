@@ -1242,7 +1242,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5863903103508586440}
   - {fileID: 5863903103508586472}
@@ -1287,7 +1287,6 @@ MonoBehaviour:
   moveSpeed: 7.5
   rotationSpeed: 3
   attackSpeed: 0.7
-  slashDetectionRange: 10
   slashAttackRange: 7
   chargePossible: 1
   slashPossible: 1
@@ -1295,13 +1294,18 @@ MonoBehaviour:
   chargeCooltime: 5
   slashCooltime: 6
   hungerCooltime: 13
-  minionPrefab: {fileID: 0}
+  minionPrefab: {fileID: 4401516545361303541, guid: ce4ac5036db59954597bcadcb70111c8, type: 3}
   slashCount: 0
   currentState: 0
+  Target: {fileID: 0}
   playerList: []
   minionList: []
-  nestList: []
-  TargetTransform: {fileID: 0}
+  nestList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   CenterPoint: {x: 0, y: 0, z: 0}
   Animator: {fileID: 0}
 --- !u!195 &4245762024720595860
