@@ -11,6 +11,8 @@ public class DetectCollider : MonoBehaviour
 
     private void Update()
     {
+        boss.minionList = minions;
+        boss.playerList = players;
         foreach (Minion minion in minions)
         {
             minion.playerList = players;
@@ -20,20 +22,14 @@ public class DetectCollider : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Minion"))
-             {
-                 print(other.gameObject.name);
-                 minions.Add(other.GetComponent<Minion>());
-                 boss.minionList.Add(other.GetComponent<Minion>());
-             }
+        {
+            print(other.gameObject.name);
+            minions.Add(other.GetComponent<Minion>());
+        }
         if (other.CompareTag("Player"))
         {
             print(other.gameObject.name);
             players.Add(other.gameObject.GetComponent<Player>());
-            boss.playerList.Add(other.GetComponent<Player>());
-            foreach (Minion minion in minions)
-            {
-                minion.playerList.Add(other.GetComponent<Player>());
-            }
         }
         
     }
@@ -41,12 +37,8 @@ public class DetectCollider : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
-        {
-            boss.playerList.Remove(other.GetComponent<Player>());
-            foreach (Minion minion in minions)
-            {
-                minion.playerList.Remove(other.GetComponent<Player>());
-            }
+        {   
+            players.Remove(other.gameObject.GetComponent<Player>());
         }
     }
 }
