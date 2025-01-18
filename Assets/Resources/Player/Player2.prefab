@@ -92373,16 +92373,16 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Attack3
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Rush
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Parry
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Skill1
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Skill2
   m_SynchronizeLayers:
   - SynchronizeType: 2
