@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
-public class BossMonster : MonoBehaviour
+public class BossMonster : MonoBehaviourPun
 {
     #region 변수
-    public int hp = 3000;
-    public int maxHp = 3000;
+    public int hp = 5000;
+    public int maxHp = 5000;
     public int damage = 15;
     public float moveSpeed = 7.5f;
     public float rotationSpeed = 3f;
     public float attackSpeed = 0.7f;
 
-    public float slashDetectionRange = 10f;
-    public float slashAttackRange = 7f;
+    public float slashAttackRange = 4f;
 
     public bool chargePossible = true;
     public bool slashPossible = true;
@@ -26,16 +27,18 @@ public class BossMonster : MonoBehaviour
     public GameObject minionPrefab;
     public int slashCount = 0;
     public BossStateType currentState;
+    [FormerlySerializedAs("TargetTransform")] public Transform Target;
     public List<Player> playerList = new List<Player>();
     public List<Minion> minionList = new List<Minion>();
     public List<Transform> nestList = new List<Transform>();
+    
     private NavMeshAgent agent;
     private BossStateMachine stateMachine;
     private LayerMask playerLayer;
-    
-    [HideInInspector] public Transform TargetTransform;
+     
     [HideInInspector] public Vector3 CenterPoint;
     [HideInInspector] public Animator Animator;
+
 
     #endregion
 
@@ -99,6 +102,12 @@ public class BossMonster : MonoBehaviour
     {
         if (stateMachine.currentStateType == BossStateType.Bite)
         {
+            Target.gameObject.GetComponent<Minion>().TakeDamage(Target.gameObject.GetComponent<Minion>().hp);
+            hp += maxHp/10;
+            if (hp > maxHp)
+            {
+                hp = maxHp;
+            }
             ChangeState(BossStateType.Idle);
         }
     }
@@ -183,10 +192,6 @@ public class BossMonster : MonoBehaviour
     
     private void OnDrawGizmos()
     {
-        // 도륙내기 감지 범위
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, slashDetectionRange);
-
         // 도륙내기 공격 범위
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, slashAttackRange);
