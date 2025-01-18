@@ -53,13 +53,15 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			var result = await Auth.CreateUserWithEmailAndPasswordAsync(email, password);
+			var result =
+				await Auth.CreateUserWithEmailAndPasswordAsync(email, password);
 
 			usersRef = DB.GetReference($"users/{result.User.UserId}");
 			UserData userData = new UserData(result.User.UserId, email, user_Name);
-				userData.user_Inventory.Add(InventoryManger.Instance.SetBasicItem(InventoryManger.Instance.basicWeapon, 
+			userData.user_Inventory.Add(InventoryManger.Instance.SetBasicItem(
+				InventoryManger.Instance.basicWeapon,
 				InventoryManger.Instance.basicEquipWeapon));
-			
+
 			string userDataJson = JsonConvert.SerializeObject(userData);
 			await usersRef.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
@@ -172,7 +174,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		try
 		{
 			// Create PartyData
-			PartyData partyData = new PartyData(CurrentUserData.user_CurrentServer, party_Name,
+			PartyData partyData = new PartyData(CurrentUserData.user_CurrentServer,
+				party_Name,
 				party_Size, CurrentUserData);
 			CurrentPartyData = partyData;
 
@@ -209,17 +212,28 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			DataSnapshot partiesData = await DB.GetReference("parties").GetValueAsync();
-			partyDictionary =
-				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
-					partiesData.GetRawJsonValue());
-			if (partyDictionary != null)
+			DataSnapshot partiesData =
+				await DB.GetReference("parties").GetValueAsync();
+
+			if (partiesData.Exists)
 			{
-				partyList = new List<PartyData>(partyDictionary.Values);
+				partyDictionary =
+					JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
+						partiesData.GetRawJsonValue());
+				if (partyDictionary != null)
+				{
+					partyList = new List<PartyData>(partyDictionary.Values);
+				}
+				else
+				{
+					partyList = null;
+					print("파티 없음");
+				}
 			}
 			else
 			{
-				print("파티 없음");
+				partyList = null;
+				print("파티 진짜 없음");
 			}
 		}
 		catch (FirebaseException e)
@@ -236,7 +250,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			DataSnapshot partiesData = await DB.GetReference("parties").GetValueAsync();
+			DataSnapshot partiesData =
+				await DB.GetReference("parties").GetValueAsync();
 			partyDictionary =
 				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
 					partiesData.GetRawJsonValue());
@@ -310,7 +325,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 			// 파티 데이터 역직렬화
 			PartyData partyData =
-				JsonConvert.DeserializeObject<PartyData>(partySnapshot.GetRawJsonValue());
+				JsonConvert.DeserializeObject<PartyData>(
+					partySnapshot.GetRawJsonValue());
 
 			// 파티장이 나가는 경우
 			if (partyData.party_Owner.user_Id == CurrentUserData.user_Id)
@@ -320,7 +336,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				// 모든 멤버의 user_CurrentParty 초기화
 				foreach (UserData member in partyData.party_Members)
 				{
-					DatabaseReference memberRef = DB.GetReference($"users/{member.user_Id}");
+					DatabaseReference memberRef =
+						DB.GetReference($"users/{member.user_Id}");
 					await memberRef.Child("user_CurrentParty").SetValueAsync("");
 				}
 
