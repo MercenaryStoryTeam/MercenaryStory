@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Minion : MonoBehaviour
+public class Minion : MonoBehaviourPun
 {
     [Header("몬스터 스텟")]
     public int hp = 13;
@@ -23,6 +24,7 @@ public class Minion : MonoBehaviour
     public MinionStateMachine stateMachine;
     public MinionStateType currentState;
     public LayerMask playerLayer;
+    public DetectCollider detectCollider;
 
     protected virtual void Start()
     {
@@ -67,13 +69,25 @@ public class Minion : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        stateMachine.ChangeState(MinionStateType.GetHit);
+        print(damage.ToString());
         hp -= damage;
+        stateMachine.ChangeState(MinionStateType.GetHit);
+        detectCollider.minions.Remove(this);
         if (hp <= 0)
         {
+            
             stateMachine.ChangeState(MinionStateType.Die);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DetectCollider"))
+        {
+            detectCollider = other.GetComponent<DetectCollider>();
+        }
+    }
+
     private void OnDrawGizmos()
     {
         // 공격 범위
