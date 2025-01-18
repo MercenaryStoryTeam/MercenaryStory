@@ -27,7 +27,7 @@ public class BossMonster : MonoBehaviourPun
     public GameObject minionPrefab;
     public int slashCount = 0;
     public BossStateType currentState;
-    [FormerlySerializedAs("TargetTransform")] public Transform Target;
+    public Transform Target;
     public List<Player> playerList = new List<Player>();
     public List<Minion> minionList = new List<Minion>();
     public List<Transform> nestList = new List<Transform>();
@@ -39,7 +39,6 @@ public class BossMonster : MonoBehaviourPun
     [Header("드랍 아이템")]
     public List<ItemBase> dropItems;
     
-    [HideInInspector] public Transform TargetTransform;
     [HideInInspector] public Vector3 CenterPoint;
     [HideInInspector] public Animator Animator;
 
