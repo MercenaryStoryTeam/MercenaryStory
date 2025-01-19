@@ -30,6 +30,15 @@ public class Equipment : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+        if (savedWeaponId != 0)
+        {
+            ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
+            if (savedWeapon != null)
+            {
+                photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
+            }
+        }
     }
 
     [PunRPC]
@@ -58,37 +67,27 @@ public class Equipment : MonoBehaviourPunCallbacks
     [PunRPC]
     private void NetworkSetEquipment(int itemId)
     {
-        Debug.Log($"전달받은 아아템 아이디: {itemId}");
-        Debug.Log($"allItems 개수: {InventoryManger.Instance.allItems.Count}");
-
-        foreach (var testitem in InventoryManger.Instance.allItems)
-        {
-            Debug.Log($"등록된 아이템 Id: {testitem.id}, Name: {testitem.name}");
-        }
         
         ItemBase item = InventoryManger.Instance.allItems.Find(x => x.id == itemId);
         if (item == null)
         {
-            Debug.LogError($"ID가 {itemId}인 아이템을 찾을 수 없음");
             return;
         }
 
-        Debug.Log($"아이템을 찾음 {item.name}");
-        
         if (item != null)
         {
+            FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = itemId;
+            FirebaseManager.Instance.UploadCurrentUserData("user_weapon_item_Id", itemId);
             SetSwordClass(item);
-            Debug.Log("SetSwordClass() 완료");
             SetPanelSwordCharacter(item);
-            Debug.Log("SetPanelSwordCharacter() 완료");
             
             if (item.equipPrefab.Count > 1)
             {
                 SetShieldClass(item);
-                Debug.Log("SetShieldClass() 완료");
                 SetPanelShieldCharacter(item);
-                Debug.Log("SetPanelShieldCharacter() 완료");
             }
+
+            InventoryManger.Instance.UpdateSlotData();
         }
     }
 
