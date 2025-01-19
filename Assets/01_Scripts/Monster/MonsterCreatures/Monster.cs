@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,6 +28,8 @@ public abstract class Monster : MonoBehaviourPun
     public MonsterStateType currentState;
     
     private Animator animator;
+
+    public List<ItemBase> dropItems;
     #endregion
 
     #region 프로퍼티
@@ -100,8 +103,41 @@ public abstract class Monster : MonoBehaviourPun
         if (Hp <= 0)
         {
             stateMachine.ChangeState(MonsterStateType.Die);
+            TryDropItem(dropItems);
         }
     }
+
+    public ItemBase TryDropItem(List<ItemBase> items)
+    {
+        ItemBase droppedItem = null;
+
+        float dropChance = UnityEngine.Random.Range(0f, 1f);
+        if (dropChance <= 0.5f)
+        {
+            foreach (ItemBase item in items)
+            {
+                float randomValue = UnityEngine.Random.Range(0f, 1f);
+                if (randomValue <= item.dropPercent)
+                {
+                    Debug.Log($"{dropChance}의 확률로 아이템 획득!");
+
+                    droppedItem = item;
+                    Debug.Log($"아이템 {droppedItem}을 {randomValue}의 확률로 얻음!");
+
+
+                    break;
+                }
+            }
+        }
+
+        else
+        {
+            Debug.Log($"{dropChance}의 확률로 아이템을 획득하지 못함");
+        }
+
+        return droppedItem;
+    }
+
     private void OnDrawGizmos()
     {
         // 감지 범위

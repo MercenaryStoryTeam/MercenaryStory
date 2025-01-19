@@ -20,9 +20,6 @@ public class ThiefRat : Monster
     public float _attackRange = 2;
     public float _returnRange = 10;
     
-    [Header("드랍 아이템")]
-    public List<ItemBase> dropItems;
-    
     public void Awake()
     {
         Hp = _hp;
