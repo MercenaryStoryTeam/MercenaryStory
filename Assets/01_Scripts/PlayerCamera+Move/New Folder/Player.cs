@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,6 +32,10 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public float originalMoveSpeed;
 
+    // 드랍된 아이템 상호작용 용도로 사용하는 드랍템 리스트
+    private List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems = new List<(GameObject droppedLightLine, ItemBase droppedItem)>();
+
+
     private void Start()
     {
         maxHp = FirebaseManager.Instance.CurrentUserData.user_HP; 
@@ -40,6 +45,35 @@ public class Player : MonoBehaviour
 
         // 원래 이동 속도 저장
         originalMoveSpeed = moveSpeed;
+    }
+
+    private void Update()
+    {
+        // 드랍된 아이템이 있을 경우
+        if (droppedItems.Count > 0)
+        {
+            for (int i = droppedItems.Count - 1; i >= 0; i--)
+            {
+                if (droppedItems[i].droppedItem == null || droppedItems[i].droppedLightLine == null)
+                {
+                    print("현재 드랍된 아이템 없음");
+                }
+
+                // 드랍된 아이템이 상호작용 가능한 거리에 있을 경우
+                if (Vector3.Distance(transform.position, droppedItems[i].droppedLightLine.transform.position) < 3f)
+                {
+                    print("상호작용 거리임");
+
+                    // E키를 누르면 반경 안에 있는 아이템이 인벤토리에 추가
+                    if (Input.GetKeyDown(KeyCode.E)) 
+                    {
+                        InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
+                        Destroy(droppedItems[i].droppedLightLine.gameObject);
+                        droppedItems.RemoveAt(i);
+                    }
+                }
+            }
+        }
     }
 
     // 흡혈 처리
@@ -121,5 +155,14 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("씬 이름을 설정하세요.");
         }
+    }
+
+    public void DroppedLightLine(ItemBase item)
+    {
+        GameObject itemLightLine = Instantiate(item.dropLightLine, StageManager.Instance.monster.transform.position, Quaternion.identity);
+        droppedItems.Add((itemLightLine, item));
+
+        //if~
+        //현재 스테이지가 보스 스테이지일 경우 몬스터 대신 보스 몬스터 위치 참조
     }
 }
