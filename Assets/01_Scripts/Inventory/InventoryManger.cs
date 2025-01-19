@@ -55,6 +55,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
                     newItem.currentItemCount++;
                     Debug.Log($"추가한 {newItem.name}의 개수: {newItem.currentItemCount}");
                     Debug.Log($"현재 가지고 있는 아이템 개수: {myItems.Count}");
+                    UpdateSlotData();
 
                     break;
                 }
@@ -71,6 +72,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
                     myItems.Add(newItem);
                     newItem.currentItemCount++;
                     slot.slotCount++;
+                    UpdateSlotData();
                     Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
 
                     return;
@@ -85,6 +87,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
                     myItems.Add(newItem);
                     newItem.currentItemCount++;
                     slot.slotCount++;
+                    UpdateSlotData();
                     Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
 
                     break;
@@ -111,6 +114,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
             myItems.Remove(slot.item);
             slot.RemoveItem();
             SlotArray();
+            UpdateSlotData();
         }
     }
 
@@ -138,6 +142,8 @@ public class InventoryManger : SingletonManager<InventoryManger>
                 }
             }
         }
+
+        UpdateSlotData();
     }
     
     // 서버에 올릴 때 사용하면 된다.
@@ -147,12 +153,16 @@ public class InventoryManger : SingletonManager<InventoryManger>
         // 제대로 될 지 모르겠다. 디버그 필수!!!!
         UserData currentUserData = FirebaseManager.Instance.CurrentUserData;
         currentUserData.user_Inventory.Clear();
-        SlotData slotData = new SlotData();
+
         foreach (var slot in slots)
         {
-            slotData.item_Id = slot.item.id;
-            slotData.item_Stack = slot.slotCount;
-            currentUserData.user_Inventory.Add(slotData);
+            if(slot.item != null)
+            {
+                SlotData slotData = new SlotData(slot.item.id, slot.slotCount);
+                currentUserData.user_Inventory.Add(slotData);
+            }
         }
+
+        FirebaseManager.Instance.UploadCurrentUserData("user_Inventory", currentUserData.user_Inventory);
     }
 }
