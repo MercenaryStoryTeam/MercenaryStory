@@ -203,6 +203,7 @@ public class ShopPanel : MonoBehaviour
 			InventoryManger.Instance.SlotArray();
 		}
 		UpdateHoldSlots();
+		InventoryManger.Instance.UpdateSlotData();
 		UIManager.Instance.CloseShopPanel();
 	}
 
