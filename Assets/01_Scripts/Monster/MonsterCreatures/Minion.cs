@@ -34,6 +34,7 @@ public class Minion : MonoBehaviourPun
         playerLayer = LayerMask.GetMask("Player");
         stateMachine = new MinionStateMachine(this);
         ChangeState(MinionStateType.Chase);
+        detectCollider = FindObjectOfType<DetectCollider>();
     }
     protected virtual void Update()
     {
@@ -75,8 +76,8 @@ public class Minion : MonoBehaviourPun
         detectCollider.minions.Remove(this);
         if (hp <= 0)
         {
-            
             stateMachine.ChangeState(MinionStateType.Die);
+            Destroy(gameObject,3f);
         }
     }
 
