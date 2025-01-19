@@ -2,7 +2,7 @@ public class BossDieState : BossState
 {
     public override void EnterState(BossMonster boss)
     {
-        throw new System.NotImplementedException();
+        boss.Animator.SetTrigger("Die");
     }
 
     public override void ExecuteState(BossMonster boss)

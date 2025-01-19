@@ -7,6 +7,7 @@ public class BossBiteState : BossState
     public override void EnterState(BossMonster boss)
     {
         boss.Animator.SetTrigger("Bite");
+        
     }
 
     public override void ExecuteState(BossMonster boss)
@@ -16,6 +17,10 @@ public class BossBiteState : BossState
 
     public override void ExitState(BossMonster boss)
     {
-        
+        if (boss.Target.TryGetComponent<Minion>(out Minion minion))
+        {
+            minion.detectCollider.minions.Remove(minion);
+        }
+        boss.Target = null;
     }
 }

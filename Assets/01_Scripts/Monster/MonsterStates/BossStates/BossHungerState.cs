@@ -7,7 +7,6 @@ public class BossHungerState : BossState
         boss.StartCoolDown();
         boss.Animator.SetTrigger("Hunger");
         boss.Agent.ResetPath();
-        boss.SpawnMinion();
     }
 
     public override void ExecuteState(BossMonster boss)
@@ -16,5 +15,6 @@ public class BossHungerState : BossState
 
     public override void ExitState(BossMonster boss)
     {
+        boss.SpawnMinion();
     }
 }

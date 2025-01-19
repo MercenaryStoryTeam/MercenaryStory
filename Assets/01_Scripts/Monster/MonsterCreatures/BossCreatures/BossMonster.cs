@@ -34,7 +34,8 @@ public class BossMonster : MonoBehaviourPun
     
     private NavMeshAgent agent;
     private BossStateMachine stateMachine;
-    private LayerMask playerLayer;
+    private int playerLayer;
+    private int minionLayer;
     
     [Header("드랍 아이템")]
     public List<ItemBase> dropItems;
@@ -42,14 +43,14 @@ public class BossMonster : MonoBehaviourPun
     [HideInInspector] public Vector3 CenterPoint;
     [HideInInspector] public Animator Animator;
 
+    private ObjectPoolManager poolManager;
 
     #endregion
 
     #region 프로퍼티
     public NavMeshAgent Agent => agent;
-    public BossStateMachine StateMachine => stateMachine;
-    public LayerMask PlayerLayer => playerLayer;
-    public int MinionLayer { get; set; }
+    public int PlayerLayer => playerLayer;
+    public int MinionLayer => minionLayer;
 
     #endregion
     
@@ -59,9 +60,10 @@ public class BossMonster : MonoBehaviourPun
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
         playerLayer = LayerMask.GetMask("Player");
-        MinionLayer = LayerMask.GetMask("Minion");
+        minionLayer = LayerMask.GetMask("Minion");
         stateMachine = new BossStateMachine(this);
         stateMachine.ChangeState(BossStateType.Idle);
+        //poolManager = FindObjectOfType<ObjectPoolManager>();
     }
     
     protected virtual void Update()
@@ -144,10 +146,13 @@ public class BossMonster : MonoBehaviourPun
     {
         foreach (Transform nest in nestList)
         {
-            GameObject minion= Instantiate(minionPrefab, nest);
-            minionList.Add(minion.GetComponent<Minion>());
+            Instantiate(minionPrefab, nest.position, nest.rotation);
+            //PhotonObjectPool<Minion> minionPool = poolManager.GetPool(minionPrefab.GetComponent<Minion>(), 10);
+            //Minion newMinion = minionPool.GetObject(nest.position, Quaternion.identity);
         }
     }
+
+    #region 쿨타임 코루틴
     public void StartCoolDown()
     {
         if (stateMachine.currentStateType == BossStateType.Charge)
@@ -192,6 +197,7 @@ public class BossMonster : MonoBehaviourPun
         print("EndHungerCool");
         hungerPossible = true;
     }
+    #endregion
     
     private void OnDrawGizmos()
     {

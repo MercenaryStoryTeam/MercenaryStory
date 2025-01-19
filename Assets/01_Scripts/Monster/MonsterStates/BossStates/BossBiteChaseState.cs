@@ -7,7 +7,18 @@ public class BossBiteChaseState : BossState
     public override void EnterState(BossMonster boss)
     {
         stateEnterTime = Time.time;
-        int minionNum = Random.Range(0,boss.minionList.Count - 1);
+        
+        int minionNum = 0;
+        
+        for (int i = 0; i < boss.minionList.Count-1; i++)
+        {
+            float exDistance = Vector3.Distance(boss.minionList[minionNum].gameObject.transform.position, boss.transform.position);
+            float distance = Vector3.Distance(boss.minionList[i].gameObject.transform.position, boss.transform.position);
+            if (exDistance >= distance)
+            {
+                minionNum = i;
+            }
+        }
         boss.Target = boss.minionList[minionNum].transform;
         boss.Agent.SetDestination(boss.Target.position);
         boss.Animator.SetBool("IsMoving", true);
