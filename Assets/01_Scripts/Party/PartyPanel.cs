@@ -16,7 +16,10 @@ public class PartyPanel : MonoBehaviour
 	private List<PartyData> parties;
 	public RectTransform partyContent;
 
-	private Dictionary<string, Toggle> partyToggles = new Dictionary<string, Toggle>();
+	private Dictionary<string, Toggle> partyToggles =
+		new Dictionary<string, Toggle>();
+
+	public ToggleGroup partyEntryToggleGroup;
 
 	private void Awake()
 	{
@@ -24,6 +27,7 @@ public class PartyPanel : MonoBehaviour
 		createButton.onClick.AddListener(CreateButtonClick);
 		requestButton.onClick.AddListener(RequestButtonClick);
 		cancelButton.onClick.AddListener(CancelButtonClick);
+		partyEntryToggleGroup = GetComponentInChildren<ToggleGroup>();
 	}
 
 	private void OnEnable()
@@ -50,7 +54,9 @@ public class PartyPanel : MonoBehaviour
 				PartyEntry partyEntry = Instantiate(partyEntryPrefab, partyContent);
 				partyEntry.sizeText.text = party.party_size.ToString();
 				partyEntry.nameText.text = party.party_Name;
-				partyToggles[partyEntry.nameText.text] = partyEntry.GetComponent<Toggle>();
+				partyToggles[partyEntry.nameText.text] =
+					partyEntry.GetComponent<Toggle>();
+				partyToggles[partyEntry.nameText.text].group = partyEntryToggleGroup;
 			}
 		}
 	}
@@ -76,6 +82,7 @@ public class PartyPanel : MonoBehaviour
 			if (partyEntry.Value.isOn)
 			{
 				FirebaseManager.Instance.JoinParty(partyEntry.Key);
+				break;
 			}
 		}
 	}
