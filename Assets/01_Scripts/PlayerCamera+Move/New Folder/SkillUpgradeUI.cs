@@ -9,18 +9,21 @@ public class SkillUpgradeUI : MonoBehaviour
     [Header("Skill FSM 스크립트")]
     public SkillFsm skillFsm;
 
+    [Header("SkillPanel")]
+    public GameObject skillPanel;
+
     // 버튼, 타입 리스트 추후에 묶어서 관리
     [Header("스킬 선택 버튼")]
-    public List<Button> skillSelectionButtons;
+    public List<Button> skillButtons;
 
     [Header("스킬 유형")]
     public List<SkillType> skillTypes;
 
-    [Header("SkillPanel")]
-    public GameObject skillPanel;
-
     [Header("업그레이드 버튼")]
     public Button upgradeButton;
+
+    [Header("업그레이드 비용 표시 텍스트")]
+    public Text upgradeCostText;
 
     [Header("스킬 이름 표시")]
     public Text skillNameText;
@@ -29,25 +32,22 @@ public class SkillUpgradeUI : MonoBehaviour
     public Text skillDescriptionText;
 
     [Header("스킬 레벨 표시")]
-    public Text selectedSkillLevelText;
+    public Text skillLevelText;
 
     [Header("스킬 이미지 표시")]
     public Image skillImage;
 
     [Header("쿨타임 표시")]
     public Text cooldownText;
-
-    [Header("열기 버튼")]
-    public Button openButton;
     
     [Header("닫기 버튼")]
     public Button exitButton;
 
+    [Header("열기 버튼")]
+    public Button openButton;
+
     [Header("골드 표시 텍스트")]
     public Text goldText;
-
-    [Header("업그레이드 비용 표시 텍스트")]
-    public Text upgradeCostText; 
 
     // 기본 버튼 색상 저장
     private Dictionary<Button, Color> buttonDefaultColors = new Dictionary<Button, Color>();
@@ -82,9 +82,9 @@ public class SkillUpgradeUI : MonoBehaviour
         player.OnGoldChanged += UpdateGoldDisplay;
 
         // 기본 버튼 색상 저장 및 리스너 할당
-        for (int i = 0; i < skillSelectionButtons.Count; i++)
+        for (int i = 0; i < skillButtons.Count; i++)
         {
-            var button = skillSelectionButtons[i];
+            var button = skillButtons[i];
             if (button != null)
             {
                 buttonDefaultColors[button] = button.image.color;
@@ -118,9 +118,9 @@ public class SkillUpgradeUI : MonoBehaviour
             skillPanel.SetActive(false);
 
         // 선택된 스킬이 없으므로 'M' 표시 초기화
-        if (selectedSkillLevelText != null)
+        if (skillLevelText != null)
         {
-            selectedSkillLevelText.text = "";
+            skillLevelText.text = "";
         }
 
         // PlayerInputManager의 OnKInput 이벤트에 리스너 추가
@@ -133,7 +133,7 @@ public class SkillUpgradeUI : MonoBehaviour
     private void OnDestroy()
     {
         // 스킬 선택 버튼들의 모든 리스너 해제
-        foreach (var button in skillSelectionButtons)
+        foreach (var button in skillButtons)
         {
             if (button != null)
             {
@@ -248,18 +248,18 @@ public class SkillUpgradeUI : MonoBehaviour
     // 선택된 스킬 레벨 텍스트 업데이트
     private void UpdateSelectedSkillLevelText()
     {
-        if (selectedSkillLevelText == null || selectedSkill == null)
+        if (skillLevelText == null || selectedSkill == null)
             return;
 
         if (selectedSkill.Level >= selectedSkill.MaxLevel)
         {
             // 최대 레벨 도달 시 'M'을 빨간색으로 표시
-            selectedSkillLevelText.text = $"<color=red>M</color>";
+            skillLevelText.text = $"<color=red>M</color>";
         }
         else
         {
             // 레벨 표시
-            selectedSkillLevelText.text = $"레벨: {selectedSkill.Level}";
+            skillLevelText.text = $"레벨: {selectedSkill.Level}";
         }
     }
 
@@ -290,9 +290,9 @@ public class SkillUpgradeUI : MonoBehaviour
         ResetAllButtonColors();
 
         // 선택된 버튼의 색상을 노란색으로 변경
-        for (int i = 0; i < skillSelectionButtons.Count; i++)
+        for (int i = 0; i < skillButtons.Count; i++)
         {
-            var button = skillSelectionButtons[i];
+            var button = skillButtons[i];
             if (button != null && i < skillTypes.Count)
             {
                 if (skillTypes[i] == selectedSkillType)
@@ -306,7 +306,7 @@ public class SkillUpgradeUI : MonoBehaviour
     // 모든 스킬 선택 버튼의 색상을 기본 색상으로 복원
     private void ResetAllButtonColors()
     {
-        foreach (var button in skillSelectionButtons)
+        foreach (var button in skillButtons)
         {
             if (button != null && buttonDefaultColors.ContainsKey(button))
             {

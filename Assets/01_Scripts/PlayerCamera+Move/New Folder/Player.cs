@@ -4,23 +4,27 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    [Header("현재 체력")]
+    [Header("현재 체력")] // UserData 공유
     public float currentHp = 0f;
 
-    [Header("최대 체력")]
+    [Header("최대 체력")] // UserData 공유
     public float maxHp = 0;
 
+    // Rush 스킬 사용시 빼고는 고정
     [Header("이동 속도")]
     public float moveSpeed = 5f;
 
+    // 고정
     [Header("흡혈 비율")]
     public float suckBlood = 3f;
 
-    [Header("골드")]
+    // 용도: 스킬 업그레이드
+    [Header("골드")] // UserData 공유
     public float gold = 0f;
 
-    [Header("경험치")]
-    public float exp = 0f;
+    // 용도가 불분명
+    // [Header("경험치")]
+    // public float exp = 0f;
 
     [Header("플레이어 사망시 전환할 씬 이름")]
     public string nextSceneName;
@@ -41,8 +45,10 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        // FirebaseManager에서 플레이어의 체력 데이터를 가져옵니다.
+        // FirebaseManager UserData에서 현재 체력 가져오기
         currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+        
+        // 현재 체력에서 최대 체력 가져오기
         maxHp = currentHp;
 
         // 원래 이동 속도 저장

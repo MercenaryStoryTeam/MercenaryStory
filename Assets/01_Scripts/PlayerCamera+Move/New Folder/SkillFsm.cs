@@ -102,7 +102,8 @@ public class Skill
         }
     }
 
-    // 캐싱된 쿨타임
+    // 쿨타임을 미리 계산하여 저장하고, 필요할 때마다 계산하지 않고 저장된 값을 사용
+    // 사용하는 가장 큰 이유: 중복 계산 방지
     [HideInInspector]
     public float CachedCooldown;
 
@@ -490,6 +491,7 @@ public class SkillFsm : MonoBehaviour
             Debug.Log($"[CooldownCoroutine] {skill.Name} 스킬 쿨타임 시작: {totalCooldown:F2}초");
         }
 
+        // 남은 시간 디버그 출력
         while (elapsed < totalCooldown)
         {
             elapsed += Time.deltaTime;
