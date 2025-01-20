@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// 이벤트 처리의 장점: 명확한 입력 구분 -> 애니메이터에서 중복 트리거 방지
+
 public class PlayerInputManager : MonoBehaviour
 {
     public static System.Action<Vector2> OnMoveInput;
