@@ -1,47 +1,46 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SkillUpgradeUI : MonoBehaviour
 {
     [Header("Skill FSM 스크립트")]
-    [SerializeField] private SkillFsm skillFsm;
+    public SkillFsm skillFsm;
 
-    [Header("스킬 선택 버튼")]
-    [SerializeField] private Button selectRushButton;
-    [SerializeField] private Button selectParryButton;
-    [SerializeField] private Button selectSkill1Button;
-    [SerializeField] private Button selectSkill2Button;
+    [Header("스킬 선택 버튼들")]
+    public List<Button> skillSelectionButtons; // 스킬 선택 버튼들을 리스트로 관리
+    public List<SkillType> skillTypes; // 각 버튼에 해당하는 스킬 타입 리스트
 
     [Header("레벨 업 버튼")]
-    [SerializeField] private Button levelUpButton;
+    public Button levelUpButton;
 
-    [Header("Skill Name Text")]
-    [SerializeField] private Text skillNameText; // 스킬 이름 표시 텍스트
+    [Header("스킬 이름 표시")]
+    public Text skillNameText;
 
-    [Header("Skill Description Text")]
-    [SerializeField] private Text skillDescriptionText;
+    [Header("스킬 설명 표시")]
+    public Text skillDescriptionText;
 
-    [Header("Selected Skill Level Text")]
-    [SerializeField] private Text selectedSkillLevelText;
+    [Header("스킬 레벨 표시")]
+    public Text selectedSkillLevelText;
 
-    [Header("Skill Image")]
-    [SerializeField] private Image skillImage; // 스킬 이미지 표시 이미지
+    [Header("스킬 이미지 표시")]
+    public Image skillImage;
 
     [Header("Cooldown Text")]
-    [SerializeField] private Text cooldownText; // 쿨타임 표시 텍스트
+    public Text cooldownText;
 
     [Header("Exit Button")]
-    [SerializeField] private Button exitButton;
+    public Button exitButton;
 
     [Header("Open Button")]
-    [SerializeField] private Button openButton;
+    public Button openButton;
 
     [Header("Skill Upgrade Panel")]
-    [SerializeField] private GameObject skillUpgradePanel;
+    public GameObject skillUpgradePanel;
 
-    // 기본 버튼 색상
-    private Color defaultButtonColor;
+    // 기본 버튼 색상 저장
+    private Dictionary<Button, Color> buttonDefaultColors = new Dictionary<Button, Color>();
     // 선택된 버튼 색상
     private Color selectedButtonColor = Color.yellow;
 
@@ -55,49 +54,74 @@ public class SkillUpgradeUI : MonoBehaviour
             return;
         }
 
-        // 기본 버튼 색상 저장
-        if (selectRushButton != null)
-            defaultButtonColor = selectRushButton.image.color;
+        // 기본 버튼 색상 저장 및 리스너 할당
+        for (int i = 0; i < skillSelectionButtons.Count; i++)
+        {
+            var button = skillSelectionButtons[i];
+            if (button != null)
+            {
+                buttonDefaultColors[button] = button.image.color;
 
-        // Assign listeners to skill selection buttons
-        if (selectRushButton != null)
-            selectRushButton.onClick.AddListener(() => SelectSkill(SkillType.Rush));
+                // 스킬 타입이 유효한지 확인
+                if (i < skillTypes.Count)
+                {
+                    SkillType skillType = skillTypes[i];
+                    button.onClick.AddListener(() => SelectSkill(skillType));
+                }
+                else
+                {
+                    Debug.LogWarning($"[SkillUpgradeUI] 스킬 타입이 버튼 수보다 적습니다. 버튼: {button.name}");
+                }
+            }
+        }
 
-        if (selectParryButton != null)
-            selectParryButton.onClick.AddListener(() => SelectSkill(SkillType.Parry));
-
-        if (selectSkill1Button != null)
-            selectSkill1Button.onClick.AddListener(() => SelectSkill(SkillType.Skill1));
-
-        if (selectSkill2Button != null)
-            selectSkill2Button.onClick.AddListener(() => SelectSkill(SkillType.Skill2));
-
-        // Assign listener to upgrade button
+        // 리스너 추가
         if (levelUpButton != null)
             levelUpButton.onClick.AddListener(UpgradeSelectedSkill);
 
-        // Assign listener to exit button
         if (exitButton != null)
             exitButton.onClick.AddListener(CloseSkillUpgradeUI);
 
-        // Assign listener to open button
         if (openButton != null)
             openButton.onClick.AddListener(OpenSkillUpgradeUI);
 
-        // Initially hide the Skill Upgrade Panel
+        // 초기에는 Skill Upgrade Panel을 숨김
         if (skillUpgradePanel != null)
             skillUpgradePanel.SetActive(false);
+
+        // 선택된 스킬이 없으므로 'M' 표시 초기화
+        if (selectedSkillLevelText != null)
+        {
+            selectedSkillLevelText.text = "";
+        }
     }
 
-    // Update 메서드에서 쿨타임 텍스트 업데이트를 제거하거나 수정
-    private void Update()
+    private void OnDestroy()
     {
-        // 쿨타임 텍스트는 선택 시와 업그레이드 후에만 업데이트하므로, 여기서는 업데이트하지 않습니다.
+        // 버튼의 리스너 해제
+        foreach (var button in skillSelectionButtons)
+        {
+            if (button != null)
+            {
+                button.onClick.RemoveAllListeners();
+            }
+        }
+
+        // Upgrade, Exit, Open 버튼의 리스너 해제
+        if (levelUpButton != null)
+            levelUpButton.onClick.RemoveListener(UpgradeSelectedSkill);
+
+        if (exitButton != null)
+            exitButton.onClick.RemoveListener(CloseSkillUpgradeUI);
+
+        if (openButton != null)
+            openButton.onClick.RemoveListener(OpenSkillUpgradeUI);
     }
 
+    // 특정 스킬을 선택하는 메서드
     private void SelectSkill(SkillType skillType)
     {
-        // Find and set the selected skill
+        // 선택된 스킬 찾기 및 설정
         selectedSkill = skillFsm.GetSkill(skillType);
         if (selectedSkill == null)
         {
@@ -105,25 +129,18 @@ public class SkillUpgradeUI : MonoBehaviour
             return;
         }
 
-        // Update the skill name, description, and level texts
+        // UI 요소 업데이트
         UpdateSkillName();
         UpdateSkillDescription();
         UpdateSelectedSkillLevelText();
-
-        // Update the skill image
         UpdateSkillImage();
-
-        // Update the cooldown text (전체 쿨타임만 표시)
         UpdateCooldownText();
-
-        // Change button colors to indicate selection
         UpdateButtonColors(skillType);
-
-        // Check if the selected skill has reached max level
         UpdateUpgradeButtonState();
     }
 
-    private void UpgradeSelectedSkill()
+    // 선택된 스킬을 업그레이드하는 메서드
+    public void UpgradeSelectedSkill()
     {
         if (selectedSkill == null)
         {
@@ -131,30 +148,31 @@ public class SkillUpgradeUI : MonoBehaviour
             return;
         }
 
-        // Upgrade the selected skill
+        // 선택된 스킬 업그레이드
         bool success = skillFsm.LevelUpSkill(selectedSkill.skillType);
         if (success)
         {
-            Debug.Log($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬을 업그레이드했습니다. 현재 레벨: {selectedSkill.level}");
+            Debug.Log($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬을 업그레이드했습니다. 현재 레벨: {selectedSkill.Level}");
 
-            // Update the skill level text
+            // 스킬 레벨 텍스트 업데이트
             UpdateSelectedSkillLevelText();
 
-            // Update the upgrade button state based on new level
+            // 새로운 레벨에 따른 업그레이드 버튼 상태 업데이트
             UpdateUpgradeButtonState();
 
-            // Update the cooldown display in case cooldown changes
+            // 쿨타임 변경 시 쿨타임 텍스트 업데이트
             UpdateCooldownText();
         }
     }
 
+    // UI 업데이트 메서드들
     private void UpdateSkillName()
     {
         if (skillNameText == null || selectedSkill == null)
             return;
 
-        // Display the selected skill's name
-        skillNameText.text = $"Skill: {selectedSkill.Name}";
+        // 선택된 스킬의 이름 표시
+        skillNameText.text = $"스킬: {selectedSkill.Name}";
     }
 
     private void UpdateSkillDescription()
@@ -162,8 +180,8 @@ public class SkillUpgradeUI : MonoBehaviour
         if (skillDescriptionText == null || selectedSkill == null)
             return;
 
-        // Display the selected skill's description
-        skillDescriptionText.text = $"Description: {selectedSkill.description}";
+        // 선택된 스킬의 설명 표시
+        skillDescriptionText.text = $"설명: {selectedSkill.Description}";
     }
 
     private void UpdateSelectedSkillLevelText()
@@ -171,8 +189,17 @@ public class SkillUpgradeUI : MonoBehaviour
         if (selectedSkillLevelText == null || selectedSkill == null)
             return;
 
-        // Display the selected skill's current level
-        selectedSkillLevelText.text = $"Level: {selectedSkill.level}";
+        // 스킬이 최대 레벨에 도달했는지 확인
+        if (selectedSkill.Level >= selectedSkill.MaxLevel)
+        {
+            // 'M'을 빨간색으로 표시
+            selectedSkillLevelText.text = $"<color=red>M</color>";
+        }
+        else
+        {
+            // 'M' 없이 레벨 표시
+            selectedSkillLevelText.text = $"레벨: {selectedSkill.Level}";
+        }
     }
 
     private void UpdateSkillImage()
@@ -180,9 +207,9 @@ public class SkillUpgradeUI : MonoBehaviour
         if (skillImage == null || selectedSkill == null)
             return;
 
-        // Display the selected skill's image
-        skillImage.sprite = selectedSkill.icon;
-        skillImage.enabled = selectedSkill.icon != null; // 이미지가 있을 때만 활성화
+        // 선택된 스킬의 이미지 표시
+        skillImage.sprite = selectedSkill.Icon;
+        skillImage.enabled = selectedSkill.Icon != null; // 이미지가 있을 때만 활성화
     }
 
     private void UpdateCooldownText()
@@ -191,82 +218,75 @@ public class SkillUpgradeUI : MonoBehaviour
             return;
 
         // 전체 쿨타임만 표시
-        // F2: 소수점 자리수 
-        cooldownText.text = $"쿨타임: {selectedSkill.CurrentCooldown:F2} 초";
+        // F2: 소수점 두 자리까지 표시
+        cooldownText.text = $"쿨타임: {selectedSkill.CachedCooldown:F2} 초";
     }
 
+    // 버튼 색상 업데이트 메서드
     private void UpdateButtonColors(SkillType selectedSkillType)
     {
-        // Reset all buttons to default color
+        // 모든 버튼을 기본 색상으로 초기화
         ResetAllButtonColors();
 
-        // Set the selected button to yellow
-        switch (selectedSkillType)
+        // 선택된 버튼을 노란색으로 변경
+        for (int i = 0; i < skillSelectionButtons.Count; i++)
         {
-            case SkillType.Rush:
-                if (selectRushButton != null)
-                    selectRushButton.image.color = selectedButtonColor;
-                break;
-            case SkillType.Parry:
-                if (selectParryButton != null)
-                    selectParryButton.image.color = selectedButtonColor;
-                break;
-            case SkillType.Skill1:
-                if (selectSkill1Button != null)
-                    selectSkill1Button.image.color = selectedButtonColor;
-                break;
-            case SkillType.Skill2:
-                if (selectSkill2Button != null)
-                    selectSkill2Button.image.color = selectedButtonColor;
-                break;
+            var button = skillSelectionButtons[i];
+            if (button != null && i < skillTypes.Count)
+            {
+                if (skillTypes[i] == selectedSkillType)
+                {
+                    button.image.color = selectedButtonColor;
+                }
+            }
         }
     }
 
+    // 모든 스킬 선택 버튼의 색상을 기본 색상으로 복원
     private void ResetAllButtonColors()
     {
-        if (selectRushButton != null)
-            selectRushButton.image.color = defaultButtonColor;
-
-        if (selectParryButton != null)
-            selectParryButton.image.color = defaultButtonColor;
-
-        if (selectSkill1Button != null)
-            selectSkill1Button.image.color = defaultButtonColor;
-
-        if (selectSkill2Button != null)
-            selectSkill2Button.image.color = defaultButtonColor;
+        foreach (var button in skillSelectionButtons)
+        {
+            if (button != null && buttonDefaultColors.ContainsKey(button))
+            {
+                button.image.color = buttonDefaultColors[button];
+            }
+        }
     }
 
-    private void UpdateUpgradeButtonState()
+    // 업그레이드 버튼의 활성화 상태를 업데이트
+    public void UpdateUpgradeButtonState()
     {
         if (selectedSkill == null || levelUpButton == null)
             return;
 
-        if (selectedSkill.level >= selectedSkill.maxLevel)
+        if (selectedSkill.Level >= selectedSkill.MaxLevel)
         {
-            // Disable the upgrade button if max level reached
+            // 최대 레벨에 도달한 경우 업그레이드 버튼 비활성화
             levelUpButton.interactable = false;
-            Debug.Log($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬은 이미 최대 레벨({selectedSkill.maxLevel})에 도달했습니다.");
+            Debug.Log($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬은 이미 최대 레벨({selectedSkill.MaxLevel})에 도달했습니다.");
         }
         else
         {
-            // Enable the upgrade button if not at max level
+            // 최대 레벨에 도달하지 않은 경우 업그레이드 버튼 활성화
             levelUpButton.interactable = true;
         }
     }
 
-    private void CloseSkillUpgradeUI()
+    // Skill Upgrade UI를 닫는 메서드
+    public void CloseSkillUpgradeUI()
     {
         if (skillUpgradePanel != null)
             skillUpgradePanel.SetActive(false);
     }
 
-    private void OpenSkillUpgradeUI()
+    // Skill Upgrade UI를 여는 메서드
+    public void OpenSkillUpgradeUI()
     {
         if (skillUpgradePanel != null)
             skillUpgradePanel.SetActive(true);
 
-        // Optionally, select a default skill when opening the UI
-        SelectSkill(SkillType.Rush);
+        // 선택 시 기본 스킬 선택 (옵션)
+        //SelectSkill(SkillType.Rush);
     }
 }
