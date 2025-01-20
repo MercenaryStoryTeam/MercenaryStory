@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -55,7 +56,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
                     newItem.currentItemCount++;
                     Debug.Log($"추가한 {newItem.name}의 개수: {newItem.currentItemCount}");
                     Debug.Log($"현재 가지고 있는 아이템 개수: {myItems.Count}");
-                    UpdateSlotData();
 
                     break;
                 }
@@ -114,7 +114,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
             myItems.Remove(slot.item);
             slot.RemoveItem();
             SlotArray();
-            UpdateSlotData();
         }
     }
 
@@ -142,27 +141,74 @@ public class InventoryManger : SingletonManager<InventoryManger>
                 }
             }
         }
-
-        UpdateSlotData();
     }
     
     // 서버에 올릴 때 사용하면 된다.
     // ServerManager.JoinOrCreatePersistentRoom();에서
-    public void UpdateSlotData()
+    public bool UpdateSlotData()
     {
-        // 제대로 될 지 모르겠다. 디버그 필수!!!!
-        UserData currentUserData = FirebaseManager.Instance.CurrentUserData;
-        currentUserData.user_Inventory.Clear();
-
-        foreach (var slot in slots)
+        Debug.Log("UpdateSlotData 시작");
+    
+        // FirebaseManager 체크
+        if (FirebaseManager.Instance == null)
         {
-            if(slot.item != null)
-            {
-                SlotData slotData = new SlotData(slot.item.id, slot.slotCount);
-                currentUserData.user_Inventory.Add(slotData);
-            }
+            Debug.LogError("FirebaseManager.Instance가 null입니다");
+            return false;
+        }
+    
+        // CurrentUserData 체크
+        if (FirebaseManager.Instance.CurrentUserData == null)
+        {
+            Debug.LogError("CurrentUserData가 null입니다");
+            return false;
+        }
+    
+        // slots 체크
+        if (slots == null)
+        {
+            Debug.LogError("slots가 null입니다");
+            return false;
+        }
+    
+        // user_Inventory 체크
+        if (FirebaseManager.Instance.CurrentUserData.user_Inventory == null)
+        {
+            Debug.LogError("user_Inventory가 null입니다");
+            FirebaseManager.Instance.CurrentUserData.user_Inventory = new List<SlotData>();
         }
 
-        FirebaseManager.Instance.UploadCurrentUserData("user_Inventory", currentUserData.user_Inventory);
+        try 
+        {
+            UserData currentUserData = FirebaseManager.Instance.CurrentUserData;
+            Debug.Log($"현재 인벤토리 아이템 수: {currentUserData.user_Inventory.Count}");
+        
+            currentUserData.user_Inventory.Clear();
+
+            foreach (var slot in slots)
+            {
+                if (slot == null)
+                {
+                    Debug.LogWarning("slot이 null입니다");
+                    continue;
+                }
+
+                if(slot.item != null)
+                {
+                    SlotData slotData = new SlotData(slot.item.id, slot.slotCount);
+                    currentUserData.user_Inventory.Add(slotData);
+                    Debug.Log($"슬롯 데이터 추가: ItemID={slot.item.id}, Count={slot.slotCount}");
+                }
+            }
+
+            string jsonData = JsonConvert.SerializeObject(currentUserData.user_Inventory);
+            FirebaseManager.Instance.UploadCurrentUserData("user_Inventory", jsonData);
+            Debug.Log("Firebase 업로드 요청 완료");
+            return true;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"인벤토리 업데이트 실패: {e.Message}");
+            return false;
+        }
     }
 }

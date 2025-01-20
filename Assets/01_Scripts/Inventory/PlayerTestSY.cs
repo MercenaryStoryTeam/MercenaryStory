@@ -29,19 +29,22 @@ public class PlayerTestSY : MonoBehaviour
                 if (Vector3.Distance(transform.position, droppedItems[i].droppedLightLine.transform.position) <
                     interactRange)
                 {
-                    print("상호작용 거리임");
                     if (Input.GetKeyDown(KeyCode.E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
                     {
-                        InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
-                        Destroy(droppedItems[i].droppedLightLine);
-                        droppedItems.RemoveAt(i);
+                        if (droppedItems[i].droppedItem != null && droppedItems[i].droppedLightLine != null)
+                        {
+                            bool isDropped = InventoryManger.Instance.UpdateSlotData();
+                            if (isDropped)
+                            {
+                                InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
+                                Destroy(droppedItems[i].droppedLightLine);
+                                droppedItems.RemoveAt(i);
+                            }
+                        }
                     }
-
-                    InventoryManger.Instance.UpdateSlotData();
                 }
             }
         }
-
     }
 
     public ItemBase TryDropItems(List<ItemBase> items)
