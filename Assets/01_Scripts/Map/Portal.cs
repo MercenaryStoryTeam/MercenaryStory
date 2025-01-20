@@ -30,7 +30,7 @@ public class Portal : MonoBehaviour
         {
             foreach (var hitCollider in hitColliders)
             { 
-                if (hitCollider.gameObject == StageManager.Instance.playerFsm.gameObject && StageManager.Instance.stageClear)
+                if (hitCollider.gameObject == StageManager.Instance.playerFsm.gameObject && StageManager.Instance.StageClear)
                 {
                     //TODO: 씬 전환 예정
                 } 
