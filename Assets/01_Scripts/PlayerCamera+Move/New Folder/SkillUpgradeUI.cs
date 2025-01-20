@@ -1,18 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
+// 스킬 업그레이드 UI 관리
 public class SkillUpgradeUI : MonoBehaviour
 {
     [Header("Skill FSM 스크립트")]
     public SkillFsm skillFsm;
 
-    [Header("스킬 선택 버튼들")]
-    public List<Button> skillSelectionButtons; // 스킬 선택 버튼들을 리스트로 관리
-    public List<SkillType> skillTypes; // 각 버튼에 해당하는 스킬 타입 리스트
+    // 버튼, 타입 리스트 추후에 묶어서 관리
+    [Header("스킬 선택 버튼")]
+    public List<Button> skillSelectionButtons;
 
-    [Header("레벨 업 버튼")]
-    public Button levelUpButton;
+    [Header("스킬 유형")]
+    public List<SkillType> skillTypes;
+
+    [Header("SkillPanel")]
+    public GameObject skillPanel;
+
+    [Header("업그레이드 버튼")]
+    public Button upgradeButton;
 
     [Header("스킬 이름 표시")]
     public Text skillNameText;
@@ -26,24 +34,32 @@ public class SkillUpgradeUI : MonoBehaviour
     [Header("스킬 이미지 표시")]
     public Image skillImage;
 
-    [Header("Cooldown Text")]
+    [Header("쿨타임 표시")]
     public Text cooldownText;
 
-    [Header("Exit Button")]
+    [Header("열기 버튼")]
+    public Button openButton;
+    
+    [Header("닫기 버튼")]
     public Button exitButton;
 
-    [Header("Open Button")]
-    public Button openButton;
+    [Header("골드 표시 텍스트")]
+    public Text goldText;
 
-    [Header("Skill Upgrade Panel")]
-    public GameObject skillUpgradePanel;
+    [Header("업그레이드 비용 표시 텍스트")]
+    public Text upgradeCostText; 
 
     // 기본 버튼 색상 저장
     private Dictionary<Button, Color> buttonDefaultColors = new Dictionary<Button, Color>();
+   
     // 선택된 버튼 색상
     private Color selectedButtonColor = Color.yellow;
 
+    // 현재 선택된 스킬을 저장하는 변수
     private Skill selectedSkill;
+
+    // Player 스크립트 참조
+    private Player player;
 
     private void Start()
     {
@@ -53,6 +69,17 @@ public class SkillUpgradeUI : MonoBehaviour
             Debug.LogError("[SkillUpgradeUI] SkillFsm 참조가 설정되지 않았습니다.");
             return;
         }
+
+        // Player 인스턴스 찾기
+        player = FindObjectOfType<Player>();
+        if (player == null)
+        {
+            Debug.LogError("[SkillUpgradeUI] Player 인스턴스를 찾을 수 없습니다.");
+            return;
+        }
+
+        // Player의 골드 변경 이벤트 구독
+        player.OnGoldChanged += UpdateGoldDisplay;
 
         // 기본 버튼 색상 저장 및 리스너 할당
         for (int i = 0; i < skillSelectionButtons.Count; i++)
@@ -77,8 +104,8 @@ public class SkillUpgradeUI : MonoBehaviour
         }
 
         // 다른 버튼들에 리스너 할당
-        if (levelUpButton != null)
-            levelUpButton.onClick.AddListener(UpgradeSelectedSkill);
+        if (upgradeButton != null)
+            upgradeButton.onClick.AddListener(UpgradeSelectedSkill);
 
         if (exitButton != null)
             exitButton.onClick.AddListener(CloseSkillUpgradeUI);
@@ -87,8 +114,8 @@ public class SkillUpgradeUI : MonoBehaviour
             openButton.onClick.AddListener(OpenSkillUpgradeUI);
 
         // 초기에는 Skill Upgrade Panel을 숨김
-        if (skillUpgradePanel != null)
-            skillUpgradePanel.SetActive(false);
+        if (skillPanel != null)
+            skillPanel.SetActive(false);
 
         // 선택된 스킬이 없으므로 'M' 표시 초기화
         if (selectedSkillLevelText != null)
@@ -98,6 +125,9 @@ public class SkillUpgradeUI : MonoBehaviour
 
         // PlayerInputManager의 OnKInput 이벤트에 리스너 추가
         PlayerInputManager.OnKInput += ToggleSkillUpgradeUI;
+
+        // 골드 표시 업데이트 (현재 골드 값 전달)
+        UpdateGoldDisplay(player.gold);
     }
 
     private void OnDestroy()
@@ -112,8 +142,8 @@ public class SkillUpgradeUI : MonoBehaviour
         }
 
         // Upgrade, Exit, Open 버튼의 리스너 해제
-        if (levelUpButton != null)
-            levelUpButton.onClick.RemoveListener(UpgradeSelectedSkill);
+        if (upgradeButton != null)
+            upgradeButton.onClick.RemoveListener(UpgradeSelectedSkill);
 
         if (exitButton != null)
             exitButton.onClick.RemoveListener(CloseSkillUpgradeUI);
@@ -123,6 +153,12 @@ public class SkillUpgradeUI : MonoBehaviour
 
         // OnKInput 이벤트에서 리스너 해제
         PlayerInputManager.OnKInput -= ToggleSkillUpgradeUI;
+
+        // Player의 골드 변경 이벤트 해제
+        if (player != null)
+        {
+            player.OnGoldChanged -= UpdateGoldDisplay;
+        }
     }
 
     // 특정 스킬을 선택하는 메서드
@@ -144,6 +180,7 @@ public class SkillUpgradeUI : MonoBehaviour
         UpdateCooldownText();
         UpdateButtonColors(skillType);
         UpdateUpgradeButtonState();
+        UpdateUpgradeCostDisplay();
     }
 
     // 선택된 스킬을 업그레이드하는 메서드
@@ -155,24 +192,38 @@ public class SkillUpgradeUI : MonoBehaviour
             return;
         }
 
-        // 선택된 스킬 업그레이드 시도
-        bool success = skillFsm.LevelUpSkill(selectedSkill.skillType);
-        if (success)
+        if (selectedSkill.Level >= selectedSkill.MaxLevel)
         {
-            Debug.Log($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬을 업그레이드했습니다. 현재 레벨: {selectedSkill.Level}");
+            Debug.LogWarning($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬은 이미 최대 레벨({selectedSkill.MaxLevel})에 도달했습니다.");
+            return;
+        }
 
-            // 스킬 레벨 텍스트 업데이트
-            UpdateSelectedSkillLevelText();
+        // 다음 레벨 업그레이드 비용 가져오기
+        float upgradeCost = selectedSkill.UpgradeCosts[selectedSkill.Level - 1]; // 레벨은 1부터 시작
 
-            // 업그레이드 버튼 상태 업데이트
-            UpdateUpgradeButtonState();
+        // 플레이어가 충분한 골드를 가지고 있는지 확인
+        if (player.SpendGold(upgradeCost))
+        {
+            // 스킬 레벨업 시도
+            bool success = skillFsm.LevelUpSkill(selectedSkill.skillType);
+            if (success)
+            {
+                Debug.Log($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬을 업그레이드했습니다. 현재 레벨: {selectedSkill.Level}");
 
-            // 쿨타임 텍스트 업데이트
-            UpdateCooldownText();
+                // UI 요소 업데이트
+                UpdateSelectedSkillLevelText();
+                UpdateUpgradeButtonState();
+                UpdateCooldownText();
+                UpdateUpgradeCostDisplay();
+            }
+            else
+            {
+                Debug.LogWarning($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬 업그레이드에 실패했습니다.");
+            }
         }
         else
         {
-            Debug.LogWarning($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬 업그레이드에 실패했습니다.");
+            Debug.LogWarning("[SkillUpgradeUI] 골드가 부족하여 스킬을 업그레이드할 수 없습니다.");
         }
     }
 
@@ -267,46 +318,79 @@ public class SkillUpgradeUI : MonoBehaviour
     // 업그레이드 버튼의 활성화 상태를 업데이트
     public void UpdateUpgradeButtonState()
     {
-        if (selectedSkill == null || levelUpButton == null)
+        if (selectedSkill == null || upgradeButton == null)
             return;
 
         if (selectedSkill.Level >= selectedSkill.MaxLevel)
         {
             // 최대 레벨에 도달한 경우 업그레이드 버튼 비활성화
-            levelUpButton.interactable = false;
+            upgradeButton.interactable = false;
             Debug.Log($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬은 이미 최대 레벨({selectedSkill.MaxLevel})에 도달했습니다.");
         }
         else
         {
-            // 최대 레벨에 도달하지 않은 경우 업그레이드 버튼 활성화
-            levelUpButton.interactable = true;
+            // 다음 업그레이드 비용 가져오기
+            float nextUpgradeCost = selectedSkill.UpgradeCosts[selectedSkill.Level - 1];
+            // 플레이어가 충분한 골드를 가지고 있는지 확인하여 버튼 활성화 여부 결정
+            upgradeButton.interactable = player.gold >= nextUpgradeCost;
         }
+    }
+
+    // 스킬 업그레이드 비용 표시 업데이트
+    private void UpdateUpgradeCostDisplay()
+    {
+        if (selectedSkill == null || upgradeCostText == null)
+            return;
+
+        if (selectedSkill.Level >= selectedSkill.MaxLevel)
+        {
+            // "Max 레벨"을 빨간색으로 표시
+            upgradeCostText.text = "<color=#FF0000>Max</color> 레벨";
+        }
+        else
+        {
+            float nextUpgradeCost = selectedSkill.UpgradeCosts[selectedSkill.Level - 1];
+            // 비용을 노란색으로 표시
+            upgradeCostText.text = $"비용: <color=#FFFF00>{nextUpgradeCost}</color> 골드";
+        }
+    }
+
+
+    // 골드 표시 업데이트
+    private void UpdateGoldDisplay(float newGold)
+    {
+        if (goldText != null)
+        {
+            goldText.text = $"{newGold}";
+        }
+
+        // 업그레이드 버튼 상태도 함께 업데이트
+        UpdateUpgradeButtonState();
     }
 
     // Skill Upgrade UI 패널을 닫는 메서드
     public void CloseSkillUpgradeUI()
     {
-        if (skillUpgradePanel != null)
-            skillUpgradePanel.SetActive(false);
+        if (skillPanel != null)
+            skillPanel.SetActive(false);
     }
 
     // Skill Upgrade UI 패널을 여는 메서드
     public void OpenSkillUpgradeUI()
     {
-        if (skillUpgradePanel != null)
-            skillUpgradePanel.SetActive(true);
-
-        // 필요 시 기본 스킬 선택 (옵션)
-        // SelectSkill(SkillType.Rush);
+        if (skillPanel != null)
+            skillPanel.SetActive(true);
     }
 
     // Skill Upgrade UI 패널의 활성화 상태를 토글하는 메서드
     private void ToggleSkillUpgradeUI()
     {
-        if (skillUpgradePanel == null)
+        if (skillPanel == null)
             return;
 
-        bool isActive = skillUpgradePanel.activeSelf;
-        skillUpgradePanel.SetActive(!isActive);
+        bool isActive = skillPanel.activeSelf;
+        skillPanel.SetActive(!isActive);
     }
 }
+
+//
