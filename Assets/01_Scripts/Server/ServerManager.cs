@@ -36,12 +36,39 @@ public class ServerManager
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 	}
 
-	public static void LoadScene(string sceneName)
+	public static void LoadLobbyScene(string sceneName)
 	{
 		PhotonNetwork.LoadLevel(sceneName);
 		TitleUI.Instance.PanelCloseAll();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
+	}
+
+	// 씬(룸)이동 구현을 위한 부분
+	public static void LoadScene(string sceneName)
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			// 1. Firebase에 Room 정보 업데이트
+			FirebaseManager.Instance.UploadPartyDataToLoadScene(sceneName);
+
+			// 2. 새로운 Room 생성
+			RoomOptions options = new RoomOptions
+			{
+				MaxPlayers = 4,
+				IsVisible = false,
+				IsOpen = true
+			};
+			PhotonNetwork.CreateRoom(sceneName, options);
+		}
+		else
+		{
+			// masterClient가 아닌 플레이어는 방 생성이 완료된 후 입장
+			PhotonNetwork.JoinRoom(sceneName);
+		}
+
+		// 3. Scene 변경
+		PhotonNetwork.LoadLevel(sceneName);
 	}
 
 	public static void PlayerSpawn(Transform spawnPoint)
