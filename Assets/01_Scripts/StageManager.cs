@@ -9,8 +9,9 @@ public class StageManager : MonoBehaviour
     public static StageManager Instance { get; private set; }
     
     public List<Monster> monster;
-    [FormerlySerializedAs("player")] public PlayerFsm playerFsm;
-    public bool stageClear = false;
+    public PlayerFsm playerFsm;
+    public bool StageClear { get; private set; }
+    public Transform spawnPoint;
     
     protected void Awake()
     {
@@ -28,7 +29,7 @@ public class StageManager : MonoBehaviour
     {
         if (monster.Count <= 0)
         {
-            stageClear = true;
+            StageClear = true;
         }
     }
 }
