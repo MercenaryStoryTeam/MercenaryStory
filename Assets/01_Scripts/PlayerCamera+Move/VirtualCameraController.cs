@@ -37,41 +37,35 @@ public class VirtualCameraController : MonoBehaviour
 
     void Start()
     {
-        // Player 오브젝트 자동 검색 및 설정
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player)
-        {
-            followTarget = player.transform;
-            lookAtTarget = player.transform;
-        }
-        else
+        SetTargets();
+        if (!followTarget || !lookAtTarget)
         {
             Debug.LogError("Player 태그를 가진 오브젝트를 찾을 수 없습니다.");
             enabled = false;
             return;
         }
 
-        // Body를 Transposer로 설정 (인스펙터에서도 설정 가능)
         transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
-
-        // vCam의 기본적인 Lens FOV
         vCam.m_Lens.FieldOfView = fieldOfView;
-
-        // Follow와 LookAt 대상 자동 설정
         vCam.Follow = followTarget;
         vCam.LookAt = lookAtTarget;
-
-        // 오프셋, 회전, Damping 초기 반영
         ConfigureTransposer();
         transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
     }
 
     void LateUpdate()
     {
-        // 값 변경시 즉시 반영
-        vCam.m_Lens.FieldOfView = fieldOfView;
-        ConfigureTransposer();
-        transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
+        if (!followTarget || !lookAtTarget)
+        {
+            SetTargets();
+        }
+
+        if (followTarget && lookAtTarget)
+        {
+            vCam.m_Lens.FieldOfView = fieldOfView;
+            ConfigureTransposer();
+            transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
+        }
     }
 
     void ConfigureTransposer()
@@ -95,6 +89,19 @@ public class VirtualCameraController : MonoBehaviour
             transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
         }
     }
-}
 
-// 완성
+    private void SetTargets()
+    {
+        if (!followTarget || !lookAtTarget)
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player)
+            {
+                followTarget = player.transform;
+                lookAtTarget = player.transform;
+                vCam.Follow = followTarget;
+                vCam.LookAt = lookAtTarget;
+            }
+        }
+    }
+}
