@@ -1,16 +1,34 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class StageManager : SingletonManager<StageManager>
+public class StageManager : MonoBehaviour
 {
-    public Monster monster;
-    public BossMonster bossMonster;
-
-
-    private void Awake()
+    public static StageManager Instance { get; private set; }
+    
+    public List<Monster> monster;
+    [FormerlySerializedAs("player")] public PlayerFsm playerFsm;
+    public bool stageClear = false;
+    
+    protected void Awake()
     {
-        monster = GetComponent<Monster>();
-        bossMonster = GetComponent<BossMonster>();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            DestroyImmediate(gameObject);
+        }
+    }
+
+    public void Update()
+    {
+        if (monster.Count <= 0)
+        {
+            stageClear = true;
+        }
     }
 }
