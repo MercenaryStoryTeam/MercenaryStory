@@ -5,22 +5,27 @@ public class SignInPanel : MonoBehaviour
 {
 	public InputField emailInput;
 	public InputField pwInput;
-	public Button signUpButton;
 	public Button signInButton;
+	public Button signUpButton;
 
 	private void Awake()
 	{
-		signUpButton.onClick.AddListener(SignUpButtonClick);
 		signInButton.onClick.AddListener(SignInButtonClick);
-	}
+		signUpButton.onClick.AddListener(SignUpButtonClick);
 
-	private void SignUpButtonClick()
-	{
-		TitleUI.Instance.PanelOpen("SignUp");
+		// Input Navigation Helper setup
+		var inputNav = gameObject.GetComponent<InputNavigationHelper>();
+		inputNav.navigationElements = new Selectable[]
+			{ emailInput, pwInput, signInButton, signUpButton };
 	}
 
 	private void SignInButtonClick()
 	{
 		FirebaseManager.Instance.SignIn(emailInput.text, pwInput.text);
+	}
+
+	private void SignUpButtonClick()
+	{
+		TitleUI.Instance.PanelOpen("SignUp");
 	}
 }

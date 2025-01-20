@@ -271,9 +271,16 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 						if (partyData.party_Members.Count < partyData.party_size)
 						{
 							// 가입
-							partyData.party_Members.Add(CurrentUserData);
 							CurrentPartyData = partyData;
 							CurrentPartyData.AddMember(CurrentUserData);
+							CurrentUserData.user_CurrentParty = CurrentPartyData.party_Id;
+							UploadCurrentUserData("user_CurrentParty",
+								CurrentPartyData.party_Id);
+							UploadCurrentPartyData();
+							UIManager.Instance.popUp.PopUpOpen(
+								$"{CurrentPartyData.party_Name}\n파티에 가입하였습니다.",
+								() => UIManager.Instance.popUp.PopUpClose());
+							UIManager.Instance.OpenPartyPanel();
 						}
 						else
 						{
@@ -357,8 +364,9 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				await partiesRef.SetRawJsonValueAsync(updatedPartyDataJson);
 
 				// 현재 유저의 user_CurrentParty 초기화
-				await usersRef.Child(CurrentUserData.user_Id).Child("user_CurrentParty")
-					.SetValueAsync("");
+				CurrentUserData.user_CurrentParty = "";
+				UploadCurrentUserData("user_CurrentParty",
+					CurrentUserData.user_CurrentParty);
 			}
 
 			// 로컬 데이터 초기화
@@ -370,6 +378,24 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				UIManager.Instance.popUp.PopUpClose();
 				UIManager.Instance.OpenPartyPanel();
 			});
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	public async void UploadCurrentPartyData()
+	{
+		try
+		{
+			partiesRef = DB.GetReference($"parties/{CurrentPartyData.party_Id}");
+			string partyDataJson = JsonConvert.SerializeObject(CurrentPartyData);
+			await partiesRef.SetRawJsonValueAsync(partyDataJson);
 		}
 		catch (FirebaseException e)
 		{

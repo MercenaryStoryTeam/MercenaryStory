@@ -23,9 +23,8 @@ public class ServerManager
 			EmptyRoomTtl = 60000
 		};
 
-		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
-
-		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: roomName,
+		FirebaseManager.Instance.CurrentUserData.UpdateUserData(
+			currentServer: roomName,
 			currentParty: "");
 
 		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentServer",
@@ -34,6 +33,7 @@ public class ServerManager
 		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentParty", "");
 
 		ChatManager.Instance.ChatStart(roomName);
+		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
 	}
 
 	public static void LoadScene(string sceneName)
@@ -52,33 +52,35 @@ public class ServerManager
 				spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
 	}
 
-	public static GameObject PlayerEquip(int rarity, string equipmentName, Transform parent)
-	{		
+	public static GameObject PlayerEquip(int rarity, string equipmentName,
+		Transform parent)
+	{
 		string prefabPath = $"Equipment/{rarity}/{equipmentName}";
 		GameObject prefab = Resources.Load<GameObject>(prefabPath);
-		
+
 		if (prefab == null)
 		{
 			Debug.LogError($"프리팹을 찾을 수 없음: {prefabPath}");
 			return null;
 		}
-		
-		GameObject equipmentPrefab = 
-			PhotonNetwork.Instantiate(prefabPath,parent.position, Quaternion.identity);
-		
+
+		GameObject equipmentPrefab =
+			PhotonNetwork.Instantiate(prefabPath, parent.position,
+				Quaternion.identity);
+
 		if (equipmentPrefab == null)
 		{
 			Debug.LogError($"장비 프리팹 생성 실패: {prefabPath}");
 			return null;
 		}
-		
+
 		equipmentPrefab.transform.SetParent(parent);
 		equipmentPrefab.transform.localPosition = prefab.transform.localPosition;
 		equipmentPrefab.transform.localRotation = prefab.transform.localRotation;
-		
+
 		return equipmentPrefab;
 	}
-	
+
 	public static string GetServerName()
 	{
 		return PhotonNetwork.CurrentRoom.Name;

@@ -7,16 +7,21 @@ using UnityEngine.UI;
 public class SignUpPanel : MonoBehaviour
 {
 	public InputField emailInput;
+	public Button emailCheckButton;
 	public InputField pwInput1;
 	public InputField pwInput2;
 	public InputField nameInput;
-	public Button emailCheckButton;
 	public Button signUpButton;
 
 	private void Awake()
 	{
 		emailCheckButton.onClick.AddListener(IdCheckButtonClick);
 		signUpButton.onClick.AddListener(SignUpButtonClick);
+
+		// Input Navigation Helper setup
+		var inputNav = gameObject.GetComponent<InputNavigationHelper>();
+		inputNav.navigationElements = new Selectable[]
+			{ emailInput, emailCheckButton, pwInput1, pwInput2, nameInput, signUpButton };
 	}
 
 	private void IdCheckButtonClick()
@@ -69,7 +74,8 @@ public class SignUpPanel : MonoBehaviour
 		bool hasLetter = password.Any(char.IsLetter);
 		bool hasDigit = password.Any(char.IsDigit);
 		bool hasSpecialChar = Regex.IsMatch(password, @"[\W_]");
-		int validCategories = Convert.ToInt32(hasLetter) + Convert.ToInt32(hasDigit) + Convert.ToInt32(hasSpecialChar);
+		int validCategories = Convert.ToInt32(hasLetter) + Convert.ToInt32(hasDigit) +
+		                      Convert.ToInt32(hasSpecialChar);
 		return validCategories >= 2;
 	}
 }
