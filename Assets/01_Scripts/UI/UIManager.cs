@@ -24,6 +24,7 @@ public class UIManager : SingletonManager<UIManager>
 	public PartyCreatePanel partyCreatePanel;
 	public PartyMemberPanel partyMemberPanel;
 	public Button partyButton;
+	public DungeonPanel dungeonPanel;
 
 	protected override void Awake()
 	{
@@ -173,4 +174,9 @@ public class UIManager : SingletonManager<UIManager>
 	}
 
 	#endregion
+
+	public void OpenDungeonPanel()
+	{
+		dungeonPanel.gameObject.SetActive(true);
+	}
 }
