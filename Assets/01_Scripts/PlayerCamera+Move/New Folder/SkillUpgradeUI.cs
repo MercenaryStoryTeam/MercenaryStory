@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 
 public class SkillUpgradeUI : MonoBehaviour
@@ -48,6 +47,7 @@ public class SkillUpgradeUI : MonoBehaviour
 
     private void Start()
     {
+        // SkillFsm 참조가 설정되지 않았을 경우 에러 출력
         if (skillFsm == null)
         {
             Debug.LogError("[SkillUpgradeUI] SkillFsm 참조가 설정되지 않았습니다.");
@@ -66,6 +66,7 @@ public class SkillUpgradeUI : MonoBehaviour
                 if (i < skillTypes.Count)
                 {
                     SkillType skillType = skillTypes[i];
+                    // 람다 캡처 문제를 방지하기 위해 지역 변수 사용
                     button.onClick.AddListener(() => SelectSkill(skillType));
                 }
                 else
@@ -75,7 +76,7 @@ public class SkillUpgradeUI : MonoBehaviour
             }
         }
 
-        // 리스너 추가
+        // 다른 버튼들에 리스너 할당
         if (levelUpButton != null)
             levelUpButton.onClick.AddListener(UpgradeSelectedSkill);
 
@@ -94,11 +95,14 @@ public class SkillUpgradeUI : MonoBehaviour
         {
             selectedSkillLevelText.text = "";
         }
+
+        // PlayerInputManager의 OnKInput 이벤트에 리스너 추가
+        PlayerInputManager.OnKInput += ToggleSkillUpgradeUI;
     }
 
     private void OnDestroy()
     {
-        // 버튼의 리스너 해제
+        // 스킬 선택 버튼들의 모든 리스너 해제
         foreach (var button in skillSelectionButtons)
         {
             if (button != null)
@@ -116,6 +120,9 @@ public class SkillUpgradeUI : MonoBehaviour
 
         if (openButton != null)
             openButton.onClick.RemoveListener(OpenSkillUpgradeUI);
+
+        // OnKInput 이벤트에서 리스너 해제
+        PlayerInputManager.OnKInput -= ToggleSkillUpgradeUI;
     }
 
     // 특정 스킬을 선택하는 메서드
@@ -148,7 +155,7 @@ public class SkillUpgradeUI : MonoBehaviour
             return;
         }
 
-        // 선택된 스킬 업그레이드
+        // 선택된 스킬 업그레이드 시도
         bool success = skillFsm.LevelUpSkill(selectedSkill.skillType);
         if (success)
         {
@@ -157,78 +164,81 @@ public class SkillUpgradeUI : MonoBehaviour
             // 스킬 레벨 텍스트 업데이트
             UpdateSelectedSkillLevelText();
 
-            // 새로운 레벨에 따른 업그레이드 버튼 상태 업데이트
+            // 업그레이드 버튼 상태 업데이트
             UpdateUpgradeButtonState();
 
-            // 쿨타임 변경 시 쿨타임 텍스트 업데이트
+            // 쿨타임 텍스트 업데이트
             UpdateCooldownText();
+        }
+        else
+        {
+            Debug.LogWarning($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬 업그레이드에 실패했습니다.");
         }
     }
 
-    // UI 업데이트 메서드들
+    // 스킬 이름 업데이트
     private void UpdateSkillName()
     {
         if (skillNameText == null || selectedSkill == null)
             return;
 
-        // 선택된 스킬의 이름 표시
         skillNameText.text = $"스킬: {selectedSkill.Name}";
     }
 
+    // 스킬 설명 업데이트
     private void UpdateSkillDescription()
     {
         if (skillDescriptionText == null || selectedSkill == null)
             return;
 
-        // 선택된 스킬의 설명 표시
         skillDescriptionText.text = $"설명: {selectedSkill.Description}";
     }
 
+    // 선택된 스킬 레벨 텍스트 업데이트
     private void UpdateSelectedSkillLevelText()
     {
         if (selectedSkillLevelText == null || selectedSkill == null)
             return;
 
-        // 스킬이 최대 레벨에 도달했는지 확인
         if (selectedSkill.Level >= selectedSkill.MaxLevel)
         {
-            // 'M'을 빨간색으로 표시
+            // 최대 레벨 도달 시 'M'을 빨간색으로 표시
             selectedSkillLevelText.text = $"<color=red>M</color>";
         }
         else
         {
-            // 'M' 없이 레벨 표시
+            // 레벨 표시
             selectedSkillLevelText.text = $"레벨: {selectedSkill.Level}";
         }
     }
 
+    // 스킬 이미지 업데이트
     private void UpdateSkillImage()
     {
         if (skillImage == null || selectedSkill == null)
             return;
 
-        // 선택된 스킬의 이미지 표시
         skillImage.sprite = selectedSkill.Icon;
-        skillImage.enabled = selectedSkill.Icon != null; // 이미지가 있을 때만 활성화
+        skillImage.enabled = skillImage.sprite != null; // 이미지가 있을 때만 활성화
     }
 
+    // 쿨타임 텍스트 업데이트
     private void UpdateCooldownText()
     {
         if (cooldownText == null || selectedSkill == null)
             return;
 
-        // 전체 쿨타임만 표시
-        // F2: 소수점 두 자리까지 표시
+        // 소수점 두 자리까지 표시
         cooldownText.text = $"쿨타임: {selectedSkill.CachedCooldown:F2} 초";
     }
 
-    // 버튼 색상 업데이트 메서드
+    // 버튼 색상 업데이트
     private void UpdateButtonColors(SkillType selectedSkillType)
     {
-        // 모든 버튼을 기본 색상으로 초기화
+        // 모든 버튼 색상을 기본 색상으로 초기화
         ResetAllButtonColors();
 
-        // 선택된 버튼을 노란색으로 변경
+        // 선택된 버튼의 색상을 노란색으로 변경
         for (int i = 0; i < skillSelectionButtons.Count; i++)
         {
             var button = skillSelectionButtons[i];
@@ -273,20 +283,30 @@ public class SkillUpgradeUI : MonoBehaviour
         }
     }
 
-    // Skill Upgrade UI를 닫는 메서드
+    // Skill Upgrade UI 패널을 닫는 메서드
     public void CloseSkillUpgradeUI()
     {
         if (skillUpgradePanel != null)
             skillUpgradePanel.SetActive(false);
     }
 
-    // Skill Upgrade UI를 여는 메서드
+    // Skill Upgrade UI 패널을 여는 메서드
     public void OpenSkillUpgradeUI()
     {
         if (skillUpgradePanel != null)
             skillUpgradePanel.SetActive(true);
 
-        // 선택 시 기본 스킬 선택 (옵션)
-        //SelectSkill(SkillType.Rush);
+        // 필요 시 기본 스킬 선택 (옵션)
+        // SelectSkill(SkillType.Rush);
+    }
+
+    // Skill Upgrade UI 패널의 활성화 상태를 토글하는 메서드
+    private void ToggleSkillUpgradeUI()
+    {
+        if (skillUpgradePanel == null)
+            return;
+
+        bool isActive = skillUpgradePanel.activeSelf;
+        skillUpgradePanel.SetActive(!isActive);
     }
 }

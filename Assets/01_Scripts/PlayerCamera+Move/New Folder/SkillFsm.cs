@@ -71,10 +71,10 @@ public class Skill
     public string Description;
 
     [Header("스킬 이미지")]
-    public Sprite Icon; // 스킬 이미지 필드 추가
+    public Sprite Icon; 
 
     [Header("레벨에 따른 이펙트 및 스폰 포인트 리스트")]
-    public List<SkillEffect> SkillEffects; // 통합된 리스트
+    public List<SkillEffect> SkillEffects; 
 
     [Header("쿨타임바")]
     public Image CooldownImage;
@@ -138,7 +138,7 @@ public class Skill
         return true;
     }
 
-    // 현재 레벨에 따른 쿨타임 계산 및 캐싱
+    // 현재 레벨에 따른 쿨타임 계산 
     public void UpdateCooldown()
     {
         float reduction = CooldownReductionPerLevel / 100f;
@@ -165,7 +165,7 @@ public class SkillFsm : MonoBehaviour
     [Header("참조 설정")]
     [SerializeField] private Player player;
 
-    [Header("디버그 설정")]
+    [Header("디버그 설정 (출력 유,무)")]
     public bool enableDebugLogs = true;
 
     // 싱글톤 인스턴스 (필요 시)
@@ -224,6 +224,7 @@ public class SkillFsm : MonoBehaviour
                     {
                         Debug.LogWarning($"[SkillFsm] {skill.Name} 스킬 레벨 {lvl}에 대한 ParticleSpawnPoint '{spawnPointName}'를 찾을 수 없습니다.");
                         foundSkillEffects.Add(null); // 스폰 포인트가 없을 경우 null 추가
+                        foundSkillEffects.Add(null); 
                     }
                 }
 

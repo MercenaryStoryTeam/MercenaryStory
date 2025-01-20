@@ -10,7 +10,8 @@ public class PlayerInputManager : MonoBehaviour
     public static System.Action OnRightClickInput;
     public static System.Action OnShiftLeftClickInput;
     public static System.Action OnShiftRightClickInput;
-    public static System.Action OnBInput; 
+    public static System.Action OnBInput;
+    public static System.Action OnKInput; // K 입력 메서드 추가
 
     void Update()
     {
@@ -49,9 +50,14 @@ public class PlayerInputManager : MonoBehaviour
             OnSkillInput?.Invoke();
         }
 
-        if (Input.GetKeyDown(KeyCode.B)) 
+        if (Input.GetKeyDown(KeyCode.B))
         {
             OnBInput?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.K)) 
+        {
+            OnKInput?.Invoke();
         }
 
         if (Input.GetKeyDown(KeyCode.I))
@@ -65,3 +71,5 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 }
+
+//
