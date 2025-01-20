@@ -17,11 +17,10 @@ MonoBehaviour:
   description: "\uD0C4\uC131\uC774 \uAC15\uD55C \uC218\uC5FC\uC774\uB2E4.\n\uB2AA\uC758
     \uB354\uB7EC\uC6C0\uC774 \uB290\uAEF4\uC9C0\uC9C0 \uC54A\uAC8C\n\uC798 \uAD00\uB9AC\uB418\uC5B4
     \uC788\uB2E4."
-  currentItemCount: 3
+  currentItemCount: 0
   itemClass: 2
-  price: 0
-  dropPercent: 0
-  isHave: 1
+  price: 1
+  dropPercent: 0.33
   image: {fileID: 21300000, guid: cd6265bb508cd2f49bcb044bf96a7cce, type: 3}
   equipPrefab: []
   dropLightLine: {fileID: 6349039886756410821, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}

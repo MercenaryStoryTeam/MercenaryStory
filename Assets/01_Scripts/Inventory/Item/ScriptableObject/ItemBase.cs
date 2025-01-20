@@ -15,7 +15,7 @@ public class ItemBase : ScriptableObject
     public int currentItemCount; //현재 아이템 갯수
     public int itemClass; //아이템 종류
     public float price; //아이템 가격 / 퀘스트 아이템 = -1
-    public int dropPercent; //아이템 드랍률
+    public float dropPercent; //아이템 드랍률
     
     [Header("Icon&Prefab")]
     public Sprite image; //아이템 아이콘

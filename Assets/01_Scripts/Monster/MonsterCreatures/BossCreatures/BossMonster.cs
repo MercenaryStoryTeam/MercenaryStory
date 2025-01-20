@@ -37,7 +37,7 @@ public class BossMonster : MonoBehaviourPun
     private LayerMask playerLayer;
     
     [Header("드랍 아이템")]
-    public List<ItemBase> dropItems;
+    public List<ItemBase> bossDropItems;
     
     [HideInInspector] public Transform TargetTransform;
     [HideInInspector] public Vector3 CenterPoint;
@@ -138,6 +138,7 @@ public class BossMonster : MonoBehaviourPun
         if (hp <= 0)
         {
             ChangeState(BossStateType.Die);
+            TryBossDropItem(bossDropItems);
         }
     }
 
@@ -193,7 +194,37 @@ public class BossMonster : MonoBehaviourPun
         print("EndHungerCool");
         hungerPossible = true;
     }
-    
+
+    private ItemBase TryBossDropItem(List<ItemBase> items)
+    {
+        ItemBase droppedItem = null;
+
+        float dropChance = UnityEngine.Random.Range(0f, 1f);
+        if(dropChance <= 0.5f)
+        {
+            foreach (ItemBase item in items)
+            {
+                float randomValue = UnityEngine.Random.Range(0f, 1f);
+                if (randomValue <= item.dropPercent)
+                {
+                    Debug.Log($"{dropChance}의 확률로 아이템 획득!");
+
+                    droppedItem = item;
+                    Debug.Log($"아이템 {droppedItem}을 {randomValue}의 확률로 얻음!");
+
+                    break;
+                }
+            }
+        }
+
+        else
+        {
+            Debug.Log($"{dropChance}의 확률로 아이템을 획득하지 못함");
+        }
+
+        return droppedItem;
+    }
+
     private void OnDrawGizmos()
     {
         // 도륙내기 공격 범위

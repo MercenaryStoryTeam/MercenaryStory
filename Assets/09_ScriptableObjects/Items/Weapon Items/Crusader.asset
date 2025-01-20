@@ -19,9 +19,8 @@ MonoBehaviour:
     \uC0DD\uACA8\uB09C\uB2E4."
   currentItemCount: 0
   itemClass: 1
-  price: 0
-  dropPercent: 0
-  isEquipped: 0
+  price: 7
+  dropPercent: 0.2
   image: {fileID: 21300000, guid: 8a1efc99930969742b01bc49c4399853, type: 3}
   equipPrefab:
   - {fileID: 8498972350396365555, guid: 0214759f5bd797649a1e4096eeba3185, type: 3}

@@ -22,28 +22,62 @@ public class PlayerTestSY : MonoBehaviour
             {
                 if (droppedItems[i].droppedItem == null || droppedItems[i].droppedLightLine == null)
                 {
-                    print("현재 드랍된 아이템 없음");
+                    droppedItems.RemoveAt(i);
+                    continue;
                 }
 
                 if (Vector3.Distance(transform.position, droppedItems[i].droppedLightLine.transform.position) <
                     interactRange)
                 {
-                    print("상호작용 거리임");
                     if (Input.GetKeyDown(KeyCode.E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
                     {
-                        InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
-                        Destroy(droppedItems[i].droppedLightLine.gameObject);
-                        droppedItems.RemoveAt(i);
+                        if (droppedItems[i].droppedItem != null && droppedItems[i].droppedLightLine != null)
+                        {
+                            bool isDropped = InventoryManger.Instance.UpdateSlotData();
+                            if (isDropped)
+                            {
+                                InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
+                                Destroy(droppedItems[i].droppedLightLine);
+                                droppedItems.RemoveAt(i);
+                            }
+                        }
                     }
                 }
             }
         }
+    }
 
+    public ItemBase TryDropItems(List<ItemBase> items)
+    {
+        ItemBase droppedItem = null;
+
+        foreach (ItemBase item in items)
+        {
+            float randomValue = UnityEngine.Random.Range(0f, 1f);
+            if(randomValue <= item.dropPercent)
+            {
+                droppedItem = item;
+            }
+        }
+
+        return droppedItem;
     }
 
     public void InvenSceneTestDrop(ItemBase item)
     {
-        GameObject itemLightLine = Instantiate(item.dropLightLine, transform.position, Quaternion.identity);
+        if (item == null)
+        {
+            Debug.LogError("드롭할 아이템이 null입니다!");
+            return;
+        }
+
+        if (item.dropLightLine == null)
+        {
+            Debug.LogError($"아이템 {item.name}의 dropLightLine 프리팹이 할당되지 않았습니다!");
+            return;
+        }
+
+        GameObject itemLightLine = Instantiate(item.dropLightLine, this.transform.position, Quaternion.identity);
         droppedItems.Add((itemLightLine, item));
     }
 

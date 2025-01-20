@@ -59,7 +59,6 @@ public class EquipmentPanel : MonoBehaviour
             currentEquipImage.sprite = slot.item.image;
             
             slot.RemoveItem();
-            print(beforeWeapon);
             print($"현재 장착한 아이템: {currentItem.name}, 장착한 아이탬 개수: {currentItem.currentItemCount}");
             if (beforeWeapon != null)
             {
