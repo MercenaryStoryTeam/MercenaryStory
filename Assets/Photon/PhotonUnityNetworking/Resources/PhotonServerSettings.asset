@@ -42,6 +42,7 @@ MonoBehaviour:
   - RPC_HandleAttack
   - NetworkSetEquipment
   - SetCurrentEquip
+  - RPC_SetActiveState
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

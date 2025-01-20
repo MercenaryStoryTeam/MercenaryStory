@@ -27,30 +27,30 @@ public class BossMonster : MonoBehaviourPun
     public GameObject minionPrefab;
     public int slashCount = 0;
     public BossStateType currentState;
-    [FormerlySerializedAs("TargetTransform")] public Transform Target;
+    public Transform Target;
     public List<Player> playerList = new List<Player>();
     public List<Minion> minionList = new List<Minion>();
     public List<Transform> nestList = new List<Transform>();
     
     private NavMeshAgent agent;
     private BossStateMachine stateMachine;
-    private LayerMask playerLayer;
+    private int playerLayer;
+    private int minionLayer;
     
     [Header("드랍 아이템")]
-    public List<ItemBase> bossDropItems;
+    public List<ItemBase> dropItems;
     
-    [HideInInspector] public Transform TargetTransform;
     [HideInInspector] public Vector3 CenterPoint;
     [HideInInspector] public Animator Animator;
 
+    private ObjectPoolManager poolManager;
 
     #endregion
 
     #region 프로퍼티
     public NavMeshAgent Agent => agent;
-    public BossStateMachine StateMachine => stateMachine;
-    public LayerMask PlayerLayer => playerLayer;
-    public int MinionLayer { get; set; }
+    public int PlayerLayer => playerLayer;
+    public int MinionLayer => minionLayer;
 
     #endregion
     
@@ -60,9 +60,10 @@ public class BossMonster : MonoBehaviourPun
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
         playerLayer = LayerMask.GetMask("Player");
-        MinionLayer = LayerMask.GetMask("Minion");
+        minionLayer = LayerMask.GetMask("Minion");
         stateMachine = new BossStateMachine(this);
         stateMachine.ChangeState(BossStateType.Idle);
+        //poolManager = FindObjectOfType<ObjectPoolManager>();
     }
     
     protected virtual void Update()
@@ -138,7 +139,6 @@ public class BossMonster : MonoBehaviourPun
         if (hp <= 0)
         {
             ChangeState(BossStateType.Die);
-            TryBossDropItem(bossDropItems);
         }
     }
 
@@ -146,10 +146,13 @@ public class BossMonster : MonoBehaviourPun
     {
         foreach (Transform nest in nestList)
         {
-            GameObject minion= Instantiate(minionPrefab, nest);
-            minionList.Add(minion.GetComponent<Minion>());
+            Instantiate(minionPrefab, nest.position, nest.rotation);
+            //PhotonObjectPool<Minion> minionPool = poolManager.GetPool(minionPrefab.GetComponent<Minion>(), 10);
+            //Minion newMinion = minionPool.GetObject(nest.position, Quaternion.identity);
         }
     }
+
+    #region 쿨타임 코루틴
     public void StartCoolDown()
     {
         if (stateMachine.currentStateType == BossStateType.Charge)
@@ -194,37 +197,8 @@ public class BossMonster : MonoBehaviourPun
         print("EndHungerCool");
         hungerPossible = true;
     }
-
-    private ItemBase TryBossDropItem(List<ItemBase> items)
-    {
-        ItemBase droppedItem = null;
-
-        float dropChance = UnityEngine.Random.Range(0f, 1f);
-        if(dropChance <= 0.5f)
-        {
-            foreach (ItemBase item in items)
-            {
-                float randomValue = UnityEngine.Random.Range(0f, 1f);
-                if (randomValue <= item.dropPercent)
-                {
-                    Debug.Log($"{dropChance}의 확률로 아이템 획득!");
-
-                    droppedItem = item;
-                    Debug.Log($"아이템 {droppedItem}을 {randomValue}의 확률로 얻음!");
-
-                    break;
-                }
-            }
-        }
-
-        else
-        {
-            Debug.Log($"{dropChance}의 확률로 아이템을 획득하지 못함");
-        }
-
-        return droppedItem;
-    }
-
+    #endregion
+    
     private void OnDrawGizmos()
     {
         // 도륙내기 공격 범위

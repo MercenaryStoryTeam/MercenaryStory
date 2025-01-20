@@ -1287,7 +1287,7 @@ MonoBehaviour:
   moveSpeed: 7.5
   rotationSpeed: 3
   attackSpeed: 0.7
-  slashAttackRange: 7
+  slashAttackRange: 4
   chargePossible: 1
   slashPossible: 1
   hungerPossible: 1
