@@ -44,7 +44,7 @@ public class SkillUpgradeUI : MonoBehaviour
     // 선택된 버튼 색상
     private Color selectedButtonColor = Color.yellow;
 
-    private SkillFsm.Skill selectedSkill;
+    private Skill selectedSkill;
 
     private void Start()
     {

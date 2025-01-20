@@ -12,140 +12,150 @@ public enum SkillType
     Skill2
 }
 
-[RequireComponent(typeof(Animator))]
-public class SkillFsm : MonoBehaviour
+[System.Serializable]
+public class SkillEffect
 {
-    private Animator animator;
+    [Header("레벨에 따른 파티클 이펙트")]
+    public GameObject ParticleEffect; // 파티클 이펙트 프리팹
 
-    [System.Serializable]
-    public class Skill
+    [Header("레벨에 따른 파티클 스폰 포인트")]
+    public Transform ParticleSpawnPoint; // 파티클 스폰 포인트
+}
+
+[System.Serializable]
+public class Skill
+{
+    [Header("스킬 유형")]
+    public SkillType skillType;
+
+    [Header("현재 스킬 레벨")]
+    [SerializeField]
+    private int level = 1;
+    public int Level
     {
-        [Header("스킬 유형")]
-        public SkillType skillType;
-
-        [Header("현재 스킬 레벨")]
-        [SerializeField]
-        private int level = 1;
-        public int Level
+        get => level;
+        private set
         {
-            get => level;
-            private set
+            if (value <= MaxLevel)
             {
-                if (value <= MaxLevel)
-                {
-                    level = value;
-                }
-                else
-                {
-                    level = MaxLevel;
-                    if (SkillFsm.Instance != null && SkillFsm.Instance.enableDebugLogs)
-                    {
-                        Debug.LogWarning($"[Skill] {Name} 스킬은 이미 최대 레벨({MaxLevel})에 도달했습니다.");
-                    }
-                }
+                level = value;
             }
-        }
-
-        [Header("최대 스킬 레벨")]
-        public int MaxLevel = 4;
-
-        [Header("기본 쿨타임 (초 단위)")]
-        public float BaseCooldown = 2f;
-
-        [Header("레벨당 쿨타임 감소 비율 (백분율)")]
-        public int CooldownReductionPerLevel = 5;
-
-        [Header("Rush 스킬만 해당 (이동 속도 배수 처리)")]
-        public float SpeedBoost = 0f;
-
-        [Header("Rush 스킬만 해당 (지속 시간)")]
-        public float Duration = 0f;
-
-        [Header("스킬 설명")]
-        [TextArea]
-        public string Description;
-
-        [Header("스킬 이미지")]
-        public Sprite Icon; // 스킬 이미지 필드 추가
-
-        [Header("레벨에 따른 이펙트 리스트")]
-        public List<GameObject> ParticleEffects;
-
-        [Header("쿨타임바")]
-        public Image CooldownImage;
-
-        // 쿨타임 작동 여부 체크를 위한 변수
-        [HideInInspector]
-        public bool IsOnCooldown = false;
-
-        // 현재 쿨타임 남은 시간
-        [HideInInspector]
-        public float RemainingCooldown = 0f;
-
-        // 스킬 이름 반환
-        public string Name => skillType.ToString();
-
-        // 애니메이터 트리거 이름 반환
-        public string TriggerName
-        {
-            get
+            else
             {
-                return skillType.ToString();
-            }
-        }
-
-        // 캐싱된 쿨타임
-        [HideInInspector]
-        public float CachedCooldown;
-
-        // 현재 레벨에 따른 파티클 이펙트 반환
-        public GameObject GetCurrentParticleEffect()
-        {
-            if (ParticleEffects == null || ParticleEffects.Count == 0)
-                return null;
-
-            // 레벨 인덱스가 리스트 범위를 넘지 않도록 조정
-            int index = Mathf.Clamp(Level - 1, 0, ParticleEffects.Count - 1);
-            return ParticleEffects[index];
-        }
-
-        // 스킬 레벨업 메서드
-        public bool LevelUp()
-        {
-            if (Level >= MaxLevel)
-            {
+                level = MaxLevel;
                 if (SkillFsm.Instance != null && SkillFsm.Instance.enableDebugLogs)
                 {
                     Debug.LogWarning($"[Skill] {Name} 스킬은 이미 최대 레벨({MaxLevel})에 도달했습니다.");
                 }
-                return false;
-            }
-
-            Level++;
-            if (SkillFsm.Instance != null && SkillFsm.Instance.enableDebugLogs)
-            {
-                Debug.Log($"[Skill] {Name} 스킬이 레벨 {Level}로 상승했습니다.");
-            }
-
-            // 쿨타임 업데이트
-            UpdateCooldown();
-
-            return true;
-        }
-
-        // 현재 레벨에 따른 쿨타임 계산 및 캐싱
-        public void UpdateCooldown()
-        {
-            float reduction = CooldownReductionPerLevel / 100f;
-            CachedCooldown = BaseCooldown * Mathf.Pow(1 - reduction, Level - 1);
-            if (SkillFsm.Instance != null && SkillFsm.Instance.enableDebugLogs)
-            {
-                Debug.Log($"[Skill] {Name} Level: {Level}, Base Cooldown: {BaseCooldown}s, " +
-                          $"Reduction per Level: {CooldownReductionPerLevel}%, " +
-                          $"Calculated Cooldown: {CachedCooldown:F2}s");
             }
         }
     }
+
+    [Header("최대 스킬 레벨")]
+    public int MaxLevel = 4;
+
+    [Header("기본 쿨타임 (초 단위)")]
+    public float BaseCooldown = 2f;
+
+    [Header("레벨당 쿨타임 감소 비율 (백분율)")]
+    public int CooldownReductionPerLevel = 5;
+
+    [Header("Rush 스킬만 해당 (이동 속도 배수 처리)")]
+    public float SpeedBoost = 0f;
+
+    [Header("Rush 스킬만 해당 (지속 시간)")]
+    public float Duration = 0f;
+
+    [Header("스킬 설명")]
+    [TextArea]
+    public string Description;
+
+    [Header("스킬 이미지")]
+    public Sprite Icon; // 스킬 이미지 필드 추가
+
+    [Header("레벨에 따른 이펙트 및 스폰 포인트 리스트")]
+    public List<SkillEffect> SkillEffects; // 통합된 리스트
+
+    [Header("쿨타임바")]
+    public Image CooldownImage;
+
+    // 쿨타임 작동 여부 체크를 위한 변수
+    [HideInInspector]
+    public bool IsOnCooldown = false;
+
+    // 현재 쿨타임 남은 시간
+    [HideInInspector]
+    public float RemainingCooldown = 0f;
+
+    // 스킬 이름 반환
+    public string Name => skillType.ToString();
+
+    // 애니메이터 트리거 이름 반환
+    public string TriggerName
+    {
+        get
+        {
+            return skillType.ToString();
+        }
+    }
+
+    // 캐싱된 쿨타임
+    [HideInInspector]
+    public float CachedCooldown;
+
+    // 현재 레벨에 따른 파티클 이펙트 반환
+    public SkillEffect GetCurrentSkillEffect()
+    {
+        if (SkillEffects == null || SkillEffects.Count == 0)
+            return null;
+
+        // 레벨 인덱스가 리스트 범위를 넘지 않도록 조정
+        int index = Mathf.Clamp(Level - 1, 0, SkillEffects.Count - 1);
+        return SkillEffects[index];
+    }
+
+    // 스킬 레벨업 메서드
+    public bool LevelUp()
+    {
+        if (Level >= MaxLevel)
+        {
+            if (SkillFsm.Instance != null && SkillFsm.Instance.enableDebugLogs)
+            {
+                Debug.LogWarning($"[Skill] {Name} 스킬은 이미 최대 레벨({MaxLevel})에 도달했습니다.");
+            }
+            return false;
+        }
+
+        Level++;
+        if (SkillFsm.Instance != null && SkillFsm.Instance.enableDebugLogs)
+        {
+            Debug.Log($"[Skill] {Name} 스킬이 레벨 {Level}로 상승했습니다.");
+        }
+
+        // 쿨타임 업데이트
+        UpdateCooldown();
+
+        return true;
+    }
+
+    // 현재 레벨에 따른 쿨타임 계산 및 캐싱
+    public void UpdateCooldown()
+    {
+        float reduction = CooldownReductionPerLevel / 100f;
+        CachedCooldown = BaseCooldown * Mathf.Pow(1 - reduction, Level - 1);
+        if (SkillFsm.Instance != null && SkillFsm.Instance.enableDebugLogs)
+        {
+            Debug.Log($"[Skill] {Name} Level: {Level}, Base Cooldown: {BaseCooldown:F2}s, " +
+                      $"Reduction per Level: {CooldownReductionPerLevel}%, " +
+                      $"Calculated Cooldown: {CachedCooldown:F2}s");
+        }
+    }
+}
+
+[RequireComponent(typeof(Animator))]
+public class SkillFsm : MonoBehaviour
+{
+    private Animator animator;
 
     [Header("스킬 설정")]
     public List<Skill> Skills;
@@ -184,6 +194,43 @@ public class SkillFsm : MonoBehaviour
             }
         }
 
+        // 각 스킬의 SkillEffects 설정 확인
+        foreach (var skill in Skills)
+        {
+            if (skill.SkillEffects == null || skill.SkillEffects.Count == 0)
+            {
+                // 플레이어의 자식 중 스킬 이름과 레벨을 포함하는 파티클 스폰 포인트를 찾음
+                // 예: "RushLevel1ParticleSpawnPoint", "RushLevel2ParticleSpawnPoint", etc.
+                List<SkillEffect> foundSkillEffects = new List<SkillEffect>();
+                for (int lvl = 1; lvl <= skill.MaxLevel; lvl++)
+                {
+                    string spawnPointName = $"{skill.skillType}Level{lvl}ParticleSpawnPoint";
+                    Transform spawnPoint = player.transform.Find(spawnPointName);
+                    if (spawnPoint != null)
+                    {
+                        // 스폰 포인트가 발견되면 기본 이펙트 프리팹을 지정 (필요 시 수정)
+                        SkillEffect skillEffect = new SkillEffect
+                        {
+                            ParticleEffect = skill.SkillEffects != null && lvl - 1 < skill.SkillEffects.Count ? skill.SkillEffects[lvl - 1].ParticleEffect : null,
+                            ParticleSpawnPoint = spawnPoint
+                        };
+                        foundSkillEffects.Add(skillEffect);
+                        if (enableDebugLogs)
+                        {
+                            Debug.Log($"[SkillFsm] {skill.Name} 스킬 레벨 {lvl}에 대한 ParticleSpawnPoint '{spawnPointName}'가 설정되었습니다.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[SkillFsm] {skill.Name} 스킬 레벨 {lvl}에 대한 ParticleSpawnPoint '{spawnPointName}'를 찾을 수 없습니다.");
+                        foundSkillEffects.Add(null); // 스폰 포인트가 없을 경우 null 추가
+                    }
+                }
+
+                skill.SkillEffects = foundSkillEffects;
+            }
+        }
+
         // 초기 쿨타임 설정
         foreach (var skill in Skills)
         {
@@ -201,20 +248,41 @@ public class SkillFsm : MonoBehaviour
 
     private void OnEnable()
     {
-        // 입력 이벤트 구독 (중복 메서드 제거, 람다 사용)
-        PlayerInputManager.OnSkillInput += () => TriggerSkill(SkillType.Rush);
-        PlayerInputManager.OnRightClickInput += () => TriggerSkill(SkillType.Parry);
-        PlayerInputManager.OnShiftLeftClickInput += () => TriggerSkill(SkillType.Skill1);
-        PlayerInputManager.OnShiftRightClickInput += () => TriggerSkill(SkillType.Skill2);
+        // 입력 이벤트 구독 (명확한 메서드 사용)
+        PlayerInputManager.OnSkillInput += TriggerRushSkill;
+        PlayerInputManager.OnRightClickInput += TriggerParrySkill;
+        PlayerInputManager.OnShiftLeftClickInput += TriggerSkill1;
+        PlayerInputManager.OnShiftRightClickInput += TriggerSkill2;
     }
 
     private void OnDisable()
     {
         // 입력 이벤트 해제
-        PlayerInputManager.OnSkillInput -= () => TriggerSkill(SkillType.Rush);
-        PlayerInputManager.OnRightClickInput -= () => TriggerSkill(SkillType.Parry);
-        PlayerInputManager.OnShiftLeftClickInput -= () => TriggerSkill(SkillType.Skill1);
-        PlayerInputManager.OnShiftRightClickInput -= () => TriggerSkill(SkillType.Skill2);
+        PlayerInputManager.OnSkillInput -= TriggerRushSkill;
+        PlayerInputManager.OnRightClickInput -= TriggerParrySkill;
+        PlayerInputManager.OnShiftLeftClickInput -= TriggerSkill1;
+        PlayerInputManager.OnShiftRightClickInput -= TriggerSkill2;
+    }
+
+    // 각 스킬에 대한 트리거 메서드
+    private void TriggerRushSkill()
+    {
+        TriggerSkill(SkillType.Rush);
+    }
+
+    private void TriggerParrySkill()
+    {
+        TriggerSkill(SkillType.Parry);
+    }
+
+    private void TriggerSkill1()
+    {
+        TriggerSkill(SkillType.Skill1);
+    }
+
+    private void TriggerSkill2()
+    {
+        TriggerSkill(SkillType.Skill2);
     }
 
     // 특정 스킬을 트리거하는 메서드
@@ -256,13 +324,20 @@ public class SkillFsm : MonoBehaviour
         }
 
         // 레벨에 따른 파티클 이펙트 활성화
-        GameObject currentEffect = skill.GetCurrentParticleEffect();
-        if (currentEffect != null)
+        SkillEffect currentSkillEffect = skill.GetCurrentSkillEffect();
+        if (currentSkillEffect != null && currentSkillEffect.ParticleEffect != null)
         {
-            ActivateSkillParticle(currentEffect);
+            ActivateSkillParticle(currentSkillEffect, skill);
             if (enableDebugLogs)
             {
                 Debug.Log($"[SkillFsm] {skill.Name} 스킬의 파티클 이펙트가 활성화되었습니다.");
+            }
+        }
+        else
+        {
+            if (enableDebugLogs)
+            {
+                Debug.LogWarning($"[SkillFsm] {skill.Name} 스킬의 파티클 이펙트가 설정되지 않았습니다.");
             }
         }
 
@@ -277,11 +352,37 @@ public class SkillFsm : MonoBehaviour
     }
 
     // 파티클 이펙트 활성화 메서드
-    private void ActivateSkillParticle(GameObject particleEffect)
+    private void ActivateSkillParticle(SkillEffect skillEffect, Skill skill)
     {
-        // 파티클 이펙트를 인스턴스화하여 위치 설정
-        Vector3 finalPosition = transform.TransformPoint(particleEffect.transform.localPosition);
-        GameObject particleInstance = Instantiate(particleEffect, finalPosition, Quaternion.identity, transform);
+        if (skillEffect.ParticleEffect == null)
+        {
+            if (enableDebugLogs)
+            {
+                Debug.LogWarning($"[SkillFsm] {skill.Name} 스킬의 파티클 이펙트 프리팹이 null입니다.");
+            }
+            return;
+        }
+
+        Vector3 spawnPosition;
+        Quaternion spawnRotation;
+
+        if (skillEffect.ParticleSpawnPoint != null)
+        {
+            spawnPosition = skillEffect.ParticleSpawnPoint.position;
+            spawnRotation = skillEffect.ParticleSpawnPoint.rotation;
+        }
+        else
+        {
+            // 스폰 포인트가 설정되지 않았으면 기본 위치 사용
+            spawnPosition = player.transform.position + player.transform.forward;
+            spawnRotation = Quaternion.identity;
+            if (enableDebugLogs)
+            {
+                Debug.LogWarning($"[SkillFsm] {skill.Name} 스킬의 ParticleSpawnPoint가 설정되지 않았습니다. 기본 위치에서 파티클이 생성됩니다.");
+            }
+        }
+
+        GameObject particleInstance = Instantiate(skillEffect.ParticleEffect, spawnPosition, spawnRotation, transform);
         particleInstance.SetActive(true);
 
         // 파티클 시스템의 재생 시간 계산 후 자동 파괴
@@ -293,6 +394,15 @@ public class SkillFsm : MonoBehaviour
             if (enableDebugLogs)
             {
                 Debug.Log($"[SkillFsm] {particleInstance.name} 파티클 이펙트가 {duration}초 후에 비활성화됩니다.");
+            }
+        }
+        else
+        {
+            // 파티클 시스템이 없으면 즉시 비활성화
+            Destroy(particleInstance);
+            if (enableDebugLogs)
+            {
+                Debug.LogWarning($"[SkillFsm] {particleInstance.name}에 ParticleSystem이 없습니다. 즉시 비활성화됩니다.");
             }
         }
     }
@@ -356,7 +466,7 @@ public class SkillFsm : MonoBehaviour
 
         float elapsed = 0f;
         float totalCooldown = skill.CachedCooldown;
-        float logInterval = 1f; // 1초마다 로그 출력
+        float logInterval = 1f;
         float nextLogTime = logInterval;
 
         if (enableDebugLogs)
