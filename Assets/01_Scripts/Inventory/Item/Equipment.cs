@@ -67,6 +67,17 @@ public class Equipment : MonoBehaviourPunCallbacks
     [PunRPC]
     private void NetworkSetEquipment(int itemId)
     {
+        if (InventoryManger.Instance == null)
+        {
+            Debug.Log("인벤토리매니저 없음");
+            return;
+        }
+
+        if (InventoryManger.Instance.allItems == null)
+        {
+            Debug.Log("인벤토리 매니저의 allItems가 비어있음");
+            return;
+        }
         
         ItemBase item = InventoryManger.Instance.allItems.Find(x => x.id == itemId);
         if (item == null)
@@ -87,7 +98,6 @@ public class Equipment : MonoBehaviourPunCallbacks
                 SetPanelShieldCharacter(item);
             }
 
-            InventoryManger.Instance.UpdateSlotData();
         }
     }
 
