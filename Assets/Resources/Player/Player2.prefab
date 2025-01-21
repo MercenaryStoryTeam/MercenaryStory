@@ -123038,6 +123038,7 @@ GameObject:
   - component: {fileID: 8292503804100787630}
   - component: {fileID: 3270177696579553557}
   - component: {fileID: 2406458388725317992}
+  - component: {fileID: 2388463540284704695}
   m_Layer: 6
   m_Name: Player2
   m_TagString: Player
@@ -123282,10 +123283,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHp: 0
   maxHp: 0
-  gold: 0
-  exp: 0
   moveSpeed: 5
   suckBlood: 3
+  gold: 0
   nextSceneName: Camera+Move
   loadSceneDelay: 10000
   originalMoveSpeed: 0
@@ -123305,6 +123305,21 @@ MonoBehaviour:
   dieAnimationDuration: 2
   comboResetTime: 1
   specialScenes: []
+--- !u!114 &2388463540284704695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7464133724529184423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743d1fb050f9fe546bbcec6de8bd1bf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Skills: []
+  player: {fileID: 3270177696579553557}
+  enableDebugLogs: 1
 --- !u!1 &7496579171125274367
 GameObject:
   m_ObjectHideFlags: 0
