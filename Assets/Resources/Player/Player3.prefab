@@ -83560,6 +83560,7 @@ GameObject:
   - component: {fileID: 3727021340138451939}
   - component: {fileID: 5879024603750635332}
   - component: {fileID: 8594324555300230661}
+  - component: {fileID: -2749461092723363060}
   m_Layer: 6
   m_Name: Player3
   m_TagString: Player
@@ -83678,7 +83679,7 @@ MonoBehaviour:
   - {fileID: 6303863245894744429}
   - {fileID: 1419250558076791790}
   - {fileID: 8688224211643413133}
-  sceneViewId: 1
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &6303863245894744429
@@ -83747,19 +83748,19 @@ MonoBehaviour:
     SynchronizeType: 2
     Name: Attack3
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Rush
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Parry
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Skill1
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Skill2
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 2
     Name: Hit
   m_SynchronizeLayers:
   - SynchronizeType: 2
@@ -83979,6 +83980,18 @@ MonoBehaviour:
   exitButton: {fileID: 2526185287754776188}
   openButton: {fileID: 8398531713037801170}
   goldText: {fileID: 7260720909844030967}
+--- !u!114 &-2749461092723363060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4124655369790618840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4140498267584228821
 GameObject:
   m_ObjectHideFlags: 0
