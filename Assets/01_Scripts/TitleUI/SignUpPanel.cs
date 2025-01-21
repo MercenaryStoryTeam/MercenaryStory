@@ -12,11 +12,13 @@ public class SignUpPanel : MonoBehaviour
 	public InputField pwInput2;
 	public InputField nameInput;
 	public Button signUpButton;
+	public Button signInButton;
 
 	private void Awake()
 	{
 		emailCheckButton.onClick.AddListener(IdCheckButtonClick);
 		signUpButton.onClick.AddListener(SignUpButtonClick);
+		signInButton.onClick.AddListener(SignInButtonClick);
 
 		// Input Navigation Helper setup
 		var inputNav = gameObject.GetComponent<InputNavigationHelper>();
@@ -35,6 +37,11 @@ public class SignUpPanel : MonoBehaviour
 		{
 			FirebaseManager.Instance.SignUp(emailInput.text, pwInput1.text, nameInput.text);
 		}
+	}
+
+	private void SignInButtonClick()
+	{
+		TitleUI.Instance.PanelOpen("SignIn");
 	}
 
 	private bool ValidateInputs()
