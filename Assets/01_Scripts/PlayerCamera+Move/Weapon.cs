@@ -83,3 +83,5 @@ public class Weapon : MonoBehaviour
 //ㄴ Play();
 
 //9.사운드 추가 - 공격할때, 스킬 사용할때, 클립명 뒤에 , gameObject 추가
+
+//
