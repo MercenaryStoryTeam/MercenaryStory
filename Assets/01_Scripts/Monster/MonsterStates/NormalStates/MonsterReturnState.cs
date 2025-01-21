@@ -7,14 +7,14 @@ public class MonsterReturnState : MonsterState
     public override void EnterState(Monster monster)
     {
         monster.Agent.isStopped = false;
-        monster.Agent.SetDestination(monster.PatrolPoint);
+        monster.Agent.SetDestination(monster.patrolPoint);
         monster.Animator.SetBool("IsMoving", true);
     }
 
     public override void ExecuteState(Monster monster)
     {
         monster.Agent.speed = 2*monster.MoveSpeed;
-        if (monster.PatrolRange > Vector3.Distance(monster.transform.position, monster.PatrolPoint))
+        if (monster.PatrolRange > Vector3.Distance(monster.transform.position, monster.patrolPoint))
         {
             monster.StateMachine.ChangeState(MonsterStateType.Patrol);
         }

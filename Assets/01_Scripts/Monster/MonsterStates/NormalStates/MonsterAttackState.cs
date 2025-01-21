@@ -9,13 +9,14 @@ public class MonsterAttackState : MonsterState
         monster.Agent.isStopped = true;
         monster.Animator.SetTrigger("Attack");
         monster.Agent.SetDestination(monster.transform.position);
+        monster.AudioSource.PlayOneShot(monster.attackSound);
     }
 
     public override void ExecuteState(Monster monster)
     {
-        if (monster.PlayerTransform != null)
+        if (monster.playerTransform != null)
         {
-            Vector3 direction = (monster.PlayerTransform.position - monster.transform.position).normalized;
+            Vector3 direction = (monster.playerTransform.position - monster.transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, monster.RotationSpeed * Time.deltaTime);
         }
@@ -25,7 +26,7 @@ public class MonsterAttackState : MonsterState
             monster.RevertToExState();
         }
         
-        if (Vector3.Distance(monster.transform.position, monster.PatrolPoint) > monster.ReturnRange)
+        if (Vector3.Distance(monster.transform.position, monster.patrolPoint) > monster.ReturnRange)
         {
             monster.ChangeState(MonsterStateType.Return);
         }
