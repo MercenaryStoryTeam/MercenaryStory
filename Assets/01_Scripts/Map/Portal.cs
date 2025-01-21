@@ -17,8 +17,15 @@ public class Portal : MonoBehaviour
         portalRenderer = GetComponent<MeshRenderer>();
     }
 
+    private void Update()
+    {
+        IsOnPortal();
+    }
+
     private void IsOnPortal()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+        
         Bounds bounds = portalRenderer.bounds;
         Vector3 center = bounds.center;
         Vector3 size = bounds.extents;
@@ -26,13 +33,12 @@ public class Portal : MonoBehaviour
         size.y += additionalHeight / 2f;
 
         Collider[] hitColliders = Physics.OverlapBox(center, size, gameObject.transform.rotation, layerMask);
-        if (PhotonNetwork.IsMasterClient)
         {
             foreach (var hitCollider in hitColliders)
             { 
-                if (hitCollider.gameObject == StageManager.Instance.playerFsm.gameObject && StageManager.Instance.StageClear)
+                if (hitCollider.gameObject == StageManager.Instance.hostPlayerFsm.gameObject && StageManager.Instance.StageClear)
                 {
-                    //TODO: 씬 전환 예정
+                    ServerManager.LoadScene("");
                 } 
             }
         }
