@@ -112,9 +112,4 @@ public class ServerManager
 	{
 		return PhotonNetwork.CurrentRoom.Name;
 	}
-
-	public static bool GetIsParty()
-	{
-		return FirebaseManager.Instance.CurrentUserData.user_CurrentParty != "";
-	}
 }
