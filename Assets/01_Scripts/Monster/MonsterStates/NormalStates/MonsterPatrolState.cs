@@ -38,7 +38,7 @@ public class MonsterPatrolState : MonsterState
 
     private void SetNewPatrolPoint(Monster monster)
     {
-        Vector3 center = monster.PatrolPoint;
+        Vector3 center = monster.patrolPoint;
         float range = monster.PatrolRange;
         
         Vector3 randomPoint = center + Random.insideUnitSphere * range;
@@ -57,7 +57,7 @@ public class MonsterPatrolState : MonsterState
 
         if (playerColliders.Length > 0)
         {
-            monster.PlayerTransform = playerColliders[0].transform;
+            monster.playerTransform = playerColliders[0].transform;
             return true;
         }
     

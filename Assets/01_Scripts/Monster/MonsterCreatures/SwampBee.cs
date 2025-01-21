@@ -11,11 +11,8 @@ public class SwampBee : Monster
     public float _rotationSpeed = 1;
     public float _attackSpeed = 1;
     
-    [Header("순찰")]
-    public Vector3 _patrolPoint = new Vector3(3, 1, 3);
-    public float _patrolRange = 3;
-    
     [Header("범위")]
+    public float _patrolRange = 3;
     public float _detectionRange = 3;
     public float _attackRange = 2;
     public float _returnRange = 10;
@@ -32,6 +29,5 @@ public class SwampBee : Monster
         DetectionRange = _detectionRange;
         AttackRange = _attackRange;
         ReturnRange = _returnRange;
-        PatrolPoint = _patrolPoint;
     }
 }

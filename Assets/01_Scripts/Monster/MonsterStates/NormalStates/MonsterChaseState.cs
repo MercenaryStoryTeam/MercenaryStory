@@ -15,7 +15,7 @@ public class MonsterChaseState : MonsterState
             monster.ChangeState(MonsterStateType.Attack);
         }
         
-        monster.Agent.SetDestination(monster.PlayerTransform.position);
+        monster.Agent.SetDestination(monster.playerTransform.position);
     }
 
     public override void ExitState(Monster monster)
@@ -32,7 +32,7 @@ public class MonsterChaseState : MonsterState
 
         if (playerColliders.Length > 0)
         {
-            monster.PlayerTransform = playerColliders[0].transform;
+            monster.playerTransform = playerColliders[0].transform;
             return true;
         }
     

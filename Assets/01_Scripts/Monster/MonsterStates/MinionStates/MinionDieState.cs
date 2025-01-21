@@ -8,6 +8,7 @@ public class MinionDieState : MinionState
     {
         minion.agent.ResetPath();
         minion.animator.SetTrigger("Die");
+        minion.AudioSource.PlayOneShot(minion.dieSound);
     }
 
     public override void ExecuteState(Minion minion)

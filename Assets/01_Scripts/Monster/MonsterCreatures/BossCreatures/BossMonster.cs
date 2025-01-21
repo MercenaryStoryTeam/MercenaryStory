@@ -32,6 +32,9 @@ public class BossMonster : MonoBehaviourPun
     public List<Minion> minionList = new List<Minion>();
     public List<Transform> nestList = new List<Transform>();
     
+    public GameObject hungerEffect;
+    public GameObject slashEffect;
+    
     private NavMeshAgent agent;
     private BossStateMachine stateMachine;
     private int playerLayer;

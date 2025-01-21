@@ -5,6 +5,7 @@ public class BossSlashState : BossState
         boss.Agent.ResetPath();
         boss.StartCoolDown();
         boss.Animator.SetTrigger("Slash");
+        boss.slashEffect.SetActive(true);
     }
 
     public override void ExecuteState(BossMonster boss)
@@ -14,6 +15,6 @@ public class BossSlashState : BossState
 
     public override void ExitState(BossMonster boss)
     {
-        
+        boss.slashEffect.SetActive(false);
     }
 }
