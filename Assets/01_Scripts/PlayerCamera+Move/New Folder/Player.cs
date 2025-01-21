@@ -30,9 +30,8 @@ public class Player : MonoBehaviour
 
 	// 이동 속도 슬로우 비율 할당
 	[HideInInspector] public float originalMoveSpeed;
-
-	// 드랍된 아이템 상호작용 용도로 사용하는 드랍템 리스트
-	private List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems =
+	
+	[HideInInspector] public List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems =
 		new List<(GameObject droppedLightLine, ItemBase droppedItem)>();
 
 	// 골드 변경 이벤트
@@ -52,38 +51,6 @@ public class Player : MonoBehaviour
 		maxHp = currentHp;
 
 		//currentHp = maxHp;
-	}
-
-	private void Update()
-	{
-		// 드랍된 아이템이 있을 경우
-		if (droppedItems.Count > 0)
-		{
-			for (int i = droppedItems.Count - 1; i >= 0; i--)
-			{
-				if (droppedItems[i].droppedItem == null ||
-				    droppedItems[i].droppedLightLine == null)
-				{
-					print("현재 드랍된 아이템 없음");
-					continue; // 아이템이 없으면 다음으로 넘어감
-				}
-
-				// 드랍된 아이템이 상호작용 가능한 거리에 있을 경우
-				if (Vector3.Distance(transform.position,
-					    droppedItems[i].droppedLightLine.transform.position) < 3f)
-				{
-					print("상호작용 거리임");
-
-					// E키를 누르면 반경 안에 있는 아이템이 인벤토리에 추가
-					if (Input.GetKeyDown(KeyCode.E))
-					{
-						InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
-						Destroy(droppedItems[i].droppedLightLine.gameObject);
-						droppedItems.RemoveAt(i);
-					}
-				}
-			}
-		}
 	}
 
 	// 흡혈 처리
@@ -166,15 +133,41 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	// 드랍된 아이템 추가 메서드
-	public void DroppedLightLine(ItemBase item)
+	// 드랍된 아이템 상호작용 하는 메서드
+	public void DropItemInteraction()
 	{
-		// GameObject itemLightLine = Instantiate(item.dropLightLine, StageManager.Instance.monster.transform.position, Quaternion.identity);
-		// droppedItems.Add((itemLightLine, item));
+		if (droppedItems.Count > 0)
+		{
+			for (int i = droppedItems.Count - 1; i >= 0;  i--)
+			{
+				if (droppedItems[i].droppedItem == null || droppedItems[i].droppedLightLine == null)
+				{
+					droppedItems.RemoveAt(i);
+					continue;
+				}
 
-		// 현재 스테이지가 보스 스테이지일 경우 몬스터 대신 보스 몬스터 위치 참조 (추가 구현 필요)
+				if (Vector3.Distance(transform.position, droppedItems[i].droppedLightLine.transform.position) <
+				    3f)
+				{
+					if (Input.GetKeyDown(KeyCode.E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
+					{
+						if (droppedItems[i].droppedItem != null && droppedItems[i].droppedLightLine != null)
+						{
+							bool isDropped = InventoryManger.Instance.UpdateSlotData();
+							if (isDropped)
+							{
+								InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
+								Destroy(droppedItems[i].droppedLightLine);
+								droppedItems.RemoveAt(i);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
-
+	
+	
 	// 골드를 소모하는 메서드
 	public bool SpendGold(float amount)
 	{
