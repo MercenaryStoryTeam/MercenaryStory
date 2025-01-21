@@ -75,14 +75,7 @@ public class InventorySlot : MonoBehaviour
 		{
 			return;
 		}
-
-		if (item.itemClass == 3)
-		{
-			UIManager.Instance.popUp.PopUpOpen("해당 아이템을\n상인이 원하지 않습니다.",
-				() => UIManager.Instance.popUp.PopUpClose());
-			return;
-		}
-
+		
 		List<InventorySlot> sellSlots = UIManager.Instance.shop.sellSlots;
 
 		if (item.itemClass == 1)
