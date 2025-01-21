@@ -46,11 +46,6 @@ public class Player : MonoBehaviour
 
 		// FirebaseManager UserData에서 현재 체력 가져오기
 		currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
-
-		// 현재 체력에서 최대 체력 가져오기
-		maxHp = currentHp;
-
-		//currentHp = maxHp;
 	}
 
 	// 흡혈 처리
@@ -167,14 +162,14 @@ public class Player : MonoBehaviour
 		}
 	}
 	
-	
-	// 골드를 소모하는 메서드
+	// 골드를 소모
 	public bool SpendGold(float amount)
 	{
 		if (gold >= amount)
 		{
 			gold -= amount;
 			Debug.Log($"[Player] 골드 {amount}을 사용했습니다. 남은 골드: {gold}");
+
 			// 골드 변경 이벤트 호출
 			OnGoldChanged?.Invoke(gold);
 			return true;
@@ -186,12 +181,15 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	// 골드를 추가하는 메서드
+	// 골드를 추가
 	public void AddGold(float amount)
 	{
 		gold += amount;
 		Debug.Log($"[Player] 골드 {amount}을 획득했습니다. 현재 골드: {gold}");
+
 		// 골드 변경 이벤트 호출
 		OnGoldChanged?.Invoke(gold);
 	}
 }
+
+//
