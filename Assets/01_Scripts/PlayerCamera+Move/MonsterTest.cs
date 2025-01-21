@@ -18,6 +18,7 @@ public class MonsterTest : MonoBehaviour
     public MonsterHpBar monsterHpBar; 
 
     [Header("카메라 컨트롤러 참조")]
+    // 값을 할당한게 아니라 변수를 선언 
     public VirtualCameraController cameraController;
 
     private void Awake()
@@ -77,7 +78,12 @@ public class MonsterTest : MonoBehaviour
         Debug.Log($"Monster HP: {currentHp}/{maxHp} (받은 Damage: {damage})");
 
         monsterHpBar?.ShowHpBar();
-        cameraController?.ShakeCamera(duration: 0.5f);
+
+        // 지속 시간에 따라 흔들기 구현
+        // cameraController가 null이 아닌 경우에만 ShakeCamera 메서드를 호출하여 
+        // duration 매개변수에 shakeDuration 값을 할당한다는 뜻
+        cameraController?.ShakeCamera(duration: cameraController.sakeDuration);
+
 
         if (currentHp <= 0)
         {

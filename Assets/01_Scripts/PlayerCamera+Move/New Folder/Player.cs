@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public float currentHp = 0f;
 
     [Header("최대 체력")] // UserData 공유
-    public float maxHp = 0;
+    public float maxHp = 100;
 
     // Rush 스킬 사용시 빼고는 고정
     [Header("이동 속도")]
@@ -50,9 +50,12 @@ public class Player : MonoBehaviour
 
         // FirebaseManager UserData에서 현재 체력 가져오기
         currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
-        
+
         // 현재 체력에서 최대 체력 가져오기
         maxHp = currentHp;
+
+        //currentHp = maxHp;
+
     }
 
     private void Update()
