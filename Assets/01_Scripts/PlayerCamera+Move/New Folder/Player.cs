@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
 	private void Die()
 	{
 		// 사운드 재생 
-		SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
+		SoundManager.Instance.PlaySFX("monster_potbellied_battle_1",gameObject);
 
 		Debug.Log("Player Die");
 
