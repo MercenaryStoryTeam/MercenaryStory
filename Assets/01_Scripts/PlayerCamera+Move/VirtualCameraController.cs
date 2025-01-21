@@ -21,10 +21,10 @@ public class VirtualCameraController : MonoBehaviour
     [Range(1f, 5f)] public float damping = 3f;
 
     [Header("카메라 쉐이크 설정")]
-    [Tooltip("쉐이크의 최소 강도 (0 ~ 1)")]
-    [Range(0f, 1f)] public float minShakeMagnitude = 0.05f;
-    [Tooltip("쉐이크의 최대 강도 (0 ~ 1)")]
-    [Range(0f, 1f)] public float maxShakeMagnitude = 0.1f;
+    [Tooltip("쉐이크의 최소 강도 (0 ~ 0.15), 0.1 추천")]
+    [Range(0f, 0.15f)] public float minShakeMagnitude = 0.1f;
+    [Tooltip("쉐이크의 최대 강도 (0 ~ 0.15), 0.15 추천")]
+    [Range(0f, 0.15f)] public float maxShakeMagnitude = 0.15f;
 
     [Header("카메라 쉐이크 방향 설정")]
     [Tooltip("X축 쉐이크 활성화")]
@@ -35,7 +35,7 @@ public class VirtualCameraController : MonoBehaviour
     public bool shakeZ = true;
 
     [Header("카메라 쉐이크 지속 시간")]
-    public float sakeDuration = 1f;
+    public float sakeDuration = 0.5f;
 
     // VirtualCamera 가져오기
     private CinemachineVirtualCamera vCam;
