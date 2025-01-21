@@ -11,7 +11,6 @@ using UnityEditor;
 public class ItemManager : SingletonManager<ItemManager>
 {
     public List<WeaponItem> weaponItems;
-    public List<QuestItem> questItems;
     public List<OtherItem> otherItems;
     public List<ItemBase> items;
 
