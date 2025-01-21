@@ -25,6 +25,11 @@ public class Minion : MonoBehaviourPun
     public MinionStateType currentState;
     public LayerMask playerLayer;
     public DetectCollider detectCollider;
+    public AudioClip attackSound;
+    public AudioClip dieSound;
+    public AudioClip hitSound;
+    private AudioSource audioSource;
+    public AudioSource AudioSource => audioSource;
 
     protected virtual void Start()
     {
@@ -35,6 +40,7 @@ public class Minion : MonoBehaviourPun
         stateMachine = new MinionStateMachine(this);
         ChangeState(MinionStateType.Chase);
         detectCollider = FindObjectOfType<DetectCollider>();
+        audioSource = GetComponent<AudioSource>();
     }
     protected virtual void Update()
     {
