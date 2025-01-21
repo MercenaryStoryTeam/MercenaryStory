@@ -101,11 +101,11 @@ public class PlayerFsm : MonoBehaviourPun
 
     private void Start()
     {
-        if (FirebaseManager.Instance.CurrentUserData.user_Name == gameObject.name)
+        if (PhotonNetwork.IsMasterClient && StageManager.Instance != null)
         {
-            if (StageManager.Instance != null)
+            if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name == gameObject.name)
             {
-                StageManager.Instance.playerFsm = this;
+                StageManager.Instance.hostPlayerFsm = this;
             }
         }
     }
