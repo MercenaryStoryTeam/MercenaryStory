@@ -157,6 +157,26 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
+	public async void UploadCurrnetInvenData(string childName, List<SlotData> value)
+	{
+		try
+		{
+			DatabaseReference targetRef = usersRef.Child(childName);
+
+			string jsonData = JsonConvert.SerializeObject(value);
+			await targetRef.SetRawJsonValueAsync(jsonData);
+		}
+		
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+	
 	public async void UploadCurrentUserData(string childName, object value,
 		Action<object> callback = null)
 	{
