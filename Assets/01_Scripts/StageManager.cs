@@ -9,8 +9,9 @@ public class StageManager : MonoBehaviour
     public static StageManager Instance { get; private set; }
     
     public List<Monster> monster;
-    public PlayerFsm playerFsm;
+    public PlayerFsm hostPlayerFsm;
     public bool StageClear { get; private set; }
+    private int currentStage = 1;
     public Transform spawnPoint;
     
     protected void Awake()
