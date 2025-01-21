@@ -175,7 +175,7 @@ public class Skill
     }
 
     // 유효성 검사
-    private void OnValidate()
+    public void OnValidate()
     {
         if (UpgradeCosts != null && UpgradeCosts.Count < MaxLevel)
         {

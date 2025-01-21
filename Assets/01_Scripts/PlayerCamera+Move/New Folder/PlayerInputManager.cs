@@ -12,7 +12,7 @@ public class PlayerInputManager : MonoBehaviourPun
 	public static System.Action OnShiftLeftClickInput;
 	public static System.Action OnShiftRightClickInput;
 	public static System.Action OnBInput;
-	public static System.Action OnKInput; // K 입력 메서드 추가
+	public static System.Action OnKInput; 
 
 	private Player player;
 
