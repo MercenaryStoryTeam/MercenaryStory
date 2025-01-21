@@ -411,4 +411,19 @@ public class PlayerFsm : MonoBehaviourPun
 		isMovementLocked = false;
 		isAttackLocked = false;
 	}
+
+	// 씬 이동을 위함 -지원
+	public void MoveAllPlayersToRoom(string sceneName)
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			photonView.RPC("RPC_MoveToScene", RpcTarget.All, sceneName);
+		}
+	}
+	
+	[PunRPC]
+	private void RPC_MoveToScene(string sceneName)
+	{
+		ServerManager.LoadScene(sceneName);
+	}
 }

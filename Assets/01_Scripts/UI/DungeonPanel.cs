@@ -20,6 +20,9 @@ public class DungeonPanel : MonoBehaviour
 	private void OnEnterButtonClick()
 	{
 		// 던전 들어가기
-		ServerManager.LoadScene("LJW_1-1");
+		// ServerManager.LoadScene("LJW_1-1");
+		PlayerFsm playerFsm = GameObject
+			.Find(FirebaseManager.Instance.CurrentUserData.user_Name).GetComponent<PlayerFsm>();
+		playerFsm.MoveAllPlayersToRoom("LJW_1-1");
 	}
 }

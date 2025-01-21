@@ -43,6 +43,7 @@ MonoBehaviour:
   - NetworkSetEquipment
   - SetCurrentEquip
   - RPC_SetActiveState
+  - RPC_MoveToScene
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
