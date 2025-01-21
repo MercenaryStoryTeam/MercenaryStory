@@ -96,16 +96,16 @@ public class PlayerFsm : MonoBehaviourPun
 		}
 	}
 
-	private void Start()
-	{
-		if (FirebaseManager.Instance.CurrentUserData.user_Name == gameObject.name)
-		{
-			if (StageManager.Instance != null)
-			{
-				StageManager.Instance.playerFsm = this;
-			}
-		}
-	}
+    private void Start()
+    {
+        if (PhotonNetwork.IsMasterClient && StageManager.Instance != null)
+        {
+            if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name == gameObject.name)
+            {
+                StageManager.Instance.hostPlayerFsm = this;
+            }
+        }
+    }
 
 	private void OnEnable()
 	{
