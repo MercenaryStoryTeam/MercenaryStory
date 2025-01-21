@@ -17,7 +17,6 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        // 싱글톤 패턴 구현
         if (Instance == null)
         {
             Instance = this;
@@ -96,17 +95,17 @@ public class SoundManager : MonoBehaviour
     // BGM 볼륨 설정
     public void SetBGMVolume(float volume)
     {
-        float mixerVolume = Mathf.Log10(volume) * 20;  // 로그 스케일로 변환
-        audioMixer.SetFloat(BGM_VOLUME_KEY, mixerVolume);  // AudioMixer에 볼륨 설정
-        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);  // PlayerPrefs에 볼륨 저장
+        float mixerVolume = Mathf.Log10(volume) * 20;  
+        audioMixer.SetFloat(BGM_VOLUME_KEY, mixerVolume);  
+        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);  
     }
 
     // SFX 볼륨 설정
     public void SetSFXVolume(float volume)
     {
-        float mixerVolume = Mathf.Log10(volume) * 20;  // 로그 스케일로 변환
-        audioMixer.SetFloat(SFX_VOLUME_KEY, mixerVolume);  // AudioMixer에 볼륨 설정
-        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);  // PlayerPrefs에 볼륨 저장
+        float mixerVolume = Mathf.Log10(volume) * 20;  
+        audioMixer.SetFloat(SFX_VOLUME_KEY, mixerVolume);  
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);  
     }
 
     // BGM 페이드 인/아웃
