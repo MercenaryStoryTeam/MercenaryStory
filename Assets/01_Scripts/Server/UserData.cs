@@ -14,7 +14,7 @@ public class UserData
 	public float user_RankCurrentEXP { get; set; }
 	public float user_HP { get; set; }
 	public int user_weapon_item_Id { get; set; }
-	public List<SlotData> user_Inventory { get; set; }
+	public List<SlotData> user_Inventory { get; set; } = new List<SlotData>();
 	public float user_Gold { get; set; }
 
 

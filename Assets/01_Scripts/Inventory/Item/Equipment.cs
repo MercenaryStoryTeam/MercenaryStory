@@ -30,15 +30,15 @@ public class Equipment : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
-        if (savedWeaponId != 0)
-        {
-            ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
-            if (savedWeapon != null)
-            {
-                photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
-            }
-        }
+        // int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+        // if (savedWeaponId != 0)
+        // {
+        //     ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
+        //     if (savedWeapon != null)
+        //     {
+        //         photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
+        //     }
+        // }
     }
 
     [PunRPC]
