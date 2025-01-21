@@ -81,6 +81,11 @@ public class PlayerInputManager : MonoBehaviourPun
 			UIManager.Instance.shop.TryOpenShop();
 		}
 
+		if (Input.GetKeyDown(KeyCode.Z))
+		{
+			UIManager.Instance.OpenDungeonPanel();
+		}
+
 		player.DropItemInteraction(); // 드랍템 상호작용 메서드
 	}
 }
