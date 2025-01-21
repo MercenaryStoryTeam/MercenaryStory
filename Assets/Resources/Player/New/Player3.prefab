@@ -28222,7 +28222,7 @@ MonoBehaviour:
   - {fileID: 6894088920612677705}
   - {fileID: 4971664752403057711}
   - {fileID: 8037968367783490940}
-  sceneViewId: 4
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &6894088920612677705
