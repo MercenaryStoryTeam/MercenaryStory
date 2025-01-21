@@ -38,12 +38,6 @@ public class SlowZone : MonoBehaviour
             }
         }
     }
-
-    // 플레이어가 트리거 영역을 벗어나도 효과는 지속되므로 별도의 처리 없음
-    private void OnTriggerExit(Collider collider)
-    {
-
-    }
 }
 
 // 완성

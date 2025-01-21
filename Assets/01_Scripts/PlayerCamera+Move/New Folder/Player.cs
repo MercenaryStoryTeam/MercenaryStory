@@ -4,23 +4,27 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    [Header("플레이어 현재 체력")] //
+    [Header("현재 체력")] // UserData 공유
     public float currentHp = 0f;
 
-    [Header("플레이어 최대 체력")]
-    public float maxHp = 0;
+    [Header("최대 체력")] // UserData 공유
+    public float maxHp = 100;
 
-    [Header("골드")] //
-    public float gold = 0f;
-
-    [Header("경험치")] //
-    public float exp = 0f;
-
+    // Rush 스킬 사용시 빼고는 고정
     [Header("이동 속도")]
     public float moveSpeed = 5f;
 
-    [Header("플레이어 흡혈 비율")]
+    // 고정
+    [Header("흡혈 비율")]
     public float suckBlood = 3f;
+
+    // 용도: 스킬 업그레이드
+    [Header("골드")] // UserData 공유
+    public float gold = 0f;
+
+    // 용도가 불분명
+    // [Header("경험치")]
+    // public float exp = 0f;
 
     [Header("플레이어 사망시 전환할 씬 이름")]
     public string nextSceneName;
@@ -35,14 +39,23 @@ public class Player : MonoBehaviour
     // 드랍된 아이템 상호작용 용도로 사용하는 드랍템 리스트
     private List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems = new List<(GameObject droppedLightLine, ItemBase droppedItem)>();
 
+    // 골드 변경 이벤트
+    public delegate void GoldChanged(float newGold);
+    public event GoldChanged OnGoldChanged;
 
     private void Start()
     {
-        currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
-        maxHp = currentHp;
-
         // 원래 이동 속도 저장
         originalMoveSpeed = moveSpeed;
+
+        // FirebaseManager UserData에서 현재 체력 가져오기
+        currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+
+        // 현재 체력에서 최대 체력 가져오기
+        maxHp = currentHp;
+
+        //currentHp = maxHp;
+
     }
 
     private void Update()
@@ -55,6 +68,7 @@ public class Player : MonoBehaviour
                 if (droppedItems[i].droppedItem == null || droppedItems[i].droppedLightLine == null)
                 {
                     print("현재 드랍된 아이템 없음");
+                    continue; // 아이템이 없으면 다음으로 넘어감
                 }
 
                 // 드랍된 아이템이 상호작용 가능한 거리에 있을 경우
@@ -63,7 +77,7 @@ public class Player : MonoBehaviour
                     print("상호작용 거리임");
 
                     // E키를 누르면 반경 안에 있는 아이템이 인벤토리에 추가
-                    if (Input.GetKeyDown(KeyCode.E)) 
+                    if (Input.GetKeyDown(KeyCode.E))
                     {
                         InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
                         Destroy(droppedItems[i].droppedLightLine.gameObject);
@@ -75,7 +89,6 @@ public class Player : MonoBehaviour
     }
 
     // 흡혈 처리
-    // Weapon 스크립트에서 SuckBlood 메서드 호출
     public void SuckBlood()
     {
         if (currentHp >= maxHp) return;
@@ -155,12 +168,39 @@ public class Player : MonoBehaviour
         }
     }
 
+    // 드랍된 아이템 추가 메서드
     public void DroppedLightLine(ItemBase item)
     {
         GameObject itemLightLine = Instantiate(item.dropLightLine, StageManager.Instance.monster.transform.position, Quaternion.identity);
         droppedItems.Add((itemLightLine, item));
 
-        //if~
-        //현재 스테이지가 보스 스테이지일 경우 몬스터 대신 보스 몬스터 위치 참조
+        // 현재 스테이지가 보스 스테이지일 경우 몬스터 대신 보스 몬스터 위치 참조 (추가 구현 필요)
+    }
+
+    // 골드를 소모하는 메서드
+    public bool SpendGold(float amount)
+    {
+        if (gold >= amount)
+        {
+            gold -= amount;
+            Debug.Log($"[Player] 골드 {amount}을 사용했습니다. 남은 골드: {gold}");
+            // 골드 변경 이벤트 호출
+            OnGoldChanged?.Invoke(gold);
+            return true;
+        }
+        else
+        {
+            Debug.LogWarning($"[Player] 골드가 부족합니다. 필요: {amount}, 현재: {gold}");
+            return false;
+        }
+    }
+
+    // 골드를 추가하는 메서드
+    public void AddGold(float amount)
+    {
+        gold += amount;
+        Debug.Log($"[Player] 골드 {amount}을 획득했습니다. 현재 골드: {gold}");
+        // 골드 변경 이벤트 호출
+        OnGoldChanged?.Invoke(gold);
     }
 }
