@@ -18,6 +18,7 @@ public class MonsterTest : MonoBehaviour
     public MonsterHpBar monsterHpBar; 
 
     [Header("카메라 컨트롤러 참조")]
+
     // 값을 할당한게 아니라 변수를 선언 
     public VirtualCameraController cameraController;
 
@@ -99,3 +100,5 @@ public class MonsterTest : MonoBehaviour
         Destroy(gameObject);
     }
 }
+
+//
