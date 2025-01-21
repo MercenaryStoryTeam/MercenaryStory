@@ -3,88 +3,133 @@ using UnityEngine;
 public class MonsterTest : MonoBehaviour
 {
     [Header("몬스터 공격력")]
-    public float damage = 10f; // 몬스터 공격력
+    public float damage = 10f; 
 
     [Header("몬스터 현재 체력")]
-    public float currentHp; // 몬스터 현재 체력
+    public float currentHp; 
 
     [Header("몬스터 최대 체력")]
-    public float maxHp = 100f; // 몬스터 최대 체력
+    public float maxHp = 100f; 
 
     [Header("플레이어 레이어")]
-    public LayerMask playerLayer; // 플레이어 레이어
+    public LayerMask playerLayer; 
 
-    [Header("HP 바 참조")]
-    public MonsterHpBar monsterHpBar; // MonsterHpBar에 대한 참조
+    [Header("몬스터 HP 바")]
+    public MonsterHpBar monsterHpBar; 
 
-    // Player 스크립트 참조
-    private Player player;
+    [Header("카메라 컨트롤러 참조")]
+    public VirtualCameraController cameraController;
+
+    [Header("보상 골드")]
+    public float goldReward = 100f;
+
+    private void Awake()
+    {
+        // 처음에 현재 체력을 최대 체력으로 설정
+        currentHp = maxHp;
+    }
 
     private void Start()
     {
-        // 현재 체력을 최대 체력으로 초기화
-        currentHp = maxHp;
+        // 버츄얼 카메라 체크
+        if (cameraController == null)
+        {
+            cameraController = FindObjectOfType<VirtualCameraController>();
+            if (cameraController == null)
+            {
+                Debug.LogError("VirtualCameraController를 찾을 수 없습니다.");
+            }
+        }
+
+        // 몬스터 hp바 체크
+        if (monsterHpBar == null)
+        {
+            Debug.LogWarning("MonsterHpBar 설정되지 않았습니다.");
+        }
+    }
+
+    // 플레이어 레이어 찾기
+    private bool IsPlayerLayer(int layer)
+    {
+        return (playerLayer.value & (1 << layer)) != 0;
     }
 
     // 객체 간 충돌에 따른 데미지 처리
     private void OnCollisionEnter(Collision collision)
     {
-        // 충돌한 객체의 레이어가 플레이어라면 실행
-        if ((playerLayer.value & (1 << collision.gameObject.layer)) != 0)
+        // 충돌한 객체가 플레이어라면 실행
+        if (IsPlayerLayer(collision.gameObject.layer))
         {
-            // 충돌한 객체에서 Player 스크립트 참조
+            // 충돌한 플레이어 오브젝트 찾기
             Player player = collision.gameObject.GetComponent<Player>();
+
+            // 있다면 실행
             if (player != null)
             {
-                // 플레이어에게 데미지 적용
+                // 데미지 전달
                 player.TakeDamage(damage);
+            }
+            else
+            {
+                Debug.LogWarning("충돌한 객체에 Player 컴포넌트가 없습니다.");
             }
         }
     }
 
-    // 몬스터가 데미지를 받았을 때 호출되는 메서드
+    // 몬스터가 데미지를 받았을 때 호출
     public void TakeDamage(float damage)
     {
-        // 현재 체력이 0이라면 더 이상 데미지 처리를 하지 않음
-        if (currentHp <= 0)
-        {
-            return;
-        }
+        if (currentHp <= 0) return;
 
         // 데미지 처리
         currentHp -= damage;
 
-        // 현재 체력을 0과 maxHp 사이로 제한
+        // 현재 체력 범위 제한
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
-        // 데미지 받은 후 체력 출력
         Debug.Log($"Monster HP: {currentHp}/{maxHp} (받은 Damage: {damage})");
 
-        // 몬스터가 플레이어의 데미지를 전달받을 때 HP 바 활성화
-        if (monsterHpBar != null)
-        {
-            // 몬스터 hp바 스크립트에서 ShowHpBar 메서드 호출
-            monsterHpBar.ShowHpBar();
-        }
+        // 5초 동안 유지되는 몬스터 hp바 활성화
+        monsterHpBar?.ShowHpBar();
 
-        // 체력이 0 이하일 경우 Die 메서드 호출
+        // 지속 시간에 따라 흔들기 구현
+        // cameraController가 null이 아닌 경우에만 ShakeCamera 메서드를 호출하여 
+        // duration 매개변수에 shakeDuration 값을 할당한다는 뜻
+        cameraController?.ShakeCamera(duration: cameraController.sakeDuration);
+
         if (currentHp <= 0)
         {
             Die();
         }
     }
 
-    // 몬스터 die 처리
     private void Die()
     {
-        // die 사운드 재생 (필요에 맞게 수정 가능)
-        SoundManager.Instance.PlaySFX("monster_potbellied_battle_1",gameObject);
+        // 사운드 호출
+        SoundManager.Instance?.PlaySFX("monster_potbellied_battle_1",gameObject);
 
         Debug.Log("Monster Die");
 
-        // 몬스터 삭제
+        // 플레이어 오브젝트 찾기
+        // 특정 플레이어 오브젝트를 식별하지 않기 때문에
+        // 모두 획득
+        Player player = FindObjectOfType<Player>();
+
+        // 있으면 실행
+        if (player != null)
+        {
+            // 골드 처리
+            player.AddGold(goldReward);
+
+            Debug.Log($"플레이어에게 {goldReward} 골드가 추가되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("플레이어를 찾을 수 없어 골드를 추가할 수 없습니다.");
+        }
+
         Destroy(gameObject);
     }
 }
 
-// 완성
+//

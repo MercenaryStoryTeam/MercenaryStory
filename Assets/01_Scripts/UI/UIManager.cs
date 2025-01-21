@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : SingletonManager<UIManager>
@@ -24,6 +23,7 @@ public class UIManager : SingletonManager<UIManager>
 	public PartyCreatePanel partyCreatePanel;
 	public PartyMemberPanel partyMemberPanel;
 	public Button partyButton;
+	public DungeonPanel dungeonPanel;
 
 	protected override void Awake()
 	{
@@ -142,7 +142,7 @@ public class UIManager : SingletonManager<UIManager>
 	public void OpenPartyPanel()
 	{
 		// party member 확인 후 파티에 가입되어 있는 지 확인 후 맞는 패널을 열어야 함.
-		if (!ServerManager.GetIsParty())
+		if (FirebaseManager.Instance.CurrentUserData.user_CurrentParty == "")
 		{
 			partyPanel.gameObject.SetActive(true);
 			partyMemberPanel.gameObject.SetActive(false);
@@ -173,4 +173,9 @@ public class UIManager : SingletonManager<UIManager>
 	}
 
 	#endregion
+
+	public void OpenDungeonPanel()
+	{
+		dungeonPanel.gameObject.SetActive(true);
+	}
 }

@@ -84,28 +84,39 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 	public async void CheckEmail(string email)
 	{
-		DataSnapshot usersData = await DB.GetReference("users").GetValueAsync();
-		userDictionary =
-			JsonConvert.DeserializeObject<Dictionary<string, UserData>>(
-				usersData.GetRawJsonValue());
-		if (userDictionary != null)
+		try
 		{
-			userList = new List<UserData>(userDictionary.Values);
-			foreach (UserData userData in userList)
+			DataSnapshot usersData = await DB.GetReference("users").GetValueAsync();
+			userDictionary =
+				JsonConvert.DeserializeObject<Dictionary<string, UserData>>(
+					usersData.GetRawJsonValue());
+			if (userDictionary != null)
 			{
-				if (userData.user_Email == email)
+				userList = new List<UserData>(userDictionary.Values);
+				foreach (UserData userData in userList)
 				{
-					UIManager.Instance.popUp.PopUpOpen("이미 사용중인 email입니다.",
-						() => UIManager.Instance.popUp.PopUpClose());
-					state = State.EmailNotChecked;
-					return;
+					if (userData.user_Email == email)
+					{
+						UIManager.Instance.popUp.PopUpOpen("이미 사용중인 email입니다.",
+							() => UIManager.Instance.popUp.PopUpClose());
+						state = State.EmailNotChecked;
+						return;
+					}
 				}
 			}
-		}
 
-		UIManager.Instance.popUp.PopUpOpen("사용 가능한 email입니다.",
-			() => UIManager.Instance.popUp.PopUpClose());
-		state = State.EmailChecked;
+			UIManager.Instance.popUp.PopUpOpen("사용 가능한 email입니다.",
+				() => UIManager.Instance.popUp.PopUpClose());
+			state = State.EmailChecked;
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
 	}
 
 	public async void SignIn(string email, string password)
@@ -146,6 +157,26 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
+	public async void UploadCurrnetInvenData(string childName, List<SlotData> value)
+	{
+		try
+		{
+			DatabaseReference targetRef = usersRef.Child(childName);
+
+			string jsonData = JsonConvert.SerializeObject(value);
+			await targetRef.SetRawJsonValueAsync(jsonData);
+		}
+		
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+	
 	public async void UploadCurrentUserData(string childName, object value,
 		Action<object> callback = null)
 	{
@@ -175,8 +206,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		{
 			// Create PartyData
 			PartyData partyData = new PartyData(CurrentUserData.user_CurrentServer,
-				party_Name,
-				party_Size, CurrentUserData);
+				CurrentUserData.user_CurrentServer, party_Name, party_Size, CurrentUserData);
 			CurrentPartyData = partyData;
 
 			// Set current user's party data
@@ -378,6 +408,24 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				UIManager.Instance.popUp.PopUpClose();
 				UIManager.Instance.OpenPartyPanel();
 			});
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	public async void UploadPartyDataToLoadScene(string serverName)
+	{
+		try
+		{
+			CurrentPartyData.UpdatePartyData(serverId: Guid.NewGuid().ToString());
+			CurrentPartyData.UpdatePartyData(serverName: serverName);
+			UploadCurrentPartyData();
 		}
 		catch (FirebaseException e)
 		{

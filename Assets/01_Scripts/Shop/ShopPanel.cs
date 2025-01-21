@@ -194,7 +194,7 @@ public class ShopPanel : MonoBehaviour
 			}
 		}
 		
-		_testsy.myGold += sellPrice;
+		FirebaseManager.Instance.CurrentUserData.user_Gold += sellPrice;
 		sellPrice = 0;
 		isSellButtonClicked = true;
 		

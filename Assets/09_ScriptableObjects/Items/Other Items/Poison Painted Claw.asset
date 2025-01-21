@@ -16,7 +16,7 @@ MonoBehaviour:
   name: "\uB3C5\uC5D0 \uBB3C\uB4E0 \uBC1C\uD1B1"
   description: "\uB2AA \uC950\uC758 \uBC1C\uD1B1\uC774\uB2E4.\n\uB2AA\uC758 \uB3C5\uAE30\uAC00
     \uC62E\uC740 \uAC83\uCC98\uB7FC\n\uB05D\uC774 \uBCC0\uC0C9\uB418\uC5B4 \uC788\uB2E4."
-  currentItemCount: 0
+  currentItemCount: 3
   itemClass: 2
   price: 2
   dropPercent: 0.33

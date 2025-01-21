@@ -200,8 +200,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
                 }
             }
 
-            string jsonData = JsonConvert.SerializeObject(currentUserData.user_Inventory);
-            FirebaseManager.Instance.UploadCurrentUserData("user_Inventory", jsonData);
+            FirebaseManager.Instance.UploadCurrnetInvenData("user_Inventory", currentUserData.user_Inventory);
             Debug.Log("Firebase 업로드 요청 완료");
             return true;
         }

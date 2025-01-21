@@ -109,11 +109,11 @@ public abstract class Monster : MonoBehaviourPun
         if (Hp <= 0)
         {
             stateMachine.ChangeState(MonsterStateType.Die);
-            TryDropItem(dropItems);
+            DroppedLightLine(TryDropItem(dropItems));
         }
     }
 
-    public ItemBase TryDropItem(List<ItemBase> items)
+    private ItemBase TryDropItem(List<ItemBase> items)
     {
         ItemBase droppedItem = null;
 
@@ -144,6 +144,13 @@ public abstract class Monster : MonoBehaviourPun
         return droppedItem;
     }
 
+    private void DroppedLightLine(ItemBase item)
+    {
+        Player player = FindObjectOfType<Player>();
+        GameObject itemLightLine = Instantiate(item.dropLightLine, this.transform.position, Quaternion.identity);
+        player.droppedItems.Add((itemLightLine, item));
+    }
+    
     private void OnDrawGizmos()
     {
         // 감지 범위
