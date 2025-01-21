@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ExitGames.Client.Photon.StructWrapping;
 using UnityEditor;
 using UnityEngine;
@@ -39,7 +40,10 @@ public class EquipmentPanel : MonoBehaviour
                 thirdCharacter.SetActive(true);
                 break;
         }
-        
+
+        currentItem =
+            InventoryManger.Instance.allItems.Find(x =>
+                x.id == FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id);
         currentEquipImage.sprite = currentItem.image;
     }
 

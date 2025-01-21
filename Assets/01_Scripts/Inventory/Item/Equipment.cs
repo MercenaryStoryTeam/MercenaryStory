@@ -21,24 +21,19 @@ public class Equipment : MonoBehaviourPunCallbacks
 
     // equipmentParent : rightHand, leftHand의 자식인 Shield 등을 Find해서 대입하는 로직 필요
     private Transform equipmentParent;
-    
-    
-    private void Awake()
-    {
-        _testSY = FindObjectOfType<TestSY>();
-    }
 
     private void Start()
     {
-        // int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
-        // if (savedWeaponId != 0)
-        // {
-        //     ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
-        //     if (savedWeapon != null)
-        //     {
-        //         photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
-        //     }
-        // }
+        int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+        if (savedWeaponId != 0)
+        {
+            ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
+            if (savedWeapon != null)
+            {
+                print($"{savedWeapon.name} 으로 장비 프리팹 설정 완료");
+                photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
+            }
+        }
     }
 
     [PunRPC]
