@@ -1,85 +1,130 @@
-using System.Collections.Generic;
 using UnityEngine;
-
-// 사용방법
-// 실행하고자 하는 함수안 맨 위에 배치
-// SoundManager.Instance.PlaySound("사운드 클립"); -> 사용하고자 하는 오디오 소스 이름 기재, 이름은 동일해야 한다.
+using UnityEngine.Audio;
+using System.Collections;
+using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour
 {
-    // 사운드 매니저 싱글톤 처리
     public static SoundManager Instance { get; private set; }
-
-    // 사운드 이름과 AudioClip을 저장하기 위한 딕셔너리
+    
+    [SerializeField] private AudioMixer audioMixer;
+    private AudioSource bgmSource;
     private Dictionary<string, AudioClip> audioClips;
 
-    // 오디오 소스 컴포넌트 추가를 위한 변수 선언
-    private AudioSource audioSource;
+    // PlayerPrefs에 저장할 볼륨 키 상수
+    private const string BGM_VOLUME_KEY = "BGMVolume";
+    private const string SFX_VOLUME_KEY = "SFXVolume";
 
     private void Awake()
     {
-        // Singleton 설정
+        // 싱글톤 패턴 구현
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SetupAudio();
         }
-        // 씬 전환시 사운드 매니저 추가 생성 x
         else
         {
             Destroy(gameObject);
         }
-
-        // AudioSource 컴포넌트 추가
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-            Debug.Log("SoundManager: AudioSource 컴포넌트 추가됨.");
-        }
-
-        // AudioClip 로드
-        LoadAllAudioClips();
     }
 
-    // Resources 폴더 내의 모든 AudioClip을 로드하여 딕셔너리에 저장
+    private void SetupAudio()
+    {
+        bgmSource = gameObject.AddComponent<AudioSource>();
+        bgmSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("BGM")[0];  // BGM 그룹에 연결
+        bgmSource.spatialBlend = 0f;  // 2D 사운드로 설정
+        bgmSource.loop = true;  
+
+        LoadAllAudioClips();
+        LoadVolume();
+    }
+
     private void LoadAllAudioClips()
     {
         audioClips = new Dictionary<string, AudioClip>();
-        // Audio는 Resources 폴더 내의 서브폴더 이름
         AudioClip[] clips = Resources.LoadAll<AudioClip>("Audio");
 
-        Debug.Log($"SoundManager: Resources/Audio/ 폴더에서 {clips.Length}개의 AudioClip을 로드했습니다.");
-
-        // 리소스 폴더 -> 오디오 폴더에 담긴 오디오 클립 clips 배열에 저장
         foreach (AudioClip clip in clips)
         {
             if (!audioClips.ContainsKey(clip.name))
             {
                 audioClips.Add(clip.name, clip);
             }
-            else
-            {
-                Debug.LogWarning($"SoundManager: 중복된 AudioClip 이름 발견 - {clip.name}");
-            }
         }
-
-        Debug.Log($"SoundManager: 총 {audioClips.Count}개의 AudioClip 로드됨.");
     }
 
-    // 다른 스크립트에서 이름으로 사운드 재생
-    public void PlaySound(string clipName)
+    private void LoadVolume()
+    {
+        float bgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1f);  // BGM 볼륨 불러오기
+        float sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1f);  // SFX 볼륨 불러오기
+        
+        SetBGMVolume(bgmVolume);  // BGM 볼륨 설정
+        SetSFXVolume(sfxVolume);  // SFX 볼륨 설정
+    }
+
+    // BGM 재생
+    public void PlayBGM(string clipName)
     {
         if (audioClips.ContainsKey(clipName))
         {
-            audioSource.PlayOneShot(audioClips[clipName]);
-            Debug.Log($"SoundManager: '{clipName}' 사운드 재생.");
+            bgmSource.clip = audioClips[clipName];
+            bgmSource.Play();
         }
-        else
+    }
+
+    // 효과음 재생 (3D)
+    //source에는 소리가 나는 오브젝트 보통 gameObject 사용하면 됨.
+    public void PlaySFX(string clipName, GameObject source)
+    {
+        if (audioClips.ContainsKey(clipName))
         {
-            Debug.LogWarning($"SoundManager: '{clipName}' 이름의 AudioClip을 찾을 수 없습니다.");
+            // 호출한 오브젝트에 AudioSource가 없으면 추가
+            AudioSource audioSource = source.GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = source.AddComponent<AudioSource>();
+                audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("SFX")[0];
+                audioSource.spatialBlend = 1f;  // 3D 사운드
+            }
+            
+            audioSource.PlayOneShot(audioClips[clipName]);
+        }
+    }
+
+    // BGM 볼륨 설정
+    public void SetBGMVolume(float volume)
+    {
+        float mixerVolume = Mathf.Log10(volume) * 20;  // 로그 스케일로 변환
+        audioMixer.SetFloat(BGM_VOLUME_KEY, mixerVolume);  // AudioMixer에 볼륨 설정
+        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);  // PlayerPrefs에 볼륨 저장
+    }
+
+    // SFX 볼륨 설정
+    public void SetSFXVolume(float volume)
+    {
+        float mixerVolume = Mathf.Log10(volume) * 20;  // 로그 스케일로 변환
+        audioMixer.SetFloat(SFX_VOLUME_KEY, mixerVolume);  // AudioMixer에 볼륨 설정
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);  // PlayerPrefs에 볼륨 저장
+    }
+
+    // BGM 페이드 인/아웃
+    public void FadeBGM(float duration, float targetVolume)
+    {
+        StartCoroutine(FadeBGMCoroutine(duration, targetVolume));
+    }
+
+    private IEnumerator FadeBGMCoroutine(float duration, float targetVolume)
+    {
+        float currentTime = 0;
+        float start = bgmSource.volume;
+        
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            bgmSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            yield return null;
         }
     }
 }
-
-// 완료

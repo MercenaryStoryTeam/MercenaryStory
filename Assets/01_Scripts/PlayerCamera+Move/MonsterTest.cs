@@ -78,7 +78,7 @@ public class MonsterTest : MonoBehaviour
     private void Die()
     {
         // die 사운드 재생 (필요에 맞게 수정 가능)
-        SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
+        SoundManager.Instance.PlaySFX("monster_potbellied_battle_1",gameObject);
 
         Debug.Log("Monster Die");
 

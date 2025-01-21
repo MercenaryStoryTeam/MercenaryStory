@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     [Header("씬 로드 지연시간")]
     public int loadSceneDelay = 1;
 
+    
     // 이동 속도 슬로우 비율 할당
     [HideInInspector]
     public float originalMoveSpeed;
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
 
         // 원래 이동 속도 저장
         originalMoveSpeed = moveSpeed;
+        
     }
 
     private void Update()
@@ -119,7 +121,7 @@ public class Player : MonoBehaviour
     private void Die()
     {
         // 사운드 재생 
-        SoundManager.Instance.PlaySound("monster_potbellied_battle_1");
+        SoundManager.Instance.PlaySFX("monster_potbellied_battle_1", gameObject);
 
         Debug.Log("Player Die");
 
@@ -155,12 +157,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void DroppedLightLine(ItemBase item)
-    {
-        GameObject itemLightLine = Instantiate(item.dropLightLine, StageManager.Instance.monster.transform.position, Quaternion.identity);
-        droppedItems.Add((itemLightLine, item));
-
-        //if~
-        //현재 스테이지가 보스 스테이지일 경우 몬스터 대신 보스 몬스터 위치 참조
-    }
+    // public void DroppedLightLine(ItemBase item)
+    // {
+    //     GameObject itemLightLine = Instantiate(item.dropLightLine, StageManager.Instance.monster.transform.position, Quaternion.identity);
+    //     droppedItems.Add((itemLightLine, item));
+    //
+    //     //if~
+    //     //현재 스테이지가 보스 스테이지일 경우 몬스터 대신 보스 몬스터 위치 참조
+    // }
 }
