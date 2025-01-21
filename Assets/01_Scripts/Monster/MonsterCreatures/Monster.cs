@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Monster : MonoBehaviourPun
@@ -19,11 +20,16 @@ public abstract class Monster : MonoBehaviourPun
     private float attackRange;
     private float returnRange;
     
-    private Vector3 patrolPoint;
+    public Vector3 patrolPoint;
     private LayerMask playerLayer;
-    private Transform playerTransform;
+    public Transform playerTransform;
     
     private NavMeshAgent agent;
+    public AudioClip attackSound;
+    public AudioClip dieSound;
+    public AudioClip hitSound;
+    private AudioSource audioSource;
+    
     private MonsterStateMachine stateMachine;
     public MonsterStateType currentState;
     
@@ -43,11 +49,10 @@ public abstract class Monster : MonoBehaviourPun
     public float DetectionRange { set => detectionRange = Mathf.Max(0, value); get => detectionRange; }
     public float AttackRange { set => attackRange = Mathf.Max(0, value); get => attackRange; }
     public float ReturnRange { set => returnRange = Mathf.Max(0, value); get => returnRange; }
-    public Vector3 PatrolPoint { get => patrolPoint; set => patrolPoint = value; }
     public LayerMask PlayerLayer => playerLayer;
-    public Transform PlayerTransform { get => playerTransform; set => playerTransform = value; }
     public NavMeshAgent Agent => agent;
-    public Animator Animator { get => animator;  set => animator = value; }
+    public Animator Animator => animator;
+    public AudioSource AudioSource => audioSource;
     public MonsterStateMachine StateMachine => stateMachine;
     
     #endregion
@@ -55,6 +60,7 @@ public abstract class Monster : MonoBehaviourPun
     protected virtual void Start()
     {
         patrolPoint = transform.position;
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.speed = MoveSpeed;
@@ -150,6 +156,6 @@ public abstract class Monster : MonoBehaviourPun
     
         // 순찰 범위
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(PatrolPoint, PatrolRange);
+        Gizmos.DrawWireSphere(patrolPoint, PatrolRange);
     }
 }
