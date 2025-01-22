@@ -72,6 +72,7 @@ public class SoundManager : MonoBehaviour
         if (audioClips.ContainsKey(clipName))
         {
             bgmSource.clip = audioClips[clipName];
+            print($"Playing BGM: {clipName}");
             bgmSource.Play();
         }
     }
@@ -98,23 +99,23 @@ public class SoundManager : MonoBehaviour
     // BGM 볼륨 설정
     public void SetBGMVolume(float volume)
     {
-        float mixerVolume = Mathf.Log10(volume) * 20;  
-        audioMixer.SetFloat(BGM_VOLUME_KEY, mixerVolume);  
-        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);  
+        float mixerVolume = volume <= 0 ? -80f : Mathf.Log10(volume) * 20f;
+        audioMixer.SetFloat(BGM_VOLUME_KEY, mixerVolume);
+        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);
     }
 
     // SFX 볼륨 설정
     public void SetSFXVolume(float volume)
     {
-        float mixerVolume = Mathf.Log10(volume) * 20;  
-        audioMixer.SetFloat(SFX_VOLUME_KEY, mixerVolume);  
-        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);  
+        float mixerVolume = volume <= 0 ? -80f : Mathf.Log10(volume) * 20f;
+        audioMixer.SetFloat(SFX_VOLUME_KEY, mixerVolume);
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);
     }
 
     // 마스터 볼륨 설정
     public void SetMasterVolume(float volume)
     {
-        float mixerVolume = Mathf.Log10(volume) * 20;
+        float mixerVolume = volume <= 0 ? -80f : Mathf.Log10(volume) * 20f;
         audioMixer.SetFloat(MASTER_VOLUME_KEY, mixerVolume);
         PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, volume);
     }
