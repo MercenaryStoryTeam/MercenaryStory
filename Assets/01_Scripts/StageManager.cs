@@ -1,38 +1,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : MonoBehaviour
+public class StageManager : SingletonManager<StageManager>
 {
-	public static StageManager Instance { get; private set; }
 
-	public List<Monster> monster;
-	public PlayerFsm hostPlayerFsm;
-	public bool StageClear { get; private set; }
-	public Transform spawnPoint;
-	public int currentStage;
+    [SerializeField] private StageData[] stageDatas;
+    public int dieMonsterCount;
+    public PlayerFsm hostPlayerFsm;
+    public bool StageClear { get; private set; }
+    public Transform spawnPoint;
+    public int currentStage = 0;
 
-	protected void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-		}
-		else
-		{
-			DestroyImmediate(gameObject);
-		}
-	}
+    private void Start()
+    {
+        ServerManager.PlayerSpawn(spawnPoint);
+        PlayStageBGM();
+    }
 
-	private void Start()
-	{
-		ServerManager.PlayerSpawn(spawnPoint);
-	}
+    private void PlayStageBGM()
+    {
+        if (currentStage < stageDatas.Length)
+        {
+            SoundManager.Instance.PlayBGM(stageDatas[currentStage].bgmName);
+        }
+    }
 
-	public void Update()
-	{
-		if (monster.Count <= 0)
-		{
-			StageClear = true;
-		}
-	}
+    public void ChangeStage(int stageIndex)
+    {
+        if (stageIndex < stageDatas.Length)
+        {
+            currentStage = stageIndex;
+            PlayStageBGM();
+        }
+    }
+
+    public void Update()
+    {
+        if (dieMonsterCount == stageDatas[currentStage].monsterCount)
+        {
+            StageClear = true;
+        }
+    }
 }
