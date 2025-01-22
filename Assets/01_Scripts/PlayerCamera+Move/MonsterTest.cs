@@ -90,7 +90,11 @@ public class MonsterTest : MonoBehaviour
     // 몬스터가 데미지를 받았을 때 호출
     public void TakeDamage(float damage)
     {
+        // 현재 체력이 0이하라면 더 이상 데미지 감소 처리 x
         if (currentHp <= 0) return;
+
+        // 사운드 호출
+        SoundManager.Instance?.PlaySFX("monster_potbellied_battle_1", gameObject);
 
         // 데미지 처리
         currentHp -= damage;
@@ -125,9 +129,6 @@ public class MonsterTest : MonoBehaviour
 
     private void Die()
     {
-        // 사운드 호출
-        SoundManager.Instance?.PlaySFX("monster_potbellied_battle_1", gameObject);
-
         Debug.Log("Monster Die");
 
         // 플레이어 오브젝트 찾기
@@ -151,3 +152,5 @@ public class MonsterTest : MonoBehaviour
         Destroy(gameObject);
     }
 }
+
+//
