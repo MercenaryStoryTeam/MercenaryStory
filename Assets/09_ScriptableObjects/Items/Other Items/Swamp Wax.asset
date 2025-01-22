@@ -21,6 +21,6 @@ MonoBehaviour:
   price: 4
   dropPercent: 0.33
   image: {fileID: 21300000, guid: 3c0cbb0a91d5f0a45b307476247531ac, type: 3}
-  equipPrefab: []
+  equipPrefab: {fileID: 0}
   dropLightLine: {fileID: 6349039886756410821, guid: b020fb5c0d87f9a4c938bbc488714422, type: 3}
   stackAmount: 10
