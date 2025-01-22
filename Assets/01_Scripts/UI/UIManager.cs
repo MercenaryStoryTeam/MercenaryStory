@@ -9,7 +9,6 @@ public class UIManager : SingletonManager<UIManager>
 	public EquipmentPanel equipment;
 	public InventoryManger inventoryMangerSystem;
 	public PopUp popUp;
-	public InventorySlot slot;
 	[HideInInspector] public bool isInventoryActive = false;
 	[HideInInspector] public bool isItemInfoActive = false;
 	[HideInInspector] public bool isShopActive = false;

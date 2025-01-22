@@ -7,8 +7,6 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviourPunCallbacks
 {
-    public GameObject panelCharacter; // UI용 캐릭터 이미지를 가지고 있는 부모 오브젝트
-    
     private TestSY _testSY;
 
     // Equipment Destroy 하기 위해 대입할 GameObject
@@ -24,14 +22,17 @@ public class Equipment : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
-        if (savedWeaponId != 0)
+        if (photonView.IsMine)  // 내 캐릭터인 경우에만
         {
-            ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
-            if (savedWeapon != null)
+            int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+            if (savedWeaponId != 0)
             {
-                print($"{savedWeapon.name} 으로 장비 프리팹 설정 완료");
-                photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
+                ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
+                if (savedWeapon != null)
+                {
+                    Debug.Log($"{savedWeapon.name} 으로 장비 프리팹 설정 완료");
+                    photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
+                }
             }
         }
     }
@@ -84,53 +85,19 @@ public class Equipment : MonoBehaviourPunCallbacks
         {
             FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = itemId;
             FirebaseManager.Instance.UploadCurrentUserData("user_weapon_item_Id", itemId);
+            DestroyChildObject();
             SetSwordClass(item);
-            SetPanelSwordCharacter(item);
             
             if (item.equipPrefab.Count > 1)
             {
                 SetShieldClass(item);
-                SetPanelShieldCharacter(item);
             }
 
-        }
-    }
-
-
-
-    private void SetPanelSwordCharacter(ItemBase item)
-    {
-        foreach (Transform child in panelCharacter.transform)
-        {
-            if (child.gameObject.activeSelf)
-            {
-                Transform rightHand = child.FindDeepChild("Sword");
-
-                GameObject panelSword = Instantiate(item.equipPrefab[0], rightHand);
-            }
-        }
-    }
-
-    private void SetPanelShieldCharacter(ItemBase item)
-    {
-        foreach (Transform child in panelCharacter.transform)
-        {
-            if (child.gameObject.activeSelf)
-            {
-                if (child.gameObject.activeSelf)
-                {
-                    Transform leftHand = child.FindDeepChild("Shield");
-                    
-                    GameObject panelShield = Instantiate(item.equipPrefab[1], leftHand);
-
-                }
-            }
         }
     }
 
     private void SetSwordClass(ItemBase item)
     {
-        DestroyChildObject();
         GameObject playerPrefab = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}");
         equipmentParent = playerPrefab.transform.FindDeepChild("Sword");
         print(equipmentParent.parent.name);
@@ -285,25 +252,6 @@ public class Equipment : MonoBehaviourPunCallbacks
             Destroy(findSword.transform.GetChild(i).gameObject);
         }
         
-        foreach (Transform child in panelCharacter.transform)
-        {
-            if (child.gameObject.activeSelf)
-            {
-                Transform leftHand = child.FindDeepChild("Shield");
-                Transform rightHand = child.FindDeepChild("Sword");
-
-                for (int i = 0; i < leftHand.childCount; i++) 
-                { 
-                    Destroy(leftHand.transform.GetChild(i).gameObject);
-                }
-                
-                for (int i = 0; i < rightHand.childCount; i++)
-                {
-                    Destroy(rightHand.transform.GetChild(i).gameObject);
-                }
-                
-            }
-        }
     }
     
 

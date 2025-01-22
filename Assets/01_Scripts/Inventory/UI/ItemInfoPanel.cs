@@ -22,10 +22,29 @@ public class ItemInfoPanel : MonoBehaviour
     public GameObject secondOption;
     
     private InventorySlot currentSelectedSlot;
+    private Equipment equipment;
+    private EquipmentPanel equipPanel;
+    private bool isInitialized = false;
+
     private void Awake()
     {
         itemInfoPanel.SetActive(false);
         InfoButtonOnClick();
+        equipPanel = FindObjectOfType<EquipmentPanel>();
+    }
+
+    private void OnEnable()
+    {
+        // UI가 활성화될 때마다 Equipment 찾기 시도
+        TryFindEquipment();
+    }
+
+    private void TryFindEquipment()
+    {
+        if (equipment == null)
+        {
+            equipment = FindObjectOfType<Equipment>();
+        }
     }
 
     private void Update()
@@ -54,11 +73,17 @@ public class ItemInfoPanel : MonoBehaviour
     
     public void EquipButtonClick()
     {
-        EquipmentPanel equipPanel = FindObjectOfType<EquipmentPanel>(); 
-        Equipment equipment = FindObjectOfType<Equipment>();
+        TryFindEquipment();
 
-        equipment.SetCurrentEquip(currentSelectedSlot);
-        equipPanel.SetEquipImage(currentSelectedSlot);
+        if (equipment != null && equipPanel != null)
+        {
+            equipment.SetCurrentEquip(currentSelectedSlot);
+            equipPanel.SetEquipImage(currentSelectedSlot);
+        }
+        else
+        {
+            Debug.LogWarning("Equipment 또는 EquipmentPanel을 찾을 수 없습니다!");
+        }
 
         UIManager.Instance.CloseItemInfoPanel();
     }

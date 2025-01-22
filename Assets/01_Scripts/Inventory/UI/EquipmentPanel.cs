@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 public class EquipmentPanel : MonoBehaviour
 {
+    public GameObject panelCharacter; // UI용 캐릭터 이미지를 가지고 있는 부모 오브젝트
     public Image currentEquipImage;
     public GameObject firstCharacter;
     public GameObject secondCharacter;
@@ -28,6 +29,7 @@ public class EquipmentPanel : MonoBehaviour
 
     private void Start()
     {
+        // 캐릭터 외형 설정
         switch (FirebaseManager.Instance.CurrentUserData.user_Appearance)
         {
             case 1:
@@ -41,10 +43,31 @@ public class EquipmentPanel : MonoBehaviour
                 break;
         }
 
-        currentItem =
-            InventoryManger.Instance.allItems.Find(x =>
-                x.id == FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id);
-        currentEquipImage.sprite = currentItem.image;
+        // 저장된 장비 불러오기
+        int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+        if (savedWeaponId != 0)
+        {
+            currentItem = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
+            if (currentItem != null)
+            {
+                currentEquipImage.sprite = currentItem.image;
+
+                DestroyCurrentEquipments();
+
+                if (currentItem.equipPrefab != null && currentItem.equipPrefab.Count > 0)
+                {
+                    if (currentItem.equipPrefab.Count > 1)
+                    {
+                        SetPanelShieldCharacter(currentItem);
+                        SetPanelSwordCharacter(currentItem);
+                    }
+                    else
+                    {
+                        SetPanelSwordCharacter(currentItem);
+                    }
+                }
+            }
+        }
     }
 
     private void Update()
@@ -58,10 +81,21 @@ public class EquipmentPanel : MonoBehaviour
         {
             ItemBase beforeWeapon = currentItem;
             currentItem = slot.item;
-            int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
-            currentWeaponId = slot.item.id;
+            FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = slot.item.id;
+            FirebaseManager.Instance.UploadCurrentUserData("user_weapon_item_Id", slot.item.id);
             currentEquipImage.sprite = slot.item.image;
             
+            DestroyCurrentEquipments();
+            if (slot.item.equipPrefab.Count > 0)
+            {
+                SetPanelSwordCharacter(slot.item);
+                if (slot.item.equipPrefab.Count > 1)
+                {
+                    SetPanelShieldCharacter(slot.item);
+
+                }
+            }
+
             slot.RemoveItem();
             print($"현재 장착한 아이템: {currentItem.name}, 장착한 아이탬 개수: {currentItem.currentItemCount}");
             if (beforeWeapon != null)
@@ -69,9 +103,60 @@ public class EquipmentPanel : MonoBehaviour
                 slot.AddItem(beforeWeapon);
             }
         }
-        
     }
-    
+
+    private void DestroyCurrentEquipments()
+    {
+        foreach (Transform child in panelCharacter.transform)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                Transform leftHand = child.FindDeepChild("Shield");
+                Transform rightHand = child.FindDeepChild("Sword");
+
+                for(int i = 0; i < leftHand.childCount; i++)
+                {
+                    Destroy(leftHand.GetChild(i).gameObject);
+                }
+ 
+                for (int i = 0; i < rightHand.childCount; i++)
+                {
+                    Destroy(rightHand.GetChild(i).gameObject);
+                }
+                
+            }
+        }
+    }
+
+    private void SetPanelShieldCharacter(ItemBase item)
+    {
+        foreach (Transform child in panelCharacter.transform)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                if (child.gameObject.activeSelf)
+                {
+                    Transform leftHand = child.FindDeepChild("Shield");
+
+                    GameObject panelShield = Instantiate(item.equipPrefab[1], leftHand);
+                }
+            }
+        }
+    }
+
+    public void SetPanelSwordCharacter(ItemBase item)
+    {
+        foreach (Transform child in panelCharacter.transform)
+        {
+            if (child.gameObject.activeSelf)
+            {
+                Transform rightHand = child.FindDeepChild("Sword");
+
+                GameObject panelSword = Instantiate(item.equipPrefab[0], rightHand);
+            }
+        }
+    }
+
 
     private void UpdateUI()
     {
