@@ -365,6 +365,27 @@ public class SkillFsm : MonoBehaviour
         animator.SetTrigger(skill.TriggerName);
         Log($"[SkillFsm] {skill.Name} 스킬이 트리거되었습니다.");
 
+        // Rush 스킬이면 소리 재생 =============================================================================================================***** 스킬 소리 재생 지점
+        if (skillType == SkillType.Rush)
+        {
+            SoundManager.Instance.PlaySFX("Dash", gameObject);
+        }
+
+        if (skillType == SkillType.Parry)
+        {
+            SoundManager.Instance.PlaySFX("rush_skill_sound", gameObject);
+        }
+
+        if (skillType == SkillType.Skill1)
+        {
+            SoundManager.Instance.PlaySFX("rush_skill_sound", gameObject);
+        }
+
+        if (skillType == SkillType.Skill2)
+        {
+            StartCoroutine(PlayDelayedSound("sound_player_Twohandskill4", 0.6f));
+        }
+
         // 레벨에 따른 파티클 이펙트 활성화
         SkillEffect currentSkillEffect = skill.GetCurrentSkillEffect();
         if (currentSkillEffect != null && currentSkillEffect.ParticleEffect != null)
@@ -395,6 +416,13 @@ public class SkillFsm : MonoBehaviour
 
         // 쿨다운 시작
         StartCoroutine(CooldownCoroutine(skill));
+    }
+
+    // 지연된 사운드 재생 메서드
+    private IEnumerator PlayDelayedSound(string soundName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SoundManager.Instance.PlaySFX(soundName, gameObject);
     }
 
     // Rush 스킬의 지속 시간 동안 Rush 활성화 상태를 유지하는 코루틴
