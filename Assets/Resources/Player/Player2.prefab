@@ -44898,7 +44898,7 @@ MonoBehaviour:
   - {fileID: 2450057173016622304}
   - {fileID: 2484025914628212180}
   - {fileID: 3330199043688441328}
-  sceneViewId: 5
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &2450057173016622304
@@ -45022,8 +45022,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHp: 1000
-  maxHp: 1000
+  currentHp: 0
+  maxHp: 0
   moveSpeed: 5
   suckBlood: 3
   gold: 500
