@@ -4,7 +4,7 @@ using UnityEngine;
 public class StageManager : SingletonManager<StageManager>
 {
 
-    [SerializeField] private StageData[] stageDatas;
+    public StageData[] stageDatas;
     public int dieMonsterCount;
     public PlayerFsm hostPlayerFsm;
     public bool StageClear { get; private set; }
@@ -15,6 +15,14 @@ public class StageManager : SingletonManager<StageManager>
     {
         ServerManager.PlayerSpawn(spawnPoint);
         PlayStageBGM();
+    }
+    
+    public void Update()
+    {
+        if (dieMonsterCount == stageDatas[currentStage].monsterCount)
+        {
+            StageClear = true;
+        }
     }
 
     private void PlayStageBGM()
@@ -29,16 +37,10 @@ public class StageManager : SingletonManager<StageManager>
     {
         if (stageIndex < stageDatas.Length)
         {
+            dieMonsterCount = 0;
+            StageClear = false;
             currentStage = stageIndex;
             PlayStageBGM();
-        }
-    }
-
-    public void Update()
-    {
-        if (dieMonsterCount == stageDatas[currentStage].monsterCount)
-        {
-            StageClear = true;
         }
     }
 }
