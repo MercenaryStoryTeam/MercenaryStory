@@ -79701,7 +79701,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3470565019141359453}
-  - component: {fileID: 4421643617028985610}
   m_Layer: 6
   m_Name: Modular_Characters
   m_TagString: Untagged
@@ -79727,29 +79726,6 @@ Transform:
   - {fileID: 5536235034766736317}
   m_Father: {fileID: 6477472938021195436}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &4421643617028985610
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5285390655230258830}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.2
-  m_Height: 1.8
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &5309069674030051397
 GameObject:
   m_ObjectHideFlags: 0
