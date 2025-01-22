@@ -16,11 +16,9 @@ public class EquipmentPanel : MonoBehaviour
     public GameObject thirdCharacter;
     public ItemBase currentItem; //현재 장착중인 아이템. 플레이어 스크립트에 넣어야할드 ㅅ
     
-    private TestSY _testSY;
     
     private void Awake()
     {
-        _testSY = FindObjectOfType<TestSY>();
         firstCharacter.SetActive(false);
         secondCharacter.SetActive(false);
         thirdCharacter.SetActive(false);
@@ -54,17 +52,9 @@ public class EquipmentPanel : MonoBehaviour
 
                 DestroyCurrentEquipments();
 
-                if (currentItem.equipPrefab != null && currentItem.equipPrefab.Count > 0)
+                if (currentItem.equipPrefab != null)
                 {
-                    if (currentItem.equipPrefab.Count > 1)
-                    {
-                        SetPanelShieldCharacter(currentItem);
                         SetPanelSwordCharacter(currentItem);
-                    }
-                    else
-                    {
-                        SetPanelSwordCharacter(currentItem);
-                    }
                 }
             }
         }
@@ -86,14 +76,10 @@ public class EquipmentPanel : MonoBehaviour
             currentEquipImage.sprite = slot.item.image;
             
             DestroyCurrentEquipments();
-            if (slot.item.equipPrefab.Count > 0)
+            if (slot.item.equipPrefab != null)
             {
                 SetPanelSwordCharacter(slot.item);
-                if (slot.item.equipPrefab.Count > 1)
-                {
-                    SetPanelShieldCharacter(slot.item);
 
-                }
             }
 
             slot.RemoveItem();
@@ -111,35 +97,13 @@ public class EquipmentPanel : MonoBehaviour
         {
             if (child.gameObject.activeSelf)
             {
-                Transform leftHand = child.FindDeepChild("Shield");
                 Transform rightHand = child.FindDeepChild("Sword");
 
-                for(int i = 0; i < leftHand.childCount; i++)
-                {
-                    Destroy(leftHand.GetChild(i).gameObject);
-                }
- 
                 for (int i = 0; i < rightHand.childCount; i++)
                 {
                     Destroy(rightHand.GetChild(i).gameObject);
                 }
                 
-            }
-        }
-    }
-
-    private void SetPanelShieldCharacter(ItemBase item)
-    {
-        foreach (Transform child in panelCharacter.transform)
-        {
-            if (child.gameObject.activeSelf)
-            {
-                if (child.gameObject.activeSelf)
-                {
-                    Transform leftHand = child.FindDeepChild("Shield");
-
-                    GameObject panelShield = Instantiate(item.equipPrefab[1], leftHand);
-                }
             }
         }
     }
@@ -152,7 +116,7 @@ public class EquipmentPanel : MonoBehaviour
             {
                 Transform rightHand = child.FindDeepChild("Sword");
 
-                GameObject panelSword = Instantiate(item.equipPrefab[0], rightHand);
+                GameObject panelSword = Instantiate(item.equipPrefab, rightHand);
             }
         }
     }
