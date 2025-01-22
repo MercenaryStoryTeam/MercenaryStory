@@ -45,7 +45,7 @@ public class PartyPanel : MonoBehaviour
 
 		partyToggles.Clear();
 		// Update chat channels (partyId) and Display(Instantiate entry)
-		FirebaseManager.Instance.UpdateParty();
+		FirebaseManager.Instance.UpdatePartyAndList();
 		parties = FirebaseManager.Instance.GetPartyList();
 		if (parties != null)
 		{
