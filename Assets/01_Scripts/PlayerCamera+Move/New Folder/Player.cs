@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 		originalMoveSpeed = moveSpeed;
 
 		// FirebaseManager UserData에서 현재 체력 가져오기
-		currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+		//currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
 	}
 
 	// 흡혈 처리
