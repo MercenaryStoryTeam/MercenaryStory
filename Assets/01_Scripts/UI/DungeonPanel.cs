@@ -23,6 +23,6 @@ public class DungeonPanel : MonoBehaviour
 		// ServerManager.LoadScene("LJW_1-1");
 		PlayerFsm playerFsm = GameObject
 			.Find(FirebaseManager.Instance.CurrentUserData.user_Name).GetComponent<PlayerFsm>();
-		playerFsm.MoveAllPlayersToRoom("LJW_1-1");
+		playerFsm.MoveMembersToRoom("LJW_1-1");
 	}
 }

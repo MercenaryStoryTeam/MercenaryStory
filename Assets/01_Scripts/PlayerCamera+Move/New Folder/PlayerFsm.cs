@@ -96,16 +96,17 @@ public class PlayerFsm : MonoBehaviourPun
 		}
 	}
 
-    private void Start()
-    {
-        if (PhotonNetwork.IsMasterClient && StageManager.Instance != null)
-        {
-            if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name == gameObject.name)
-            {
-                StageManager.Instance.hostPlayerFsm = this;
-            }
-        }
-    }
+	private void Start()
+	{
+		if (PhotonNetwork.IsMasterClient && StageManager.Instance != null)
+		{
+			if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name ==
+			    gameObject.name)
+			{
+				StageManager.Instance.hostPlayerFsm = this;
+			}
+		}
+	}
 
 	private void OnEnable()
 	{
@@ -120,25 +121,25 @@ public class PlayerFsm : MonoBehaviourPun
 
 	private void Update()
 	{
-        // pun 동기화를 위함. 지우지 마시오!! - 지원
-        if (!photonView.IsMine) return;
+		// pun 동기화를 위함. 지우지 마시오!! - 지원
+		if (!photonView.IsMine) return;
 
-        if (!isDead)
+		if (!isDead)
 		{
 			HandleMovementInput();
 			HandleState();
 		}
-    }
+	}
 
-    private void FixedUpdate()
+	private void FixedUpdate()
 	{
-        // pun 동기화를 위함. 지우지 마시오!! - 지원
-        if (!photonView.IsMine) return;
+		// pun 동기화를 위함. 지우지 마시오!! - 지원
+		if (!photonView.IsMine) return;
 
-        HandlePhysics();
-    }
+		HandlePhysics();
+	}
 
-    private bool IsCurrentSceneSpecial()
+	private bool IsCurrentSceneSpecial()
 	{
 		string currentSceneName = SceneManager.GetActiveScene().name;
 		return specialScenes.Contains(currentSceneName);
@@ -413,17 +414,56 @@ public class PlayerFsm : MonoBehaviourPun
 	}
 
 	// 씬 이동을 위함 -지원
-	public void MoveAllPlayersToRoom(string sceneName)
+	public void MoveMembersToRoom(string sceneName)
 	{
-		if (PhotonNetwork.IsMasterClient)
+		// 마스터가 아니라 파티장일 때!
+		if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Id ==
+		    FirebaseManager.Instance.CurrentUserData.user_Id)
+			// if (PhotonNetwork.IsMasterClient)
 		{
-			photonView.RPC("RPC_MoveToScene", RpcTarget.All, sceneName);
+			print("파티장이 RPC 호출하러 갔다.");
+			// 파티원에게만!
+			foreach (UserData member in FirebaseManager.Instance.CurrentPartyData.party_Members)
+			{
+				print("파티원 하나를 찾으려고 한다.");
+				// 닉네임이 네임인 플레이어 찾아서 rpc 호출
+				foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList)
+				{
+					print("포톤에서 파티원 찾는 중");
+					if (photonPlayer.NickName ==
+					    member.user_Name) // Firebase user_Id와 Photon NickName 매칭
+					{
+						print("파티원 발견.");
+						photonView.RPC("RPC_MoveToScene", photonPlayer, sceneName);
+						print("다음 파티원 찾으러 간다..");
+						break;
+					}
+				}
+			}
 		}
 	}
-	
+
 	[PunRPC]
 	private void RPC_MoveToScene(string sceneName)
 	{
-		ServerManager.LoadScene(sceneName);
+		print("RPC 호출되었다.");
+		// 파티장일 때
+		if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Id ==
+		    FirebaseManager.Instance.CurrentUserData.user_Id)
+			// if (PhotonNetwork.IsMasterClient)
+		{
+			print("RPC 받은 플레이어가 파티장이다.");
+			// 1. Firebase에 Room 정보 업데이트
+			FirebaseManager.Instance.UploadPartyDataToLoadScene(sceneName);
+			print("서버에 파티 정보 업로드 했다.");
+		}
+
+		// 업로드가 잘 되고 난 후에 받아오면 좋겠는데 이 부분 주의해야함. 일단은 그냥 바로 받아오자
+		// 파티 정보 업데이트 (파티장과 파티원 둘 다 서버에서 받아오기)
+		FirebaseManager.Instance.UpdateCurrentPartyDataAndLoadScene(sceneName);
+
+		// ServerManager.LeaveScene(sceneName);
+		// 여기서 loadlevel 해야 함. leave Scene을 여기서 하게 되면
+		// 방 이동 안하는 상태에서는 다른 경우 발생
 	}
 }

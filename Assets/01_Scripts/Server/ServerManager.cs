@@ -45,38 +45,32 @@ public class ServerManager
 	}
 
 	// 씬(룸)이동 구현을 위한 부분
-	public static void LoadScene(string sceneName)
+	public static void LeaveAndLoadScene(string sceneName)
 	{
-		if (PhotonNetwork.IsMasterClient)
-		{
-			// 1. Firebase에 Room 정보 업데이트
-			FirebaseManager.Instance.UploadPartyDataToLoadScene(sceneName);
-
-			// 2. 새로운 Room 생성
-			RoomOptions options = new RoomOptions
-			{
-				MaxPlayers = 4,
-				IsVisible = false,
-				IsOpen = true
-			};
-			PhotonNetwork.CreateRoom(sceneName, options);
-		}
-		else
-		{
-			// masterClient가 아닌 플레이어는 방 생성이 완료된 후 입장
-			PhotonNetwork.JoinRoom(sceneName);
-		}
+		PhotonNetwork.LeaveRoom();
 
 		// 3. Scene 변경
 		PhotonNetwork.LoadLevel(sceneName);
 	}
 
+	public static void LoadScene(string sceneName)
+	{
+		RoomOptions options = new RoomOptions
+		{
+			MaxPlayers = 4,
+			IsVisible = false,
+			IsOpen = true
+		};
+		PhotonNetwork.JoinOrCreateRoom(sceneName, options, TypedLobby.Default);
+	}
+
 	public static void PlayerSpawn(Transform spawnPoint)
 	{
-		PhotonNetwork
+		GameObject go = PhotonNetwork
 			.Instantiate(
 				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
-				spawnPoint.position, Quaternion.identity).name = PhotonNetwork.NickName;
+				spawnPoint.position, Quaternion.identity);
+		go.name = PhotonNetwork.NickName;
 	}
 
 	public static GameObject PlayerEquip(int rarity, string equipmentName,
