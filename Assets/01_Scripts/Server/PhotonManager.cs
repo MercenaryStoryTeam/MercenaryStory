@@ -38,6 +38,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 	public override void OnConnectedToMaster()
 	{
 		isReadyToJoinGameServer = true;
+		if (FirebaseManager.Instance.CurrentPartyData != null)
+		{
+			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName == "LJW_1-1")
+			{
+				ServerManager.LoadScene("LJW_1-1");
+			}
+		}
 	}
 
 	public override void OnJoinedRoom()
@@ -45,6 +52,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 		if (PhotonNetwork.CurrentRoom.Name == "1" || PhotonNetwork.CurrentRoom.Name == "2")
 		{
 			ServerManager.LoadLobbyScene("LJW_TownScene");
+		}
+
+		if (FirebaseManager.Instance.CurrentPartyData != null)
+		{
+			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName == "LJW_1-1")
+			{
+				StageManager.Instance.PlayerSpawn();
+			}
 		}
 	}
 
