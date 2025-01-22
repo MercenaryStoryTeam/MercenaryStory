@@ -24,6 +24,9 @@ public class UIManager : SingletonManager<UIManager>
 	public PartyMemberPanel partyMemberPanel;
 	public Button partyButton;
 	public DungeonPanel dungeonPanel;
+	
+	//Option
+	public OptionPannel optionPanel;
 
 	protected override void Awake()
 	{
