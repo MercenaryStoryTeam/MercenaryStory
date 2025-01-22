@@ -53,7 +53,7 @@ public class ServerManager
 		PhotonNetwork.LoadLevel(sceneName);
 	}
 
-	public static void LoadScene(string sceneName)
+	public static void LoadFirstDungeonScene(string sceneName)
 	{
 		RoomOptions options = new RoomOptions
 		{
@@ -62,6 +62,11 @@ public class ServerManager
 			IsOpen = true
 		};
 		PhotonNetwork.JoinOrCreateRoom(sceneName, options, TypedLobby.Default);
+	}
+
+	public static void LoadScene(string sceneName)
+	{
+		PhotonNetwork.LoadLevel(sceneName);
 	}
 
 	public static void PlayerSpawn(Transform spawnPoint)
