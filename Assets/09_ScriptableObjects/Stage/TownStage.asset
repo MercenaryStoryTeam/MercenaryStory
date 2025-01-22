@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageName: TownStage
   bgmName: sound_lobby_BGM
-  nextStageName: MAP 1-1
+  monsterCount: 0
+  nextSceneName: LJW_1-1
+  nextScenePos: {x: 485, y: 29, z: -176}
