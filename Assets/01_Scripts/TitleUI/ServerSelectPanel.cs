@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ServerSelectPanel : MonoBehaviour
@@ -44,6 +45,7 @@ public class ServerSelectPanel : MonoBehaviour
 
 	private void OnConnectButtonClick()
 	{
+		SceneManager.LoadScene("LJW_TownScene");
 		ServerManager.JoinOrCreatePersistentRoom(serverNum.ToString());
 	}
 }

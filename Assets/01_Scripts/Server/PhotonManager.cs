@@ -24,6 +24,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 		{
 			DestroyImmediate(gameObject);
 		}
+
+		PhotonNetwork.AutomaticallySyncScene = true;
 	}
 
 	private void Update()
@@ -40,9 +42,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 		isReadyToJoinGameServer = true;
 		if (FirebaseManager.Instance.CurrentPartyData != null)
 		{
-			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName == "LJW_1-1")
+			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName ==
+			    "LJW_1-1")
 			{
-				ServerManager.LoadFirstDungeonScene(FirebaseManager.Instance.CurrentPartyData
+				ServerManager.LoadFirstDungeonScene(FirebaseManager.Instance
+					.CurrentPartyData
 					.party_ServerId);
 			}
 		}
@@ -50,15 +54,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedRoom()
 	{
-		if (PhotonNetwork.CurrentRoom.Name == "1" || PhotonNetwork.CurrentRoom.Name == "2")
+		if (PhotonNetwork.CurrentRoom.Name == "1" ||
+		    PhotonNetwork.CurrentRoom.Name == "2")
 		{
-			ServerManager.LoadLobbyScene("LJW_TownScene");
+			// ServerManager.LoadLobbyScene("LJW_TownScene");
+			StageManager.Instance.PlayerSpawn();
 		}
 
 		if (FirebaseManager.Instance.CurrentPartyData != null)
 		{
-			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName == "LJW_1-1")
+			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName ==
+			    "LJW_1-1")
 			{
+				StageManager.Instance.currentStage = 1;
 				StageManager.Instance.PlayerSpawn();
 			}
 		}
