@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SoundSettingUI : MonoBehaviour
+public class OptionPannel : MonoBehaviour
 {
     [SerializeField] private Slider masterSlider;
     [SerializeField] private TextMeshProUGUI masterText;
@@ -22,9 +22,22 @@ public class SoundSettingUI : MonoBehaviour
         sfxSlider.maxValue = 100f;
 
         // 저장된 값 불러오기 (0~1 범위를 0~100으로 변환)
-        masterSlider.value = PlayerPrefs.GetFloat("Master", 1f) * 100f;
-        bgmSlider.value = PlayerPrefs.GetFloat("BGM", 1f) * 100f;
-        sfxSlider.value = PlayerPrefs.GetFloat("SFX", 1f) * 100f;
+        float masterValue = PlayerPrefs.GetFloat("Master", 1f) * 100f;
+        float bgmValue = PlayerPrefs.GetFloat("BGM", 1f) * 100f;
+        float sfxValue = PlayerPrefs.GetFloat("SFX", 1f) * 100f;
+
+        // 슬라이더와 텍스트 초기값 설정
+        masterSlider.value = masterValue;
+        masterText.text = $"{(int)masterValue}%";
+        SoundManager.Instance.SetMasterVolume(masterValue / 100f);
+        
+        bgmSlider.value = bgmValue;
+        bgmText.text = $"{(int)bgmValue}%";
+        SoundManager.Instance.SetBGMVolume(bgmValue / 100f);
+        
+        sfxSlider.value = sfxValue;
+        sfxText.text = $"{(int)sfxValue}%";
+        SoundManager.Instance.SetSFXVolume(sfxValue / 100f);
         
         masterSlider.onValueChanged.AddListener(OnMasterSliderChanged);
         bgmSlider.onValueChanged.AddListener(OnBGMSliderChanged);
