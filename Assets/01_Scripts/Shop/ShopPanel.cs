@@ -157,10 +157,6 @@ public class ShopPanel : MonoBehaviour
 					{
 						sellSlot.item.currentItemCount -= sellSlot.slotCount;
 						
-						for (int i = 0; i < sellSlot.slotCount; i++)
-						{
-							InventoryManger.Instance.myItems.Remove(sellSlot.item);
-						}
 
 						if (inventorySlot != null)
 						{
@@ -185,7 +181,6 @@ public class ShopPanel : MonoBehaviour
 							inventorySlot.slotCount = 0;
 							needsReorganize = true;
 						}
-						InventoryManger.Instance.myItems.Remove(sellSlot.item);
 					}
 
 					sellSlot.RemoveItem();
@@ -195,6 +190,7 @@ public class ShopPanel : MonoBehaviour
 		}
 		
 		FirebaseManager.Instance.CurrentUserData.user_Gold += sellPrice;
+		FirebaseManager.Instance.UploadCurrentUserData("user_Gold", FirebaseManager.Instance.CurrentUserData.user_Gold);
 		sellPrice = 0;
 		isSellButtonClicked = true;
 		
@@ -202,6 +198,7 @@ public class ShopPanel : MonoBehaviour
 		{
 			InventoryManger.Instance.SlotArray();
 		}
+		Debug.Log($"현재 골드: {FirebaseManager.Instance.CurrentUserData.user_Gold}");
 		UpdateHoldSlots();
 		InventoryManger.Instance.UpdateSlotData();
 		UIManager.Instance.CloseShopPanel();
