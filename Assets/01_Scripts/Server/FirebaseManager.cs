@@ -166,7 +166,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			string jsonData = JsonConvert.SerializeObject(value);
 			await targetRef.SetRawJsonValueAsync(jsonData);
 		}
-		
+
 		catch (FirebaseException e)
 		{
 			ExceptionManager.HandleFirebaseException(e);
@@ -176,7 +176,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			ExceptionManager.HandleException(e);
 		}
 	}
-	
+
 	public async void UploadCurrentUserData(string childName, object value,
 		Action<object> callback = null)
 	{
@@ -238,7 +238,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UpdateParty()
+	public async void UpdatePartyAndList()
 	{
 		try
 		{
@@ -253,6 +253,13 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				if (partyDictionary != null)
 				{
 					partyList = new List<PartyData>(partyDictionary.Values);
+					if (CurrentPartyData != null)
+					{
+						if (partyDictionary.TryGetValue(CurrentPartyData.party_Id, out var value))
+						{
+							CurrentPartyData = value;
+						}
+					}
 				}
 				else
 				{
@@ -303,7 +310,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 							// 가입
 							CurrentPartyData = partyData;
 							CurrentPartyData.AddMember(CurrentUserData);
-							CurrentUserData.user_CurrentParty = CurrentPartyData.party_Id;
+							CurrentUserData.UpdateUserData(currentParty: CurrentPartyData.party_Id);
 							UploadCurrentUserData("user_CurrentParty",
 								CurrentPartyData.party_Id);
 							UploadCurrentPartyData();
@@ -355,8 +362,6 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 					UIManager.Instance.OpenPartyPanel();
 				});
 				CurrentUserData.user_CurrentParty = "";
-				await usersRef.Child(CurrentUserData.user_Id).Child("user_CurrentParty")
-					.SetValueAsync("");
 				return;
 			}
 
@@ -419,7 +424,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UploadPartyDataToLoadScene(string serverName)
+	public void UploadPartyDataToLoadScene(string serverName)
 	{
 		try
 		{
@@ -444,6 +449,46 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			partiesRef = DB.GetReference($"parties/{CurrentPartyData.party_Id}");
 			string partyDataJson = JsonConvert.SerializeObject(CurrentPartyData);
 			await partiesRef.SetRawJsonValueAsync(partyDataJson);
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	public async void UpdateCurrentPartyDataAndLoadScene(string sceneName)
+	{
+		try
+		{
+			print("파티 정보 업데이트 준비");
+			DataSnapshot partyData =
+				await DB.GetReference($"parties/{CurrentPartyData.party_Id}").GetValueAsync();
+			print("파티 정보 처음으로 업데이트");
+			bool isReady = false;
+
+			print("파티 정보 될 때까지 업데이트 시작");
+			while (!isReady)
+			{
+				print(1);
+				partyData =
+					await DB.GetReference($"parties/{CurrentPartyData.party_Id}").GetValueAsync();
+				print(2);
+				CurrentPartyData =
+					JsonConvert.DeserializeObject<PartyData>(partyData.GetRawJsonValue());
+				print($"Current party name: {CurrentPartyData.party_Name}");
+				print($"CurrentPartyData.party_ServerName: {CurrentPartyData.party_ServerName}");
+				print($"sceneName: {sceneName}");
+				if (CurrentPartyData.party_ServerName == sceneName) isReady = true;
+			}
+
+			print("파티 정보 업데이트 성공");
+
+			// 현재 파티 데이터의 룸 이름대로 이동
+			ServerManager.LeaveAndLoadScene(sceneName);
 		}
 		catch (FirebaseException e)
 		{
