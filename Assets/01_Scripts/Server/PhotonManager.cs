@@ -42,7 +42,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 		{
 			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName == "LJW_1-1")
 			{
-				ServerManager.LoadFirstDungeonScene("LJW_1-1");
+				ServerManager.LoadFirstDungeonScene(FirebaseManager.Instance.CurrentPartyData
+					.party_ServerId);
 			}
 		}
 	}
