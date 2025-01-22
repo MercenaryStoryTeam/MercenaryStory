@@ -34,7 +34,7 @@ public class UserData
 		user_Rank = 1;
 		user_RankCurrentEXP = 0;
 		user_HP = 100;
-		user_weapon_item_Id = 31000;
+		user_weapon_item_Id = 32000;
 		user_Inventory = new List<SlotData>();
 	}
 
