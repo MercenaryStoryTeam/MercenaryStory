@@ -51,6 +51,7 @@ public class UIManager : SingletonManager<UIManager>
 	{
 		isInventoryActive = false;
 		inventory.panel.SetActive(false);
+		CloseItemInfoPanel();
 	}
 
 	#endregion

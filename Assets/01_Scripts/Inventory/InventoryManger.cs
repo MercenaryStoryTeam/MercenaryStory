@@ -10,7 +10,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
     public List<ItemBase> allItems;
     public List<InventorySlot> slots;
 
-    public ItemBase basicWeapon;
     public ItemBase basicEquipWeapon;
 
     public SlotData currentSlotData;
