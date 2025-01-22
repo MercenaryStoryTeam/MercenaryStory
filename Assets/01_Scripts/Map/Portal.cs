@@ -38,7 +38,7 @@ public class Portal : MonoBehaviour
             { 
                 if (hitCollider.gameObject == StageManager.Instance.hostPlayerFsm.gameObject && StageManager.Instance.StageClear)
                 {
-                    ServerManager.LoadScene("");
+                    ServerManager.LoadScene(StageManager.Instance.stageDatas[StageManager.Instance.currentStage].nextSceneName);
                 } 
             }
         }

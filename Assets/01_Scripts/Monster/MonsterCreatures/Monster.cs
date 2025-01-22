@@ -25,10 +25,6 @@ public abstract class Monster : MonoBehaviourPun
     public Transform playerTransform;
     
     private NavMeshAgent agent;
-    public AudioClip attackSound;
-    public AudioClip dieSound;
-    public AudioClip hitSound;
-    private AudioSource audioSource;
     
     private MonsterStateMachine stateMachine;
     public MonsterStateType currentState;
@@ -52,7 +48,6 @@ public abstract class Monster : MonoBehaviourPun
     public LayerMask PlayerLayer => playerLayer;
     public NavMeshAgent Agent => agent;
     public Animator Animator => animator;
-    public AudioSource AudioSource => audioSource;
     public MonsterStateMachine StateMachine => stateMachine;
     
     #endregion
@@ -60,7 +55,6 @@ public abstract class Monster : MonoBehaviourPun
     protected virtual void Start()
     {
         patrolPoint = transform.position;
-        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.speed = MoveSpeed;
