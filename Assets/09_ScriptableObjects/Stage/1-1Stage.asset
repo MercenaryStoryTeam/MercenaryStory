@@ -16,4 +16,4 @@ MonoBehaviour:
   bgmName: sound_dungeon_1-1BGM
   monsterCount: 13
   nextSceneName: MAP 1-2
-  nextScenePos: {x: 96, y: 0, z: 142}
+  playerSpawnPos: {x: 96, y: 1, z: 142}

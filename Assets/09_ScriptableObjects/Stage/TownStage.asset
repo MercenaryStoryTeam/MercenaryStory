@@ -16,4 +16,4 @@ MonoBehaviour:
   bgmName: sound_lobby_BGM
   monsterCount: 0
   nextSceneName: LJW_1-1
-  nextScenePos: {x: 485, y: 29, z: -176}
+  playerSpawnPos: {x: 485, y: 30, z: -177}
