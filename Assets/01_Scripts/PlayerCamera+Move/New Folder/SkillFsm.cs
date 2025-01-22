@@ -68,7 +68,7 @@ public class Skill
     public float SpeedBoost = 0f;
 
     [Header("Rush 스킬만 해당 (지속 시간)")]
-    public float Duration = 0f;
+    public float Duration = 0.5f; // 기본값을 0.5초로 설정
 
     [Header("스킬 설명")]
     [TextArea]
@@ -110,7 +110,7 @@ public class Skill
 
     // SkillFsm 참조
     [System.NonSerialized]
-    private SkillFsm skillFsm;
+    public SkillFsm skillFsm;
 
     // SkillFsm 설정 
     public void SetSkillFsm(SkillFsm fsm)
@@ -202,6 +202,9 @@ public class SkillFsm : MonoBehaviour
 
     [Header("디버그 설정 (출력 유/무)")]
     public bool enableDebugLogs = true;
+
+    // Rush 스킬 활성화 상태를 나타내는 프로퍼티
+    public bool IsRushActive { get; private set; } = false;
 
     private void Awake()
     {
@@ -371,17 +374,37 @@ public class SkillFsm : MonoBehaviour
             LogWarning($"[SkillFsm] {skill.Name} 스킬의 파티클 이펙트가 설정되지 않았습니다.");
         }
 
-        // Rush 스킬이면 이동 속도 증가
+        // Rush 스킬이면 이동 속도 증가 및 Rush 활성화 상태 설정
         if (skillType == SkillType.Rush)
         {
+            IsRushActive = true; // Rush 활성화
+            Log("Rush 스킬이 활성화되었습니다.");
+
+            // 플레이어의 무적 상태를 스킬의 지속 시간과 동일하게 설정
+            player.SetInvincible(true, skill.Duration);
+
+            // 이동 속도 증가 적용
             ApplySpeedBoost(skill.SpeedBoost, skill.Duration);
+
+            // Rush 스킬의 지속 시간이 끝난 후 Rush 활성화 상태 해제
+            StartCoroutine(RushCooldownCoroutine(skill.Duration));
         }
 
         // 쿨다운 시작
         StartCoroutine(CooldownCoroutine(skill));
     }
 
-    // 파티클 이펙트를 활성화하
+    // Rush 스킬의 지속 시간 동안 Rush 활성화 상태를 유지하는 코루틴
+    private IEnumerator RushCooldownCoroutine(float duration)
+    {
+        Log($"Rush 스킬 지속 시간 시작: {duration}초");
+        yield return new WaitForSeconds(duration);
+        IsRushActive = false;
+        Log("Rush 스킬의 지속 시간이 끝나서 Rush 활성화 상태가 해제되었습니다.");
+        // 무적 상태는 Player 클래스에서 스킬의 지속 시간과 동일하게 관리되므로 별도 해제 불필요
+    }
+
+    // 파티클 이펙트를 활성화
     private void ActivateSkillParticle(SkillEffect skillEffect, Skill skill)
     {
         if (skillEffect.ParticleEffect == null)
