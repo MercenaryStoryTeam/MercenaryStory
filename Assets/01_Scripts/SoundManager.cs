@@ -14,6 +14,7 @@ public class SoundManager : MonoBehaviour
     // PlayerPrefs에 저장할 볼륨 키 상수
     private const string BGM_VOLUME_KEY = "BGM";
     private const string SFX_VOLUME_KEY = "SFX";
+    private const string MASTER_VOLUME_KEY = "Master";
 
     private void Awake()
     {
@@ -56,9 +57,11 @@ public class SoundManager : MonoBehaviour
 
     private void LoadVolume()
     {
+        float masterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, 1f);  // 마스터 볼륨 불러오기
         float bgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1f);  // BGM 볼륨 불러오기
         float sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1f);  // SFX 볼륨 불러오기
         
+        SetMasterVolume(masterVolume);  // 마스터 볼륨 설정
         SetBGMVolume(bgmVolume);  // BGM 볼륨 설정
         SetSFXVolume(sfxVolume);  // SFX 볼륨 설정
     }
@@ -106,6 +109,14 @@ public class SoundManager : MonoBehaviour
         float mixerVolume = Mathf.Log10(volume) * 20;  
         audioMixer.SetFloat(SFX_VOLUME_KEY, mixerVolume);  
         PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);  
+    }
+
+    // 마스터 볼륨 설정
+    public void SetMasterVolume(float volume)
+    {
+        float mixerVolume = Mathf.Log10(volume) * 20;
+        audioMixer.SetFloat(MASTER_VOLUME_KEY, mixerVolume);
+        PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, volume);
     }
 
     // BGM 페이드 인/아웃
