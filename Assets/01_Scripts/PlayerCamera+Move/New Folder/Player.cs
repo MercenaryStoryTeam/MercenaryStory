@@ -107,16 +107,6 @@ public class Player : MonoBehaviour
                 invincibilityCoroutine = StartCoroutine(InvincibilityCoroutine(duration));
             }
         }
-        else
-        {
-            if (isInvincible && invincibilityCoroutine != null)
-            {
-                StopCoroutine(invincibilityCoroutine);
-                isInvincible = false;
-                invincibilityCoroutine = null;
-                Debug.Log("무적 상태가 수동으로 해제되었습니다.");
-            }
-        }
     }
 
     // 무적 상태를 처리하는 코루틴

@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
-// 스킬 유형 (추가 가능)
 public enum SkillType
 {
     Rush,
@@ -185,8 +185,6 @@ public class Skill
     }
 }
 
-
-// Skill FSM을 관리하는 클래스
 [RequireComponent(typeof(Animator))]
 public class SkillFsm : MonoBehaviour
 {
@@ -206,6 +204,9 @@ public class SkillFsm : MonoBehaviour
     // Rush 스킬 활성화 상태를 나타내는 프로퍼티
     public bool IsRushActive { get; private set; } = false;
 
+    // 스킬 트리거 요청 이벤트
+    public event Action<SkillType> OnSkillTriggerRequested;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -219,6 +220,21 @@ public class SkillFsm : MonoBehaviour
                 enabled = false;
                 return;
             }
+        }
+
+        // PlayerFsm 참조 설정
+        PlayerFsm playerFsm = player.GetComponent<PlayerFsm>();
+        if (playerFsm == null)
+        {
+            LogError("[SkillFsm] PlayerFsm 스크립트를 Player 오브젝트에서 찾을 수 없습니다.");
+            enabled = false;
+            return;
+        }
+
+        // SkillFsm 참조 설정
+        foreach (var skill in Skills)
+        {
+            skill.SetSkillFsm(this);
         }
 
         InitializeSkillEffects();
@@ -299,44 +315,31 @@ public class SkillFsm : MonoBehaviour
     // 각 스킬에 대한 트리거
     private void TriggerRushSkill()
     {
-        TriggerSkill(SkillType.Rush);
+        ExternalTriggerSkill(SkillType.Rush);
     }
 
     private void TriggerParrySkill()
     {
-        TriggerSkill(SkillType.Parry);
+        ExternalTriggerSkill(SkillType.Parry);
     }
 
     private void TriggerSkill1()
     {
-        TriggerSkill(SkillType.Skill1);
+        ExternalTriggerSkill(SkillType.Skill1);
     }
 
     private void TriggerSkill2()
     {
-        TriggerSkill(SkillType.Skill2);
+        ExternalTriggerSkill(SkillType.Skill2);
     }
 
-    // 코드 내에서 반복적으로 사용되는 로그 출력을 간소화
-    public void Log(string message)
+    // 스킬 사용을 외부에서 요청할 수 있도록 하는 메서드
+    public void ExternalTriggerSkill(SkillType skillType)
     {
-        if (enableDebugLogs)
-            Debug.Log(message);
+        OnSkillTriggerRequested?.Invoke(skillType);
     }
 
-    public void LogWarning(string message)
-    {
-        if (enableDebugLogs)
-            Debug.LogWarning(message);
-    }
-
-    public void LogError(string message)
-    {
-        if (enableDebugLogs)
-            Debug.LogError(message);
-    }
-
-    // 특정 스킬의 트리거를 선택
+    // FSMManager에서 호출하는 실제 스킬 트리거 메서드
     public void TriggerSkill(SkillType skillType)
     {
         if (animator == null)
@@ -401,7 +404,6 @@ public class SkillFsm : MonoBehaviour
         yield return new WaitForSeconds(duration);
         IsRushActive = false;
         Log("Rush 스킬의 지속 시간이 끝나서 Rush 활성화 상태가 해제되었습니다.");
-        // 무적 상태는 Player 클래스에서 스킬의 지속 시간과 동일하게 관리되므로 별도 해제 불필요
     }
 
     // 파티클 이펙트를 활성화
@@ -533,17 +535,23 @@ public class SkillFsm : MonoBehaviour
         }
     }
 
-    // Animator를 설정
-    public void SetAnimator(Animator newAnimator)
+    // 코드 내에서 반복적으로 사용되는 로그 출력을 간소화
+    public void Log(string message)
     {
-        if (newAnimator == null)
-        {
-            LogError("Animator가 null입니다. 설정할 수 없습니다.");
-            return;
-        }
+        if (enableDebugLogs)
+            Debug.Log(message);
+    }
 
-        animator = newAnimator;
-        Log("[SkillFsm] 새로운 Animator가 설정되었습니다.");
+    public void LogWarning(string message)
+    {
+        if (enableDebugLogs)
+            Debug.LogWarning(message);
+    }
+
+    public void LogError(string message)
+    {
+        if (enableDebugLogs)
+            Debug.LogError(message);
     }
 
     // 특정 SkillType에 해당하는 Skill 객체 반환
