@@ -141,6 +141,8 @@ public class UIManager : SingletonManager<UIManager>
 
 	public void OpenPartyPanel()
 	{
+		// 파티 업데이트 
+		FirebaseManager.Instance.UpdatePartyAndList();
 		// party member 확인 후 파티에 가입되어 있는 지 확인 후 맞는 패널을 열어야 함.
 		if (FirebaseManager.Instance.CurrentUserData.user_CurrentParty == "")
 		{
