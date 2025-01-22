@@ -12,8 +12,8 @@ public class SoundManager : MonoBehaviour
     private Dictionary<string, AudioClip> audioClips;
 
     // PlayerPrefs에 저장할 볼륨 키 상수
-    private const string BGM_VOLUME_KEY = "BGMVolume";
-    private const string SFX_VOLUME_KEY = "SFXVolume";
+    private const string BGM_VOLUME_KEY = "BGM";
+    private const string SFX_VOLUME_KEY = "SFX";
 
     private void Awake()
     {
