@@ -13,8 +13,8 @@ public class StageManager : SingletonManager<StageManager>
 
     private void Start()
     {
-        ServerManager.PlayerSpawn(spawnPoint);
         PlayStageBGM();
+        ServerManager.PlayerSpawn(spawnPoint);
     }
     
     public void Update()
@@ -29,6 +29,7 @@ public class StageManager : SingletonManager<StageManager>
     {
         if (currentStage < stageDatas.Length)
         {
+            print($"Playing BGM");
             SoundManager.Instance.PlayBGM(stageDatas[currentStage].bgmName);
         }
     }
