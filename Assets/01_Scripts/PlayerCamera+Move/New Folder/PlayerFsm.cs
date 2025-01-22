@@ -120,22 +120,22 @@ public class PlayerFsm : MonoBehaviourPun
 
 	private void Update()
 	{
-		if (!isDead)
+        // pun 동기화를 위함. 지우지 마시오!! - 지원
+        if (!photonView.IsMine) return;
+
+        if (!isDead)
 		{
 			HandleMovementInput();
 			HandleState();
 		}
-
-        // pun 동기화를 위함. 지우지 마시오!! - 지원
-        if (!photonView.IsMine) return;
     }
 
     private void FixedUpdate()
 	{
-		HandlePhysics();
-
         // pun 동기화를 위함. 지우지 마시오!! - 지원
         if (!photonView.IsMine) return;
+
+        HandlePhysics();
     }
 
     private bool IsCurrentSceneSpecial()

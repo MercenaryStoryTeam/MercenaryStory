@@ -3,22 +3,25 @@ using UnityEngine;
 public class MonsterTest : MonoBehaviour
 {
     [Header("몬스터 공격력")]
-    public float damage = 10f; 
+    public float damage = 10f;
 
     [Header("몬스터 현재 체력")]
-    public float currentHp; 
+    public float currentHp;
 
     [Header("몬스터 최대 체력")]
-    public float maxHp = 100f; 
+    public float maxHp = 100f;
 
     [Header("플레이어 레이어")]
-    public LayerMask playerLayer; 
+    public LayerMask playerLayer;
 
     [Header("몬스터 HP 바")]
-    public MonsterHpBar monsterHpBar; 
+    public MonsterHpBar monsterHpBar;
 
     [Header("카메라 컨트롤러 참조")]
     public VirtualCameraController cameraController;
+
+    [Header("히트스톱 참조")]
+    public HitStop hitStop; // 히트스톱 스크립트 참조
 
     [Header("보상 골드")]
     public float goldReward = 100f;
@@ -46,6 +49,12 @@ public class MonsterTest : MonoBehaviour
         {
             Debug.LogWarning("MonsterHpBar 설정되지 않았습니다.");
         }
+
+        // 히트스톱 체크
+        if (hitStop == null)
+        {
+            Debug.LogWarning("HitStop 스크립트가 할당되지 않았습니다.");
+        }
     }
 
     // 플레이어 레이어 찾기
@@ -66,6 +75,8 @@ public class MonsterTest : MonoBehaviour
             // 있다면 실행
             if (player != null)
             {
+                Debug.Log("플레이어와 충돌 발생. 데미지 전달 시작.");
+                
                 // 데미지 전달
                 player.TakeDamage(damage);
             }
@@ -92,9 +103,18 @@ public class MonsterTest : MonoBehaviour
         // 5초 동안 유지되는 몬스터 hp바 활성화
         monsterHpBar?.ShowHpBar();
 
-        // 지속 시간에 따라 흔들기 구현
-        // cameraController가 null이 아닌 경우에만 ShakeCamera 메서드를 호출하여 
-        // duration 매개변수에 shakeDuration 값을 할당한다는 뜻
+        // 히트스톱 호출
+        if (hitStop != null)
+        {
+            Debug.Log("히트스톱 호출 시도.");
+            hitStop.TriggerHitStop();
+        }
+        else
+        {
+            Debug.LogWarning("HitStop 스크립트가 할당되지 않았습니다.");
+        }
+
+        // 카메라 흔들기
         cameraController?.ShakeCamera(duration: cameraController.sakeDuration);
 
         if (currentHp <= 0)
@@ -106,7 +126,7 @@ public class MonsterTest : MonoBehaviour
     private void Die()
     {
         // 사운드 호출
-        SoundManager.Instance?.PlaySFX("monster_potbellied_battle_1",gameObject);
+        SoundManager.Instance?.PlaySFX("monster_potbellied_battle_1", gameObject);
 
         Debug.Log("Monster Die");
 
@@ -131,5 +151,3 @@ public class MonsterTest : MonoBehaviour
         Destroy(gameObject);
     }
 }
-
-//
