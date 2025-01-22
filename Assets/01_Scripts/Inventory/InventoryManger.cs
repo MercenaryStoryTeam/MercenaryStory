@@ -50,7 +50,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
             }
 
             foreach (SlotData slotData in FirebaseManager.Instance.CurrentUserData.user_Inventory)
-            {s
+            {
                 if (slotData.item_Stack > 0)
                 {
                     ItemBase originalItem = allItems.Find(x => x.id == slotData.item_Id);
@@ -79,7 +79,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
 
     public SlotData SetBasicItem(ItemBase item)
     {
-        item.currentItemCount = 1;
+        item.currentItemCount = 1; 
         currentSlotData = new SlotData(item.id, 0); 
         return currentSlotData;
     }
@@ -100,6 +100,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
                 }
             }
         }
+
         else if (newItem.itemClass == 2) 
         {
             bool added = false;
@@ -153,16 +154,13 @@ public class InventoryManger : SingletonManager<InventoryManger>
 
     public void SlotArray()
     {
-        Dictionary<int, (ItemBase item, int stack)> itemStacks = new Dictionary<int, (ItemBase, int)>();
+        List<(ItemBase item, int stack)> itemsToKeep = new List<(ItemBase, int)>();
         
         foreach (InventorySlot slot in slots)
         {
-            if (slot.item != null)
+            if (slot.item != null && slot.slotCount > 0)
             {
-                if (!itemStacks.ContainsKey(slot.item.id))
-                {
-                    itemStacks[slot.item.id] = (slot.item, slot.slotCount);
-                }
+                itemsToKeep.Add((slot.item, slot.slotCount));
             }
         }
         
@@ -172,16 +170,14 @@ public class InventoryManger : SingletonManager<InventoryManger>
             slot.slotCount = 0;
         }
         
-        foreach (var itemStack in itemStacks.Values)
+        int currentSlot = 0;
+        foreach (var itemInfo in itemsToKeep)
         {
-            foreach (InventorySlot slot in slots)
+            if (currentSlot < slots.Count)
             {
-                if (slot.item == null)
-                {
-                    slot.AddItem(itemStack.item);
-                    slot.slotCount = itemStack.stack;
-                    break;
-                }
+                slots[currentSlot].AddItem(itemInfo.item);
+                slots[currentSlot].slotCount = itemInfo.stack;
+                currentSlot++;
             }
         }
         
