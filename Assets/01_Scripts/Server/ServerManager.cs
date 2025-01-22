@@ -67,14 +67,19 @@ public class ServerManager
 	public static void LoadScene(string sceneName)
 	{
 		PhotonNetwork.LoadLevel(sceneName);
+		PlayerFsm playerFsm = GameObject
+			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)
+			.GetComponent<PlayerFsm>();
+		playerFsm.InstantiatePlayerPrefabs();
 	}
 
-	public static void PlayerSpawn(Transform spawnPoint)
+	public static void PlayerSpawn(Vector3 spawnPoint)
 	{
+		Debug.Log("ServerManager::PlayerSpawn");
 		GameObject go = PhotonNetwork
 			.Instantiate(
 				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
-				spawnPoint.position, Quaternion.identity);
+				spawnPoint, Quaternion.identity);
 		go.name = PhotonNetwork.NickName;
 	}
 

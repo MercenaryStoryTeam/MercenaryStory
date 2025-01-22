@@ -22,6 +22,6 @@ public class TownManager : MonoBehaviour
 
 	private void Start()
 	{
-		ServerManager.PlayerSpawn(spawnPoint);
+		ServerManager.PlayerSpawn(spawnPoint.position);
 	}
 }

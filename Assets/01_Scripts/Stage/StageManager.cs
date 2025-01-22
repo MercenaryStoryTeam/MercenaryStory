@@ -6,13 +6,15 @@ public class StageManager : SingletonManager<StageManager>
 	public int dieMonsterCount;
 	public PlayerFsm hostPlayerFsm;
 	public bool StageClear { get; private set; }
-	public Transform spawnPoint;
+	public Vector3 spawnPoint;
 	public int currentStage = 0;
 
 	private void Start()
 	{
 		PlayStageBGM();
-		PlayerSpawn();
+		// PlayerSpawn();
+		UIManager.Instance.chatButton.gameObject.SetActive(true);
+		UIManager.Instance.partyButton.gameObject.SetActive(true);
 	}
 
 	public void Update()
@@ -45,7 +47,8 @@ public class StageManager : SingletonManager<StageManager>
 
 	public void PlayerSpawn()
 	{
-		spawnPoint = GameObject.Find("ExPortal").transform;
+		print("StageManager::PlayerSpawn");
+		spawnPoint = stageDatas[currentStage].playerSpawnPos;
 		ServerManager.PlayerSpawn(spawnPoint);
 	}
 }
