@@ -40,7 +40,14 @@ public class InventoryManger : SingletonManager<InventoryManger>
         {
             foreach (ItemBase item in allItems)
             {
-                item.currentItemCount = 0;
+                if (item.id == FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id)
+                {
+                    item.currentItemCount = 1;
+                }
+                else
+                {
+                    item.currentItemCount = 0;
+                }
             }
 
             foreach (InventorySlot slot in slots)
