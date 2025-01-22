@@ -93,8 +93,10 @@ public class MonsterTest : MonoBehaviour
         // 현재 체력이 0이하라면 더 이상 데미지 감소 처리 x
         if (currentHp <= 0) return;
 
-        // 사운드 호출
-        SoundManager.Instance?.PlaySFX("monster_potbellied_battle_1", gameObject);
+        // 사운드 클립 3개중에 랜덤 재생 
+        string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
+        string randomClip = soundClips[Random.Range(0, soundClips.Length)];
+        SoundManager.Instance.PlaySFX(randomClip, gameObject);
 
         // 데미지 처리
         currentHp -= damage;

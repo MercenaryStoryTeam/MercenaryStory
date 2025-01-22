@@ -68,6 +68,11 @@ public class Player : MonoBehaviour
     // 데미지 처리
     public void TakeDamage(float damage)
     {
+        // 사운드 클립 3개중에 랜덤 재생 
+        string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
+        string randomClip = soundClips[Random.Range(0, soundClips.Length)];
+        SoundManager.Instance.PlaySFX(randomClip, gameObject);
+
         if (isInvincible)
         {
             Debug.Log("무적 상태이므로 데미지를 받지 않습니다.");
@@ -124,9 +129,6 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        // 사운드 재생 
-        SoundManager.Instance.PlaySFX("monster_potbellied_battle_1", gameObject);
-
         Debug.Log("Player Die");
 
         // PlayerFsm 실행
