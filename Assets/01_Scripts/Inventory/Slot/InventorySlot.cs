@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public enum SlotType
 {
@@ -55,6 +56,7 @@ public class InventorySlot : MonoBehaviour
 	{
 		if (item == null) return;
 
+
 		switch (slotType)
 		{
 			case SlotType.Inventory:
@@ -66,6 +68,25 @@ public class InventorySlot : MonoBehaviour
 			case SlotType.Shop:
 				MoveItemToSellSlot();
 				break;
+		}
+		
+	}
+
+	public void OnSlotRightClicked(BaseEventData eventData)
+	{
+		PointerEventData pointerData = (PointerEventData)eventData;
+		if (pointerData.button == PointerEventData.InputButton.Right)
+		{
+			if (slotType == SlotType.Inventory && item != null && item.itemClass == 1)
+			{
+				GameObject playerObject = GameObject.Find(FirebaseManager.Instance.CurrentUserData.user_Name);
+				Equipment playerEquipment = playerObject?.GetComponent<Equipment>();
+				if (playerEquipment != null)
+				{
+					playerEquipment.SetCurrentEquip(this);
+					UIManager.Instance.equipment.SetEquipImage(this);
+				}
+			}
 		}
 	}
 
