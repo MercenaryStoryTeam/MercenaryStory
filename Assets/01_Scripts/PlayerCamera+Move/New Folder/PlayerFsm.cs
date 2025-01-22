@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Cinemachine;
 using UnityEngine.InputSystem.HID;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
@@ -356,6 +357,20 @@ public class PlayerFsm : MonoBehaviourPun
 
     private void EnterAttackState(int attackNumber)
     {
+        // 공격 사운드 클립 재생=================================================================================== 콤보 소리 랜덤 재생
+        // string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
+        // string randomClip = soundClips[UnityEngine.Random.Range(0, soundClips.Length)];
+        // SoundManager.Instance.PlaySFX(randomClip, gameObject);
+
+        // 콤보 사운드 배열
+        string[] comboSoundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
+
+        // 지연 시간 설정 (필요 시 조정)
+        float delay = 0.8f;
+
+        // 랜덤 사운드 재생 호출
+        StartCoroutine(PlayDelayedRandomSound(comboSoundClips, delay));
+
         switch (attackNumber)
         {
             case 1:
@@ -369,6 +384,16 @@ public class PlayerFsm : MonoBehaviourPun
                 break;
         }
     }
+
+    private IEnumerator PlayDelayedRandomSound(string[] soundClips, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // 랜덤으로 클립 선택
+        string randomClip = soundClips[UnityEngine.Random.Range(0, soundClips.Length)];
+        SoundManager.Instance.PlaySFX(randomClip, gameObject);
+    }
+
 
     private void EnterDieState()
     {
