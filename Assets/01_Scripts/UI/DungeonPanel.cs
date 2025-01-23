@@ -24,5 +24,6 @@ public class DungeonPanel : MonoBehaviour
 		PlayerFsm playerFsm = GameObject
 			.Find(FirebaseManager.Instance.CurrentUserData.user_Name).GetComponent<PlayerFsm>();
 		playerFsm.MoveMembersToRoom("LJW_1-1");
+		gameObject.SetActive(false);
 	}
 }

@@ -59,6 +59,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 		{
 			// ServerManager.LoadLobbyScene("LJW_TownScene");
 			StageManager.Instance.PlayerSpawn();
+			UIManager.Instance.chatButton.gameObject.SetActive(true);
+			UIManager.Instance.partyButton.gameObject.SetActive(true);
 		}
 
 		if (FirebaseManager.Instance.CurrentPartyData != null)
@@ -69,6 +71,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 				StageManager.Instance.currentStage = 1;
 				StageManager.Instance.ChangeStage(StageManager.Instance.currentStage);
 				StageManager.Instance.PlayerSpawn();
+				UIManager.Instance.partyButton.gameObject.SetActive(false);
+				UIManager.Instance.partyMemberPanel.gameObject.SetActive(false);
 			}
 		}
 	}
