@@ -121,7 +121,7 @@ public class PlayerFsm : MonoBehaviourPun
 
 	private void OnDestroy()
 	{
-		print($"Player Destroyed at : {StageManager.Instance.currentStage}");
+		print($"Player Destroyed at : {SceneManager.GetActiveScene().name}");
 	}
 
 	private void Update()

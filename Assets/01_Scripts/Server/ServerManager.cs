@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ServerManager
 {
@@ -67,6 +68,13 @@ public class ServerManager
 	public static void LoadScene(string sceneName)
 	{
 		PhotonNetwork.LoadLevel(sceneName);
+		// 여기서 미뤄야 함...
+
+		while (SceneManager.GetActiveScene().name != sceneName)
+		{
+			Debug.Log("씬 불러오는 것 기다리는 중...");
+		}
+
 		PlayerFsm playerFsm = GameObject
 			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)
 			.GetComponent<PlayerFsm>();
