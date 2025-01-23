@@ -1,4 +1,4 @@
-using Photon.Pun;
+ using Photon.Pun;
 using UnityEngine;
 
 public class Equipment : MonoBehaviourPunCallbacks
@@ -16,17 +16,18 @@ public class Equipment : MonoBehaviourPunCallbacks
 
 	private void Start()
 	{
-		if (photonView.IsMine) // 내 캐릭터인 경우에만
+		if (photonView.IsMine)
 		{
 			int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+			Debug.Log($"Start - Firebase에서 불러온 무기 ID: {savedWeaponId}");
 			if (savedWeaponId != 0)
 			{
-				ItemBase savedWeapon =
-					InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
+				ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
 				if (savedWeapon != null)
 				{
-					Debug.Log($"{savedWeapon.itemName} 으로 장비 프리팹 설정 완료");
+					Debug.Log($"{savedWeapon.itemName}({savedWeapon.id}) 으로 장비 프리팹 설정 시도");
 					photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
+					Debug.Log($"{savedWeapon.itemName}으로 장비 장착함.");
 				}
 			}
 		}
@@ -58,30 +59,33 @@ public class Equipment : MonoBehaviourPunCallbacks
 	[PunRPC]
 	private void NetworkSetEquipment(int itemId)
 	{
+		
 		if (InventoryManger.Instance == null)
 		{
-			Debug.Log("인벤토리매니저 없음");
+			Debug.LogError("인벤토리매니저 없음");
 			return;
 		}
 
 		if (InventoryManger.Instance.allItems == null)
 		{
-			Debug.Log("인벤토리 매니저의 allItems가 비어있음");
+			Debug.LogError("인벤토리 매니저의 allItems가 비어있음");
 			return;
 		}
 
 		ItemBase item = InventoryManger.Instance.allItems.Find(x => x.id == itemId);
 		if (item == null)
 		{
+			Debug.LogError($"ID {itemId}에 해당하는 아이템을 찾을 수 없음");
 			return;
 		}
 
-		if (item != null)
+		
+		if (photonView.IsMine)
 		{
 			FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = itemId;
 			FirebaseManager.Instance.UploadCurrentUserData("user_weapon_item_Id", itemId);
-			SetSwordClass(item);
 		}
+		SetSwordClass(item);
 	}
 
 	private void SetSwordClass(ItemBase item)
