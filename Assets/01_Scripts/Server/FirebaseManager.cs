@@ -446,7 +446,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			UIManager.Instance.popUp.PopUpOpen("파티에서 나갔습니다.", () =>
 			{
 				UIManager.Instance.popUp.PopUpClose();
-				UIManager.Instance.OnPartyButtonClick();
+				// UIManager.Instance.OnPartyButtonClick();
 			});
 		}
 		catch (FirebaseException e)
