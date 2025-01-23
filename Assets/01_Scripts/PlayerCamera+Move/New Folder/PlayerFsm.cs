@@ -29,7 +29,7 @@ public class PlayerFsm : MonoBehaviourPun
     private const float moveThreshold = 0.05f;
 
     // 현재 이동 속도
-    public float currentSpeed;
+    private float currentSpeed;
 
     // 상태 유형
     public enum State
@@ -38,7 +38,6 @@ public class PlayerFsm : MonoBehaviourPun
         Moving,
         Attack1,
         Attack2,
-        Attack3,
         Die,
         Hit
     }
@@ -49,7 +48,7 @@ public class PlayerFsm : MonoBehaviourPun
     private float lastAttackTime = 0f;
 
     // Player 스크립트 참조: 이동 속도, HP 관리 등 플레이어 전반의 데이터를 가져오기 위함
-    public Player player;
+    private Player player;
 
     // 이동 및 공격 잠금 상태
     private bool isMovementLocked = false;
@@ -205,11 +204,15 @@ public class PlayerFsm : MonoBehaviourPun
     {
         // 사망이거나, Idle 상태가 아니거나, 공격 잠금 중이면 공격 불가
         if (isDead || currentState != State.Idle || isAttackLocked)
+        {
+            // 경고 메시지 출력
+            Debug.LogWarning("[PlayerFsm] 현재 Idle 상태가 아니므로 공격을 사용할 수 없습니다.");
             return;
+        }
 
         lastAttackTime = Time.time;
         attackCombo++;
-        if (attackCombo > 3)
+        if (attackCombo > 2) // 최대 콤보를 2로 제한
         {
             attackCombo = 1;
         }
@@ -221,9 +224,6 @@ public class PlayerFsm : MonoBehaviourPun
                 break;
             case 2:
                 TransitionToState(State.Attack2);
-                break;
-            case 3:
-                TransitionToState(State.Attack3);
                 break;
         }
     }
@@ -237,7 +237,6 @@ public class PlayerFsm : MonoBehaviourPun
                 break;
             case State.Attack1:
             case State.Attack2:
-            case State.Attack3:
                 break;
             case State.Hit:
                 break;
@@ -261,7 +260,6 @@ public class PlayerFsm : MonoBehaviourPun
                 break;
             case State.Attack1:
             case State.Attack2:
-            case State.Attack3:
                 break;
             case State.Hit:
                 break;
@@ -309,7 +307,6 @@ public class PlayerFsm : MonoBehaviourPun
                 break;
             case State.Attack1:
             case State.Attack2:
-            case State.Attack3:
                 EnterAttackState((int)(currentState - State.Attack1 + 1));
                 break;
             case State.Hit:
@@ -333,8 +330,6 @@ public class PlayerFsm : MonoBehaviourPun
                 return FSMManager.PlayerState.Attack1;
             case State.Attack2:
                 return FSMManager.PlayerState.Attack2;
-            case State.Attack3:
-                return FSMManager.PlayerState.Attack3;
             case State.Hit:
                 return FSMManager.PlayerState.Hit;
             case State.Die:
@@ -357,13 +352,8 @@ public class PlayerFsm : MonoBehaviourPun
 
     private void EnterAttackState(int attackNumber)
     {
-        // 공격 사운드 클립 재생=================================================================================== 콤보 소리 랜덤 재생
-        // string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
-        // string randomClip = soundClips[UnityEngine.Random.Range(0, soundClips.Length)];
-        // SoundManager.Instance.PlaySFX(randomClip, gameObject);
-
         // 콤보 사운드 배열
-        string[] comboSoundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
+        string[] comboSoundClips = { "sound_player_hit1", "sound_player_hit2" }; // Attack3 제거
 
         // 지연 시간 설정 (필요 시 조정)
         float delay = 0.8f;
@@ -378,9 +368,6 @@ public class PlayerFsm : MonoBehaviourPun
                 break;
             case 2:
                 animator.SetTrigger("Attack2");
-                break;
-            case 3:
-                animator.SetTrigger("Attack3");
                 break;
         }
     }

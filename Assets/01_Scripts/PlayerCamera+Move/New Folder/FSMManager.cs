@@ -8,7 +8,6 @@ public class FSMManager : MonoBehaviour
         Moving,
         Attack1,
         Attack2,
-        Attack3,
         Hit,
         Die,
         Rush,
@@ -75,7 +74,7 @@ public class FSMManager : MonoBehaviour
             case SkillType.Skill2:
                 if (currentState != PlayerState.Idle)
                 {
-                    skillFsm.LogWarning("[FSMManager] 현재 Idle 상태가 아니므로 공격 및 스킬을 사용할 수 없습니다.");
+                    skillFsm.LogWarning("[FSMManager] 현재 Idle 상태가 아니므로 스킬을 사용할 수 없습니다.");
                     return;
                 }
                 break;

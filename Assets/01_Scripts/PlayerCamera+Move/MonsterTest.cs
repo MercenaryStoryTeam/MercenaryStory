@@ -94,7 +94,8 @@ public class MonsterTest : MonoBehaviour
         if (currentHp <= 0) return;
 
         // 사운드 클립 3개중에 랜덤 재생 
-        string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
+        // string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
+        string[] soundClips = { "monster_potbellied_damage_4", "monster_potbellied_damage_7", "monster_potbellied_damage_13", "monster_potbellied_damage_15" };
         string randomClip = soundClips[Random.Range(0, soundClips.Length)];
         SoundManager.Instance.PlaySFX(randomClip, gameObject);
 
@@ -131,6 +132,9 @@ public class MonsterTest : MonoBehaviour
 
     private void Die()
     {
+        // 사운드 재생
+        SoundManager.Instance.PlaySFX("monster_potbellied_death_2", gameObject);
+
         Debug.Log("Monster Die");
 
         // 플레이어 오브젝트 찾기
