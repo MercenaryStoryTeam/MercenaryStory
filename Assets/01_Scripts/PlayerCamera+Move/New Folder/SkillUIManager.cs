@@ -38,7 +38,8 @@ public class SkillUIManager : MonoBehaviour
 
     private void Start()
     {
-        skillFsm = playerFsm.GetComponent<SkillFsm>();
+        playerFsm = StageManager.Instance.currentPlayerFsm;
+        skillFsm = playerFsm.gameObject.GetComponent<SkillFsm>();
         // Player 인스턴스 찾기
         player = FindObjectOfType<Player>();
         if (player == null)
