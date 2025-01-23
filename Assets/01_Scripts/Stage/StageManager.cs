@@ -11,7 +11,7 @@ public class StageManager : SingletonManager<StageManager>
 
 	private void Start()
 	{
-		PlayStageBGM();
+		// PlayStageBGM();
 		// PlayerSpawn();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
