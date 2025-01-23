@@ -1,84 +1,81 @@
-using System;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [Header("무기 공격력")]
-    public int damage = 10;
+	[Header("무기 공격력")] public int damage = 10;
 
-    [Header("몬스터 레이어")]
-    public LayerMask Monster;
+	[Header("몬스터 레이어")] public LayerMask Monster;
 
-    // Player 스크립트 참조
-    private Player player;
+	// Player 스크립트 참조
+	private Player player;
 
-    private void Start()
-    {
-        // 방법1: 부모 객체에 붙어있는 Player 스크립트 참조
-        player = GetComponentInParent<Player>();
+	private void Start()
+	{
+		// 방법1: 부모 객체에 붙어있는 Player 스크립트 참조
+		player = GetComponentInParent<Player>();
 
-        // 방법1 실패
-        if (player == null)
-        {
-            // 방법2: 태그를 이용해 Player 스크립트 참조
-            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-            if (playerObject != null)
-            {
-                player = playerObject.GetComponent<Player>();
-            }
+		// 방법1 실패
+		if (player == null)
+		{
+			// 방법2: 태그를 이용해 Player 스크립트 참조
+			GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+			if (playerObject != null)
+			{
+				player = playerObject.GetComponent<Player>();
+			}
 
-            if (player == null)
-            {
-                Debug.LogError("Player 참조x -> 부모 객체 확인 및 태크 확인");
-            }
-        }
-    }
+			if (player == null)
+			{
+				Debug.LogError("Player 참조x -> 부모 객체 확인 및 태크 확인");
+			}
+		}
+	}
 
-    private void Update()
-    {
-        SetWeaponDamage();
-    }
+	private void Update()
+	{
+		SetWeaponDamage();
+	}
 
-    private void SetWeaponDamage()
-    {
-        int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
-        ItemBase currentWeapon = InventoryManger.Instance.allItems.Find(x => x.id == currentWeaponId);
-        if (currentWeapon is WeaponItem weapon)
-        {
-            damage = weapon.damage;
-        }
+	private void SetWeaponDamage()
+	{
+		int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+		ItemBase currentWeapon =
+			InventoryManger.Instance.allItems.Find(x => x.id == currentWeaponId);
+		if (currentWeapon is WeaponItem weapon)
+		{
+			damage = weapon.damage;
+		}
+	}
 
-    }
+	// 콜라이더 충돌 시 호출
+	private void OnTriggerEnter(Collider collider)
+	{
+		// 충돌한 객체의 레이어가 몬스터라면 실행
+		if (((1 << collider.gameObject.layer) & Monster.value) != 0)
+		{
+			// 충돌한 객체에서 Monster 스크립트를 참조
+			Monster monster = collider.gameObject.GetComponent<Monster>();
+			if (monster != null)
+			{
+				// 몬스터에게 데미지 적용
+				monster.TakeDamage(damage);
 
-    // 콜라이더 충돌 시 호출
-    private void OnTriggerEnter(Collider collider)
-    {
-        // 충돌한 객체의 레이어가 몬스터라면 실행
-        if (((1 << collider.gameObject.layer) & Monster.value) != 0)
-        {
-            // 충돌한 객체에서 Monster 스크립트를 참조
-            Monster monster = collider.gameObject.GetComponent<Monster>();
-            if (monster != null)
-            {
-                // 몬스터에게 데미지 적용
-                monster.TakeDamage(damage);
-
-                // 플레이어 스크립트가 유효하다면 흡혈 처리
-                if (player != null)
-                {
-                    player.SuckBlood(); // Player 스크립트의 SuckBlood 메서드 호출
-                }
-                else
-                {
-                    Debug.LogWarning("Player가 설정되지 않았습니다. SuckBlood 호출 불가");
-                }
-            }
-            else
-            {
-                Debug.LogError($"충돌한 객체에 Monster 스크립트가 없습니다. 객체 이름: {collider.gameObject.name}");
-            }
-        }
-    }
+				// 플레이어 스크립트가 유효하다면 흡혈 처리
+				if (player != null)
+				{
+					player.SuckBlood(); // Player 스크립트의 SuckBlood 메서드 호출
+				}
+				else
+				{
+					Debug.LogWarning("Player가 설정되지 않았습니다. SuckBlood 호출 불가");
+				}
+			}
+			else
+			{
+				Debug.LogError($"충돌한 객체에 Monster 스크립트가 없습니다. 객체 이름: {collider.gameObject.name}");
+			}
+		}
+	}
 }
 
 // 중간 완성
