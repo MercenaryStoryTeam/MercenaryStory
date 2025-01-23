@@ -520,6 +520,7 @@ public class PlayerFsm : MonoBehaviourPun
     {
         print("RPC 호출됨");
         StageManager.Instance.currentStage++;
+        StageManager.Instance.ChangeStage(StageManager.Instance.currentStage);
         photonView.RPC("RPC_InstantiatePlayerPrefabs", RpcTarget.Others);
     }
 
@@ -528,6 +529,7 @@ public class PlayerFsm : MonoBehaviourPun
     {
         print("PRC 진짜 호출됨");
         StageManager.Instance.currentStage++;
+        StageManager.Instance.ChangeStage(StageManager.Instance.currentStage);
         StageManager.Instance.PlayerSpawn();
     }
 }

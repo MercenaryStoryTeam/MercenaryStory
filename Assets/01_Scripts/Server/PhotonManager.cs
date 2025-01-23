@@ -67,6 +67,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 			    "LJW_1-1")
 			{
 				StageManager.Instance.currentStage = 1;
+				StageManager.Instance.ChangeStage(StageManager.Instance.currentStage);
 				StageManager.Instance.PlayerSpawn();
 			}
 		}
