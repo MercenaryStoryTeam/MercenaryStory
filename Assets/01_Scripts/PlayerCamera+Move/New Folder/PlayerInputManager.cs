@@ -13,21 +13,48 @@ public class PlayerInputManager : MonoBehaviourPun
     public static System.Action OnBInput;
     public static System.Action OnKInput;
 
-    [Header("Mobile Input References")]
-    public VirtualJoystick virtualJoystick;
-
     // PC에서 모바일 입력 테스트를 위해 모바일 입력 활성화
-    [Header("Testing")]
+    [Header("PC에서 모바일 테스트 실행 여부")]
     public bool forceMobile = false;
 
+    // 스크립트 자동 참조
     private Player player;
+    private VirtualJoystick virtualJoystick;
+
+    // 모바일 플랫폼 여부
+    private bool useMobileInput;
 
     private void Awake()
     {
+        // Player 스크립트 자동 참조 -> PlayerInputManager 스크립트가 속한 부모 객체에서 찾음
         player = GetComponent<Player>();
 
-        // 모바일 플랫폼 감지
+        // 모바일 입력 활성화 여부 설정 (모바일 테스트 true 또는 모바일 플랫폼 감지)
+        useMobileInput = forceMobile || Application.isMobilePlatform;
+
+
+        // forceMobile = true면 실행
+        if (forceMobile)
+        {
+            // VirtualJoystick 스크립트 자동 참조 -> 씬 전체에서 찾음
+            if (virtualJoystick == null)
+            {
+                // wj
+                virtualJoystick = FindObjectOfType<VirtualJoystick>();
+
+                if (virtualJoystick == null)
+                {
+                    Debug.LogError("[PlayerInputManager] 씬에 VirtualJoystick이 없습니다.");
+                }
+            }
+
+        }
+
+        // 글자가 검은색인 이유: 현재 플랫폼이 모바일이 아니라서
+        // 모바일 플랫폼에서 활성화
 #if UNITY_IOS || UNITY_ANDROID
+        if (useMobileInput)
+        {
             if (virtualJoystick == null)
             {
                 virtualJoystick = FindObjectOfType<VirtualJoystick>();
@@ -36,14 +63,13 @@ public class PlayerInputManager : MonoBehaviourPun
                     Debug.LogError("씬에 VirtualJoystick이 없습니다. 인스펙터에서 할당하세요.");
                 }
             }
+        }
 #endif
     }
 
     void Update()
     {
         if (!photonView.IsMine) return;
-
-        bool useMobileInput = forceMobile || Application.isMobilePlatform;
 
         if (useMobileInput)
         {
@@ -121,7 +147,6 @@ public class PlayerInputManager : MonoBehaviourPun
     }
 
     // 모바일 입력 
-
     private void HandleMobileInputs()
     {
         // 조이스틱을 통한 이동 처리
