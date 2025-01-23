@@ -505,5 +505,10 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		return partyList;
 	}
 
+	public List<UserData> GetCurrentPartyMembers()
+	{
+		return CurrentPartyData.party_Members;
+	}
+
 	#endregion
 }
