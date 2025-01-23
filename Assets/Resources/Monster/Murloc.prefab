@@ -995,6 +995,7 @@ GameObject:
   - component: {fileID: 2927655239447448260}
   - component: {fileID: -2354418506966582488}
   - component: {fileID: -1028237273114903129}
+  - component: {fileID: 1505965612022725181}
   m_Layer: 7
   m_Name: Murloc
   m_TagString: Untagged
@@ -1074,14 +1075,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e6e533978c459449fba781c4e04f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolPoint: {x: 0, y: 0, z: 0}
+  playerTransform: {fileID: 0}
   currentState: 0
+  dropItems:
+  - {fileID: 11400000, guid: a4c429faf218a5b4abca1a780d68fdcd, type: 2}
+  - {fileID: 11400000, guid: 3d5f61585f5f5c84c9601824382290d7, type: 2}
+  - {fileID: 11400000, guid: dcaf9b0943064994cae3d8442704f9f8, type: 2}
   _hp: 13
   _maxHp: 13
   _damage: 3
   _moveSpeed: 1
   _rotationSpeed: 1
   _attackSpeed: 1
-  _patrolPoint: {x: 2, y: 2, z: 1}
   _patrolRange: 3
   _detectionRange: 3
   _attackRange: 2
@@ -1156,6 +1162,27 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!135 &1505965612022725181
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4401516545361303541}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4587785653938087335
 GameObject:
   m_ObjectHideFlags: 0
