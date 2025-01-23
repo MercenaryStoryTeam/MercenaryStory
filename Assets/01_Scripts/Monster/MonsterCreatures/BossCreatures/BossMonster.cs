@@ -66,7 +66,7 @@ public class BossMonster : MonoBehaviourPun
         minionLayer = LayerMask.GetMask("Minion");
         stateMachine = new BossStateMachine(this);
         stateMachine.ChangeState(BossStateType.Idle);
-        //poolManager = FindObjectOfType<ObjectPoolManager>();
+        poolManager = FindObjectOfType<ObjectPoolManager>();
     }
     
     protected virtual void Update()
@@ -150,9 +150,9 @@ public class BossMonster : MonoBehaviourPun
     {
         foreach (Transform nest in nestList)
         {
-            Instantiate(minionPrefab, nest.position, nest.rotation);
-            //PhotonObjectPool<Minion> minionPool = poolManager.GetPool(minionPrefab.GetComponent<Minion>(), 10);
-            //Minion newMinion = minionPool.GetObject(nest.position, Quaternion.identity);
+            //Instantiate(minionPrefab, nest.position, nest.rotation);
+            PhotonObjectPool<Minion> minionPool = poolManager.GetPool(minionPrefab.GetComponent<Minion>(), 10);
+            Minion newMinion = minionPool.GetObject(nest.position, Quaternion.identity);
         }
     }
 
