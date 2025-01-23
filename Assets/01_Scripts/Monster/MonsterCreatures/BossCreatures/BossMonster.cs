@@ -250,5 +250,19 @@ public class BossMonster : MonoBehaviourPun
         // 도륙내기 공격 범위
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, slashAttackRange);
+
+        // 슬래시 공격의 부채꼴 범위 시각화
+        Gizmos.color = Color.red;
+        Vector3 forward = transform.forward;
+        float totalAngle = 270f;
+        int segments = 30;
+        float angleStep = totalAngle / segments;
+        
+        for (int i = 0; i <= segments; i++)
+        {
+            float angle = -135f + (angleStep * i);
+            Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
+            Gizmos.DrawLine(transform.position, transform.position + direction * slashAttackRange);
+        }
     }
 }

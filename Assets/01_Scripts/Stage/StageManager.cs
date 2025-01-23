@@ -8,6 +8,8 @@ public class StageManager : SingletonManager<StageManager>
 	public PlayerFsm hostPlayerFsm;
 	public PlayerFsm currentPlayerFsm;
 	public bool StageClear { get; private set; }
+	public bool portalIsActive;
+
 	public Vector3 spawnPoint;
 	public int currentStage = 0;
 
@@ -16,7 +18,7 @@ public class StageManager : SingletonManager<StageManager>
 		// PlayStageBGM();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
-		// UIManager.Instance.InGamePannel.gameObject.SetActive(true);
+		UIManager.Instance.InGamePannel.gameObject.SetActive(true);
 	}
 
 	public void Update()
@@ -40,9 +42,9 @@ public class StageManager : SingletonManager<StageManager>
 	{
 		if (stageIndex < stageDatas.Length)
 		{
+			portalIsActive = true;
 			dieMonsterCount = 0;
 			StageClear = false;
-			currentStage = stageIndex;
 			PlayStageBGM();
 		}
 	}
