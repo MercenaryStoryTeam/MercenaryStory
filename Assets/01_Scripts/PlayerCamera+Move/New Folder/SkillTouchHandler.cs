@@ -3,13 +3,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-// SkillFsm 스크립트에서 선언된 SkillType 명칭과 겹침 문제 해결
-namespace GameNamespace
+namespace SkillTouchHandlerNamespace
 {
     // 스킬 타입 열거형
     public enum SkillType
     {
-        None,
         Rush,
         Parry,
         Skill1,
@@ -27,7 +25,10 @@ public class SkillTouchHandler : MonoBehaviour
         public GameObject button;
 
         // 해당 버튼과 연결된 스킬 타입
-        public GameNamespace.SkillType skillType = GameNamespace.SkillType.None;
+        public SkillType skillType;
+
+        // 쿨타임 UI (이미지)
+        public Image cooldownImage;
     }
 
     // 스킬 버튼 리스트
@@ -35,22 +36,43 @@ public class SkillTouchHandler : MonoBehaviour
     public List<SkillButton> skillButtons = new List<SkillButton>();
 
     // 버튼과 스킬 타입 매핑
-    private Dictionary<GameObject, GameNamespace.SkillType> buttonSkillMap;
+    private Dictionary<GameObject, SkillType> buttonSkillMap;
+
+    // SkillFsm 참조
+    [Header("SkillFsm 참조")]
+    public SkillFsm skillFsm;
 
     private void Awake()
     {
+        // SkillFsm 참조 확인
+        if (skillFsm == null)
+        {
+            skillFsm = FindObjectOfType<SkillFsm>();
+            if (skillFsm == null)
+            {
+                Debug.LogError("SkillFsm을 찾을 수 없습니다.");
+                enabled = false;
+                return;
+            }
+        }
+
         // 버튼과 스킬 타입 매핑 초기화
-        buttonSkillMap = new Dictionary<GameObject, GameNamespace.SkillType>();
+        buttonSkillMap = new Dictionary<GameObject, SkillType>();
         foreach (var skillButton in skillButtons)
         {
             if (skillButton.button != null)
             {
                 buttonSkillMap[skillButton.button] = skillButton.skillType;
 
-                // 각 버튼에 EventTrigger 추가 -> 트리거 처리 핵심
+                // 각 버튼에 EventTrigger 추가
                 AddEventTrigger(skillButton.button);
             }
         }
+    }
+
+    private void Update()
+    {
+        UpdateCooldownUI();
     }
 
     private void AddEventTrigger(GameObject button)
@@ -76,9 +98,6 @@ public class SkillTouchHandler : MonoBehaviour
         };
         pointerUpEntry.callback.AddListener((data) => { OnPointerUp((PointerEventData)data, button); });
         eventTrigger.triggers.Add(pointerUpEntry);
-
-        // Drag 이벤트 추가 제거
-        // 드래그 기능이 필요 없으므로 관련 코드를 제거합니다.
     }
 
     // 버튼을 터치했을 때 호출 (터치 시작)
@@ -86,7 +105,22 @@ public class SkillTouchHandler : MonoBehaviour
     {
         if (!buttonSkillMap.ContainsKey(button)) return;
 
-        GameNamespace.SkillType skillType = buttonSkillMap[button];
+        SkillType skillType = buttonSkillMap[button];
+
+        // 스킬이 쿨타임 중인지 확인
+        Skill skill = skillFsm.GetSkill(skillType);
+        if (skill == null)
+        {
+            Debug.LogWarning($"스킬 {skillType}을 찾을 수 없습니다.");
+            return;
+        }
+
+        if (skill.IsOnCooldown)
+        {
+            Debug.Log($"스킬 {skillType}이(가) 쿨타임 중입니다.");
+            return;
+        }
+
         Debug.Log($"버튼 터치 시작: {skillType}");
         TriggerSkill(skillType);
     }
@@ -96,33 +130,54 @@ public class SkillTouchHandler : MonoBehaviour
     {
         if (!buttonSkillMap.ContainsKey(button)) return;
 
-        GameNamespace.SkillType skillType = buttonSkillMap[button];
+        SkillType skillType = buttonSkillMap[button];
         Debug.Log($"버튼 터치 종료: {skillType}");
     }
 
     // 스킬 트리거 호출 
-    private void TriggerSkill(GameNamespace.SkillType skillType)
+    private void TriggerSkill(SkillType skillType)
     {
         switch (skillType)
         {
-            case GameNamespace.SkillType.Rush:
+            case SkillType.Rush:
                 PlayerInputManager.OnSkillInput?.Invoke();
                 break;
-            case GameNamespace.SkillType.Parry:
+            case SkillType.Parry:
                 PlayerInputManager.OnRightClickInput?.Invoke();
                 break;
-            case GameNamespace.SkillType.Skill1:
+            case SkillType.Skill1:
                 PlayerInputManager.OnShiftLeftClickInput?.Invoke();
                 break;
-            case GameNamespace.SkillType.Skill2:
+            case SkillType.Skill2:
                 PlayerInputManager.OnShiftRightClickInput?.Invoke();
-                break;
-            case GameNamespace.SkillType.None:
-                Debug.LogWarning("스킬 타입이 None으로 설정되어 있습니다.");
                 break;
             default:
                 Debug.LogWarning("알 수 없는 SkillType이 할당되었습니다.");
                 break;
+        }
+    }
+
+    // 쿨타임 UI 업데이트
+    private void UpdateCooldownUI()
+    {
+        foreach (var skillButton in skillButtons)
+        {
+            if (skillButton.cooldownImage != null)
+            {
+                Skill skill = skillFsm.GetSkill(skillButton.skillType);
+                if (skill != null)
+                {
+                    if (skill.IsOnCooldown)
+                    {
+                        float remaining = skill.RemainingCooldown / skill.CachedCooldown;
+                        skillButton.cooldownImage.fillAmount = remaining;
+                    }
+                    else
+                    {
+                        skillButton.cooldownImage.fillAmount = 0f;
+                    }
+                }
+            }
         }
     }
 }

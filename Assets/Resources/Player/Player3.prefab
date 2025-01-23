@@ -42699,7 +42699,6 @@ GameObject:
   - component: {fileID: 5505119368732177695}
   - component: {fileID: 9108410174757216962}
   - component: {fileID: 6487606610460918277}
-  - component: {fileID: 2327487289394995362}
   - component: {fileID: 3596344939977100153}
   - component: {fileID: 7690623949527391609}
   - component: {fileID: 3705100012675952067}
@@ -42711,6 +42710,7 @@ GameObject:
   - component: {fileID: 9147127068114676749}
   - component: {fileID: 9039962867406599807}
   - component: {fileID: 3998805805947729254}
+  - component: {fileID: 2327487289394995362}
   - component: {fileID: 6204660149819172763}
   m_Layer: 6
   m_Name: Player3
@@ -42807,20 +42807,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &2327487289394995362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2924230139879159387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  virtualJoystick: {fileID: 0}
-  forceMobile: 0
 --- !u!114 &3596344939977100153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43121,7 +43107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 626fa3dfdab21e547a82eaf8963ed32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerFsm: {fileID: 0}
+  playerFsm: {fileID: 8285145042828244473}
   skillFsm: {fileID: 9147127068114676749}
   skillPanel: {fileID: 0}
   skillButtons:
@@ -43154,6 +43140,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFsm: {fileID: 8285145042828244473}
   skillFsm: {fileID: 9147127068114676749}
+--- !u!114 &2327487289394995362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2924230139879159387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualJoystick: {fileID: 0}
+  forceMobile: 0
 --- !u!114 &6204660149819172763
 MonoBehaviour:
   m_ObjectHideFlags: 0

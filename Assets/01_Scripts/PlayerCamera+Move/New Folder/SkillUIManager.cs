@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 // 스킬 업그레이드 UI 관리
 public class SkillUIManager : MonoBehaviour
 {
+    [Header("Player FSM 스크립트")]
     public PlayerFsm playerFsm;
+
     [Header("Skill FSM 스크립트")]
     public SkillFsm skillFsm;
 

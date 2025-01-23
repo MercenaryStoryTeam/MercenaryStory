@@ -84883,7 +84883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 626fa3dfdab21e547a82eaf8963ed32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerFsm: {fileID: 0}
+  playerFsm: {fileID: 276803345708013931}
   skillFsm: {fileID: 6859112222779949191}
   skillPanel: {fileID: 0}
   skillButtons:

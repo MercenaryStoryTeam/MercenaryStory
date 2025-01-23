@@ -67224,8 +67224,8 @@ GameObject:
   - component: {fileID: 461331483928832361}
   - component: {fileID: 5235109630303961540}
   - component: {fileID: 7205059753450995164}
-  - component: {fileID: 861205683803348506}
   - component: {fileID: -6693327397993148701}
+  - component: {fileID: 861205683803348506}
   - component: {fileID: 6734204061301334107}
   m_Layer: 6
   m_Name: Player1
@@ -67622,7 +67622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 626fa3dfdab21e547a82eaf8963ed32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerFsm: {fileID: 0}
+  playerFsm: {fileID: 461331483928832361}
   skillFsm: {fileID: 5235109630303961540}
   skillPanel: {fileID: 0}
   skillButtons:
@@ -67641,20 +67641,6 @@ MonoBehaviour:
   exitButton: {fileID: 0}
   openButton: {fileID: 0}
   goldText: {fileID: 0}
---- !u!114 &861205683803348506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3907103267636737127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  virtualJoystick: {fileID: 0}
-  forceMobile: 0
 --- !u!114 &-6693327397993148701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67669,6 +67655,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFsm: {fileID: 461331483928832361}
   skillFsm: {fileID: 5235109630303961540}
+--- !u!114 &861205683803348506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907103267636737127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualJoystick: {fileID: 0}
+  forceMobile: 0
 --- !u!114 &6734204061301334107
 MonoBehaviour:
   m_ObjectHideFlags: 0

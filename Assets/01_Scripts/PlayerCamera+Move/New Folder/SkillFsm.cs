@@ -580,17 +580,24 @@ public class SkillFsm : MonoBehaviour
             Debug.LogError(message);
     }
 
-    // 특정 SkillType에 해당하는 Skill 객체 반환
     public Skill GetSkill(SkillType skillType)
     {
         Skill skill = Skills.Find(s => s.skillType == skillType);
+
+        // Skill 검색 결과 로그 출력
         if (skill != null)
         {
-            Log($"[SkillFsm] {skillType} 스킬이 검색되었습니다.");
+            if (enableDebugLogs)
+            {
+                Debug.Log($"[SkillFsm] {skillType} 스킬이 검색되었습니다.");
+            }
         }
         else
         {
-            LogWarning($"[SkillFsm] {skillType} 스킬이 존재하지 않습니다.");
+            if (enableDebugLogs)
+            {
+                Debug.LogWarning($"[SkillFsm] {skillType} 스킬이 존재하지 않습니다.");
+            }
         }
         return skill;
     }
