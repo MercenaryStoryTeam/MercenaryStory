@@ -100,7 +100,7 @@ public class EquipmentPanel : MonoBehaviour
 		}
 	}
 
-	public void SetPanelSwordCharacter(ItemBase item)
+	private void SetPanelSwordCharacter(ItemBase item)
 	{
 		foreach (Transform child in panelCharacter.transform)
 		{
