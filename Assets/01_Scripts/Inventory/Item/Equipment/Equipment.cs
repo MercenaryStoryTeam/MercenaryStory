@@ -4,15 +4,6 @@ using UnityEngine;
 public class Equipment : MonoBehaviourPunCallbacks
 {
 	public GameObject[] equipments;
-	// Equipment Destroy 하기 위해 대입할 GameObject
-	private GameObject currentSword;
-
-	// 임시 값들. 상황에 맞게 수정해야함.
-	private int rarity;
-	private string equipmentName;
-
-	// equipmentParent : rightHand, leftHand의 자식인 Shield 등을 Find해서 대입하는 로직 필요
-	private Transform equipmentParent;
 
 	private void Start()
 	{
@@ -89,10 +80,6 @@ public class Equipment : MonoBehaviourPunCallbacks
 
 	private void SetSwordClass(ItemBase item)
 	{
-		GameObject playerPrefab =
-			GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}");
-		equipmentParent = playerPrefab.transform.FindDeepChild("Sword");
-
 		if (item is WeaponItem weapon)
 		{
 			if (weapon.rank == 1) // 장비 랭크가 1인 경우
