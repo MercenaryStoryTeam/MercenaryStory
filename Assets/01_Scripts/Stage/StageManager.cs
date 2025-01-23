@@ -13,7 +13,7 @@ public class StageManager : SingletonManager<StageManager>
 
 	private void Start()
 	{
-		PlayStageBGM();
+		// PlayStageBGM();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
 	}
@@ -49,16 +49,18 @@ public class StageManager : SingletonManager<StageManager>
 	public void PlayerSpawn()
 	{
 		// 이전 플레이어 오브젝트 찾기
-		GameObject existingPlayer = GameObject.Find(FirebaseManager.Instance.CurrentUserData.user_Name);
-		
+		GameObject existingPlayer =
+			GameObject.Find(FirebaseManager.Instance.CurrentUserData.user_Name);
+
 		// 새로운 스폰 위치 가져오기
 		spawnPoint = stageDatas[currentStage].playerSpawnPos;
-		
+
 		if (existingPlayer != null)
 		{
 			// 기존 플레이어가 있다면 위치만 변경
 			existingPlayer.transform.position = spawnPoint;
-			print($"Player {FirebaseManager.Instance.CurrentUserData.user_Name} position updated");
+			print(
+				$"Player {FirebaseManager.Instance.CurrentUserData.user_Name} position updated");
 		}
 		else
 		{
