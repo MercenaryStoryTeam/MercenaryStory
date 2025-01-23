@@ -5,85 +5,92 @@ using UnityEngine;
 
 public class PlayerTestSY : MonoBehaviour
 {
-    private float interactRange = 3f;
-    private MonsterTest monster;
-    
-    private List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems = new List<(GameObject droppedLightLine, ItemBase droppedItem)>();
-    private void Awake()
-    {
-        monster = FindObjectOfType<MonsterTest>();
-    }
+	private float interactRange = 3f;
+	private MonsterTest monster;
 
-    private void Update()
-    {
-        if (droppedItems.Count > 0)
-        {
-            for (int i = droppedItems.Count - 1; i >= 0;  i--)
-            {
-                if (droppedItems[i].droppedItem == null || droppedItems[i].droppedLightLine == null)
-                {
-                    droppedItems.RemoveAt(i);
-                    continue;
-                }
+	private List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems =
+		new List<(GameObject droppedLightLine, ItemBase droppedItem)>();
 
-                if (Vector3.Distance(transform.position, droppedItems[i].droppedLightLine.transform.position) <
-                    interactRange)
-                {
-                    if (Input.GetKeyDown(KeyCode.E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
-                    {
-                        if (droppedItems[i].droppedItem != null && droppedItems[i].droppedLightLine != null)
-                        {
-                            bool isDropped = InventoryManger.Instance.UpdateSlotData();
-                            if (isDropped)
-                            {
-                                InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
-                                Destroy(droppedItems[i].droppedLightLine);
-                                droppedItems.RemoveAt(i);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+	private void Awake()
+	{
+		monster = FindObjectOfType<MonsterTest>();
+	}
 
-    public ItemBase TryDropItems(List<ItemBase> items)
-    {
-        ItemBase droppedItem = null;
+	private void Update()
+	{
+		if (droppedItems.Count > 0)
+		{
+			for (int i = droppedItems.Count - 1; i >= 0; i--)
+			{
+				if (droppedItems[i].droppedItem == null ||
+				    droppedItems[i].droppedLightLine == null)
+				{
+					droppedItems.RemoveAt(i);
+					continue;
+				}
 
-        foreach (ItemBase item in items)
-        {
-            float randomValue = UnityEngine.Random.Range(0f, 1f);
-            if(randomValue <= item.dropPercent)
-            {
-                droppedItem = item;
-            }
-        }
+				if (Vector3.Distance(transform.position,
+					    droppedItems[i].droppedLightLine.transform.position) <
+				    interactRange)
+				{
+					if (Input.GetKeyDown(KeyCode.E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
+					{
+						if (droppedItems[i].droppedItem != null &&
+						    droppedItems[i].droppedLightLine != null)
+						{
+							bool isDropped = InventoryManger.Instance.UpdateSlotData();
+							if (isDropped)
+							{
+								InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
+								Destroy(droppedItems[i].droppedLightLine);
+								droppedItems.RemoveAt(i);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
-        return droppedItem;
-    }
+	public ItemBase TryDropItems(List<ItemBase> items)
+	{
+		ItemBase droppedItem = null;
 
-    public void InvenSceneTestDrop(ItemBase item)
-    {
-        if (item == null)
-        {
-            Debug.LogError("드롭할 아이템이 null입니다!");
-            return;
-        }
+		foreach (ItemBase item in items)
+		{
+			float randomValue = UnityEngine.Random.Range(0f, 1f);
+			if (randomValue <= item.dropPercent)
+			{
+				droppedItem = item;
+			}
+		}
 
-        if (item.dropLightLine == null)
-        {
-            Debug.LogError($"아이템 {item.name}의 dropLightLine 프리팹이 할당되지 않았습니다!");
-            return;
-        }
+		return droppedItem;
+	}
 
-        GameObject itemLightLine = Instantiate(item.dropLightLine, this.transform.position, Quaternion.identity);
-        droppedItems.Add((itemLightLine, item));
-    }
+	public void InvenSceneTestDrop(ItemBase item)
+	{
+		if (item == null)
+		{
+			Debug.LogError("드롭할 아이템이 null입니다!");
+			return;
+		}
 
-    public void TestDrop(ItemBase item)
-    {
-        GameObject itemLightLine = Instantiate(item.dropLightLine, monster.transform.position, Quaternion.identity);
-        droppedItems.Add((itemLightLine, item));
-    }
+		if (item.dropLightLine == null)
+		{
+			Debug.LogError($"아이템 {item.itemName}의 dropLightLine 프리팹이 할당되지 않았습니다!");
+			return;
+		}
+
+		GameObject itemLightLine = Instantiate(item.dropLightLine, this.transform.position,
+			Quaternion.identity);
+		droppedItems.Add((itemLightLine, item));
+	}
+
+	public void TestDrop(ItemBase item)
+	{
+		GameObject itemLightLine = Instantiate(item.dropLightLine, monster.transform.position,
+			Quaternion.identity);
+		droppedItems.Add((itemLightLine, item));
+	}
 }

@@ -76,7 +76,7 @@ public class EquipmentPanel : MonoBehaviour
 
 			slot.RemoveItem();
 			print(
-				$"현재 장착한 아이템: {currentItem.name}, 장착한 아이탬 개수: {currentItem.currentItemCount}");
+				$"현재 장착한 아이템: {currentItem.itemName}, 장착한 아이탬 개수: {currentItem.currentItemCount}");
 			if (beforeWeapon != null)
 			{
 				slot.AddItem(beforeWeapon);

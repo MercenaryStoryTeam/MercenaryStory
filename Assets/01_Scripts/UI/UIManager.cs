@@ -23,7 +23,7 @@ public class UIManager : SingletonManager<UIManager>
 	public PartyMemberPanel partyMemberPanel;
 	public Button partyButton;
 	public DungeonPanel dungeonPanel;
-	
+
 	//Option
 	public OptionPannel optionPanel;
 
@@ -121,7 +121,7 @@ public class UIManager : SingletonManager<UIManager>
 			itemInfo.firstOptionText.text = item.currentItemCount + "개";
 		}
 
-		itemInfo.itemName.text = item.name.ToString();
+		itemInfo.itemName.text = item.itemName.ToString();
 		itemInfo.itemDescription.text = item.description.ToString();
 		itemInfo.itemImage.sprite = item.image;
 	}

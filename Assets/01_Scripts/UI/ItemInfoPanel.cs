@@ -6,7 +6,6 @@ public class ItemInfoPanel : MonoBehaviour
 	public GameObject itemInfoPanel;
 
 	public Image itemImage;
-	private Image currentItemImage;
 	public Text itemName;
 	public Text itemDescription;
 	public Text firstOptionText;
@@ -20,7 +19,6 @@ public class ItemInfoPanel : MonoBehaviour
 	private InventorySlot currentSelectedSlot;
 	private Equipment equipment;
 	private EquipmentPanel equipPanel;
-	private bool isInitialized = false;
 
 	private void Awake()
 	{
@@ -40,11 +38,6 @@ public class ItemInfoPanel : MonoBehaviour
 		{
 			equipment = FindObjectOfType<Equipment>();
 		}
-	}
-
-	private void Update()
-	{
-		currentItemImage = itemImage;
 	}
 
 	private void InfoButtonOnClick()
