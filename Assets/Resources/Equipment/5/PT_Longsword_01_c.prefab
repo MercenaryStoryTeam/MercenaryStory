@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3362532264726626320}
   - component: {fileID: 4752210575237613166}
   - component: {fileID: -5466108082153424529}
+  - component: {fileID: -5629513731863932132}
   m_Layer: 6
   m_Name: PT_Longsword_01_c
   m_TagString: Untagged
@@ -131,3 +132,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &-5629513731863932132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8121962011013668580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08ddbde9b0424a4eb0446a4eb2890c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 0
+  Monster:
+    serializedVersion: 2
+    m_Bits: 0
