@@ -1,10 +1,12 @@
+using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ServerManager
 {
+	public static List<RoomInfo> availableRooms = new List<RoomInfo>();
+
 	public static void ConnectLobby()
 	{
 		string nickName = FirebaseManager.Instance.CurrentUserData.user_Name;
@@ -82,5 +84,24 @@ public class ServerManager
 	public static string GetServerName()
 	{
 		return PhotonNetwork.CurrentRoom.Name;
+	}
+
+	// 사람이 적은 방 찾기
+	public static string GetRoomWithFewestPlayers()
+	{
+		RoomInfo targetRoom = null;
+		int minPlayers = int.MaxValue;
+
+		foreach (var room in availableRooms)
+		{
+			if (room.PlayerCount < minPlayers)
+			{
+				minPlayers = room.PlayerCount;
+				targetRoom = room;
+			}
+		}
+
+		if (targetRoom == null) return "1";
+		return targetRoom.Name;
 	}
 }

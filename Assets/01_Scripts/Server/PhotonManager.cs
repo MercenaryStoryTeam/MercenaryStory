@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -49,8 +50,24 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 					.CurrentPartyData
 					.party_ServerId);
 			}
+			else
+			{
+				PhotonNetwork.JoinLobby();
+			}
 		}
 	}
+
+	public override void OnJoinedLobby()
+	{
+		if (FirebaseManager.Instance.CurrentPartyData.party_ServerName == "LJW_TownScene")
+		{
+			FirebaseManager.Instance.ExitParty();
+			// 방 확인하고 들어가기
+			ServerManager.JoinOrCreatePersistentRoom(ServerManager.GetRoomWithFewestPlayers());
+			PhotonNetwork.LoadLevel("LJW_TownScene");
+		}
+	}
+
 
 	public override void OnJoinedRoom()
 	{
@@ -68,6 +85,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName ==
 			    "LJW_1-1")
 			{
+				FirebaseManager.Instance.CurrentPartyData.party_ServerName = "LJW_TownScene";
 				StageManager.Instance.currentStage = 1;
 				StageManager.Instance.ChangeStage(StageManager.Instance.currentStage);
 				StageManager.Instance.PlayerSpawn();
