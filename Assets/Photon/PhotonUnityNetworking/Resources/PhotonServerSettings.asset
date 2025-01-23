@@ -44,6 +44,7 @@ MonoBehaviour:
   - SetCurrentEquip
   - RPC_SetActiveState
   - RPC_MoveToScene
+  - RPC_InstantiatePlayerPrefabs
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
