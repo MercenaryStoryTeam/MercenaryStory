@@ -16,7 +16,7 @@ public class StageManager : SingletonManager<StageManager>
 		PlayStageBGM();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
-		UIManager.Instance.InGamePannel.gameObject.SetActive(true);
+		// UIManager.Instance.InGamePannel.gameObject.SetActive(true);
 	}
 
 	public void Update()
