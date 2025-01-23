@@ -185,6 +185,8 @@ public class Skill
     }
 }
 
+// ======================================================================================================================================== 분기점
+
 [RequireComponent(typeof(Animator))]
 public class SkillFsm : MonoBehaviour
 {
@@ -365,25 +367,21 @@ public class SkillFsm : MonoBehaviour
         animator.SetTrigger(skill.TriggerName);
         Log($"[SkillFsm] {skill.Name} 스킬이 트리거되었습니다.");
 
-        // Rush 스킬이면 소리 재생 =============================================================================================================***** 스킬 소리 재생 지점
-        if (skillType == SkillType.Rush)
+        // Rush 스킬이면 소리 재생
+        switch (skillType)
         {
-            SoundManager.Instance.PlaySFX("Dash", gameObject);
-        }
-
-        if (skillType == SkillType.Parry)
-        {
-            SoundManager.Instance.PlaySFX("rush_skill_sound", gameObject);
-        }
-
-        if (skillType == SkillType.Skill1)
-        {
-            SoundManager.Instance.PlaySFX("rush_skill_sound", gameObject);
-        }
-
-        if (skillType == SkillType.Skill2)
-        {
-            StartCoroutine(PlayDelayedSound("sound_player_Twohandskill4", 0.6f));
+            case SkillType.Rush:
+                SoundManager.Instance.PlaySFX("Dash", gameObject);
+                break;
+            case SkillType.Parry:
+            case SkillType.Skill1:
+                SoundManager.Instance.PlaySFX("rush_skill_sound", gameObject);
+                break;
+            case SkillType.Skill2:
+                StartCoroutine(PlayDelayedSound("sound_player_Twohandskill4", 0.6f));
+                break;
+            default:
+                break;
         }
 
         // 레벨에 따른 파티클 이펙트 활성화
@@ -456,7 +454,7 @@ public class SkillFsm : MonoBehaviour
             // 기본 위치 사용
             spawnPosition = player.transform.position + player.transform.forward;
             spawnRotation = Quaternion.identity;
-            LogWarning($"[SkillFsm] {skill.Name} / 기본 위치에서 파티클이 생성됩니다.");
+            LogWarning($"[SkillFsm] {skill.Name} 스킬의 파티클이 기본 위치에서 생성됩니다.");
         }
 
         GameObject particleInstance = Instantiate(skillEffect.ParticleEffect, spawnPosition, spawnRotation, transform);
@@ -640,3 +638,4 @@ public class SkillFsm : MonoBehaviour
         // 추가적인 속성 조정이 필요할 경우 여기에 구현
     }
 }
+

@@ -18,7 +18,7 @@ public class PlayerInputManager : MonoBehaviourPun
 
     // PC에서 모바일 입력 테스트를 위해 모바일 입력 활성화
     [Header("Testing")]
-    public bool forceMobile = false; 
+    public bool forceMobile = false;
 
     private Player player;
 
@@ -26,7 +26,7 @@ public class PlayerInputManager : MonoBehaviourPun
     {
         player = GetComponent<Player>();
 
-    // 모바일 플랫폼 감지
+        // 모바일 플랫폼 감지
 #if UNITY_IOS || UNITY_ANDROID
             if (virtualJoystick == null)
             {
@@ -57,12 +57,13 @@ public class PlayerInputManager : MonoBehaviourPun
         player.DropItemInteraction();
     }
 
+    // 컴퓨터 입력 
     private void HandleDesktopInputs()
     {
         Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         // 항상 호출하여 Idle 상태 전환 가능하게 함
-        OnMoveInput?.Invoke(movement); 
+        OnMoveInput?.Invoke(movement);
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -119,7 +120,7 @@ public class PlayerInputManager : MonoBehaviourPun
         }
     }
 
-    // 모바일 입력 영역
+    // 모바일 입력 
 
     private void HandleMobileInputs()
     {
@@ -129,7 +130,7 @@ public class PlayerInputManager : MonoBehaviourPun
             Vector2 mobileMovement = virtualJoystick.InputVector;
 
             // 항상 호출하여 Idle 상태 전환 가능하게 함
-            OnMoveInput?.Invoke(mobileMovement); 
+            OnMoveInput?.Invoke(mobileMovement);
         }
 
         // 터치 입력을 통한 공격 처리
