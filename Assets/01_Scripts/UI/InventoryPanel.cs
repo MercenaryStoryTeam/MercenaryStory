@@ -14,9 +14,6 @@ public class InventoryPanel : MonoBehaviour
 		ButtonOnClick();
 	}
 
-	private void Start()
-	{
-	}
 
 	private void Update()
 	{
