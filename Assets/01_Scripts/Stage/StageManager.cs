@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class StageManager : SingletonManager<StageManager>
@@ -6,13 +7,14 @@ public class StageManager : SingletonManager<StageManager>
 	public int dieMonsterCount;
 	public PlayerFsm hostPlayerFsm;
 	public bool StageClear { get; private set; }
-	public Transform spawnPoint;
+	public Vector3 spawnPoint;
 	public int currentStage = 0;
 
 	private void Start()
 	{
-		PlayStageBGM();
-		PlayerSpawn();
+		// PlayStageBGM();
+		UIManager.Instance.chatButton.gameObject.SetActive(true);
+		UIManager.Instance.partyButton.gameObject.SetActive(true);
 	}
 
 	public void Update()
@@ -45,7 +47,22 @@ public class StageManager : SingletonManager<StageManager>
 
 	public void PlayerSpawn()
 	{
-		spawnPoint = GameObject.Find("ExPortal").transform;
+		spawnPoint = GameObject.Find("ExPortal").transform.position;
 		ServerManager.PlayerSpawn(spawnPoint);
+	}
+
+	public void PlayerSpawnWaiting()
+	{
+		StartCoroutine(PlayerSpawnCoroutine());
+	}
+
+	public IEnumerator PlayerSpawnCoroutine()
+	{
+		yield return new WaitForSeconds(2f);
+		StageManager.Instance.PlayerSpawn();
+		PlayerFsm playerFsm = GameObject
+			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)
+			.GetComponent<PlayerFsm>();
+		playerFsm.InstantiatePlayerPrefabs();
 	}
 }

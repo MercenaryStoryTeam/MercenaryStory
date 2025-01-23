@@ -15,4 +15,4 @@ MonoBehaviour:
   stageName: MAP 1-5
   bgmName: sound_dungeon_1-5BGM
   monsterCount: 34
-  nextStageName: MAP 1-6
+  nextSceneName: MAP 1-6

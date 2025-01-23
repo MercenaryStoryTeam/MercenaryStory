@@ -1,6 +1,7 @@
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ServerManager
 {
@@ -67,14 +68,18 @@ public class ServerManager
 	public static void LoadScene(string sceneName)
 	{
 		PhotonNetwork.LoadLevel(sceneName);
+		// 여기서 미뤄야 함...
+
+		StageManager.Instance.PlayerSpawnWaiting();
 	}
 
-	public static void PlayerSpawn(Transform spawnPoint)
+	public static void PlayerSpawn(Vector3 spawnPoint)
 	{
+		Debug.Log("ServerManager::PlayerSpawn");
 		GameObject go = PhotonNetwork
 			.Instantiate(
 				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
-				spawnPoint.position, Quaternion.identity);
+				spawnPoint, Quaternion.identity);
 		go.name = PhotonNetwork.NickName;
 	}
 

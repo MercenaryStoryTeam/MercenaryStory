@@ -15,4 +15,4 @@ MonoBehaviour:
   stageName: MAP 1-6
   bgmName: sound_dungeon_1-6BGM
   monsterCount: 1
-  nextStageName: TownStage
+  nextSceneName: LJW_TownScene

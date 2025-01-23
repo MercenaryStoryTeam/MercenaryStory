@@ -15,4 +15,5 @@ MonoBehaviour:
   stageName: MAP 1-2
   bgmName: sound_dungeon_1-2BGM
   monsterCount: 26
-  nextStageName: MAP 1-3
+  nextSceneName: MAP 1-3
+  playerSpawnPos: {x: -166, y: 6, z: 7}
