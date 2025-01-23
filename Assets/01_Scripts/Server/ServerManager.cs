@@ -83,35 +83,6 @@ public class ServerManager
 		go.name = PhotonNetwork.NickName;
 	}
 
-	public static GameObject PlayerEquip(int rarity, string equipmentName,
-		Transform parent)
-	{
-		string prefabPath = $"Equipment/{rarity}/{equipmentName}";
-		GameObject prefab = Resources.Load<GameObject>(prefabPath);
-
-		if (prefab == null)
-		{
-			Debug.LogError($"프리팹을 찾을 수 없음: {prefabPath}");
-			return null;
-		}
-
-		GameObject equipmentPrefab =
-			PhotonNetwork.Instantiate(prefabPath, parent.position,
-				Quaternion.identity);
-
-		if (equipmentPrefab == null)
-		{
-			Debug.LogError($"장비 프리팹 생성 실패: {prefabPath}");
-			return null;
-		}
-
-		equipmentPrefab.transform.SetParent(parent);
-		equipmentPrefab.transform.localPosition = prefab.transform.localPosition;
-		equipmentPrefab.transform.localRotation = prefab.transform.localRotation;
-
-		return equipmentPrefab;
-	}
-
 	public static string GetServerName()
 	{
 		return PhotonNetwork.CurrentRoom.Name;
