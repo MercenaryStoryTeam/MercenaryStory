@@ -84484,7 +84484,6 @@ GameObject:
   - component: {fileID: 5554901594764154213}
   - component: {fileID: 276803345708013931}
   - component: {fileID: 6859112222779949191}
-  - component: {fileID: 72117584580373573}
   - component: {fileID: 9125919698972074550}
   - component: {fileID: 8164066010600818272}
   - component: {fileID: -613514774767539222}
@@ -84871,37 +84870,6 @@ MonoBehaviour:
     CachedCooldown: 0
   player: {fileID: 5554901594764154213}
   enableDebugLogs: 1
---- !u!114 &72117584580373573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5217226068447975561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 626fa3dfdab21e547a82eaf8963ed32a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerFsm: {fileID: 0}
-  skillFsm: {fileID: 6859112222779949191}
-  skillPanel: {fileID: 0}
-  skillButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  skillTypes: 00000000010000000200000003000000
-  upgradeButton: {fileID: 0}
-  upgradeCostText: {fileID: 0}
-  skillNameText: {fileID: 0}
-  skillDescriptionText: {fileID: 0}
-  skillLevelText: {fileID: 0}
-  skillImage: {fileID: 0}
-  cooldownText: {fileID: 0}
-  exitButton: {fileID: 0}
-  openButton: {fileID: 0}
-  goldText: {fileID: 0}
 --- !u!114 &9125919698972074550
 MonoBehaviour:
   m_ObjectHideFlags: 0
