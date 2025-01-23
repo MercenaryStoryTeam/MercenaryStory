@@ -67226,6 +67226,7 @@ GameObject:
   - component: {fileID: 7205059753450995164}
   - component: {fileID: 861205683803348506}
   - component: {fileID: -6693327397993148701}
+  - component: {fileID: 6734204061301334107}
   m_Layer: 6
   m_Name: Player1
   m_TagString: Player
@@ -67665,6 +67666,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFsm: {fileID: 461331483928832361}
   skillFsm: {fileID: 5235109630303961540}
+--- !u!114 &6734204061301334107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907103267636737127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd092608033b5e46868736a681bf93c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3908565481757787586
 GameObject:
   m_ObjectHideFlags: 0
