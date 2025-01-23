@@ -41,7 +41,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			App = FirebaseApp.DefaultInstance;
 			Auth = FirebaseAuth.DefaultInstance;
 			DB = FirebaseDatabase.DefaultInstance;
-			StartCoroutine(CheckForEmptyPartiesCoroutine());
+			// StartCoroutine(CheckForEmptyPartiesCoroutine());
 		}
 		else
 		{
@@ -49,6 +49,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
+	// 미구현 상태. 나중에 할 수도 있고 안 할 수도 있고...
 	private IEnumerator CheckForEmptyPartiesCoroutine()
 	{
 		while (true)
@@ -193,7 +194,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UploadCurrentUserData(string childName, object value,
+	public async Task UploadCurrentUserData(string childName, object value,
 		Action<object> callback = null)
 	{
 		try
@@ -372,7 +373,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void ExitParty()
+	public async Task ExitParty()
 	{
 		try
 		{
@@ -476,7 +477,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UploadCurrentPartyData()
+	public async Task UploadCurrentPartyData()
 	{
 		try
 		{
@@ -524,6 +525,40 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
+	public async Task RemovePartyMemberFromServer(string partyId)
+	{
+		try
+		{
+			print($"삭제하려는 파티id: {CurrentPartyData.party_Id}");
+			DataSnapshot partySnapshot =
+				await DB.GetReference($"parties/{CurrentPartyData.party_Id}").GetValueAsync();
+			PartyData targetParty =
+				JsonConvert.DeserializeObject<PartyData>(partySnapshot.GetRawJsonValue());
+
+			await DB.GetReference($"parties/{CurrentPartyData.party_Id}").RemoveValueAsync();
+			if (targetParty.party_Owner.user_Id != partyId)
+			{
+				// 멤버 제거
+				targetParty.party_Members.RemoveAll(member =>
+					member.user_Id == partyId);
+
+				// 업데이트된 파티 데이터 업로드
+				string updatedPartyDataJson = JsonConvert.SerializeObject(targetParty);
+				await DB.GetReference($"parties/{CurrentPartyData.party_Id}")
+					.SetRawJsonValueAsync(updatedPartyDataJson);
+			}
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	// 미구현상태.......
 	private async Task RemoveEmptyPartiesFromServer()
 	{
 		try
