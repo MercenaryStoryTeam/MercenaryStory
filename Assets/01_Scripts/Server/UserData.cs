@@ -16,7 +16,7 @@ public class UserData
 	public int user_weapon_item_Id { get; set; }
 	public List<SlotData> user_Inventory { get; set; } = new List<SlotData>();
 	public float user_Gold { get; set; }
-
+	public bool user_IsOnline { get; set; }
 
 	public UserData()
 	{
@@ -36,12 +36,13 @@ public class UserData
 		user_HP = 100;
 		user_weapon_item_Id = 32000;
 		user_Inventory = new List<SlotData>();
+		user_IsOnline = false;
 	}
 
 	// SignIn
 	public UserData(string id, string email, string name, int appearance,
 		string currentServer, string currentParty, int rank, float rankCurrentExp, float hp,
-		int weaponItemId, List<SlotData> inventory, float gold)
+		int weaponItemId, List<SlotData> inventory, float gold, bool isOnline)
 	{
 		user_Id = id;
 		user_Email = email;
@@ -55,6 +56,7 @@ public class UserData
 		user_weapon_item_Id = weaponItemId;
 		user_Inventory = inventory;
 		user_Gold = gold;
+		user_IsOnline = isOnline;
 	}
 
 	// 사용 예시 : userData.UpdateUserData(rank: 2, rankCurrentExp: 50.0f, hp: 80.0f);
@@ -67,7 +69,9 @@ public class UserData
 		float? hp = null,
 		int? weaponItemId = null,
 		List<SlotData> inventory = null,
-		float? gold = null)
+		float? gold = null,
+		bool? isOnline = null
+	)
 	{
 		if (appearance.HasValue) user_Appearance = appearance.Value;
 		if (!string.IsNullOrEmpty(currentServer)) user_CurrentServer = currentServer;
@@ -78,5 +82,6 @@ public class UserData
 		if (weaponItemId.HasValue) user_weapon_item_Id = weaponItemId.Value;
 		if (inventory != null) user_Inventory = inventory;
 		if (gold.HasValue) user_Gold = gold.Value;
+		if (isOnline.HasValue) user_IsOnline = isOnline.Value;
 	}
 }
