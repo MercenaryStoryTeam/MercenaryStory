@@ -74,6 +74,7 @@ public class PlayerFsm : MonoBehaviourPun
 #if UNITY_ANDROID || UNITY_IOS
         isMobile = true;
 #else
+        // 모바일 입력 처리 허용
         isMobile = false;
 #endif
 

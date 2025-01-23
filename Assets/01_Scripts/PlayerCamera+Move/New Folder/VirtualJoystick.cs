@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// 조이스틱 
 public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
     [Header("조이스틱 배경 RectTransform")]
@@ -64,3 +65,5 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
         joystickHandle.anchoredPosition = Vector2.zero;
     }
 }
+
+// 완성 
