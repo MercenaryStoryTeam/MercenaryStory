@@ -12,16 +12,14 @@ public class InventoryPanel : MonoBehaviour
     public Button invenCloseButton;
     public Text currentGoldText;
 
-    private TestSY _testsy;
     private void Awake()
     {
-        _testsy = FindObjectOfType<TestSY>();
+        UIManager.Instance.CloseInventoryPanel();
         ButtonOnClick();
     }
 
     private void Start()
     {
-        UIManager.Instance.CloseInventoryPanel();
     }
 
     private void Update()
