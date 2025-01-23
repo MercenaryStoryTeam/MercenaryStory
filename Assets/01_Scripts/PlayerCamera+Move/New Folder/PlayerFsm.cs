@@ -473,7 +473,7 @@ public class PlayerFsm : MonoBehaviourPun
 	public void InstantiatePlayerPrefabs()
 	{
 		print("RPC 호출됨");
-		photonView.RPC("RPC_InstantiatePlayerPrefabs", RpcTarget.All);
+		photonView.RPC("RPC_InstantiatePlayerPrefabs", RpcTarget.Others);
 	}
 
 	[PunRPC]

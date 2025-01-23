@@ -70,15 +70,7 @@ public class ServerManager
 		PhotonNetwork.LoadLevel(sceneName);
 		// 여기서 미뤄야 함...
 
-		while (SceneManager.GetActiveScene().name != sceneName)
-		{
-			Debug.Log("씬 불러오는 것 기다리는 중...");
-		}
-
-		PlayerFsm playerFsm = GameObject
-			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)
-			.GetComponent<PlayerFsm>();
-		playerFsm.InstantiatePlayerPrefabs();
+		StageManager.Instance.PlayerSpawnWaiting();
 	}
 
 	public static void PlayerSpawn(Vector3 spawnPoint)

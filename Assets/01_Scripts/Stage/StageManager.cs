@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class StageManager : SingletonManager<StageManager>
@@ -50,5 +51,20 @@ public class StageManager : SingletonManager<StageManager>
 		print("StageManager::PlayerSpawn");
 		spawnPoint = stageDatas[currentStage].playerSpawnPos;
 		ServerManager.PlayerSpawn(spawnPoint);
+	}
+
+	public void PlayerSpawnWaiting()
+	{
+		StartCoroutine(PlayerSpawnCoroutine());
+	}
+
+	public IEnumerator PlayerSpawnCoroutine()
+	{
+		yield return new WaitForSeconds(1f);
+		StageManager.Instance.PlayerSpawn();
+		PlayerFsm playerFsm = GameObject
+			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)
+			.GetComponent<PlayerFsm>();
+		playerFsm.InstantiatePlayerPrefabs();
 	}
 }
