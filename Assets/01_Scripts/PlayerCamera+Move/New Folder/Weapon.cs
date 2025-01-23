@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
     [Header("무기 공격력")]
-    public float damage = 10f;
+    public float damage;
 
     [Header("몬스터 레이어")]
     public LayerMask Monster;
@@ -31,6 +32,22 @@ public class Weapon : MonoBehaviour
                 Debug.LogError("Player 참조x -> 부모 객체 확인 및 태크 확인");
             }
         }
+    }
+
+    private void Update()
+    {
+        SetWeaponDamage();
+    }
+
+    private void SetWeaponDamage()
+    {
+        int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+        ItemBase currentWeapon = InventoryManger.Instance.allItems.Find(x => x.id == currentWeaponId);
+        if (currentWeapon is WeaponItem weapon)
+        {
+            damage = weapon.damage;
+        }
+
     }
 
     // 콜라이더 충돌 시 호출
