@@ -3,7 +3,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [Header("무기 공격력")]
-    public float damage = 10f;
+    public int damage = 10;
 
     [Header("몬스터 레이어")]
     public LayerMask Monster;
@@ -39,27 +39,26 @@ public class Weapon : MonoBehaviour
         // 충돌한 객체의 레이어가 몬스터라면 실행
         if (((1 << collider.gameObject.layer) & Monster.value) != 0)
         {
-            // 충돌한 객체에서 MonsterTest 스크립트 참조
-            MonsterTest monsterTest = collider.gameObject.GetComponent<MonsterTest>();
-            if (monsterTest != null)
+            // 충돌한 객체에서 Monster 스크립트를 참조
+            Monster monster = collider.gameObject.GetComponent<Monster>();
+            if (monster != null)
             {
                 // 몬스터에게 데미지 적용
-                monsterTest.TakeDamage(damage);
+                monster.TakeDamage(damage);
 
-                // 플레이어가 스크립트가 있다면 흡혈 처리
+                // 플레이어 스크립트가 유효하다면 흡혈 처리
                 if (player != null)
                 {
-                    // Player 스크립트의 SuckBlood 메서드 호출
-                    player.SuckBlood();
+                    player.SuckBlood(); // Player 스크립트의 SuckBlood 메서드 호출
                 }
                 else
                 {
-                    Debug.LogWarning("Player 참조x -> Player 스크립트의 SuckBlood 메서드 호출 불가");
+                    Debug.LogWarning("Player가 설정되지 않았습니다. SuckBlood 호출 불가");
                 }
             }
             else
             {
-                Debug.LogError("MonsterTest 참조x -> 충돌한 객체에 MonsterTest 스크립트가 추가되어 있는지 확인 ");
+                Debug.LogError($"충돌한 객체에 Monster 스크립트가 없습니다. 객체 이름: {collider.gameObject.name}");
             }
         }
     }

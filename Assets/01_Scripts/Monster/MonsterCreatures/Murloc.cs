@@ -17,6 +17,9 @@ public class Murloc : Monster
     public float _attackRange = 2;
     public float _returnRange = 10;
 
+    [Header("보상 골드")]
+    public float _goldReward = 100f;
+
     public void Awake()
     {
         Hp = _hp;
@@ -29,5 +32,6 @@ public class Murloc : Monster
         DetectionRange = _detectionRange;
         AttackRange = _attackRange;
         ReturnRange = _returnRange;
+        GoldReward = _goldReward;
     }
 }

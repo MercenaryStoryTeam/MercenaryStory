@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using UnityEngine;
 
 public class MonsterTest : MonoBehaviour
@@ -78,7 +79,7 @@ public class MonsterTest : MonoBehaviour
             if (player != null)
             {
                 Debug.Log("플레이어와 충돌 발생. 데미지 전달 시작.");
-                
+
                 // 데미지 전달
                 player.TakeDamage(damage);
             }
@@ -92,9 +93,6 @@ public class MonsterTest : MonoBehaviour
     // 몬스터가 데미지를 받았을 때 호출
     public void TakeDamage(float damage)
     {
-        // 현재 체력이 0이하라면 더 이상 데미지 감소 처리 x
-        if (currentHp <= 0) return;
-
         // 사운드 클립 3개중에 랜덤 재생 
         // string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
         string[] soundClips = { "monster_potbellied_damage_4", "monster_potbellied_damage_7", "monster_potbellied_damage_13", "monster_potbellied_damage_15" };

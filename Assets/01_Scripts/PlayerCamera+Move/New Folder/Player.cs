@@ -79,7 +79,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        if (currentHp <= 0) return; // 이미 사망 상태
 
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);

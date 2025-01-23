@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -19,7 +20,9 @@ public abstract class Monster : MonoBehaviourPun
     private float detectionRange;
     private float attackRange;
     private float returnRange;
-    
+
+    private float goldReward;
+
     public Vector3 patrolPoint;
     private LayerMask playerLayer;
     public Transform playerTransform;
@@ -33,13 +36,7 @@ public abstract class Monster : MonoBehaviourPun
 
     public List<ItemBase> dropItems;
 
-    // 데미지 받을 때마다 카메라 흔들기
     public VirtualCameraController cameraController;
-
-    [Header("보상 골드")]
-    public float goldReward = 100f;
-
-    [Header("몬스터 HP 바")]
     public MonsterHpBar monsterHpBar;
 
     #endregion
@@ -55,6 +52,7 @@ public abstract class Monster : MonoBehaviourPun
     public float DetectionRange { set => detectionRange = Mathf.Max(0, value); get => detectionRange; }
     public float AttackRange { set => attackRange = Mathf.Max(0, value); get => attackRange; }
     public float ReturnRange { set => returnRange = Mathf.Max(0, value); get => returnRange; }
+    public float GoldReward { set => goldReward = Mathf.Max(0, value); get => goldReward; }
     public LayerMask PlayerLayer => playerLayer;
     public NavMeshAgent Agent => agent;
     public Animator Animator => animator;
@@ -72,6 +70,7 @@ public abstract class Monster : MonoBehaviourPun
         stateMachine = new MonsterStateMachine(this);
         stateMachine.ChangeState(MonsterStateType.Patrol);
         cameraController = FindObjectOfType<VirtualCameraController>();
+        monsterHpBar = FindObjectOfType<MonsterHpBar>();
     }
 
     // 플레이어 레이어 찾기
@@ -140,9 +139,6 @@ public abstract class Monster : MonoBehaviourPun
 
     public void TakeDamage(int damage)
     {
-        // 현재 체력이 0이하라면 더 이상 데미지 감소 처리 x
-        if (Hp <= 0) return;
-
         // 사운드 클립 3개중에 랜덤 재생 
         string[] soundClips = { "monster_potbellied_damage_4", "monster_potbellied_damage_7", "monster_potbellied_damage_13", "monster_potbellied_damage_15" };
         string randomClip = soundClips[Random.Range(0, soundClips.Length)];
@@ -152,9 +148,10 @@ public abstract class Monster : MonoBehaviourPun
   
         Hp -= damage;
 
-        // 현재 체력 범위 제한
-        Hp = Mathf.Clamp(Hp, 0, maxHp);
         Debug.Log($"Monster HP: {Hp}/{maxHp} (받은 Damage: {damage})");
+
+        // 5초 동안 유지되는 몬스터 hp바 활성화
+        monsterHpBar?.ShowHpBar();
 
         if (Hp <= 0)
         {
