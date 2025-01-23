@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
@@ -39,10 +41,20 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			App = FirebaseApp.DefaultInstance;
 			Auth = FirebaseAuth.DefaultInstance;
 			DB = FirebaseDatabase.DefaultInstance;
+			StartCoroutine(CheckForEmptyPartiesCoroutine());
 		}
 		else
 		{
 			Debug.LogWarning($"Firebase initialization failed: {status}");
+		}
+	}
+
+	private IEnumerator CheckForEmptyPartiesCoroutine()
+	{
+		while (true)
+		{
+			yield return new WaitForSeconds(60f); // 60초마다 체크
+			_ = RemoveEmptyPartiesFromServer(); // 빈 파티 삭제
 		}
 	}
 
@@ -134,8 +146,9 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			}
 
 			CurrentUserData = userData;
-			CurrentUserData.UpdateUserData(currentParty: "");
+			CurrentUserData.UpdateUserData(currentParty: "", isOnline: true);
 			UploadCurrentUserData("user_CurrentParty", "");
+			UploadCurrentUserData("user_IsOnline", true);
 
 			InventoryManger.Instance.LoadInventoryFromDatabase();
 
@@ -188,6 +201,34 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			DatabaseReference targetRef = usersRef.Child(childName);
 			await targetRef.SetValueAsync(value);
 			callback?.Invoke(value);
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	private async Task UpdateUserList()
+	{
+		try
+		{
+			DataSnapshot usersSnapshot = await DB.GetReference("users").GetValueAsync();
+			userDictionary =
+				JsonConvert.DeserializeObject<Dictionary<string, UserData>>(
+					usersSnapshot.GetRawJsonValue());
+
+			if (userDictionary == null)
+			{
+				print("유저가 존재하지 않습니다.");
+			}
+			else
+			{
+				userList = new List<UserData>(userDictionary.Values);
+			}
 		}
 		catch (FirebaseException e)
 		{
@@ -290,20 +331,10 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			DataSnapshot partiesData =
-				await DB.GetReference("parties").GetValueAsync();
-			partyDictionary =
-				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
-					partiesData.GetRawJsonValue());
+			await UpdatePartyList();
 
-			if (partyDictionary == null)
+			if (partyList != null)
 			{
-				UIManager.Instance.popUp.PopUpOpen("파티가 존재하지 않습니다.\n새로고침 해주세요.",
-					() => UIManager.Instance.popUp.PopUpClose());
-			}
-			else
-			{
-				partyList = new List<PartyData>(partyDictionary.Values);
 				foreach (PartyData partyData in partyList)
 				{
 					if (partyData.party_Name == name)
@@ -467,31 +498,99 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			print("파티 정보 업데이트 준비");
 			DataSnapshot partyData =
 				await DB.GetReference($"parties/{CurrentPartyData.party_Id}").GetValueAsync();
-			print("파티 정보 처음으로 업데이트");
 			bool isReady = false;
 
-			print("파티 정보 될 때까지 업데이트 시작");
 			while (!isReady)
 			{
-				print(1);
 				partyData =
 					await DB.GetReference($"parties/{CurrentPartyData.party_Id}").GetValueAsync();
-				print(2);
 				CurrentPartyData =
 					JsonConvert.DeserializeObject<PartyData>(partyData.GetRawJsonValue());
-				print($"Current party name: {CurrentPartyData.party_Name}");
-				print($"CurrentPartyData.party_ServerName: {CurrentPartyData.party_ServerName}");
-				print($"sceneName: {sceneName}");
 				if (CurrentPartyData.party_ServerName == sceneName) isReady = true;
 			}
 
-			print("파티 정보 업데이트 성공");
-
 			// 현재 파티 데이터의 룸 이름대로 이동
 			ServerManager.LeaveAndLoadScene(sceneName);
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	private async Task RemoveEmptyPartiesFromServer()
+	{
+		try
+		{
+			await UpdateUserList();
+			await UpdatePartyList();
+			List<string> partiesToRemove = new List<string>(); // 삭제할 파티 ID 목록
+
+			foreach (PartyData partyData in partyList)
+			{
+				bool allMembersOffline = true; // 모든 멤버가 오프라인인지 확인하는 플래그
+
+				foreach (UserData member in partyData.party_Members)
+				{
+					foreach (UserData userData in userList)
+					{
+						if (userData.user_Id == member.user_Id)
+						{
+							if (userData.user_IsOnline) // 한 명이라도 온라인이면 false
+							{
+								allMembersOffline = false;
+								break; // 더 이상 확인할 필요 없음
+							}
+						}
+					}
+				}
+
+				if (allMembersOffline)
+				{
+					partiesToRemove.Add(partyData.party_Id); // 오프라인인 파티 ID 추가
+				}
+			}
+
+			// 삭제할 파티 데이터 삭제
+			foreach (string partyId in partiesToRemove)
+			{
+				await DB.GetReference($"parties/{partyId}").RemoveValueAsync();
+				Debug.Log($"Removed empty party: {partyId}");
+			}
+		}
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	private async Task UpdatePartyList()
+	{
+		try
+		{
+			DataSnapshot partiesSnapshot = await DB.GetReference("parties").GetValueAsync();
+			partyDictionary =
+				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
+					partiesSnapshot.GetRawJsonValue());
+
+			if (partyDictionary == null)
+			{
+				print("파티가 존재하지 않습니다.");
+			}
+			else
+			{
+				partyList = new List<PartyData>(partyDictionary.Values);
+			}
 		}
 		catch (FirebaseException e)
 		{
