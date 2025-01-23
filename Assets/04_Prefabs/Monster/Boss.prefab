@@ -1224,6 +1224,7 @@ GameObject:
   - component: {fileID: 7921146964834960163}
   - component: {fileID: 5010723860092720214}
   - component: {fileID: -5165021513286986142}
+  - component: {fileID: 3219272887976752092}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -1309,7 +1310,7 @@ MonoBehaviour:
   - {fileID: 0}
   hungerEffect: {fileID: 3674404426118497726}
   slashEffect: {fileID: 8820790971846461015}
-  dropItems: []
+  bossDropItems: []
   CenterPoint: {x: 0, y: 0, z: 0}
   Animator: {fileID: 0}
 --- !u!195 &4245762024720595860
@@ -1416,6 +1417,27 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!135 &3219272887976752092
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5863903103509005198}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.37
+  m_Center: {x: 0, y: 1.12, z: 0.57}
 --- !u!1 &5863903103509005200
 GameObject:
   m_ObjectHideFlags: 0

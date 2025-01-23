@@ -2207,6 +2207,7 @@ GameObject:
   - component: {fileID: 188908632835701132}
   - component: {fileID: 4997260369675370284}
   - component: {fileID: 7326730185658279600}
+  - component: {fileID: 5832445797188255153}
   m_Layer: 7
   m_Name: ThiefRat
   m_TagString: Untagged
@@ -2264,22 +2265,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13837d364d90c7c4580730b710035fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolPoint: {x: 0, y: 0, z: 0}
+  playerTransform: {fileID: 0}
   currentState: 0
+  dropItems:
+  - {fileID: 11400000, guid: 9323e3dd4c5d95c428335c0c7bd90913, type: 2}
+  - {fileID: 11400000, guid: 8289d521e9236da4d9764b9384419549, type: 2}
+  - {fileID: 11400000, guid: 9de6dc478e90014418478c7f087ad3d0, type: 2}
   _hp: 10
   _maxHp: 10
   _damage: 3
   _moveSpeed: 1
   _rotationSpeed: 1
   _attackSpeed: 1
-  _patrolPoint: {x: 1, y: 1, z: 1}
   _patrolRange: 3
   _detectionRange: 3
   _attackRange: 2
   _returnRange: 7
-  dropItems:
-  - {fileID: 11400000, guid: 9323e3dd4c5d95c428335c0c7bd90913, type: 2}
-  - {fileID: 11400000, guid: 8289d521e9236da4d9764b9384419549, type: 2}
-  - {fileID: 11400000, guid: 9de6dc478e90014418478c7f087ad3d0, type: 2}
 --- !u!195 &3775871987531294826
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2375,6 +2377,27 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!135 &5832445797188255153
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7237178871622730094}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &7237178871622730096
 GameObject:
   m_ObjectHideFlags: 0
