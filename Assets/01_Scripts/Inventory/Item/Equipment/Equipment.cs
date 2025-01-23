@@ -3,11 +3,9 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviourPunCallbacks
 {
-	private TestSY _testSY;
-
+	public GameObject[] equipments;
 	// Equipment Destroy 하기 위해 대입할 GameObject
 	private GameObject currentSword;
-	private GameObject currentShield;
 
 	// 임시 값들. 상황에 맞게 수정해야함.
 	private int rarity;
@@ -82,7 +80,6 @@ public class Equipment : MonoBehaviourPunCallbacks
 		{
 			FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = itemId;
 			FirebaseManager.Instance.UploadCurrentUserData("user_weapon_item_Id", itemId);
-			DestroyChildObject();
 			SetSwordClass(item);
 		}
 	}
@@ -97,50 +94,46 @@ public class Equipment : MonoBehaviourPunCallbacks
 		{
 			if (weapon.rank == 1) // 장비 랭크가 1인 경우
 			{
-				rarity = 1;
-				equipmentName = "PT_Longsword_01_a";
-				currentSword = ServerManager.PlayerEquip(rarity, equipmentName, equipmentParent);
+				equipments[0].SetActive(true);
+				equipments[1].SetActive(false);
+				equipments[2].SetActive(false);
+				equipments[3].SetActive(false);
+				equipments[4].SetActive(false);
 			}
 			else if (weapon.rank == 2)
 			{
-				rarity = 2;
-				equipmentName = "PT_Longsword_04_a";
-				currentSword = ServerManager.PlayerEquip(rarity, equipmentName, equipmentParent);
+				equipments[0].SetActive(false);
+				equipments[1].SetActive(true);
+				equipments[2].SetActive(false);
+				equipments[3].SetActive(false);
+				equipments[4].SetActive(false);
 			}
 			else if (weapon.rank == 3)
 			{
-				rarity = 3;
-				equipmentName = "PT_Longsword_03_a";
-				currentSword = ServerManager.PlayerEquip(rarity, equipmentName, equipmentParent);
+				equipments[0].SetActive(false);
+				equipments[1].SetActive(false);
+				equipments[2].SetActive(true);
+				equipments[3].SetActive(false);
+				equipments[4].SetActive(false);
 			}
 
 			else if (weapon.rank == 4)
 			{
-				rarity = 4;
-				equipmentName = "PT_Longsword_02_c";
-				currentSword = ServerManager.PlayerEquip(rarity, equipmentName, equipmentParent);
+				equipments[0].SetActive(false);
+				equipments[1].SetActive(false);
+				equipments[2].SetActive(false);
+				equipments[3].SetActive(true);
+				equipments[4].SetActive(false);
 			}
 
 			else if (weapon.rank == 5)
 			{
-				rarity = 5;
-				equipmentName = "PT_Longsword_01_c";
-				currentSword = ServerManager.PlayerEquip(rarity, equipmentName, equipmentParent);
+				equipments[0].SetActive(true);
+				equipments[1].SetActive(false);
+				equipments[2].SetActive(false);
+				equipments[3].SetActive(false);
+				equipments[4].SetActive(true);
 			}
-		}
-	}
-
-
-	private void DestroyChildObject()
-	{
-		GameObject playerPrefab =
-			GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}");
-		GameObject findSword = playerPrefab.transform.FindDeepChild("Sword").gameObject;
-
-
-		for (int i = 0; i < findSword.transform.childCount; i++)
-		{
-			Destroy(findSword.transform.GetChild(i).gameObject);
 		}
 	}
 }
