@@ -4,31 +4,35 @@ using UnityEngine;
 public class Equipment : MonoBehaviourPunCallbacks
 {
 	public GameObject[] equipments;
-	// Equipment Destroy 하기 위해 대입할 GameObject
-	private GameObject currentSword;
-
-	// 임시 값들. 상황에 맞게 수정해야함.
-	private int rarity;
-	private string equipmentName;
-
-	// equipmentParent : rightHand, leftHand의 자식인 Shield 등을 Find해서 대입하는 로직 필요
-	private Transform equipmentParent;
 
 	private void Start()
 	{
 		if (photonView.IsMine)
 		{
 			int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
-			Debug.Log($"Start - Firebase에서 불러온 무기 ID: {savedWeaponId}");
 			if (savedWeaponId != 0)
 			{
 				ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
 				if (savedWeapon != null)
 				{
-					Debug.Log($"{savedWeapon.itemName}({savedWeapon.id}) 으로 장비 프리팹 설정 시도");
 					photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
 					Debug.Log($"{savedWeapon.itemName}으로 장비 장착함.");
 				}
+			}
+		}
+	}
+
+	public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+	{
+		// 포톤 네트워크 콜백 메서드
+		base.OnPlayerEnteredRoom(newPlayer);
+
+		if (photonView.IsMine)
+		{
+			int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+			if (currentWeaponId != 0)
+			{
+				photonView.RPC("NetworkSetEquipment", RpcTarget.All, currentWeaponId);
 			}
 		}
 	}
@@ -85,15 +89,12 @@ public class Equipment : MonoBehaviourPunCallbacks
 			FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = itemId;
 			FirebaseManager.Instance.UploadCurrentUserData("user_weapon_item_Id", itemId);
 		}
+		
 		SetSwordClass(item);
 	}
 
 	private void SetSwordClass(ItemBase item)
 	{
-		GameObject playerPrefab =
-			GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}");
-		equipmentParent = playerPrefab.transform.FindDeepChild("Sword");
-
 		if (item is WeaponItem weapon)
 		{
 			if (weapon.rank == 1) // 장비 랭크가 1인 경우
@@ -132,7 +133,7 @@ public class Equipment : MonoBehaviourPunCallbacks
 
 			else if (weapon.rank == 5)
 			{
-				equipments[0].SetActive(true);
+				equipments[0].SetActive(false);
 				equipments[1].SetActive(false);
 				equipments[2].SetActive(false);
 				equipments[3].SetActive(false);

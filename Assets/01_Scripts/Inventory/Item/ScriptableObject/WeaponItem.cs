@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 public class WeaponItem : ItemBase
 {
     public int rank; // 아이템 등급
-    public float Damage; // 공격력
+    public float damage; // 공격력
 
     private void Awake()
     {

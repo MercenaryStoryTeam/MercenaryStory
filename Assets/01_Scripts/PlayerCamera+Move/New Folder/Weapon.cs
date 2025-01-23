@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -31,6 +32,22 @@ public class Weapon : MonoBehaviour
                 Debug.LogError("Player 참조x -> 부모 객체 확인 및 태크 확인");
             }
         }
+    }
+
+    private void Update()
+    {
+        SetWeaponDamage();
+    }
+
+    private void SetWeaponDamage()
+    {
+        int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+        ItemBase currentWeapon = InventoryManger.Instance.allItems.Find(x => x.id == currentWeaponId);
+        if (currentWeapon is WeaponItem weapon)
+        {
+            damage = weapon.damage;
+        }
+
     }
 
     // 콜라이더 충돌 시 호출

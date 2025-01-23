@@ -25,4 +25,4 @@ MonoBehaviour:
   equipPrefab: {fileID: 8121962011013668580, guid: b7564ad1efbf58d4985505c89f5c43ee, type: 3}
   dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
   rank: 4
-  Damage: 8
+  damage: 8
