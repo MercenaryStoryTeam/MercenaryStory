@@ -148,7 +148,7 @@ public class UIManager : SingletonManager<UIManager>
 
 	#region Party Management
 
-	public void OpenPartyPanel()
+	public void OnPartyButtonClick()
 	{
 		// 파티 업데이트 
 		FirebaseManager.Instance.UpdatePartyAndList();
@@ -161,6 +161,7 @@ public class UIManager : SingletonManager<UIManager>
 		else
 		{
 			partyPanel.gameObject.SetActive(false);
+			partyMemberPanel.gameObject.SetActive(false);
 			partyMemberPanel.gameObject.SetActive(true);
 		}
 

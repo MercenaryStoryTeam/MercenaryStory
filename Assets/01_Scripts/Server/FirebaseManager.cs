@@ -270,7 +270,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				UIManager.Instance.popUp.PopUpClose();
 				// Update party list
 				UIManager.Instance.ClosePartyCreatePanel();
-				UIManager.Instance.OpenPartyPanel();
+				UIManager.Instance.OnPartyButtonClick();
 			});
 		}
 		catch (FirebaseException e)
@@ -352,7 +352,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 							UIManager.Instance.popUp.PopUpOpen(
 								$"{CurrentPartyData.party_Name}\n파티에 가입하였습니다.",
 								() => UIManager.Instance.popUp.PopUpClose());
-							UIManager.Instance.OpenPartyPanel();
+							UIManager.Instance.OnPartyButtonClick();
 						}
 						else
 						{
@@ -394,7 +394,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				UIManager.Instance.popUp.PopUpOpen("파티가 이미 삭제되었습니다.", () =>
 				{
 					UIManager.Instance.popUp.PopUpClose();
-					UIManager.Instance.OpenPartyPanel();
+					UIManager.Instance.OnPartyButtonClick();
 				});
 				CurrentUserData.user_CurrentParty = "";
 				return;
@@ -446,7 +446,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			UIManager.Instance.popUp.PopUpOpen("파티에서 나갔습니다.", () =>
 			{
 				UIManager.Instance.popUp.PopUpClose();
-				UIManager.Instance.OpenPartyPanel();
+				UIManager.Instance.OnPartyButtonClick();
 			});
 		}
 		catch (FirebaseException e)
