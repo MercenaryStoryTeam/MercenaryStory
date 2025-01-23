@@ -166,7 +166,7 @@ public class VirtualCameraController : MonoBehaviour
     {
         if (!followTarget || !lookAtTarget)
         {
-            GameObject player = GameObject.FindWithTag("Player");
+            GameObject player = StageManager.Instance.currentPlayerFsm.gameObject;
             if (player)
             {
                 followTarget = player.transform;
