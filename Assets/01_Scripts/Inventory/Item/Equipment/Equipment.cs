@@ -1,14 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
-using UnityEditor;
 using UnityEngine;
 
 public class Equipment : MonoBehaviourPunCallbacks
 {
+    private TestSY _testSY;
+
     // Equipment Destroy 하기 위해 대입할 GameObject
     private GameObject currentSword;
+    private GameObject currentShield;
 
     // 임시 값들. 상황에 맞게 수정해야함.
     private int rarity;
@@ -19,7 +18,7 @@ public class Equipment : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        if (photonView.IsMine)  
+        if (photonView.IsMine)  // 내 캐릭터인 경우에만
         {
             int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
             if (savedWeaponId != 0)
@@ -56,7 +55,7 @@ public class Equipment : MonoBehaviourPunCallbacks
             photonView.RPC("NetworkSetEquipment", RpcTarget.All, slot.item.id);
         }
     }
-    
+
     [PunRPC]
     private void NetworkSetEquipment(int itemId)
     {
