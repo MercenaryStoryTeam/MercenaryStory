@@ -2,28 +2,30 @@ using UnityEngine;
 
 public class MonsterTest : MonoBehaviour
 {
-    [Header("몬스터 공격력")]
+    [Header("몬스터 공격력")] // 
     public float damage = 10f;
 
-    [Header("몬스터 현재 체력")]
+    [Header("몬스터 현재 체력")] //
     public float currentHp;
 
-    [Header("몬스터 최대 체력")]
+    [Header("몬스터 최대 체력")] //
     public float maxHp = 100f;
 
-    [Header("플레이어 레이어")]
+    [Header("플레이어 레이어")] //
     public LayerMask playerLayer;
 
-    [Header("몬스터 HP 바")]
+    [Header("몬스터 HP 바")] //
     public MonsterHpBar monsterHpBar;
 
-    [Header("카메라 컨트롤러 참조")]
+    // 카메라 흔들기용
+    [Header("카메라 컨트롤러 참조")] //
     public VirtualCameraController cameraController;
 
+    // 히트스톱 스크립트 참조, 히트스톱용
     [Header("히트스톱 참조")]
-    public HitStop hitStop; // 히트스톱 스크립트 참조
+    public HitStop hitStop; 
 
-    [Header("보상 골드")]
+    [Header("보상 골드")] //
     public float goldReward = 100f;
 
     private void Awake()

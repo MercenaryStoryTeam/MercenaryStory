@@ -16,7 +16,7 @@ public class Murloc : Monster
     public float _detectionRange = 3;
     public float _attackRange = 2;
     public float _returnRange = 10;
-    
+
     public void Awake()
     {
         Hp = _hp;

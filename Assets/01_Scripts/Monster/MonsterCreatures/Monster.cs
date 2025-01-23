@@ -32,6 +32,16 @@ public abstract class Monster : MonoBehaviourPun
     private Animator animator;
 
     public List<ItemBase> dropItems;
+
+    // 데미지 받을 때마다 카메라 흔들기
+    public VirtualCameraController cameraController;
+
+    [Header("보상 골드")]
+    public float goldReward = 100f;
+
+    [Header("몬스터 HP 바")]
+    public MonsterHpBar monsterHpBar;
+
     #endregion
 
     #region 프로퍼티
@@ -61,7 +71,39 @@ public abstract class Monster : MonoBehaviourPun
         playerLayer = LayerMask.GetMask("Player");
         stateMachine = new MonsterStateMachine(this);
         stateMachine.ChangeState(MonsterStateType.Patrol);
+        cameraController = FindObjectOfType<VirtualCameraController>();
     }
+
+    // 플레이어 레이어 찾기
+    private bool IsPlayerLayer(int layer)
+    {
+        return (playerLayer.value & (1 << layer)) != 0;
+    }
+
+    // 객체 간 충돌에 따른 데미지 처리
+    private void OnCollisionEnter(Collision collision)
+    {
+        // 충돌한 객체가 플레이어라면 실행
+        if (IsPlayerLayer(collision.gameObject.layer))
+        {
+            // 충돌한 플레이어 오브젝트 찾기
+            Player player = collision.gameObject.GetComponent<Player>();
+
+            // 있다면 실행
+            if (player != null)
+            {
+                Debug.Log("플레이어와 충돌 발생. 데미지 전달 시작.");
+
+                // 데미지 전달
+                player.TakeDamage(damage);
+            }
+            else
+            {
+                Debug.LogWarning("충돌한 객체에 Player 컴포넌트가 없습니다.");
+            }
+        }
+    }
+
     protected virtual void Update()
     {
         currentState = stateMachine.currentStateType;
@@ -98,13 +140,31 @@ public abstract class Monster : MonoBehaviourPun
 
     public void TakeDamage(int damage)
     {
+        // 현재 체력이 0이하라면 더 이상 데미지 감소 처리 x
+        if (Hp <= 0) return;
+
+        // 사운드 클립 3개중에 랜덤 재생 
+        string[] soundClips = { "monster_potbellied_damage_4", "monster_potbellied_damage_7", "monster_potbellied_damage_13", "monster_potbellied_damage_15" };
+        string randomClip = soundClips[Random.Range(0, soundClips.Length)];
+        SoundManager.Instance.PlaySFX(randomClip, gameObject);
+
         stateMachine.ChangeState(MonsterStateType.GetHit);
+  
         Hp -= damage;
+
+        // 현재 체력 범위 제한
+        Hp = Mathf.Clamp(Hp, 0, maxHp);
+        Debug.Log($"Monster HP: {Hp}/{maxHp} (받은 Damage: {damage})");
+
         if (Hp <= 0)
         {
             stateMachine.ChangeState(MonsterStateType.Die);
             DroppedLightLine(TryDropItem(dropItems));
         }
+
+        // 카메라 흔들기
+        cameraController?.ShakeCamera(duration: cameraController.sakeDuration);
+
     }
 
     private ItemBase TryDropItem(List<ItemBase> items)

@@ -39,7 +39,6 @@ public class PlayerInputManager : MonoBehaviourPun
             // VirtualJoystick 스크립트 자동 참조 -> 씬 전체에서 찾음
             if (virtualJoystick == null)
             {
-                // wj
                 virtualJoystick = FindObjectOfType<VirtualJoystick>();
 
                 if (virtualJoystick == null)
