@@ -58,7 +58,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 			usersRef = DB.GetReference($"users/{result.User.UserId}");
 			UserData userData = new UserData(result.User.UserId, email, user_Name);
-			userData.user_Inventory.Add(InventoryManger.Instance.SetBasicItem(InventoryManger.Instance.basicEquipWeapon));
+			userData.user_Inventory.Add(
+				InventoryManger.Instance.SetBasicItem(InventoryManger.Instance.basicEquipWeapon));
 
 			string userDataJson = JsonConvert.SerializeObject(userData);
 			await usersRef.SetRawJsonValueAsync(userDataJson);
@@ -133,8 +134,10 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			}
 
 			CurrentUserData = userData;
+			CurrentUserData.UpdateUserData(currentParty: "");
+			UploadCurrentUserData("user_CurrentParty", "");
 
-			InventoryManger.Instance.LoadInventoryFromDatabase(); 
+			InventoryManger.Instance.LoadInventoryFromDatabase();
 
 			UIManager.Instance.popUp.PopUpClose();
 			ServerManager.ConnectLobby();
