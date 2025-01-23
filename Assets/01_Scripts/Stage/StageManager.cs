@@ -13,7 +13,7 @@ public class StageManager : SingletonManager<StageManager>
 
 	private void Start()
 	{
-		PlayStageBGM();
+		// PlayStageBGM();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
 		// UIManager.Instance.InGamePannel.gameObject.SetActive(true);
