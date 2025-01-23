@@ -164,6 +164,8 @@ public class SkillUpgradeUI : MonoBehaviour
     // 특정 스킬을 선택하는 메서드
     private void SelectSkill(SkillType skillType)
     {
+        SoundManager.Instance.PlaySFX("Fantasy Click 2", gameObject);
+
         // 선택된 스킬 찾기 및 설정
         selectedSkill = skillFsm.GetSkill(skillType);
         if (selectedSkill == null)
@@ -209,6 +211,9 @@ public class SkillUpgradeUI : MonoBehaviour
             if (success)
             {
                 Debug.Log($"[SkillUpgradeUI] {selectedSkill.skillType} 스킬을 업그레이드했습니다. 현재 레벨: {selectedSkill.Level}");
+
+                // 레벨업 사운드 재생
+                SoundManager.Instance.PlaySFX("RankUP", gameObject);
 
                 // UI 요소 업데이트
                 UpdateSelectedSkillLevelText();
@@ -373,6 +378,8 @@ public class SkillUpgradeUI : MonoBehaviour
     {
         if (skillPanel != null)
             skillPanel.SetActive(false);
+
+        SoundManager.Instance.PlaySFX("sound_ui_close", gameObject);
     }
 
     // Skill Upgrade UI 패널을 여는 메서드
@@ -380,6 +387,8 @@ public class SkillUpgradeUI : MonoBehaviour
     {
         if (skillPanel != null)
             skillPanel.SetActive(true);
+
+        SoundManager.Instance.PlaySFX("sound_ui_entry", gameObject);
     }
 
     // Skill Upgrade UI 패널의 활성화 상태를 토글하는 메서드

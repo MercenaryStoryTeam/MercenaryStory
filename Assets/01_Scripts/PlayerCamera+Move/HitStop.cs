@@ -4,8 +4,8 @@ using UnityEngine;
 public class HitStop : MonoBehaviour
 {
     [Header("정지 상태 지속 시간")]
-    [Tooltip("0.15 추천")]
-    public float duration = 0.15f;
+    [Tooltip("0.03 추천")]
+    public float duration = 0.03f;
 
     // 히트스톱 상태 확인
     private bool isHitStopping = false;

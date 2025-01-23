@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
-// 스킬 유형 (추가 가능)
 public enum SkillType
 {
     Rush,
@@ -68,7 +68,7 @@ public class Skill
     public float SpeedBoost = 0f;
 
     [Header("Rush 스킬만 해당 (지속 시간)")]
-    public float Duration = 0f;
+    public float Duration = 0.5f; // 기본값을 0.5초로 설정
 
     [Header("스킬 설명")]
     [TextArea]
@@ -110,7 +110,7 @@ public class Skill
 
     // SkillFsm 참조
     [System.NonSerialized]
-    private SkillFsm skillFsm;
+    public SkillFsm skillFsm;
 
     // SkillFsm 설정 
     public void SetSkillFsm(SkillFsm fsm)
@@ -185,8 +185,6 @@ public class Skill
     }
 }
 
-
-// Skill FSM을 관리하는 클래스
 [RequireComponent(typeof(Animator))]
 public class SkillFsm : MonoBehaviour
 {
@@ -203,6 +201,12 @@ public class SkillFsm : MonoBehaviour
     [Header("디버그 설정 (출력 유/무)")]
     public bool enableDebugLogs = true;
 
+    // Rush 스킬 활성화 상태를 나타내는 프로퍼티
+    public bool IsRushActive { get; private set; } = false;
+
+    // 스킬 트리거 요청 이벤트
+    public event Action<SkillType> OnSkillTriggerRequested;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -216,6 +220,21 @@ public class SkillFsm : MonoBehaviour
                 enabled = false;
                 return;
             }
+        }
+
+        // PlayerFsm 참조 설정
+        PlayerFsm playerFsm = player.GetComponent<PlayerFsm>();
+        if (playerFsm == null)
+        {
+            LogError("[SkillFsm] PlayerFsm 스크립트를 Player 오브젝트에서 찾을 수 없습니다.");
+            enabled = false;
+            return;
+        }
+
+        // SkillFsm 참조 설정
+        foreach (var skill in Skills)
+        {
+            skill.SetSkillFsm(this);
         }
 
         InitializeSkillEffects();
@@ -296,44 +315,31 @@ public class SkillFsm : MonoBehaviour
     // 각 스킬에 대한 트리거
     private void TriggerRushSkill()
     {
-        TriggerSkill(SkillType.Rush);
+        ExternalTriggerSkill(SkillType.Rush);
     }
 
     private void TriggerParrySkill()
     {
-        TriggerSkill(SkillType.Parry);
+        ExternalTriggerSkill(SkillType.Parry);
     }
 
     private void TriggerSkill1()
     {
-        TriggerSkill(SkillType.Skill1);
+        ExternalTriggerSkill(SkillType.Skill1);
     }
 
     private void TriggerSkill2()
     {
-        TriggerSkill(SkillType.Skill2);
+        ExternalTriggerSkill(SkillType.Skill2);
     }
 
-    // 코드 내에서 반복적으로 사용되는 로그 출력을 간소화
-    public void Log(string message)
+    // 스킬 사용을 외부에서 요청할 수 있도록 하는 메서드
+    public void ExternalTriggerSkill(SkillType skillType)
     {
-        if (enableDebugLogs)
-            Debug.Log(message);
+        OnSkillTriggerRequested?.Invoke(skillType);
     }
 
-    public void LogWarning(string message)
-    {
-        if (enableDebugLogs)
-            Debug.LogWarning(message);
-    }
-
-    public void LogError(string message)
-    {
-        if (enableDebugLogs)
-            Debug.LogError(message);
-    }
-
-    // 특정 스킬의 트리거를 선택
+    // FSMManager에서 호출하는 실제 스킬 트리거 메서드
     public void TriggerSkill(SkillType skillType)
     {
         if (animator == null)
@@ -359,6 +365,27 @@ public class SkillFsm : MonoBehaviour
         animator.SetTrigger(skill.TriggerName);
         Log($"[SkillFsm] {skill.Name} 스킬이 트리거되었습니다.");
 
+        // Rush 스킬이면 소리 재생 =============================================================================================================***** 스킬 소리 재생 지점
+        if (skillType == SkillType.Rush)
+        {
+            SoundManager.Instance.PlaySFX("Dash", gameObject);
+        }
+
+        if (skillType == SkillType.Parry)
+        {
+            SoundManager.Instance.PlaySFX("rush_skill_sound", gameObject);
+        }
+
+        if (skillType == SkillType.Skill1)
+        {
+            SoundManager.Instance.PlaySFX("rush_skill_sound", gameObject);
+        }
+
+        if (skillType == SkillType.Skill2)
+        {
+            StartCoroutine(PlayDelayedSound("sound_player_Twohandskill4", 0.6f));
+        }
+
         // 레벨에 따른 파티클 이펙트 활성화
         SkillEffect currentSkillEffect = skill.GetCurrentSkillEffect();
         if (currentSkillEffect != null && currentSkillEffect.ParticleEffect != null)
@@ -371,17 +398,43 @@ public class SkillFsm : MonoBehaviour
             LogWarning($"[SkillFsm] {skill.Name} 스킬의 파티클 이펙트가 설정되지 않았습니다.");
         }
 
-        // Rush 스킬이면 이동 속도 증가
+        // Rush 스킬이면 이동 속도 증가 및 Rush 활성화 상태 설정
         if (skillType == SkillType.Rush)
         {
+            IsRushActive = true; // Rush 활성화
+            Log("Rush 스킬이 활성화되었습니다.");
+
+            // 플레이어의 무적 상태를 스킬의 지속 시간과 동일하게 설정
+            player.SetInvincible(true, skill.Duration);
+
+            // 이동 속도 증가 적용
             ApplySpeedBoost(skill.SpeedBoost, skill.Duration);
+
+            // Rush 스킬의 지속 시간이 끝난 후 Rush 활성화 상태 해제
+            StartCoroutine(RushCooldownCoroutine(skill.Duration));
         }
 
         // 쿨다운 시작
         StartCoroutine(CooldownCoroutine(skill));
     }
 
-    // 파티클 이펙트를 활성화하
+    // 지연된 사운드 재생 메서드
+    private IEnumerator PlayDelayedSound(string soundName, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SoundManager.Instance.PlaySFX(soundName, gameObject);
+    }
+
+    // Rush 스킬의 지속 시간 동안 Rush 활성화 상태를 유지하는 코루틴
+    private IEnumerator RushCooldownCoroutine(float duration)
+    {
+        Log($"Rush 스킬 지속 시간 시작: {duration}초");
+        yield return new WaitForSeconds(duration);
+        IsRushActive = false;
+        Log("Rush 스킬의 지속 시간이 끝나서 Rush 활성화 상태가 해제되었습니다.");
+    }
+
+    // 파티클 이펙트를 활성화
     private void ActivateSkillParticle(SkillEffect skillEffect, Skill skill)
     {
         if (skillEffect.ParticleEffect == null)
@@ -510,17 +563,23 @@ public class SkillFsm : MonoBehaviour
         }
     }
 
-    // Animator를 설정
-    public void SetAnimator(Animator newAnimator)
+    // 코드 내에서 반복적으로 사용되는 로그 출력을 간소화
+    public void Log(string message)
     {
-        if (newAnimator == null)
-        {
-            LogError("Animator가 null입니다. 설정할 수 없습니다.");
-            return;
-        }
+        if (enableDebugLogs)
+            Debug.Log(message);
+    }
 
-        animator = newAnimator;
-        Log("[SkillFsm] 새로운 Animator가 설정되었습니다.");
+    public void LogWarning(string message)
+    {
+        if (enableDebugLogs)
+            Debug.LogWarning(message);
+    }
+
+    public void LogError(string message)
+    {
+        if (enableDebugLogs)
+            Debug.LogError(message);
     }
 
     // 특정 SkillType에 해당하는 Skill 객체 반환

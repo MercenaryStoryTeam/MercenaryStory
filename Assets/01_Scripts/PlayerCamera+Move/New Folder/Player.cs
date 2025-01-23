@@ -1,195 +1,211 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-	[Header("현재 체력")] // UserData 공유
-	public float currentHp = 0f;
+    [Header("현재 체력")] // UserData 공유
+    public float currentHp = 100f;
 
-	[Header("최대 체력")] // UserData 공유
-	public float maxHp = 100;
+    [Header("최대 체력")] // UserData 공유
+    public float maxHp = 100;
 
-	// Rush 스킬 사용시 빼고는 고정
-	[Header("이동 속도")] public float moveSpeed = 5f;
+    [Header("이동 속도")] public float moveSpeed = 5f;
 
-	// 고정
-	[Header("흡혈 비율")] public float suckBlood = 3f;
+    [Header("흡혈 비율")] public float suckBlood = 3f;
 
-	// 용도: 스킬 업그레이드
-	[Header("골드")] // UserData 공유
-	public float gold = 0f;
+    [Header("골드")] // UserData 공유
+    public float gold = 0f;
 
-	// 용도가 불분명
-	// [Header("경험치")]
-	// public float exp = 0f;
+    [HideInInspector] public float originalMoveSpeed;
 
-	[Header("플레이어 사망시 전환할 씬 이름")] public string nextSceneName;
+    [HideInInspector]
+    public List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems =
+        new List<(GameObject droppedLightLine, ItemBase droppedItem)>();
 
-	[Header("씬 로드 지연시간")] public int loadSceneDelay = 1;
+    // 골드 변경 이벤트
+    public delegate void GoldChanged(float newGold);
 
-	// 이동 속도 슬로우 비율 할당
-	[HideInInspector] public float originalMoveSpeed;
-	
-	[HideInInspector] public List<(GameObject droppedLightLine, ItemBase droppedItem)> droppedItems =
-		new List<(GameObject droppedLightLine, ItemBase droppedItem)>();
+    public event GoldChanged OnGoldChanged;
 
-	// 골드 변경 이벤트
-	public delegate void GoldChanged(float newGold);
+    // 무적 상태를 관리하기 위한 변수
+    private bool isInvincible = false;
+    private Coroutine invincibilityCoroutine = null;
 
-	public event GoldChanged OnGoldChanged;
+    // SkillFsm 참조
+    private SkillFsm skillFsm;
 
-	private void Start()
-	{
-		// 원래 이동 속도 저장
-		originalMoveSpeed = moveSpeed;
+    private void Start()
+    {
+        // 원래 이동 속도 저장
+        originalMoveSpeed = moveSpeed;
 
-		// FirebaseManager UserData에서 현재 체력 가져오기
-		currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
-	}
+        // FirebaseManager UserData에서 현재 체력 가져오기 (현재 주석 처리됨)
+        // currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
 
-	// 흡혈 처리
-	public void SuckBlood()
-	{
-		if (currentHp >= maxHp) return;
+        // SkillFsm 컴포넌트 가져오기
+        skillFsm = GetComponent<SkillFsm>();
+        if (skillFsm == null)
+        {
+            Debug.LogError("SkillFsm 컴포넌트를 찾을 수 없습니다.");
+        }
+    }
 
-		float suckBloodPercentage = suckBlood / 100f;
-		float healAmount = maxHp * suckBloodPercentage;
+    // 흡혈 처리
+    public void SuckBlood()
+    {
+        if (currentHp >= maxHp) return;
 
-		currentHp += healAmount;
-		currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+        float suckBloodPercentage = suckBlood / 100f;
+        float healAmount = maxHp * suckBloodPercentage;
 
-		Debug.Log($"흡혈 회복량: {healAmount}/현재 체력: {currentHp}/{maxHp}");
-	}
+        currentHp += healAmount;
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
-	// 데미지 처리
-	public void TakeDamage(float damage)
-	{
-		if (currentHp <= 0) return; // 이미 0 이하라면 사망 처리된 상태이므로 무시
+        Debug.Log($"흡혈 회복량: {healAmount}/현재 체력: {currentHp}/{maxHp}");
+    }
 
-		currentHp -= damage;
-		currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+    // 데미지 처리
+    public void TakeDamage(float damage)
+    {
+        // 사운드 클립 3개중에 랜덤 재생 
+        string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
+        string randomClip = soundClips[Random.Range(0, soundClips.Length)];
+        SoundManager.Instance.PlaySFX(randomClip, gameObject);
 
-		Debug.Log($"플레이어 체력: {currentHp}/{maxHp} (받은 데미지: {damage})");
+        if (isInvincible)
+        {
+            Debug.Log("무적 상태이므로 데미지를 받지 않습니다.");
+            return;
+        }
 
-		// 체력이 0 이하라면 사망 처리
-		if (currentHp <= 0)
-		{
-			Die();
-		}
-		else
-		{
-			// 체력이 남아 있다면 PlayerFsm 실행
-			PlayerFsm playerFsm = GetComponent<PlayerFsm>();
-			if (playerFsm != null)
-			{
-				// PlayerFsm의 TakeDamage() -> Hit 상태 전환
-				playerFsm.TakeDamage();
-			}
-		}
-	}
+        if (currentHp <= 0) return; // 이미 사망 상태
 
-	private void Die()
-	{
-		// 사운드 재생 
-		SoundManager.Instance.PlaySFX("monster_potbellied_battle_1",gameObject);
+        currentHp -= damage;
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
-		Debug.Log("Player Die");
+        Debug.Log($"플레이어 체력: {currentHp}/{maxHp} (받은 데미지: {damage})");
 
-		// PlayerFsm 실행
-		PlayerFsm playerFsm = GetComponent<PlayerFsm>();
-		if (playerFsm != null)
-		{
-			// Die 상태 애니 구현
-			playerFsm.Die();
-		}
-		else
-		{
-			Debug.LogWarning("PlayerFsm 스크립트를 찾을 수 없습니다.");
-		}
+        // 체력이 0 이하라면 사망 처리
+        if (currentHp <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            // 체력이 남아 있다면 PlayerFsm 실행
+            PlayerFsm playerFsm = GetComponent<PlayerFsm>();
+            if (playerFsm != null)
+            {
+                playerFsm.TakeDamage();
+            }
+        }
+    }
 
-		// 체력을 최대값으로 복원
-		currentHp = maxHp;
+    // 무적 상태를 설정하는 메서드
+    public void SetInvincible(bool invincible, float duration = 0f)
+    {
+        if (invincible)
+        {
+            if (!isInvincible)
+            {
+                invincibilityCoroutine = StartCoroutine(InvincibilityCoroutine(duration));
+            }
+        }
+    }
 
-		// 일정 시간 이후 다음씬 로드
-		Invoke("LoadNextScene", loadSceneDelay);
-	}
+    // 무적 상태를 처리하는 코루틴
+    private IEnumerator InvincibilityCoroutine(float duration)
+    {
+        isInvincible = true;
+        Debug.Log($"무적 상태 시작: {duration}초 동안 무적입니다.");
 
-	// 다음 씬으로 전환
-	private void LoadNextScene()
-	{
-		if (!string.IsNullOrEmpty(nextSceneName))
-		{
-			SceneManager.LoadSceneAsync(nextSceneName);
-		}
-		else
-		{
-			Debug.LogError("씬 이름을 설정하세요.");
-		}
-	}
+        yield return new WaitForSeconds(duration);
 
-	// 드랍된 아이템 상호작용 하는 메서드
-	public void DropItemInteraction()
-	{
-		if (droppedItems.Count > 0)
-		{
-			for (int i = droppedItems.Count - 1; i >= 0;  i--)
-			{
-				if (droppedItems[i].droppedItem == null || droppedItems[i].droppedLightLine == null)
-				{
-					droppedItems.RemoveAt(i);
-					continue;
-				}
+        isInvincible = false;
+        invincibilityCoroutine = null;
+        Debug.Log("무적 상태 종료.");
+    }
 
-				if (Vector3.Distance(transform.position, droppedItems[i].droppedLightLine.transform.position) <
-				    3f)
-				{
-					if (Input.GetKeyDown(KeyCode.E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
-					{
-						if (droppedItems[i].droppedItem != null && droppedItems[i].droppedLightLine != null)
-						{
-							bool isDropped = InventoryManger.Instance.UpdateSlotData();
-							if (isDropped)
-							{
-								InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
-								Destroy(droppedItems[i].droppedLightLine);
-								droppedItems.RemoveAt(i);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	// 골드를 소모
-	public bool SpendGold(float amount)
-	{
-		if (gold >= amount)
-		{
-			gold -= amount;
-			Debug.Log($"[Player] 골드 {amount}을 사용했습니다. 남은 골드: {gold}");
+    private void Die()
+    {
+        Debug.Log("Player Die");
 
-			// 골드 변경 이벤트 호출
-			OnGoldChanged?.Invoke(gold);
-			return true;
-		}
-		else
-		{
-			Debug.LogWarning($"[Player] 골드가 부족합니다. 필요: {amount}, 현재: {gold}");
-			return false;
-		}
-	}
+        // PlayerFsm 실행
+        PlayerFsm playerFsm = GetComponent<PlayerFsm>();
+        if (playerFsm != null)
+        {
+            // Die 상태 애니 구현
+            playerFsm.Die();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerFsm 스크립트를 찾을 수 없습니다.");
+        }
 
-	// 골드를 추가
-	public void AddGold(float amount)
-	{
-		gold += amount;
-		Debug.Log($"[Player] 골드 {amount}을 획득했습니다. 현재 골드: {gold}");
+        // 체력을 최대값으로 복원
+        currentHp = maxHp;
+    }
 
-		// 골드 변경 이벤트 호출
-		OnGoldChanged?.Invoke(gold);
-	}
+    // 드랍된 아이템 상호작용 하는 메서드
+    public void DropItemInteraction()
+    {
+        if (droppedItems.Count > 0)
+        {
+            for (int i = droppedItems.Count - 1; i >= 0; i--)
+            {
+                if (droppedItems[i].droppedItem == null || droppedItems[i].droppedLightLine == null)
+                {
+                    droppedItems.RemoveAt(i);
+                    continue;
+                }
+
+                if (Vector3.Distance(transform.position, droppedItems[i].droppedLightLine.transform.position) < 3f)
+                {
+                    if (Input.GetKeyDown(KeyCode.E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
+                    {
+                        if (droppedItems[i].droppedItem != null && droppedItems[i].droppedLightLine != null)
+                        {
+                            bool isDropped = InventoryManger.Instance.UpdateSlotData();
+                            if (isDropped)
+                            {
+                                InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
+                                Destroy(droppedItems[i].droppedLightLine);
+                                droppedItems.RemoveAt(i);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // 골드를 소모
+    public bool SpendGold(float amount)
+    {
+        if (gold >= amount)
+        {
+            gold -= amount;
+            Debug.Log($"[Player] 골드 {amount}을 사용했습니다. 남은 골드: {gold}");
+
+            // 골드 변경 이벤트 호출
+            OnGoldChanged?.Invoke(gold);
+            return true;
+        }
+        else
+        {
+            Debug.LogWarning($"[Player] 골드가 부족합니다. 필요: {amount}, 현재: {gold}");
+            return false;
+        }
+    }
+
+    // 골드를 추가
+    public void AddGold(float amount)
+    {
+        gold += amount;
+        Debug.Log($"[Player] 골드 {amount}을 획득했습니다. 현재 골드: {gold}");
+
+        // 골드 변경 이벤트 호출
+        OnGoldChanged?.Invoke(gold);
+    }
 }
-
-//
