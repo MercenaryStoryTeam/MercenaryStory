@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : SingletonManager<UIManager>
 {
+	public GameObject currentPanel;
+	
 	public ItemInfoPanel itemInfo;
 	public InventoryPanel inventory;
 	public ShopPanel shop;
@@ -25,10 +28,11 @@ public class UIManager : SingletonManager<UIManager>
 	public DungeonPanel dungeonPanel;
 
 	//Option
-	public OptionPannel optionPanel;
+	public OptionPanel optionPanel;
+	[HideInInspector] public bool isOptionActive = false;
 	
 	//Skill UI
-	public GameObject InGamePannel;
+	[FormerlySerializedAs("InGamePanel")] public GameObject InGamePanel;
 
 	protected override void Awake()
 	{
@@ -53,6 +57,7 @@ public class UIManager : SingletonManager<UIManager>
 		{
 			isInventoryActive = true;
 			inventory.panel.SetActive(true);
+			currentPanel=inventory.panel;
 		}
 	}
 
@@ -61,10 +66,11 @@ public class UIManager : SingletonManager<UIManager>
 		isInventoryActive = false;
 		inventory.panel.SetActive(false);
 		CloseItemInfoPanel();
+		currentPanel = null;
 	}
 
 	#endregion
-
+	
 	#region Shop
 
 	public void OpenShopPanel()
@@ -73,6 +79,7 @@ public class UIManager : SingletonManager<UIManager>
 		{
 			isShopActive = true;
 			shop.shopPanel.SetActive(true);
+			currentPanel = shop.shopPanel;
 		}
 	}
 
@@ -81,6 +88,7 @@ public class UIManager : SingletonManager<UIManager>
 		isShopActive = false;
 		shop.RestoreOriginalState();
 		shop.shopPanel.SetActive(false);
+		currentPanel = null;
 	}
 
 	#endregion
@@ -91,12 +99,14 @@ public class UIManager : SingletonManager<UIManager>
 	{
 		isItemInfoActive = true;
 		itemInfo.itemInfoPanel.SetActive(true);
+		currentPanel = itemInfo.itemInfoPanel;
 	}
 
 	public void CloseItemInfoPanel()
 	{
 		isItemInfoActive = false;
 		itemInfo.itemInfoPanel.SetActive(false);
+		currentPanel = null;
 	}
 
 	public void SetItemInfoScreen(ItemBase item)
@@ -130,10 +140,30 @@ public class UIManager : SingletonManager<UIManager>
 	}
 
 	#endregion
+	
+	#region Option
+	public void OpenOptionPanel()
+	{
+		if (!IsAnyPanelOpen())
+		{
+			isOptionActive = true;
+			optionPanel.gameObject.SetActive(true);
+			currentPanel = optionPanel.gameObject;
+		}
+	}
 
+	public void CloseOptionPanel()
+	{
+		isOptionActive = false;
+		optionPanel.gameObject.SetActive(false);
+		currentPanel = null;
+	}
+
+	#endregion
+	
 	public bool IsAnyPanelOpen()
 	{
-		return isInventoryActive || isItemInfoActive || isShopActive;
+		return isInventoryActive || isItemInfoActive || isShopActive || isOptionActive;
 	}
 
 	#region Chat
@@ -142,6 +172,7 @@ public class UIManager : SingletonManager<UIManager>
 	{
 		chatPanel.gameObject.SetActive(true);
 		chatButton.gameObject.SetActive(false);
+		currentPanel = chatPanel.gameObject;
 	}
 
 	#endregion
