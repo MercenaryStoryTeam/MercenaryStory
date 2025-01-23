@@ -143,6 +143,24 @@ public class PlayerInputManager : MonoBehaviourPun
         {
             UIManager.Instance.OpenDungeonPanel();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (UIManager.Instance.currentPanel)
+            {
+                UIManager.Instance.currentPanel.SetActive(false);
+                UIManager.Instance.currentPanel = null;
+                UIManager.Instance.isInventoryActive = false;
+                UIManager.Instance.isShopActive = false;
+                UIManager.Instance.isOptionActive = false;
+                UIManager.Instance.isItemInfoActive = false;
+            }
+            else
+            {
+                UIManager.Instance.OpenOptionPanel();    
+            }
+            
+        }
     }
 
     // 모바일 입력 
