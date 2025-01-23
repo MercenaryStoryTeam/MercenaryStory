@@ -2,10 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 // 스킬 업그레이드 UI 관리
-public class SkillUpgradeUI : MonoBehaviour
+public class SkillUIManager : MonoBehaviour
 {
+    public PlayerFsm playerFsm;
     [Header("Skill FSM 스크립트")]
     public SkillFsm skillFsm;
 
@@ -13,63 +15,30 @@ public class SkillUpgradeUI : MonoBehaviour
     public GameObject skillPanel;
 
     // 버튼, 타입 리스트 추후에 묶어서 관리
-    [Header("스킬 선택 버튼")]
-    public List<Button> skillButtons;
-
-    [Header("스킬 유형")]
-    public List<SkillType> skillTypes;
-
-    [Header("업그레이드 버튼")]
-    public Button upgradeButton;
-
-    [Header("업그레이드 비용 표시 텍스트")]
-    public Text upgradeCostText;
-
-    [Header("스킬 이름 표시")]
-    public Text skillNameText;
-
-    [Header("스킬 설명 표시")]
-    public Text skillDescriptionText;
-
-    [Header("스킬 레벨 표시")]
-    public Text skillLevelText;
-
-    [Header("스킬 이미지 표시")]
-    public Image skillImage;
-
-    [Header("쿨타임 표시")]
-    public Text cooldownText;
-    
-    [Header("닫기 버튼")]
-    public Button exitButton;
-
-    [Header("열기 버튼")]
-    public Button openButton;
-
-    [Header("골드 표시 텍스트")]
-    public Text goldText;
-
+    [Header("스킬 선택 버튼")] public List<Button> skillButtons;
+    [Header("스킬 유형")] public List<SkillType> skillTypes;
+    [Header("업그레이드 버튼")] public Button upgradeButton;
+    [Header("업그레이드 비용 표시 텍스트")] public Text upgradeCostText;
+    [Header("스킬 이름 표시")] public Text skillNameText;
+    [Header("스킬 설명 표시")] public Text skillDescriptionText;
+    [Header("스킬 레벨 표시")] public Text skillLevelText;
+    [Header("스킬 이미지 표시")] public Image skillImage;
+    [Header("쿨타임 표시")] public Text cooldownText;
+    [Header("닫기 버튼")] public Button exitButton;
+    [Header("열기 버튼")] public Button openButton;
+    [Header("골드 표시 텍스트")] public Text goldText;
     // 기본 버튼 색상 저장
     private Dictionary<Button, Color> buttonDefaultColors = new Dictionary<Button, Color>();
-   
     // 선택된 버튼 색상
     private Color selectedButtonColor = Color.yellow;
-
     // 현재 선택된 스킬을 저장하는 변수
     private Skill selectedSkill;
-
     // Player 스크립트 참조
     private Player player;
 
     private void Start()
     {
-        // SkillFsm 참조가 설정되지 않았을 경우 에러 출력
-        if (skillFsm == null)
-        {
-            Debug.LogError("[SkillUpgradeUI] SkillFsm 참조가 설정되지 않았습니다.");
-            return;
-        }
-
+        skillFsm = playerFsm.GetComponent<SkillFsm>();
         // Player 인스턴스 찾기
         player = FindObjectOfType<Player>();
         if (player == null)
@@ -128,6 +97,7 @@ public class SkillUpgradeUI : MonoBehaviour
 
         // 골드 표시 업데이트 (현재 골드 값 전달)
         UpdateGoldDisplay(player.gold);
+
     }
 
     private void OnDestroy()
