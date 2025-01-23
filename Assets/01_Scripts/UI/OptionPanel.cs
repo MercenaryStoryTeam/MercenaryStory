@@ -2,14 +2,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OptionPannel : MonoBehaviour
+public class OptionPanel : MonoBehaviour
 {
-    [SerializeField] private Slider masterSlider;
-    [SerializeField] private TextMeshProUGUI masterText;
-    [SerializeField] private Slider bgmSlider;
-    [SerializeField] private TextMeshProUGUI bgmText;
-    [SerializeField] private Slider sfxSlider;
-    [SerializeField] private TextMeshProUGUI sfxText;
+    public Slider masterSlider;
+    public TextMeshProUGUI masterText;
+    public Slider bgmSlider;
+    public TextMeshProUGUI bgmText;
+    public Slider sfxSlider;
+    public TextMeshProUGUI sfxText;
+    public Button exitButton;
+    public Button returnToTownButton;
+    public Button gameQuitButton;
     
     private void Start()
     {
@@ -39,11 +42,44 @@ public class OptionPannel : MonoBehaviour
         sfxText.text = $"{(int)sfxValue}%";
         SoundManager.Instance.SetSFXVolume(sfxValue / 100f);
         
+        if (StageManager.Instance.currentStage == 0)
+        {
+            gameQuitButton.gameObject.SetActive(true);
+            returnToTownButton.gameObject.SetActive(false);
+        }
+        
+        else
+        {
+            
+            gameQuitButton.gameObject.SetActive(false);
+            returnToTownButton.gameObject.SetActive(true);
+            
+        }
+        
         masterSlider.onValueChanged.AddListener(OnMasterSliderChanged);
         bgmSlider.onValueChanged.AddListener(OnBGMSliderChanged);
         sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
+
+        gameQuitButton.onClick.AddListener(gameQuitButtonClick);
+        returnToTownButton.onClick.AddListener(returnToTownButtonClick);
+        exitButton.onClick.AddListener(exitButtonClick);
     }
-    
+
+    private void exitButtonClick()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void returnToTownButtonClick()
+    {
+        
+    }
+
+    private void gameQuitButtonClick()
+    {
+        Application.Quit();
+    }
+
     private void OnMasterSliderChanged(float value)
     {
         masterText.text = $"{(int)value}%";
