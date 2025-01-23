@@ -16,8 +16,6 @@ public class StageManager : SingletonManager<StageManager>
 	private void Start()
 	{
 		// PlayStageBGM();
-		UIManager.Instance.chatButton.gameObject.SetActive(true);
-		UIManager.Instance.partyButton.gameObject.SetActive(true);
 		UIManager.Instance.InGamePannel.gameObject.SetActive(true);
 	}
 
@@ -42,7 +40,7 @@ public class StageManager : SingletonManager<StageManager>
 	{
 		if (stageIndex < stageDatas.Length)
 		{
-			portalIsActive = true;
+			portalIsActive = false;
 			dieMonsterCount = 0;
 			StageClear = false;
 			PlayStageBGM();
