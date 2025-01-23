@@ -22,6 +22,21 @@ public class Equipment : MonoBehaviourPunCallbacks
 		}
 	}
 
+	public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+	{
+		// 포톤 네트워크 콜백 메서드
+		base.OnPlayerEnteredRoom(newPlayer);
+
+		if (photonView.IsMine)
+		{
+			int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+			if (currentWeaponId != 0)
+			{
+				photonView.RPC("NetworkSetEquipment", RpcTarget.All, currentWeaponId);
+			}
+		}
+	}
+
 	[PunRPC]
 	public void SetCurrentEquip(InventorySlot slot)
 	{
