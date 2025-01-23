@@ -16,7 +16,7 @@ public class StageManager : SingletonManager<StageManager>
 	private void Start()
 	{
 		// PlayStageBGM();
-		UIManager.Instance.InGamePannel.gameObject.SetActive(true);
+		UIManager.Instance.InGamePanel.gameObject.SetActive(true);
 	}
 
 	public void Update()
