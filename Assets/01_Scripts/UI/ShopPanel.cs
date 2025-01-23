@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +13,17 @@ public class ShopPanel : MonoBehaviour
 	public Button sellButton;
 	public Button closeButton;
 
-	public bool isSellButtonClicked = false;
+	private bool isSellButtonClicked = false;
 	[HideInInspector] public float sellPrice = 0;
-	[HideInInspector] public Dictionary<InventorySlot, InventorySlot> originalSlotState = new Dictionary<InventorySlot, InventorySlot>();
-		
+
+	[HideInInspector] public Dictionary<InventorySlot, InventorySlot> originalSlotState =
+		new Dictionary<InventorySlot, InventorySlot>();
+
 	private TestSY _testsy;
 	private InventorySlot sellSlot;
-	private Dictionary<InventorySlot, ItemState> itemStates = new Dictionary<InventorySlot, ItemState>();
+
+	private Dictionary<InventorySlot, ItemState> itemStates =
+		new Dictionary<InventorySlot, ItemState>();
 
 	private struct ItemState
 	{
@@ -64,13 +65,13 @@ public class ShopPanel : MonoBehaviour
 					slot.canvasGroup.alpha = 1f;
 				}
 			}
-		
+
 			foreach (InventorySlot slot in sellSlots)
 			{
 				slot.RemoveItem();
 				slot.slotCount = 0;
 			}
-		
+
 			originalSlotState.Clear();
 			sellPrice = 0;
 			UpdateHoldSlots();
@@ -87,6 +88,7 @@ public class ShopPanel : MonoBehaviour
 					slot.canvasGroup.alpha = 1f;
 				}
 			}
+
 			UpdateHoldSlots();
 		}
 	}
@@ -108,11 +110,10 @@ public class ShopPanel : MonoBehaviour
 		{
 			if (inventorySlots[i].item != null)
 			{
-				holdSlots[i].AddItem(inventorySlots[i].item); 
+				holdSlots[i].AddItem(inventorySlots[i].item);
 				holdSlots[i].slotCount = inventorySlots[i].slotCount;
 			}
 		}
-		
 	}
 
 	private void ShopButtonClicked()
@@ -149,12 +150,13 @@ public class ShopPanel : MonoBehaviour
 				if (originalSlotState.TryGetValue(sellSlot, out InventorySlot originalSlot))
 				{
 					int holdSlotIndex = holdSlots.IndexOf(originalSlot);
-					InventorySlot inventorySlot = UIManager.Instance.inventoryMangerSystem.slots[holdSlotIndex];
+					InventorySlot inventorySlot =
+						UIManager.Instance.inventoryMangerSystem.slots[holdSlotIndex];
 
 					if (sellSlot.item.itemClass == 2)
 					{
 						sellSlot.item.currentItemCount -= sellSlot.slotCount;
-						
+
 
 						if (inventorySlot != null)
 						{
@@ -186,16 +188,18 @@ public class ShopPanel : MonoBehaviour
 				}
 			}
 		}
-		
+
 		FirebaseManager.Instance.CurrentUserData.user_Gold += sellPrice;
-		FirebaseManager.Instance.UploadCurrentUserData("user_Gold", FirebaseManager.Instance.CurrentUserData.user_Gold);
+		FirebaseManager.Instance.UploadCurrentUserData("user_Gold",
+			FirebaseManager.Instance.CurrentUserData.user_Gold);
 		sellPrice = 0;
 		isSellButtonClicked = true;
-		
+
 		if (needsReorganize)
 		{
 			InventoryManger.Instance.SlotArray();
 		}
+
 		Debug.Log($"현재 골드: {FirebaseManager.Instance.CurrentUserData.user_Gold}");
 		UpdateHoldSlots();
 		InventoryManger.Instance.UpdateSlotData();
@@ -209,17 +213,15 @@ public class ShopPanel : MonoBehaviour
 
 	public void TryOpenShop()
 	{
-
 		if (!UIManager.Instance.isShopActive)
 		{
-			UIManager.Instance.OpenShopPanel(); 
+			UIManager.Instance.OpenShopPanel();
 			UpdateHoldSlots();
 		}
 		else
-		{ 
+		{
 			UIManager.Instance.CloseShopPanel();
 		}
-		
 	}
 
 	private void SetGold()
@@ -227,7 +229,7 @@ public class ShopPanel : MonoBehaviour
 		if (FirebaseManager.Instance.CurrentUserData != null)
 		{
 			float gold = FirebaseManager.Instance.CurrentUserData.user_Gold;
-		
+
 			currentGoldText.text = "보유 골드: " + gold.ToString();
 			sellPriceText.text = "판매 가격: " + sellPrice.ToString();
 		}

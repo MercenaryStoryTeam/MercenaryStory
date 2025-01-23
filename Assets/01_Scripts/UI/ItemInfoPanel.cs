@@ -1,94 +1,90 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemInfoPanel : MonoBehaviour
 {
-    public GameObject itemInfoPanel;
+	public GameObject itemInfoPanel;
 
-    public Image itemImage;
-    private Image currentItemImage;
-    public Text itemName;
-    public Text itemDescription;
-    public Text firstOptionText;
-    
-    public Button firstOptionButton;
-    public Button secondOptionButton;
-    public Button closeButton;
+	public Image itemImage;
+	private Image currentItemImage;
+	public Text itemName;
+	public Text itemDescription;
+	public Text firstOptionText;
 
-    public GameObject secondOption;
-    
-    private InventorySlot currentSelectedSlot;
-    private Equipment equipment;
-    private EquipmentPanel equipPanel;
-    private bool isInitialized = false;
+	public Button firstOptionButton;
+	public Button secondOptionButton;
+	public Button closeButton;
 
-    private void Awake()
-    {
-        InfoButtonOnClick();
-        equipPanel = FindObjectOfType<EquipmentPanel>();
-    }
+	public GameObject secondOption;
 
-    private void OnEnable()
-    {
-        // UI가 활성화될 때마다 Equipment 찾기 시도
-        TryFindEquipment();
-    }
+	private InventorySlot currentSelectedSlot;
+	private Equipment equipment;
+	private EquipmentPanel equipPanel;
+	private bool isInitialized = false;
 
-    private void TryFindEquipment()
-    {
-        if (equipment == null)
-        {
-            equipment = FindObjectOfType<Equipment>();
-        }
-    }
+	private void Awake()
+	{
+		InfoButtonOnClick();
+		equipPanel = FindObjectOfType<EquipmentPanel>();
+	}
 
-    private void Update()
-    {
-        currentItemImage = itemImage;
-    }
-    
-    private void InfoButtonOnClick()
-    {
-        firstOptionButton.onClick.AddListener(EquipButtonClick);
-        secondOptionButton.onClick.AddListener(RemoveItemButtonClick);
-        closeButton.onClick.AddListener(CloseButtonClick);
-    }
-    
-    private void CloseButtonClick()
-    {
-        UIManager.Instance.CloseItemInfoPanel();
-    }
+	private void OnEnable()
+	{
+		// UI가 활성화될 때마다 Equipment 찾기 시도
+		TryFindEquipment();
+	}
 
-    private void RemoveItemButtonClick()
-    {
-        InventoryManger inventoryManger = FindObjectOfType<InventoryManger>();
-        inventoryManger.DeleteItem(currentSelectedSlot);
-        UIManager.Instance.CloseItemInfoPanel();
-    }
-    
-    public void EquipButtonClick()
-    {
-        TryFindEquipment();
+	private void TryFindEquipment()
+	{
+		if (equipment == null)
+		{
+			equipment = FindObjectOfType<Equipment>();
+		}
+	}
 
-        if (equipment != null && equipPanel != null)
-        {
-            equipment.SetCurrentEquip(currentSelectedSlot);
-            equipPanel.SetEquipImage(currentSelectedSlot);
-        }
-        else
-        {
-            Debug.LogWarning("Equipment 또는 EquipmentPanel을 찾을 수 없습니다!");
-        }
+	private void Update()
+	{
+		currentItemImage = itemImage;
+	}
 
-        UIManager.Instance.CloseItemInfoPanel();
-    }
+	private void InfoButtonOnClick()
+	{
+		firstOptionButton.onClick.AddListener(EquipButtonClick);
+		secondOptionButton.onClick.AddListener(RemoveItemButtonClick);
+		closeButton.onClick.AddListener(CloseButtonClick);
+	}
 
-    public void SetCurrentSlot(InventorySlot slot)
-    {
-        currentSelectedSlot = slot;
-    }
+	private void CloseButtonClick()
+	{
+		UIManager.Instance.CloseItemInfoPanel();
+	}
+
+	private void RemoveItemButtonClick()
+	{
+		InventoryManger inventoryManger = FindObjectOfType<InventoryManger>();
+		inventoryManger.DeleteItem(currentSelectedSlot);
+		UIManager.Instance.CloseItemInfoPanel();
+	}
+
+	public void EquipButtonClick()
+	{
+		TryFindEquipment();
+
+		if (equipment != null && equipPanel != null)
+		{
+			equipment.SetCurrentEquip(currentSelectedSlot);
+			equipPanel.SetEquipImage(currentSelectedSlot);
+		}
+		else
+		{
+			Debug.LogWarning("Equipment 또는 EquipmentPanel을 찾을 수 없습니다!");
+		}
+
+		UIManager.Instance.CloseItemInfoPanel();
+	}
+
+	public void SetCurrentSlot(InventorySlot slot)
+	{
+		currentSelectedSlot = slot;
+	}
 }
