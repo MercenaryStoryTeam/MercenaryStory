@@ -6,15 +6,17 @@ public class StageManager : SingletonManager<StageManager>
 	public StageData[] stageDatas;
 	public int dieMonsterCount;
 	public PlayerFsm hostPlayerFsm;
+	public PlayerFsm currentPlayerFsm;
 	public bool StageClear { get; private set; }
 	public Vector3 spawnPoint;
 	public int currentStage = 0;
 
 	private void Start()
 	{
-		// PlayStageBGM();
+		PlayStageBGM();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
+		UIManager.Instance.InGamePannel.gameObject.SetActive(true);
 	}
 
 	public void Update()

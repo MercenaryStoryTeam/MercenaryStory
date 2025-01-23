@@ -26,6 +26,9 @@ public class UIManager : SingletonManager<UIManager>
 
 	//Option
 	public OptionPannel optionPanel;
+	
+	//Skill UI
+	public GameObject InGamePannel;
 
 	protected override void Awake()
 	{
@@ -184,6 +187,7 @@ public class UIManager : SingletonManager<UIManager>
 
 	public void OpenDungeonPanel()
 	{
+		FirebaseManager.Instance.UpdatePartyAndList();
 		dungeonPanel.gameObject.SetActive(true);
 	}
 }

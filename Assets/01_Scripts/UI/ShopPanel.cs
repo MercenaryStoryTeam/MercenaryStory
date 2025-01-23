@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class ShopPanel : MonoBehaviour
 {
 	public GameObject shopPanel;
@@ -9,19 +10,14 @@ public class ShopPanel : MonoBehaviour
 	public Text currentGoldText;
 	public List<InventorySlot> holdSlots; // 보유 물품 슬롯들
 	public List<InventorySlot> sellSlots; // 판매할 물품 슬롯들
-
 	public Button sellButton;
 	public Button closeButton;
 
 	private bool isSellButtonClicked = false;
 	[HideInInspector] public float sellPrice = 0;
-
 	[HideInInspector] public Dictionary<InventorySlot, InventorySlot> originalSlotState =
 		new Dictionary<InventorySlot, InventorySlot>();
-
-	private TestSY _testsy;
 	private InventorySlot sellSlot;
-
 	private Dictionary<InventorySlot, ItemState> itemStates =
 		new Dictionary<InventorySlot, ItemState>();
 
