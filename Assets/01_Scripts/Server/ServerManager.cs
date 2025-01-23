@@ -66,11 +66,8 @@ public class ServerManager
 
 	public static void LoadScene(string sceneName)
 	{
+		// 씬 전환만 수행하고 플레이어 생성은 OnJoinedRoom에서 처리
 		PhotonNetwork.LoadLevel(sceneName);
-		PlayerFsm playerFsm = GameObject
-			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)
-			.GetComponent<PlayerFsm>();
-		playerFsm.InstantiatePlayerPrefabs();
 	}
 
 	public static void PlayerSpawn(Vector3 spawnPoint)

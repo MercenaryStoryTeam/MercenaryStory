@@ -121,13 +121,15 @@ public class PlayerFsm : MonoBehaviourPun
 
 	private void OnDestroy()
 	{
+		print($"Player {photonView.Owner.NickName} Destroyed at Scene: {UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}" +
+			  $"\nDestroy Stack Trace: {System.Environment.StackTrace}");
+		
 		print($"Player Destroyed at : {StageManager.Instance.currentStage}");
 	}
 
 	private void Update()
 	{
-		// pun 동기화를 위함. 지우지 마시오!! - 지원
-		if (!photonView.IsMine) return;
+		if (!photonView.IsMine || transform == null) return;
 
 		if (!isDead)
 		{
@@ -153,6 +155,8 @@ public class PlayerFsm : MonoBehaviourPun
 	// 이동 입력만 별도 처리 (콤보 공격은 PlayerInputManager 이벤트 사용)
 	private void HandleMovementInput()
 	{
+		if (transform == null) return;
+
 		// Die 상태가 아닐 때만 이동 처리 (Hit 상태도 이동 가능)
 		bool canProcessMovement = (currentState != State.Die) && !isMovementLocked;
 
@@ -392,14 +396,23 @@ public class PlayerFsm : MonoBehaviourPun
 
 	private Vector3 CalculateMovementDirection(float inputX, float inputZ)
 	{
-		Vector3 camForward = cameraTransform.forward;
-		Vector3 camRight = cameraTransform.right;
-		camForward.y = 0f;
-		camRight.y = 0f;
-		camForward.Normalize();
-		camRight.Normalize();
+		if (transform == null || Camera.main == null) return Vector3.zero;
+		
+		Transform cameraTransform = Camera.main.transform;
+		if (cameraTransform == null) return Vector3.zero;
 
-		return (camForward * inputZ + camRight * inputX).normalized;
+		// 카메라의 전방 벡터와 오른쪽 벡터를 가져옴
+		Vector3 forward = cameraTransform.forward;
+		Vector3 right = cameraTransform.right;
+
+		// y축 회전만 고려하도록 y를 0으로 설정
+		forward.y = 0;
+		right.y = 0;
+		forward.Normalize();
+		right.Normalize();
+
+		// 입력값과 카메라 방향을 조합하여 최종 이동 방향 계산
+		return (forward * inputZ + right * inputX).normalized;
 	}
 
 	// 이동 및 공격을 잠금

@@ -1,4 +1,6 @@
+using Photon.Pun;
 using UnityEngine;
+using Photon.Realtime;
 
 public class StageManager : SingletonManager<StageManager>
 {
@@ -12,7 +14,6 @@ public class StageManager : SingletonManager<StageManager>
 	private void Start()
 	{
 		PlayStageBGM();
-		// PlayerSpawn();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
 	}
@@ -47,8 +48,23 @@ public class StageManager : SingletonManager<StageManager>
 
 	public void PlayerSpawn()
 	{
-		print("StageManager::PlayerSpawn");
+		// 이전 플레이어 오브젝트 찾기
+		GameObject existingPlayer = GameObject.Find(FirebaseManager.Instance.CurrentUserData.user_Name);
+		
+		// 새로운 스폰 위치 가져오기
 		spawnPoint = stageDatas[currentStage].playerSpawnPos;
-		ServerManager.PlayerSpawn(spawnPoint);
+		
+		if (existingPlayer != null)
+		{
+			// 기존 플레이어가 있다면 위치만 변경
+			existingPlayer.transform.position = spawnPoint;
+			print($"Player {FirebaseManager.Instance.CurrentUserData.user_Name} position updated");
+		}
+		else
+		{
+			// 플레이어가 없는 경우에만 새로 생성
+			print($"Creating new player: {FirebaseManager.Instance.CurrentUserData.user_Name}");
+			ServerManager.PlayerSpawn(spawnPoint);
+		}
 	}
 }

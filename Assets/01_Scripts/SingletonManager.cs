@@ -1,14 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SingletonManager<T> : MonoBehaviour where T : SingletonManager<T>
+public class SingletonManager<T> : MonoBehaviour where T : MonoBehaviour
 {
 	private static T _instance;
 
 	public static T Instance
 	{
-		get { return _instance; }
+		get
+		{
+			if (_instance == null)
+			{
+				_instance = FindObjectOfType<T>();
+				if (_instance == null)
+				{
+					GameObject obj = new GameObject();
+					obj.name = typeof(T).Name;
+					_instance = obj.AddComponent<T>();
+				}
+			}
+			return _instance;
+		}
 	}
 
 	protected virtual void Awake()
@@ -16,11 +27,21 @@ public class SingletonManager<T> : MonoBehaviour where T : SingletonManager<T>
 		if (_instance == null)
 		{
 			_instance = this as T;
+			
+			// 부모가 있다면 분리
+			if (transform.parent != null)
+			{
+				transform.SetParent(null);
+			}
+			
 			DontDestroyOnLoad(gameObject);
 		}
 		else
 		{
-			DestroyImmediate(gameObject);
+			if (_instance != this)
+			{
+				Destroy(gameObject);
+			}
 		}
 	}
 }

@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(MeshRenderer))]
 public class Portal : MonoBehaviour
@@ -9,16 +10,23 @@ public class Portal : MonoBehaviour
 	public float additionalHeight = 0.5f;
 	public int layerMask;
 
-	private HashSet<GameObject>
-		currentColliders = new HashSet<GameObject>(); // 현재 충돌 중인 객체
-
-	private HashSet<GameObject>
-		previousColliders = new HashSet<GameObject>(); // 이전 프레임에서 충돌했던 객체
+	private HashSet<GameObject> currentColliders = new HashSet<GameObject>();
+	private HashSet<GameObject> previousColliders = new HashSet<GameObject>();
 
 	private void Start()
 	{
 		layerMask = LayerMask.GetMask("Player");
 		portalRenderer = GetComponent<MeshRenderer>();
+	}
+
+	private void OnEnable()
+	{
+		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	private void OnDisable()
+	{
+		SceneManager.sceneLoaded -= OnSceneLoaded;
 	}
 
 	private void Update()
@@ -36,35 +44,76 @@ public class Portal : MonoBehaviour
 
 		size.y += additionalHeight / 2f;
 
-		// 현재 프레임의 충돌 중인 객체를 갱신
 		Collider[] hitColliders = Physics.OverlapBox(center, size,
 			gameObject.transform.rotation, layerMask);
 		currentColliders.Clear();
 		foreach (var hitCollider in hitColliders)
 		{
-			currentColliders.Add(hitCollider.gameObject);
-		}
-
-		// 현재 충돌 중인 객체와 이전 프레임의 객체를 비교하여 새롭게 들어온 객체를 감지
-		foreach (var obj in currentColliders)
-		{
-			if (!previousColliders.Contains(obj))
+			if (hitCollider != null)
 			{
-				print($"Portal::IsOnPortal::{obj} Start");
-				// 새로 진입한 객체에 대해 처리
-				ServerManager.LoadScene(StageManager.Instance
-					.stageDatas[StageManager.Instance.currentStage].nextSceneName);
-
-				// 추가로 처리해야 할 작업이 있다면 여기에 작성
-				Debug.Log($"{obj.name} has entered the portal!");
+				currentColliders.Add(hitCollider.gameObject);
 			}
 		}
 
-		// 이전 프레임의 상태를 현재 상태로 갱신
+		foreach (var obj in currentColliders)
+		{
+			if (obj != null && !previousColliders.Contains(obj))
+			{
+				print($"Portal::IsOnPortal::{obj} Start");
+				
+				string nextSceneName = StageManager.Instance
+					.stageDatas[StageManager.Instance.currentStage].nextSceneName;
+					
+				FirebaseManager.Instance.UploadPartyDataToLoadScene(nextSceneName);
+
+				StageManager.Instance.currentStage++;
+				
+				// 씬 전환 전에 모든 플레이어 오브젝트를 DontDestroyOnLoad로 설정
+				foreach (var player in PhotonNetwork.PlayerList)
+				{
+					GameObject playerObj = GameObject.Find(player.NickName);
+					if (playerObj != null)
+					{
+						PhotonView pv = playerObj.GetComponent<PhotonView>();
+						if (pv != null && pv.IsMine)
+						{
+							DontDestroyOnLoad(playerObj);
+						}
+					}
+				}
+				
+				// 씬 전환
+				PhotonNetwork.LoadLevel(nextSceneName);
+			}
+		}
+
 		previousColliders.Clear();
 		foreach (var obj in currentColliders)
 		{
-			previousColliders.Add(obj);
+			if (obj != null)
+			{
+				previousColliders.Add(obj);
+			}
+		}
+	}
+
+	private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			Vector3 newSpawnPoint = StageManager.Instance.stageDatas[StageManager.Instance.currentStage].playerSpawnPos;
+			
+			// 보존된 플레이어들을 새로운 위치로 이동
+			foreach (var player in PhotonNetwork.PlayerList)
+			{
+				GameObject playerObj = GameObject.Find(player.NickName);
+				if (playerObj != null && playerObj.GetComponent<PhotonView>().IsMine)
+				{
+					playerObj.transform.position = newSpawnPoint;
+					// DontDestroyOnLoad 해제
+					SceneManager.MoveGameObjectToScene(playerObj, SceneManager.GetActiveScene());
+				}
+			}
 		}
 	}
 
@@ -77,12 +126,10 @@ public class Portal : MonoBehaviour
 		Vector3 center = bounds.center;
 		Vector3 size = bounds.extents;
 
-		// 박스의 높이 조정
 		size.y += additionalHeight / 2f;
 
 		Gizmos.color = Color.red;
-		Gizmos.matrix =
-			Matrix4x4.TRS(center, gameObject.transform.rotation, Vector3.one);
+		Gizmos.matrix = Matrix4x4.TRS(center, gameObject.transform.rotation, Vector3.one);
 		Gizmos.DrawWireCube(Vector3.zero, size * 2);
 	}
 }
