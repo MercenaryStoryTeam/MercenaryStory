@@ -13,7 +13,6 @@ public class StageManager : SingletonManager<StageManager>
 	private void Start()
 	{
 		// PlayStageBGM();
-		// PlayerSpawn();
 		UIManager.Instance.chatButton.gameObject.SetActive(true);
 		UIManager.Instance.partyButton.gameObject.SetActive(true);
 	}
@@ -48,8 +47,7 @@ public class StageManager : SingletonManager<StageManager>
 
 	public void PlayerSpawn()
 	{
-		print("StageManager::PlayerSpawn");
-		spawnPoint = stageDatas[currentStage].playerSpawnPos;
+		spawnPoint = GameObject.Find("ExPortal").transform.position;
 		ServerManager.PlayerSpawn(spawnPoint);
 	}
 
@@ -60,7 +58,7 @@ public class StageManager : SingletonManager<StageManager>
 
 	public IEnumerator PlayerSpawnCoroutine()
 	{
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(2f);
 		StageManager.Instance.PlayerSpawn();
 		PlayerFsm playerFsm = GameObject
 			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)

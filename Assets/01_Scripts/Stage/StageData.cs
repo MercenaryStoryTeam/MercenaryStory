@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "StageData", menuName = "Stage Data")]
 public class StageData : ScriptableObject
@@ -8,5 +7,4 @@ public class StageData : ScriptableObject
 	public string bgmName;
 	public int monsterCount;
 	public string nextSceneName;
-	public Vector3 playerSpawnPos;
 }
