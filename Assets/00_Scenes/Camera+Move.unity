@@ -1016,6 +1016,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 757484351}
   m_CullTransparentMesh: 1
+--- !u!1 &902221602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 902221604}
+  - component: {fileID: 902221603}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &902221603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902221602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a8878cd5fc46324485dc21c4f246dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystickBackground: {fileID: 0}
+  joystickHandle: {fileID: 0}
+  joystickRange: 50
+--- !u!4 &902221604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902221602}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 14.546745, y: -3.4054322, z: -3.311996}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,6 +1277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  virtualJoystick: {fileID: 0}
 --- !u!4 &1114053636
 Transform:
   m_ObjectHideFlags: 0
@@ -3008,6 +3056,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1759898718454182920, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3907103267636737127, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
       propertyPath: m_Name
       value: Player1
@@ -3595,6 +3647,10 @@ PrefabInstance:
       propertyPath: Skills.Array.data[3].CooldownImage
       value: 
       objectReference: {fileID: 7656533188896668078}
+    - target: {fileID: 8969256335628840320, guid: f534754eadd2e8d438debf437296fc10, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9217872631790154015, guid: f534754eadd2e8d438debf437296fc10, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4564,6 +4620,10 @@ PrefabInstance:
       propertyPath: HpBarPanel
       value: 
       objectReference: {fileID: 3595839544708478519}
+    - target: {fileID: 3596344939977100153, guid: 9c116cdff515ad0468922405d40741fc, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9039962867406599807, guid: 9c116cdff515ad0468922405d40741fc, type: 3}
       propertyPath: goldText
       value: 
@@ -9882,3 +9942,4 @@ SceneRoots:
   - {fileID: 2495689557406325214}
   - {fileID: 1601608839}
   - {fileID: 1282335329}
+  - {fileID: 902221604}

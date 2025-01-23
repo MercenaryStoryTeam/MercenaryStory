@@ -1,93 +1,165 @@
 using Photon.Pun;
 using UnityEngine;
-
-// 이벤트 처리의 장점: 명확한 입력 구분 -> 애니메이터에서 중복 트리거 방지
+using UnityEngine.EventSystems;
 
 public class PlayerInputManager : MonoBehaviourPun
 {
-	public static System.Action<Vector2> OnMoveInput;
-	public static System.Action OnAttackInput;
-	public static System.Action OnSkillInput;
-	public static System.Action OnRightClickInput;
-	public static System.Action OnShiftLeftClickInput;
-	public static System.Action OnShiftRightClickInput;
-	public static System.Action OnBInput;
-	public static System.Action OnKInput; 
+    public static System.Action<Vector2> OnMoveInput;
+    public static System.Action OnAttackInput;
+    public static System.Action OnSkillInput;
+    public static System.Action OnRightClickInput;
+    public static System.Action OnShiftLeftClickInput;
+    public static System.Action OnShiftRightClickInput;
+    public static System.Action OnBInput;
+    public static System.Action OnKInput;
 
-	private Player player;
+    [Header("Mobile Input References")]
+    public VirtualJoystick virtualJoystick;
 
-	private void Awake()
-	{
-		player = GetComponent<Player>();
-	}
+    // PC에서 모바일 입력 테스트를 위해 모바일 입력 활성화
+    [Header("Testing")]
+    public bool forceMobile = false; 
 
-	void Update()
-	{
-		if (!photonView.IsMine) return;
+    private Player player;
 
-		Vector2 movement =
-			new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-		if (movement.sqrMagnitude > 0)
-		{
-			OnMoveInput?.Invoke(movement);
-		}
+    private void Awake()
+    {
+        player = GetComponent<Player>();
 
-		if (Input.GetMouseButtonDown(0))
-		{
-			if (Input.GetKey(KeyCode.LeftShift))
-			{
-				OnShiftLeftClickInput?.Invoke();
-			}
-			else
-			{
-				OnAttackInput?.Invoke();
-			}
-		}
+#if UNITY_IOS || UNITY_ANDROID
+            if (virtualJoystick == null)
+            {
+                virtualJoystick = FindObjectOfType<VirtualJoystick>();
+                if (virtualJoystick == null)
+                {
+                    Debug.LogError("씬에 VirtualJoystick이 없습니다. 인스펙터에서 할당하세요.");
+                }
+            }
+#endif
+    }
 
-		if (Input.GetMouseButtonDown(1))
-		{
-			if (Input.GetKey(KeyCode.LeftShift))
-			{
-				OnShiftRightClickInput?.Invoke();
-			}
-			else
-			{
-				OnRightClickInput?.Invoke();
-			}
-		}
+    void Update()
+    {
+        if (!photonView.IsMine) return;
 
-		if (Input.GetButtonDown("Jump"))
-		{
-			OnSkillInput?.Invoke();
-		}
+        bool useMobileInput = forceMobile || Application.isMobilePlatform;
 
-		if (Input.GetKeyDown(KeyCode.B))
-		{
-			OnBInput?.Invoke();
-		}
+        if (useMobileInput)
+        {
+            HandleMobileInputs();
+        }
+        else
+        {
+            HandleDesktopInputs();
+        }
 
-		if (Input.GetKeyDown(KeyCode.K))
-		{
-			OnKInput?.Invoke();
-		}
+        // 공통 입력 처리
+        player.DropItemInteraction();
+    }
 
-		if (Input.GetKeyDown(KeyCode.I))
-		{
-			UIManager.Instance.inventory.TryOpenInventory();
-		}
+    private void HandleDesktopInputs()
+    {
+        Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        OnMoveInput?.Invoke(movement); // 항상 호출하여 Idle 상태 전환 가능하게 함
 
-		if (Input.GetKeyDown(KeyCode.O)) // 상점 테스트용
-		{
-			UIManager.Instance.shop.TryOpenShop();
-		}
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                OnShiftLeftClickInput?.Invoke();
+            }
+            else
+            {
+                OnAttackInput?.Invoke();
+            }
+        }
 
-		if (Input.GetKeyDown(KeyCode.Z))
-		{
-			UIManager.Instance.OpenDungeonPanel();
-		}
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                OnShiftRightClickInput?.Invoke();
+            }
+            else
+            {
+                OnRightClickInput?.Invoke();
+            }
+        }
 
-		player.DropItemInteraction(); // 드랍템 상호작용 메서드
-	}
+        if (Input.GetButtonDown("Jump"))
+        {
+            OnSkillInput?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            OnBInput?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            OnKInput?.Invoke();
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            UIManager.Instance.inventory.TryOpenInventory();
+        }
+
+        if (Input.GetKeyDown(KeyCode.O)) // 상점 테스트용
+        {
+            UIManager.Instance.shop.TryOpenShop();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            UIManager.Instance.OpenDungeonPanel();
+        }
+    }
+
+    private void HandleMobileInputs()
+    {
+        // 조이스틱을 통한 이동 처리
+        if (virtualJoystick != null)
+        {
+            Vector2 mobileMovement = virtualJoystick.InputVector;
+            OnMoveInput?.Invoke(mobileMovement); // 항상 호출하여 Idle 상태 전환 가능하게 함
+        }
+
+        // 터치 입력을 통한 공격 처리
+        if (Input.touchCount > 0)
+        {
+            foreach (Touch touch in Input.touches)
+            {
+                // 터치가 시작될 때
+                if (touch.phase == TouchPhase.Began)
+                {
+                    // 터치가 UI 위에 있는지 확인
+                    if (!IsPointerOverUIObject(touch))
+                    {
+                        // 빈 공간 터치 시 공격
+                        OnAttackInput?.Invoke();
+                    }
+                }
+
+                // 필요시 다른 터치 단계를 처리할 수 있습니다.
+            }
+        }
+
+        // 스킬 및 기타 액션은 UI 버튼을 통해 처리
+        // UI 버튼이 적절히 액션을 호출하도록 설정되어야 합니다.
+    }
+
+    // 터치가 UI 요소 위에 있는지 확인하는 유틸리티 함수
+    private bool IsPointerOverUIObject(Touch touch)
+    {
+        // 현재 터치 위치를 기반으로 PointerEventData 생성
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = touch.position;
+
+        // UI 요소와의 충돌 여부를 확인
+        var results = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+        return results.Count > 0;
+    }
 }
-
-//
