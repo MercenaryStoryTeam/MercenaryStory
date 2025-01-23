@@ -14,12 +14,12 @@ public class InventoryPanel : MonoBehaviour
 
     private void Awake()
     {
-        UIManager.Instance.CloseInventoryPanel();
         ButtonOnClick();
     }
 
     private void Start()
     {
+
     }
 
     private void Update()

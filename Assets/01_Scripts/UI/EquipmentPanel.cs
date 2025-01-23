@@ -22,7 +22,6 @@ public class EquipmentPanel : MonoBehaviour
         firstCharacter.SetActive(false);
         secondCharacter.SetActive(false);
         thirdCharacter.SetActive(false);
-        
     }
 
     private void Start()

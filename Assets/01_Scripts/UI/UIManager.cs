@@ -34,6 +34,9 @@ public class UIManager : SingletonManager<UIManager>
 		inventoryMangerSystem = FindObjectOfType<InventoryManger>();
 		popUp = FindObjectOfType<PopUp>();
 		popUp.PopUpClose();
+		CloseInventoryPanel();
+		CloseShopPanel();
+		CloseItemInfoPanel();
 	}
 
 	#region Inventory

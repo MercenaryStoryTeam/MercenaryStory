@@ -33,8 +33,6 @@ public class ShopPanel : MonoBehaviour
 
 	private void Awake()
 	{
-		_testsy = FindObjectOfType<TestSY>();
-		shopPanel.SetActive(false);
 		ShopButtonClicked();
 		SaveOriginalState();
 	}

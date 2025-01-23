@@ -28,7 +28,6 @@ public class ItemInfoPanel : MonoBehaviour
 
     private void Awake()
     {
-        itemInfoPanel.SetActive(false);
         InfoButtonOnClick();
         equipPanel = FindObjectOfType<EquipmentPanel>();
     }
