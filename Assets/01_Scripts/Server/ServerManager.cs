@@ -24,14 +24,10 @@ public class ServerManager
 			EmptyRoomTtl = 60000
 		};
 
-		FirebaseManager.Instance.CurrentUserData.UpdateUserData(
-			currentServer: roomName,
-			currentParty: "");
+		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: roomName);
 
 		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentServer",
 			FirebaseManager.Instance.CurrentUserData.user_CurrentServer);
-
-		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentParty", "");
 
 		ChatManager.Instance.ChatStart(roomName);
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
