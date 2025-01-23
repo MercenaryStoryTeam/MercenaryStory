@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rat Mustache
   m_EditorClassIdentifier: 
   id: 33110
-  name: "\uC950\uC758 \uC218\uC5FC"
+  itemName: "\uC950\uC758 \uC218\uC5FC"
   description: "\uD0C4\uC131\uC774 \uAC15\uD55C \uC218\uC5FC\uC774\uB2E4.\n\uB2AA\uC758
     \uB354\uB7EC\uC6C0\uC774 \uB290\uAEF4\uC9C0\uC9C0 \uC54A\uAC8C\n\uC798 \uAD00\uB9AC\uB418\uC5B4
     \uC788\uB2E4."

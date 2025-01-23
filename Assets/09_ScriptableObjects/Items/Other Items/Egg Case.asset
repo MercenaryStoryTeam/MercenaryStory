@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Egg Case
   m_EditorClassIdentifier: 
   id: 33140
-  name: "\uC54C\uC9D1"
+  itemName: "\uC54C\uC9D1"
   description: "\uB3C5\uAC70\uBBF8\uAC00 \uC9C0\uADF9\uC815\uC131\uC73C\uB85C\n\uC774\uACE0
     \uB2E4\uB2C8\uB294 \uC54C\uC9D1\uC774\uB2E4."
   currentItemCount: 0

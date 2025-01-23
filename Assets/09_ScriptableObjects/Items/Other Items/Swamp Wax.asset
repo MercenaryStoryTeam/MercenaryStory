@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Swamp Wax
   m_EditorClassIdentifier: 
   id: 33131
-  name: "\uB2AA\uC9C0 \uBC00\uB78D"
+  itemName: "\uB2AA\uC9C0 \uBC00\uB78D"
   description: "\uB2AA\uC9C0 \uBC8C\uB4E4\uC774 \uAC74\uCD95 \uC7AC\uB8CC\uB85C\n\uC0AC\uC6A9\uD558\uB294
     \uBC00\uB78D \uB369\uC5B4\uB9AC\uB2E4."
   currentItemCount: 0

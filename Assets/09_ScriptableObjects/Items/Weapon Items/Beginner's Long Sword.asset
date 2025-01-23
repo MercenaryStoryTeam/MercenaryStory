@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Beginner's Long Sword
   m_EditorClassIdentifier: 
   id: 32000
-  name: "\uCD08\uBCF4\uC790\uC758 \uC591\uC190\uAC80"
-  description: "\uBAA8\uD5D8 \uC785\uBB38\uB2E4\uB97C \uC704\uD55C\n\uCEE4\uB2E4\uB780
+  itemName: "\uCD08\uBCF4\uC790\uC758 \uC591\uC190\uAC80"
+  description: "\uBAA8\uD5D8 \uC785\uBB38\uC790\uB97C \uC704\uD55C\n\uCEE4\uB2E4\uB780
     \uAC80 \uD55C \uC790\uB8E8."
   currentItemCount: 0
   itemClass: 1
@@ -25,4 +25,3 @@ MonoBehaviour:
   dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
   rank: 1
   Damage: 2
-  isEquiped: 0

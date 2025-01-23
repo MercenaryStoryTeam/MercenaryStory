@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Massive Offensive
   m_EditorClassIdentifier: 
   id: 32002
-  name: "\uB300\uACF5\uC138"
+  itemName: "\uB300\uACF5\uC138"
   description: "\uCE7C\uB0A0 \uB05D\uC73C\uB85C \uC3E0\uB9B0 \uBAA8\uC591\uC758 \uC591\uC190\uAC80.\n\uAC80\uC744
     \uC950\uACE0, \uB05D\uC5C6\uB294 \uACF5\uACA9\uC744\n\uC774\uC5B4\uB098\uAC00\uC57C
     \uD55C\uB2E4."
@@ -26,4 +26,3 @@ MonoBehaviour:
   dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
   rank: 3
   Damage: 6
-  isEquiped: 0

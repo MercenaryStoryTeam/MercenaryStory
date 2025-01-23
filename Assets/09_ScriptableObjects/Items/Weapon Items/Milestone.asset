@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Milestone
   m_EditorClassIdentifier: 
   id: 32004
-  name: "\uC774\uC815\uD45C"
+  itemName: "\uC774\uC815\uD45C"
   description: "\uADE0\uD615 \uC7A1\uD78C \uBAA8\uC591\uC0C8\uB97C \uAC00\uC9C4 \uC591\uC190\uAC80.\n\uC0AC\uC6A9\uC790\uAC00
     \uD754\uB4E4\uB9AC\uC9C0 \uC54A\uAC8C\n\uBBFF\uC74C\uACFC \uC548\uC815\uAC10\uC744
     \uC81C\uACF5\uD55C\uB2E4."
@@ -26,4 +26,3 @@ MonoBehaviour:
   dropLightLine: {fileID: 876808023863762538, guid: 7d33c654e2d76e74c94e2b850bc6fd4e, type: 3}
   rank: 5
   Damage: 10
-  isEquiped: 0
