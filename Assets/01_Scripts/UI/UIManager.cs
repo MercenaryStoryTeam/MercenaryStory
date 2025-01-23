@@ -184,6 +184,7 @@ public class UIManager : SingletonManager<UIManager>
 
 	public void OpenDungeonPanel()
 	{
+		FirebaseManager.Instance.UpdatePartyAndList();
 		dungeonPanel.gameObject.SetActive(true);
 	}
 }
