@@ -7,19 +7,75 @@ using Random = UnityEngine.Random;
 
 public class InventoryManger : SingletonManager<InventoryManger>
 {
-    public List<ItemBase> myItems;
     public List<ItemBase> allItems;
     public List<InventorySlot> slots;
 
-    public ItemBase basicWeapon; //캐릭터 생성시 인벤토리에 추가될 양손검 아이템
-    public ItemBase basicEquipWeapon; //캐릭터 생성시 장착 중일 한손검 + 방패 아이템
+    public ItemBase basicEquipWeapon;
 
     public SlotData currentSlotData;
     
     protected override void Awake()
     {
         base.Awake();
-        
+    }
+
+    public int GetTotalItemCount(ItemBase item)
+    {
+        int totalCount = 0;
+        foreach (InventorySlot slot in slots)
+        {
+            if (slot.item == item)
+            {
+                totalCount += slot.slotCount;
+            }
+        }
+        return totalCount;
+    }
+
+
+    public void LoadInventoryFromDatabase()
+    {
+        if (FirebaseManager.Instance.CurrentUserData != null)
+        {
+            foreach (ItemBase item in allItems)
+            {
+                if (item.id == FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id)
+                {
+                    item.currentItemCount = 1;
+                }
+                else
+                {
+                    item.currentItemCount = 0;
+                }
+            }
+
+            foreach (InventorySlot slot in slots)
+            {
+                slot.RemoveItem();
+                slot.slotCount = 0;
+            }
+
+            foreach (SlotData slotData in FirebaseManager.Instance.CurrentUserData.user_Inventory)
+            {
+                if (slotData.item_Stack > 0)
+                {
+                    ItemBase originalItem = allItems.Find(x => x.id == slotData.item_Id);
+                    if (originalItem != null)
+                    {
+                        foreach (InventorySlot slot in slots)
+                        {
+                            if (slot.item == null)
+                            {
+                                slot.AddItem(originalItem);
+                                slot.slotCount = slotData.item_Stack;
+                                originalItem.currentItemCount += slotData.item_Stack;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void Update()
@@ -27,72 +83,58 @@ public class InventoryManger : SingletonManager<InventoryManger>
 
     }
 
-    public SlotData SetBasicItem(ItemBase item, ItemBase setItem)
+    public SlotData SetBasicItem(ItemBase item)
     {
-        myItems.Add(setItem);
-        setItem.currentItemCount++;
-        AddItemToInventory(item);
-        currentSlotData = new SlotData(item.id, 1);
+        item.currentItemCount = 1; 
+        currentSlotData = new SlotData(item.id, 0); 
         return currentSlotData;
-    }
-    
-    //테스트용 드롭 구현
-    public ItemBase RandomDropItems()
-    {
-        int random = Random.Range(0, allItems.Count);
-        return allItems[random];
     }
 
     public void AddItemToInventory(ItemBase newItem)
     {
-        if (newItem.itemClass == 1 || newItem.itemClass == 3)
+        if (newItem.itemClass == 1) 
         {
             foreach (InventorySlot slot in slots)
             {
                 if (slot.item == null)
                 {
                     slot.AddItem(newItem);
-                    myItems.Add(newItem);
-                    newItem.currentItemCount++;
-                    Debug.Log($"추가한 {newItem.name}의 개수: {newItem.currentItemCount}");
-                    Debug.Log($"현재 가지고 있는 아이템 개수: {myItems.Count}");
-
+                    slot.slotCount = 1;
+                    newItem.currentItemCount++; 
+                    UpdateSlotData();
                     break;
                 }
             }
-
         }
-        
-        else if (newItem.itemClass == 2)
+
+        else if (newItem.itemClass == 2) 
         {
+            bool added = false;
             foreach (InventorySlot slot in slots)
             {
-                if (slot.item == newItem && !slot.IsFull())
+                if (slot.item != null && slot.item.id == newItem.id && !slot.IsFull()) 
                 {
-                    myItems.Add(newItem);
-                    newItem.currentItemCount++;
                     slot.slotCount++;
-                    UpdateSlotData();
-                    Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
-
-                    return;
+                    newItem.currentItemCount = GetTotalItemCount(newItem);
+                    added = true;
+                    break;
                 }
             }
             
-            foreach (InventorySlot slot in slots)
+            if (!added)
             {
-                if (slot.item == null)
+                foreach (InventorySlot slot in slots)
                 {
-                    slot.AddItem(newItem);
-                    myItems.Add(newItem);
-                    newItem.currentItemCount++;
-                    slot.slotCount++;
-                    UpdateSlotData();
-                    Debug.Log($"인벤토리 내 아이템 개수: {myItems.Count}");
-
-                    break;
+                    if (slot.item == null)
+                    {
+                        slot.AddItem(newItem);
+                        slot.slotCount = 1;
+                        newItem.currentItemCount = GetTotalItemCount(newItem);
+                        break;
+                    }
                 }
             }
+            UpdateSlotData();
         }
     }
 
@@ -104,43 +146,48 @@ public class InventoryManger : SingletonManager<InventoryManger>
             {
                 slot.item.currentItemCount -= slot.slotCount;
             }
-
             else if (slot.item.itemClass == 1)
             {
                 slot.item.currentItemCount--;
             }
             
             Debug.Log($"삭제된 아이템: {slot.item.name}, 삭제되고 남은 아이템 개수: {slot.item.currentItemCount}");
-            myItems.Remove(slot.item);
             slot.RemoveItem();
+            UpdateSlotData();
             SlotArray();
         }
     }
 
-    public void SlotArray() // 슬롯 정렬
+    public void SlotArray()
     {
-        List<ItemBase> items = new List<ItemBase>();
-
+        List<(ItemBase item, int stack)> itemsToKeep = new List<(ItemBase, int)>();
+        
         foreach (InventorySlot slot in slots)
         {
-            if (slot.item != null)
+            if (slot.item != null && slot.slotCount > 0)
             {
-                items.Add(slot.item);
-                slot.RemoveItem();
+                itemsToKeep.Add((slot.item, slot.slotCount));
             }
         }
-
-        foreach (ItemBase item in items)
+        
+        foreach (InventorySlot slot in slots)
         {
-            foreach (InventorySlot slot in slots)
+            slot.RemoveItem();
+            slot.slotCount = 0;
+        }
+        
+        int currentSlot = 0;
+        foreach (var itemInfo in itemsToKeep)
+        {
+            if (currentSlot < slots.Count)
             {
-                if (slot.item == null)
-                {
-                    slot.AddItem(item);
-                    break;
-                }
+                slots[currentSlot].AddItem(itemInfo.item);
+                slots[currentSlot].slotCount = itemInfo.stack;
+                currentSlot++;
             }
         }
+        
+        UpdateSlotData();
     }
     
     // 서버에 올릴 때 사용하면 된다.
@@ -174,7 +221,7 @@ public class InventoryManger : SingletonManager<InventoryManger>
         if (FirebaseManager.Instance.CurrentUserData.user_Inventory == null)
         {
             Debug.LogError("user_Inventory가 null입니다");
-            FirebaseManager.Instance.CurrentUserData.user_Inventory = new List<SlotData>();
+            return false;
         }
 
         try 

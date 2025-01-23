@@ -9,7 +9,6 @@ public class UIManager : SingletonManager<UIManager>
 	public EquipmentPanel equipment;
 	public InventoryManger inventoryMangerSystem;
 	public PopUp popUp;
-	public InventorySlot slot;
 	[HideInInspector] public bool isInventoryActive = false;
 	[HideInInspector] public bool isItemInfoActive = false;
 	[HideInInspector] public bool isShopActive = false;
@@ -38,6 +37,9 @@ public class UIManager : SingletonManager<UIManager>
 		inventoryMangerSystem = FindObjectOfType<InventoryManger>();
 		popUp = FindObjectOfType<PopUp>();
 		popUp.PopUpClose();
+		CloseInventoryPanel();
+		CloseShopPanel();
+		CloseItemInfoPanel();
 	}
 
 	#region Inventory
@@ -55,6 +57,7 @@ public class UIManager : SingletonManager<UIManager>
 	{
 		isInventoryActive = false;
 		inventory.panel.SetActive(false);
+		CloseItemInfoPanel();
 	}
 
 	#endregion

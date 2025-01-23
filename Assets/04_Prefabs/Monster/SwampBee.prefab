@@ -991,22 +991,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034e5962362f34b45bb6a10a328c3ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolPoint: {x: 0, y: 0, z: 0}
+  playerTransform: {fileID: 0}
   currentState: 0
+  dropItems:
+  - {fileID: 11400000, guid: f11f40558aae95b4c8101e0878d192e8, type: 2}
+  - {fileID: 11400000, guid: 1ad7f4488a196014ab25f38c1eabd48e, type: 2}
+  - {fileID: 11400000, guid: 20eed26523d5f3c4a9762a4dcd96864a, type: 2}
   _hp: 16
   _maxHp: 16
   _damage: 3
   _moveSpeed: 1
   _rotationSpeed: 1
   _attackSpeed: 1
-  _patrolPoint: {x: 3, y: 3, z: 1}
   _patrolRange: 3
   _detectionRange: 3
   _attackRange: 2
   _returnRange: 10
-  dropItems:
-  - {fileID: 11400000, guid: f11f40558aae95b4c8101e0878d192e8, type: 2}
-  - {fileID: 11400000, guid: 1ad7f4488a196014ab25f38c1eabd48e, type: 2}
-  - {fileID: 11400000, guid: 76f419183b04d25478737203d74e5d0a, type: 2}
 --- !u!114 &8204987460361133607
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2264,22 +2264,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13837d364d90c7c4580730b710035fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolPoint: {x: 0, y: 0, z: 0}
+  playerTransform: {fileID: 0}
   currentState: 0
+  dropItems:
+  - {fileID: 11400000, guid: 9323e3dd4c5d95c428335c0c7bd90913, type: 2}
+  - {fileID: 11400000, guid: 8289d521e9236da4d9764b9384419549, type: 2}
+  - {fileID: 11400000, guid: 826b09db2abedcf41be9b5bd4237a990, type: 2}
   _hp: 10
   _maxHp: 10
   _damage: 3
   _moveSpeed: 1
   _rotationSpeed: 1
   _attackSpeed: 1
-  _patrolPoint: {x: 1, y: 1, z: 1}
   _patrolRange: 3
   _detectionRange: 3
   _attackRange: 2
   _returnRange: 7
-  dropItems:
-  - {fileID: 11400000, guid: 9323e3dd4c5d95c428335c0c7bd90913, type: 2}
-  - {fileID: 11400000, guid: 8289d521e9236da4d9764b9384419549, type: 2}
-  - {fileID: 11400000, guid: 9de6dc478e90014418478c7f087ad3d0, type: 2}
 --- !u!195 &3775871987531294826
 NavMeshAgent:
   m_ObjectHideFlags: 0
