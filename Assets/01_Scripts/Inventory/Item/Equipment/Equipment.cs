@@ -19,13 +19,11 @@ public class Equipment : MonoBehaviourPunCallbacks
 		if (photonView.IsMine)
 		{
 			int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
-			Debug.Log($"Start - Firebase에서 불러온 무기 ID: {savedWeaponId}");
 			if (savedWeaponId != 0)
 			{
 				ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
 				if (savedWeapon != null)
 				{
-					Debug.Log($"{savedWeapon.itemName}({savedWeapon.id}) 으로 장비 프리팹 설정 시도");
 					photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
 					Debug.Log($"{savedWeapon.itemName}으로 장비 장착함.");
 				}
@@ -85,6 +83,7 @@ public class Equipment : MonoBehaviourPunCallbacks
 			FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id = itemId;
 			FirebaseManager.Instance.UploadCurrentUserData("user_weapon_item_Id", itemId);
 		}
+		
 		SetSwordClass(item);
 	}
 
@@ -132,7 +131,7 @@ public class Equipment : MonoBehaviourPunCallbacks
 
 			else if (weapon.rank == 5)
 			{
-				equipments[0].SetActive(true);
+				equipments[0].SetActive(false);
 				equipments[1].SetActive(false);
 				equipments[2].SetActive(false);
 				equipments[3].SetActive(false);
