@@ -96,30 +96,6 @@ public class Monster : MonoBehaviourPun
         return (playerLayer.value & (1 << layer)) != 0;
     }
 
-    // 객체 간 충돌에 따른 데미지 처리
-    private void OnCollisionEnter(Collision collision)
-    {
-        // 충돌한 객체가 플레이어라면 실행
-        if (IsPlayerLayer(collision.gameObject.layer))
-        {
-            // 충돌한 플레이어 오브젝트 찾기
-            Player player = collision.gameObject.GetComponent<Player>();
-
-            // 있다면 실행
-            if (player != null)
-            {
-                Debug.Log("플레이어와 충돌 발생. 데미지 전달 시작.");
-
-                // 데미지 전달
-                player.TakeDamage(damage);
-            }
-            else
-            {
-                Debug.LogWarning("충돌한 객체에 Player 컴포넌트가 없습니다.");
-            }
-        }
-    }
-
     protected void Update()
     {
         currentState = stateMachine.currentStateType;
@@ -140,7 +116,7 @@ public class Monster : MonoBehaviourPun
     
     public void OnAttackAnimationEnd()
     {
-        if (currentState == MonsterStateType.Attack)
+        if (currentState == MonsterStateType.Attack) 
         {
             ChangeState(MonsterStateType.Patrol);
         }
@@ -156,28 +132,29 @@ public class Monster : MonoBehaviourPun
 
     public void TakeDamage(int damage)
     {
+        ChangeState(MonsterStateType.GetHit);
         // 사운드 클립 3개중에 랜덤 재생 
-        string[] soundClips = { "monster_potbellied_damage_4", "monster_potbellied_damage_7", "monster_potbellied_damage_13", "monster_potbellied_damage_15" };
-        string randomClip = soundClips[Random.Range(0, soundClips.Length)];
-        SoundManager.Instance.PlaySFX(randomClip, gameObject);
-
-        stateMachine.ChangeState(MonsterStateType.GetHit);
-  
+        // string[] soundClips = { "monster_potbellied_damage_4", "monster_potbellied_damage_7", "monster_potbellied_damage_13", "monster_potbellied_damage_15" };
+        // string randomClip = soundClips[Random.Range(0, soundClips.Length)];
+        // SoundManager.Instance.PlaySFX(randomClip, gameObject);
         Hp -= damage;
 
         Debug.Log($"Monster HP: {Hp}/{maxHp} (받은 Damage: {damage})");
 
-        // 5초 동안 유지되는 몬스터 hp바 활성화
-        monsterHpBar?.ShowHpBar();
+        // // 5초 동안 유지되는 몬스터 hp바 활성화
+        // monsterHpBar?.ShowHpBar();
+        //
+        // // 카메라 흔들기
+        // cameraController?.ShakeCamera(duration: cameraController.sakeDuration);
+
+        print($"Monster HP: {Hp}/{maxHp}");
 
         if (Hp <= 0)
         {
-            stateMachine.ChangeState(MonsterStateType.Die);
+            print(Hp);
+            ChangeState(MonsterStateType.Die);
             DroppedLightLine(TryDropItem(dropItems));
         }
-
-        // 카메라 흔들기
-        cameraController?.ShakeCamera(duration: cameraController.sakeDuration);
 
     }
 
