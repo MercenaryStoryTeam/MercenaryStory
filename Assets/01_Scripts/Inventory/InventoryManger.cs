@@ -14,11 +14,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
 
 	public SlotData currentSlotData;
 
-	protected override void Awake()
-	{
-		base.Awake();
-	}
-
 	public int GetTotalItemCount(ItemBase item)
 	{
 		int totalCount = 0;
@@ -230,7 +225,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
 		try
 		{
 			UserData currentUserData = FirebaseManager.Instance.CurrentUserData;
-			Debug.Log($"현재 인벤토리 아이템 수: {currentUserData.user_Inventory.Count}");
 
 			currentUserData.user_Inventory.Clear();
 
@@ -246,7 +240,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
 				{
 					SlotData slotData = new SlotData(slot.item.id, slot.slotCount);
 					currentUserData.user_Inventory.Add(slotData);
-					Debug.Log($"슬롯 데이터 추가: ItemID={slot.item.id}, Count={slot.slotCount}");
 				}
 			}
 
