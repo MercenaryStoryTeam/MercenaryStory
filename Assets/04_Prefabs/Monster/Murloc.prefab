@@ -990,8 +990,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3917713134838844751}
   - component: {fileID: 6971202247448221493}
+  - component: {fileID: -3122342923482462314}
   - component: {fileID: 4335761900689827607}
-  - component: {fileID: 2042217834834958232}
   - component: {fileID: 2927655239447448260}
   - component: {fileID: -2354418506966582488}
   - component: {fileID: -1028237273114903129}
@@ -1041,6 +1041,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-3122342923482462314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4401516545361303541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13aaa9559bd7fe649a487a27a98e7c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: 13a433453d4b6d94dafdac1157c2eed2, type: 2}
+  patrolPoint: {x: 0, y: 0, z: 0}
+  playerTransform: {fileID: 0}
+  currentState: 0
+  dropItems: []
+  cameraController: {fileID: 0}
+  monsterHpBar: {fileID: 0}
 --- !u!195 &4335761900689827607
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1063,35 +1082,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2042217834834958232
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4401516545361303541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8e6e533978c459449fba781c4e04f42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolPoint: {x: 0, y: 0, z: 0}
-  playerTransform: {fileID: 0}
-  currentState: 0
-  dropItems:
-  - {fileID: 11400000, guid: a4c429faf218a5b4abca1a780d68fdcd, type: 2}
-  - {fileID: 11400000, guid: 3d5f61585f5f5c84c9601824382290d7, type: 2}
-  - {fileID: 11400000, guid: dcaf9b0943064994cae3d8442704f9f8, type: 2}
-  _hp: 13
-  _maxHp: 13
-  _damage: 3
-  _moveSpeed: 1
-  _rotationSpeed: 1
-  _attackSpeed: 1
-  _patrolRange: 3
-  _detectionRange: 3
-  _attackRange: 2
-  _returnRange: 10
 --- !u!114 &2927655239447448260
 MonoBehaviour:
   m_ObjectHideFlags: 0
