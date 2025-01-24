@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,7 +6,8 @@ public class InventoryPanel : MonoBehaviour
 {
 	public CanvasGroup invenCanvasGroup;
 	public GameObject panel;
-
+	public GameObject notInteractablePanel;
+	
 	public Button invenCloseButton;
 	public Text currentGoldText;
 
@@ -14,6 +16,10 @@ public class InventoryPanel : MonoBehaviour
 		ButtonOnClick();
 	}
 
+	private void Start()
+	{
+		notInteractablePanel.SetActive(false);
+	}
 
 	private void Update()
 	{
@@ -47,12 +53,12 @@ public class InventoryPanel : MonoBehaviour
 	{
 		if (UIManager.Instance.itemInfo.itemInfoPanel.activeSelf)
 		{
-			invenCanvasGroup.alpha = 0.5f;
+			notInteractablePanel.SetActive(true);
 			invenCanvasGroup.interactable = false;
 		}
 		else if (!UIManager.Instance.itemInfo.itemInfoPanel.activeSelf)
 		{
-			invenCanvasGroup.alpha = 1;
+			notInteractablePanel.SetActive(false);
 			invenCanvasGroup.interactable = true;
 		}
 	}
