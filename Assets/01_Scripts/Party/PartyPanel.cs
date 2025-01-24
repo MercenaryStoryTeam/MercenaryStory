@@ -51,12 +51,20 @@ public class PartyPanel : MonoBehaviour
 		{
 			foreach (var party in parties)
 			{
-				PartyEntry partyEntry = Instantiate(partyEntryPrefab, partyContent);
-				partyEntry.sizeText.text = party.party_size.ToString();
-				partyEntry.nameText.text = party.party_Name;
-				partyToggles[partyEntry.nameText.text] =
-					partyEntry.GetComponent<Toggle>();
-				partyToggles[partyEntry.nameText.text].group = partyEntryToggleGroup;
+				// 가입 가능한 지 확인하기
+				// 1. 해당 파티장이 CurrentUser와 같은 room에 있는 가?
+				// 2. 인원이 가득 차지 않았는 가?
+				if (party.party_size > party.party_Members.Count &&
+				    FirebaseManager.Instance.CurrentUserData.user_CurrentServer ==
+				    party.party_Owner.user_CurrentServer)
+				{
+					PartyEntry partyEntry = Instantiate(partyEntryPrefab, partyContent);
+					partyEntry.sizeText.text = party.party_size.ToString();
+					partyEntry.nameText.text = party.party_Name;
+					partyToggles[partyEntry.nameText.text] =
+						partyEntry.GetComponent<Toggle>();
+					partyToggles[partyEntry.nameText.text].group = partyEntryToggleGroup;
+				}
 			}
 		}
 	}
