@@ -14,7 +14,6 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	public FirebaseAuth Auth { get; private set; }
 	public FirebaseDatabase DB { get; private set; }
 
-	private DatabaseReference usersRef;
 	private Dictionary<string, UserData> userDictionary;
 	private List<UserData> userList;
 	private DatabaseReference partiesRef;
@@ -69,13 +68,13 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			var result =
 				await Auth.CreateUserWithEmailAndPasswordAsync(email, password);
 
-			usersRef = DB.GetReference($"users/{result.User.UserId}");
 			UserData userData = new UserData(result.User.UserId, email, user_Name);
 			userData.user_Inventory.Add(
 				InventoryManger.Instance.SetBasicItem(InventoryManger.Instance.basicEquipWeapon));
 
 			string userDataJson = JsonConvert.SerializeObject(userData);
-			await usersRef.SetRawJsonValueAsync(userDataJson);
+			await DB.GetReference($"users/{result.User.UserId}")
+				.SetRawJsonValueAsync(userDataJson);
 			callback?.Invoke(result.User, userData);
 
 			UIManager.Instance.popUp.PopUpOpen("회원가입이 완료되었습니다.", () =>
@@ -137,19 +136,26 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		{
 			UIManager.Instance.popUp.WaitPopUpOpen("로그인 중입니다.");
 			var result = await Auth.SignInWithEmailAndPasswordAsync(email, password);
-			usersRef = DB.GetReference($"users/{result.User.UserId}");
-			DataSnapshot userDataValues = await usersRef.GetValueAsync();
+			DataSnapshot userSnapshot =
+				await DB.GetReference($"users/{result.User.UserId}").GetValueAsync();
 			UserData userData = null;
-			if (userDataValues.Exists)
+			if (userSnapshot.Exists)
 			{
-				string json = userDataValues.GetRawJsonValue();
-				userData = JsonConvert.DeserializeObject<UserData>(json);
+				userData =
+					JsonConvert.DeserializeObject<UserData>(userSnapshot.GetRawJsonValue());
 			}
 
 			CurrentUserData = userData;
 			CurrentUserData.UpdateUserData(currentParty: "", isOnline: true);
-			UploadCurrentUserData("user_CurrentParty", "");
-			UploadCurrentUserData("user_IsOnline", true);
+			// 비동기 작업들을 Task 배열로 생성
+			var tasks = new[]
+			{
+				UploadCurrentUserData("user_CurrentParty", ""),
+				UploadCurrentUserData("user_IsOnline", true)
+			};
+
+			// 모든 작업 완료 대기
+			await Task.WhenAll(tasks);
 
 			InventoryManger.Instance.LoadInventoryFromDatabase();
 
@@ -178,7 +184,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			DatabaseReference targetRef = usersRef.Child(childName);
+			DatabaseReference targetRef =
+				DB.GetReference($"users/{CurrentUserData.user_Id}").Child(childName);
 
 			string jsonData = JsonConvert.SerializeObject(value);
 			await targetRef.SetRawJsonValueAsync(jsonData);
@@ -199,7 +206,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			DatabaseReference targetRef = usersRef.Child(childName);
+			DatabaseReference targetRef =
+				DB.GetReference($"users/{CurrentUserData.user_Id}").Child(childName);
 			await targetRef.SetValueAsync(value);
 			callback?.Invoke(value);
 		}
