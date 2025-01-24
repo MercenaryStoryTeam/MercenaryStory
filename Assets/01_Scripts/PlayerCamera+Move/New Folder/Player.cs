@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("유저네임")]
+    public string userName; // 유저네임을 저장할 변수 추가
+
     [Header("현재 체력")] // UserData 공유
     public float currentHp = 100f;
 
@@ -25,7 +28,6 @@ public class Player : MonoBehaviour
 
     // 골드 변경 이벤트
     public delegate void GoldChanged(float newGold);
-
     public event GoldChanged OnGoldChanged;
 
     // 무적 상태를 관리하기 위한 변수
@@ -41,7 +43,10 @@ public class Player : MonoBehaviour
         originalMoveSpeed = moveSpeed;
 
         // FirebaseManager UserData에서 현재 체력 가져오기 (현재 주석 처리됨)
-        // currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+        currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+
+        // 유저 네임 가져오기 
+        userName = FirebaseManager.Instance.CurrentUserData.user_Name;
 
         // SkillFsm 컴포넌트 가져오기
         skillFsm = GetComponent<SkillFsm>();

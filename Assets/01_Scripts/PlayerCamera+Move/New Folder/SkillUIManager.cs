@@ -40,14 +40,42 @@ public class SkillUIManager : MonoBehaviour
 
     private void Start()
     {
-        playerFsm = StageManager.Instance.currentPlayerFsm;
-        skillFsm = playerFsm.gameObject.GetComponent<SkillFsm>();
+        // 코루틴 시작하여 PlayerFsm과 SkillFsm 참조를 기다림
+        StartCoroutine(InitializeReferences());
+    }
+
+    private IEnumerator InitializeReferences()
+    {
+        // PlayerFsm과 SkillFsm이 할당될 때까지 대기
+        while (playerFsm == null || skillFsm == null)
+        {
+            if (playerFsm == null)
+            {
+                playerFsm = StageManager.Instance?.currentPlayerFsm;
+                if (playerFsm == null)
+                {
+                    Debug.LogWarning("[SkillUpgradeUI] PlayerFsm 참조를 찾지 못했습니다. 1초 후 다시 시도합니다.");
+                }
+            }
+
+            if (skillFsm == null && playerFsm != null)
+            {
+                skillFsm = playerFsm.gameObject.GetComponent<SkillFsm>();
+                if (skillFsm == null)
+                {
+                    Debug.LogWarning("[SkillUpgradeUI] SkillFsm 참조를 찾지 못했습니다. 1초 후 다시 시도합니다.");
+                }
+            }
+
+            yield return new WaitForSeconds(1f); // 1초 대기 후 다시 시도
+        }
+
         // Player 인스턴스 찾기
         player = FindObjectOfType<Player>();
         if (player == null)
         {
             Debug.LogError("[SkillUpgradeUI] Player 인스턴스를 찾을 수 없습니다.");
-            return;
+            yield break;
         }
 
         // Player의 골드 변경 이벤트 구독
@@ -100,7 +128,6 @@ public class SkillUIManager : MonoBehaviour
 
         // 골드 표시 업데이트 (현재 골드 값 전달)
         UpdateGoldDisplay(player.gold);
-
     }
 
     private void OnDestroy()
@@ -374,5 +401,3 @@ public class SkillUIManager : MonoBehaviour
         skillPanel.SetActive(!isActive);
     }
 }
-
-//

@@ -1265,6 +1265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1419610267306731242}
+  - component: {fileID: 1616623603647716490}
   m_Layer: 5
   m_Name: KSYPanel
   m_TagString: Untagged
@@ -1296,6 +1297,37 @@ RectTransform:
   m_AnchoredPosition: {x: -108.5, y: 230.5}
   m_SizeDelta: {x: 1633, y: 561}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1616623603647716490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2546904777017541406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 626fa3dfdab21e547a82eaf8963ed32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerFsm: {fileID: 0}
+  skillFsm: {fileID: 0}
+  skillPanel: {fileID: 3503273682890175543}
+  skillButtons:
+  - {fileID: 3245328343360656726}
+  - {fileID: 3001311441999830508}
+  - {fileID: 3976985888360378259}
+  - {fileID: 9206247003363559600}
+  skillTypes: 00000000010000000200000003000000
+  upgradeButton: {fileID: 8668485436864442265}
+  upgradeCostText: {fileID: 4183018057264261783}
+  skillNameText: {fileID: 6783145938041964027}
+  skillDescriptionText: {fileID: 7431239188874798916}
+  skillLevelText: {fileID: 8512335123662848221}
+  skillImage: {fileID: 2218418842608792977}
+  cooldownText: {fileID: 4403112143293624955}
+  exitButton: {fileID: 9086081927833235617}
+  openButton: {fileID: 8371494706148508032}
+  goldText: {fileID: 4066661323216832181}
 --- !u!1 &2564721194754539334
 GameObject:
   m_ObjectHideFlags: 0
@@ -2497,7 +2529,6 @@ GameObject:
   - component: {fileID: 4405336167490907000}
   - component: {fileID: 6786655784213572479}
   - component: {fileID: 6107361143080073042}
-  - component: {fileID: 6781585386694849237}
   m_Layer: 5
   m_Name: Skill Panel
   m_TagString: Untagged
@@ -2607,37 +2638,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6781585386694849237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3503273682890175543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 626fa3dfdab21e547a82eaf8963ed32a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerFsm: {fileID: 0}
-  skillFsm: {fileID: 0}
-  skillPanel: {fileID: 3503273682890175543}
-  skillButtons:
-  - {fileID: 3245328343360656726}
-  - {fileID: 3001311441999830508}
-  - {fileID: 3976985888360378259}
-  - {fileID: 9206247003363559600}
-  skillTypes: 00000000010000000200000003000000
-  upgradeButton: {fileID: 8668485436864442265}
-  upgradeCostText: {fileID: 4183018057264261783}
-  skillNameText: {fileID: 6783145938041964027}
-  skillDescriptionText: {fileID: 7431239188874798916}
-  skillLevelText: {fileID: 8512335123662848221}
-  skillImage: {fileID: 2218418842608792977}
-  cooldownText: {fileID: 4403112143293624955}
-  exitButton: {fileID: 9086081927833235617}
-  openButton: {fileID: 8371494706148508032}
-  goldText: {fileID: 4066661323216832181}
 --- !u!1 &3569458580448184977
 GameObject:
   m_ObjectHideFlags: 0
