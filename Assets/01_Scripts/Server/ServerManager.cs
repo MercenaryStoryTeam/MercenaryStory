@@ -61,6 +61,17 @@ public class ServerManager
 			IsOpen = true
 		};
 		PhotonNetwork.JoinOrCreateRoom(sceneName, options, TypedLobby.Default);
+		Debug.Log($"Loading first dungeon scene: {sceneName}");
+		FirebaseManager.Instance.CurrentPartyData.party_Members.Remove(FirebaseManager
+			.Instance.CurrentUserData);
+		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: sceneName);
+		FirebaseManager.Instance.CurrentPartyData.AddMember(FirebaseManager.Instance
+			.CurrentUserData);
+
+		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentServer",
+			FirebaseManager.Instance.CurrentUserData.user_CurrentServer);
+		// 변동된 파티 정보도 다시 올려야함
+		FirebaseManager.Instance.UploadCurrentPartyData();
 	}
 
 	public static void LoadScene(string sceneName)

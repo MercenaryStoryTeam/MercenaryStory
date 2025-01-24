@@ -145,6 +145,7 @@ public class Player : MonoBehaviour
 
         // 체력을 최대값으로 복원
         currentHp = maxHp;
+        StageManager.Instance.currentPlayerFsm.ReturnToTown();
     }
 
     // 드랍된 아이템 상호작용 하는 메서드
