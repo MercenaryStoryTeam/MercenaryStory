@@ -62634,6 +62634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a07c451c44dc04ea3b103666d35e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textMesh: {fileID: 0}
   Cam: {fileID: 0}
   distance: 350
 --- !u!1 &3117249895200173662
@@ -84840,6 +84841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userName: 
   currentHp: 100
   maxHp: 100
   moveSpeed: 5
@@ -84861,7 +84863,6 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   dieAnimationDuration: 2
   comboResetTime: 1
-  specialScenes: []
 --- !u!114 &6859112222779949191
 MonoBehaviour:
   m_ObjectHideFlags: 0

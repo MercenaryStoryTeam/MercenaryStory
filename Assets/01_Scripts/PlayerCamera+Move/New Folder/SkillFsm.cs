@@ -68,7 +68,7 @@ public class Skill
     public float SpeedBoost = 0f;
 
     [Header("Rush 스킬만 해당 (지속 시간)")]
-    public float Duration = 0.5f; // 기본값을 0.5초로 설정
+    public float Duration = 0.5f; 
 
     [Header("스킬 설명")]
     [TextArea]
