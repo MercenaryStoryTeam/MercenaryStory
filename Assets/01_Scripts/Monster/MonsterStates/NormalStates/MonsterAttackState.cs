@@ -14,9 +14,9 @@ public class MonsterAttackState : MonsterState
 
     public override void ExecuteState(Monster monster)
     {
-        if (monster.playerTransform != null)
+        if (monster.TargetTransform != null)
         {
-            Vector3 direction = (monster.playerTransform.position - monster.transform.position).normalized;
+            Vector3 direction = (monster.TargetTransform.position - monster.transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             monster.transform.rotation = Quaternion.Slerp(monster.transform.rotation, lookRotation, monster.RotationSpeed * Time.deltaTime);
         }

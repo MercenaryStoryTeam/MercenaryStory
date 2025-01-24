@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -25,7 +26,7 @@ public class Monster : MonoBehaviourPun
 
     public Vector3 patrolPoint;
     private LayerMask playerLayer;
-    public Transform playerTransform;
+    public Transform TargetTransform;
     
     private NavMeshAgent agent;
     
@@ -118,6 +119,7 @@ public class Monster : MonoBehaviourPun
     {
         if (currentState == MonsterStateType.Attack) 
         {
+            TargetTransform.GetComponent<Player>().TakeDamage(damage);
             ChangeState(MonsterStateType.Patrol);
         }
     }

@@ -57,7 +57,7 @@ public class MonsterPatrolState : MonsterState
 
         if (playerColliders.Length > 0)
         {
-            monster.playerTransform = playerColliders[0].transform;
+            monster.TargetTransform = playerColliders[0].transform;
             return true;
         }
     
