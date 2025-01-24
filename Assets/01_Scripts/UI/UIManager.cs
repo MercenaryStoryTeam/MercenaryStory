@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -33,6 +35,10 @@ public class UIManager : SingletonManager<UIManager>
 	
 	//Skill UI
 	[FormerlySerializedAs("InGamePanel")] public GameObject InGamePanel;
+	
+	//Mobile UI
+	public SkillUIManager skillUI;
+	public MobileUI mobile;
 
 	protected override void Awake()
 	{
@@ -43,10 +49,32 @@ public class UIManager : SingletonManager<UIManager>
 		equipment = FindObjectOfType<EquipmentPanel>();
 		inventoryMangerSystem = FindObjectOfType<InventoryManger>();
 		popUp = FindObjectOfType<PopUp>();
+		skillUI = FindObjectOfType<SkillUIManager>();
+		mobile = FindObjectOfType<MobileUI>();
 		popUp.PopUpClose();
 		CloseInventoryPanel();
 		CloseShopPanel();
 		CloseItemInfoPanel();
+
+		if (Application.isMobilePlatform) // 프로젝트 분리시 삭제 예정
+		{
+			mobile.gameObject.SetActive(true);
+		}
+	}
+
+	private void Update()
+	{
+		Scene currentScene = SceneManager.GetActiveScene();
+		if (currentScene.name == "Mobile_TitleScene")
+		{
+			skillUI.gameObject.SetActive(false);
+			mobile.gameObject.SetActive(false);
+		}
+		else
+		{
+			skillUI.gameObject.SetActive(true);
+			mobile.gameObject.SetActive(true);
+		}
 	}
 
 	#region Inventory

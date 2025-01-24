@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MobileUI : MonoBehaviour
@@ -13,10 +14,10 @@ public class MobileUI : MonoBehaviour
 
     private void Awake()
     {
-        MoblieUIOnClick();
+        MobileUIOnClick();
     }
 
-    private void MoblieUIOnClick()
+    private void MobileUIOnClick()
     {
         invenButton.onClick.AddListener(InvenButtonClicked);
         optionButton.onClick.AddListener(OptionButtonClicked);
