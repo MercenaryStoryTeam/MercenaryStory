@@ -46,6 +46,7 @@ MonoBehaviour:
   - RPC_MoveToScene
   - RPC_InstantiatePlayerPrefabs
   - RPCSetParent
+  - RPC_ReturnToTown
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
