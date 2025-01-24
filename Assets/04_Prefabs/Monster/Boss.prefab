@@ -1296,7 +1296,7 @@ MonoBehaviour:
   chargeCooltime: 5
   slashCooltime: 6
   hungerCooltime: 13
-  minionPrefab: {fileID: 4401516545361303541, guid: ce4ac5036db59954597bcadcb70111c8, type: 3}
+  minionPrefab: {fileID: 4401516545361303541, guid: 98e4bf65965350e41a28956287090383, type: 3}
   slashCount: 0
   currentState: 0
   Target: {fileID: 0}
