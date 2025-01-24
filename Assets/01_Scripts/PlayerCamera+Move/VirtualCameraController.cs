@@ -37,15 +37,14 @@ public class VirtualCameraController : MonoBehaviour
     [Header("카메라 쉐이크 지속 시간")]
     public float sakeDuration = 0.5f;
 
-    // VirtualCamera 가져오기
+    // VirtualCamera
     private CinemachineVirtualCamera vCam;
 
-    // Follow, LooAt 자동 할당을 위해
+    // Follow, LookAt 자동 할당
     private Transform followTarget;
     private Transform lookAtTarget;
 
-    // VirtualCamera Transposer 가져오기
-    // Binding Mode,Follow Offset, damping 설정을 위해
+    // VirtualCamera Transposer
     private CinemachineTransposer transposer;
 
     // 카메라의 원래 오프셋 저장
@@ -69,29 +68,37 @@ public class VirtualCameraController : MonoBehaviour
 
     void Start()
     {
+        // 여기서도 SetTargets()를 통해 참조 세팅
         SetTargets();
+
+        // 만약 SetTargets() 결과로 followTarget, lookAtTarget이 여전히 null이면 스크립트를 꺼둔다
         if (!followTarget || !lookAtTarget)
         {
-            Debug.LogError("Player 태그를 가진 오브젝트를 찾을 수 없습니다.");
+            Debug.LogError("Player 태그 또는 StageManager에서 플레이어를 찾을 수 없습니다. VirtualCameraController를 비활성화합니다.");
             enabled = false;
             return;
         }
 
+        // Transposer 설정
         transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
         vCam.m_Lens.FieldOfView = fieldOfView;
         vCam.Follow = followTarget;
         vCam.LookAt = lookAtTarget;
         ConfigureTransposer();
+
+        // 카메라 회전값 초기화
         transform.rotation = Quaternion.Euler(rotationX, rotationY, rotationZ);
     }
 
     void LateUpdate()
     {
+        // 혹시 중간에 Player나 StageManager가 새로 갱신되었을 수도 있으니 재검사
         if (!followTarget || !lookAtTarget)
         {
             SetTargets();
         }
 
+        // 정상적으로 타겟이 있으면 카메라 설정 반영
         if (followTarget && lookAtTarget)
         {
             vCam.m_Lens.FieldOfView = fieldOfView;
@@ -131,12 +138,18 @@ public class VirtualCameraController : MonoBehaviour
             }
 
             // 총 쉐이크 오프셋을 적용
-            transposer.m_FollowOffset = originalOffset + totalShakeOffset;
+            if (transposer != null)
+            {
+                transposer.m_FollowOffset = originalOffset + totalShakeOffset;
+            }
         }
         else
         {
             // 활성화된 쉐이크가 없으면 원래 오프셋으로 복귀
-            transposer.m_FollowOffset = originalOffset;
+            if (transposer != null)
+            {
+                transposer.m_FollowOffset = originalOffset;
+            }
         }
     }
 
@@ -162,31 +175,59 @@ public class VirtualCameraController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// StageManager.Instance.currentPlayerFsm에서 플레이어를 받아 Follow/LookAt Target 세팅
+    /// </summary>
     private void SetTargets()
     {
-        if (!followTarget || !lookAtTarget)
+        // 1) StageManager 자체가 있는지 먼저 확인
+        if (StageManager.Instance == null)
         {
-            GameObject player = StageManager.Instance.currentPlayerFsm.gameObject;
-            if (player)
-            {
-                followTarget = player.transform;
-                lookAtTarget = player.transform;
-                vCam.Follow = followTarget;
-                vCam.LookAt = lookAtTarget;
-            }
+            Debug.LogWarning("StageManager.Instance가 존재하지 않습니다. 아직 초기화되지 않았거나 씬에 없습니다.");
+            return;
+        }
+
+        // 2) currentPlayerFsm이 세팅되어 있는지 확인
+        if (StageManager.Instance.currentPlayerFsm == null)
+        {
+            Debug.LogWarning("StageManager.Instance.currentPlayerFsm이 null입니다. 플레이어 FSM이 할당되지 않았습니다.");
+            return;
+        }
+
+        // 3) 실제 player 오브젝트 체크
+        GameObject player = StageManager.Instance.currentPlayerFsm.gameObject;
+        if (player == null)
+        {
+            Debug.LogWarning("StageManager.Instance.currentPlayerFsm.gameObject가 null입니다. 플레이어 오브젝트를 찾을 수 없습니다.");
+            return;
+        }
+
+        // 4) 정상적으로 찾았다면 Follow와 LookAt을 지정
+        followTarget = player.transform;
+        lookAtTarget = player.transform;
+
+        if (vCam != null)
+        {
+            vCam.Follow = followTarget;
+            vCam.LookAt = lookAtTarget;
         }
     }
 
-    // 카메라 쉐이크를 위한 메서드
-    // duration을 외부에서 할당 받는 이유
-    // 몬스터에게 데미지를 줄 때마다 흔들림 지속 시간을 동적으로 설정하기 위함
-    // 다르게 표현하면 -> 몬스터에게 데미지를 줄 때마다 새로운 지속 시간을 할당 받음으로써 카메라 흔들림을 구현하려는 것
+    /// <summary>
+    /// 카메라 쉐이크를 발생시키는 메서드
+    /// </summary>
     public void ShakeCamera(float duration)
     {
         // 설정된 범위 내에서 랜덤한 magnitude 선택
         float magnitude = Random.Range(minShakeMagnitude, maxShakeMagnitude);
+
         // 새로운 쉐이크 효과 추가
-        activeShakes.Add(new ShakeInstance { duration = duration, magnitude = magnitude, elapsed = 0f });
+        activeShakes.Add(new ShakeInstance
+        {
+            duration = duration,
+            magnitude = magnitude,
+            elapsed = 0f
+        });
     }
 
     // 쉐이크 인스턴스 클래스
@@ -199,6 +240,6 @@ public class VirtualCameraController : MonoBehaviour
         public float magnitude;
 
         // 경과 시간
-        public float elapsed; 
+        public float elapsed;
     }
 }
