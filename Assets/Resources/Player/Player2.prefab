@@ -84595,7 +84595,6 @@ GameObject:
   - component: {fileID: 6838751181071303047}
   - component: {fileID: 6926666832201161730}
   - component: {fileID: 8420940792940581869}
-  - component: {fileID: 2171980396900567011}
   - component: {fileID: 5554901594764154213}
   - component: {fileID: 276803345708013931}
   - component: {fileID: 6859112222779949191}
@@ -84824,20 +84823,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ac3b52269fc6c84e96d9f3f63b027fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2171980396900567011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5217226068447975561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 038d495732a423c4dba4813d391077a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 5554901594764154213}
-  HpBarPanel: {fileID: 0}
 --- !u!114 &5554901594764154213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84851,7 +84836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userName: 
-  currentHp: 100
+  currentHp: 0
   maxHp: 100
   moveSpeed: 5
   suckBlood: 3

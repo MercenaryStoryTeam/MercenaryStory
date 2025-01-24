@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public string userName; // 유저네임을 저장할 변수 추가
 
     [Header("현재 체력")] // UserData 공유
-    public float currentHp = 100f;
+    public float currentHp = 0f;
 
     [Header("최대 체력")] // UserData 공유
     public float maxHp = 100;

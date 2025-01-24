@@ -1266,6 +1266,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1419610267306731242}
   - component: {fileID: 1616623603647716490}
+  - component: {fileID: 1182927403592699903}
+  - component: {fileID: 4091000336997800314}
   m_Layer: 5
   m_Name: KSYPanel
   m_TagString: Untagged
@@ -1328,6 +1330,33 @@ MonoBehaviour:
   exitButton: {fileID: 9086081927833235617}
   openButton: {fileID: 8371494706148508032}
   goldText: {fileID: 4066661323216832181}
+--- !u!114 &1182927403592699903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2546904777017541406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038d495732a423c4dba4813d391077a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HpBarPanel: {fileID: 6897350379804528400}
+  player: {fileID: 0}
+--- !u!114 &4091000336997800314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2546904777017541406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b46e638dce0a01e4083909e537744dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownImage: {fileID: 0}
 --- !u!1 &2564721194754539334
 GameObject:
   m_ObjectHideFlags: 0

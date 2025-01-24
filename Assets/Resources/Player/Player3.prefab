@@ -42699,17 +42699,16 @@ GameObject:
   - component: {fileID: 5505119368732177695}
   - component: {fileID: 9108410174757216962}
   - component: {fileID: 6487606610460918277}
-  - component: {fileID: 2327487289394995362}
   - component: {fileID: 3596344939977100153}
   - component: {fileID: 7690623949527391609}
   - component: {fileID: 3705100012675952067}
   - component: {fileID: 9147117680793716579}
   - component: {fileID: 6350115552468790465}
-  - component: {fileID: 3290496616413853556}
   - component: {fileID: 8836709825944835253}
   - component: {fileID: 8285145042828244473}
   - component: {fileID: 9147127068114676749}
   - component: {fileID: 3998805805947729254}
+  - component: {fileID: 2327487289394995362}
   - component: {fileID: 6204660149819172763}
   m_Layer: 6
   m_Name: Player3
@@ -42816,19 +42815,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &2327487289394995362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2924230139879159387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forceMobile: 0
 --- !u!114 &3596344939977100153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42946,20 +42932,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ac3b52269fc6c84e96d9f3f63b027fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3290496616413853556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2924230139879159387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 038d495732a423c4dba4813d391077a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 8836709825944835253}
-  HpBarPanel: {fileID: 0}
 --- !u!114 &8836709825944835253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42972,11 +42944,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userName: 
   currentHp: 0
-  maxHp: 0
+  maxHp: 100
   moveSpeed: 5
   suckBlood: 3
-  gold: 540
+  gold: 500
   originalMoveSpeed: 0
 --- !u!114 &8285145042828244473
 MonoBehaviour:
@@ -42993,7 +42966,6 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   dieAnimationDuration: 2
   comboResetTime: 1
-  specialScenes: []
 --- !u!114 &9147127068114676749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43131,6 +43103,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFsm: {fileID: 8285145042828244473}
   skillFsm: {fileID: 9147127068114676749}
+--- !u!114 &2327487289394995362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2924230139879159387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceMobile: 0
 --- !u!114 &6204660149819172763
 MonoBehaviour:
   m_ObjectHideFlags: 0
