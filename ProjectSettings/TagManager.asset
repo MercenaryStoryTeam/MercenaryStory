@@ -7,6 +7,7 @@ TagManager:
   - Minion
   - DetectCollider
   - VirtualCamera
+  - Monster
   layers:
   - Default
   - TransparentFX
