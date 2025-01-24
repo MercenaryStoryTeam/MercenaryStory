@@ -4,16 +4,16 @@ public class Weapon : MonoBehaviour
 {
 	[Header("무기 공격력")] public int damage = 10;
 
-	[Header("몬스터 레이어")] public LayerMask Monster;
-
 	// Player 스크립트 참조
 	private Player player;
+	private FSMManager manager;
 
 	private void Start()
 	{
 		// 방법1: 부모 객체에 붙어있는 Player 스크립트 참조
 		player = GetComponentInParent<Player>();
-
+		manager = GetComponentInParent<FSMManager>();
+		
 		// 방법1 실패
 		if (player == null)
 		{
@@ -50,11 +50,21 @@ public class Weapon : MonoBehaviour
 	// 콜라이더 충돌 시 호출
 	private void OnTriggerEnter(Collider collider)
 	{
-		print(collider.gameObject.name);
-		if (collider.CompareTag("Monster"))
+		if (manager.currentState == FSMManager.PlayerState.Attack1 ||
+		    manager.currentState == FSMManager.PlayerState.Attack2 ||
+		    manager.currentState == FSMManager.PlayerState.Skill1 ||
+		    manager.currentState == FSMManager.PlayerState.Skill2)
 		{
-			collider.gameObject.GetComponent<Monster>().TakeDamage(damage);
-			player.SuckBlood();
+			if (collider.CompareTag("Monster"))
+			{
+				collider.gameObject.GetComponent<Monster>().TakeDamage(damage);
+				player.SuckBlood();
+			}
+			else if (collider.CompareTag("Minion"))
+			{
+				collider.gameObject.GetComponent<Minion>().TakeDamage(damage);
+				player.SuckBlood();
+			}
 		}
 	}
 }
