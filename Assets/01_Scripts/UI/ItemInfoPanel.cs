@@ -67,6 +67,7 @@ public class ItemInfoPanel : MonoBehaviour
 		{
 			equipment.SetCurrentEquip(currentSelectedSlot);
 			equipPanel.SetEquipImage(currentSelectedSlot);
+			InventoryManger.Instance.UpdateSlotData();
 		}
 		else
 		{

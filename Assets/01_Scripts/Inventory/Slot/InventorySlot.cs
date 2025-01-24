@@ -69,7 +69,6 @@ public class InventorySlot : MonoBehaviour
 				MoveItemToSellSlot();
 				break;
 		}
-		
 	}
 
 	public void OnSlotRightClicked(BaseEventData eventData)
@@ -79,12 +78,14 @@ public class InventorySlot : MonoBehaviour
 		{
 			if (slotType == SlotType.Inventory && item != null && item.itemClass == 1)
 			{
-				GameObject playerObject = GameObject.Find(FirebaseManager.Instance.CurrentUserData.user_Name);
+				GameObject playerObject =
+					GameObject.Find(FirebaseManager.Instance.CurrentUserData.user_Name);
 				Equipment playerEquipment = playerObject?.GetComponent<Equipment>();
 				if (playerEquipment != null)
 				{
 					playerEquipment.SetCurrentEquip(this);
 					UIManager.Instance.equipment.SetEquipImage(this);
+					InventoryManger.Instance.UpdateSlotData();
 				}
 			}
 		}
@@ -96,7 +97,7 @@ public class InventorySlot : MonoBehaviour
 		{
 			return;
 		}
-		
+
 		List<InventorySlot> sellSlots = UIManager.Instance.shop.sellSlots;
 
 		if (item.itemClass == 1)
@@ -112,7 +113,7 @@ public class InventorySlot : MonoBehaviour
 					UIManager.Instance.shop.originalSlotState[sellSlot] = this;
 					break;
 				}
-			} 
+			}
 		}
 
 		if (item.itemClass == 2)
@@ -120,10 +121,10 @@ public class InventorySlot : MonoBehaviour
 			InventorySlot currentSellSlot = null;
 			foreach (InventorySlot slot in sellSlots)
 			{
-				if (slot.item != null && 
-					slot.item == item && 
-					UIManager.Instance.shop.originalSlotState.ContainsKey(slot) &&
-					UIManager.Instance.shop.originalSlotState[slot] == this)
+				if (slot.item != null &&
+				    slot.item == item &&
+				    UIManager.Instance.shop.originalSlotState.ContainsKey(slot) &&
+				    UIManager.Instance.shop.originalSlotState[slot] == this)
 				{
 					currentSellSlot = slot;
 					break;
@@ -142,8 +143,8 @@ public class InventorySlot : MonoBehaviour
 					canvasGroup.interactable = false;
 				}
 			}
-			
-			else if(currentSellSlot == null)
+
+			else if (currentSellSlot == null)
 			{
 				foreach (InventorySlot sellSlot in sellSlots)
 				{
@@ -160,6 +161,7 @@ public class InventorySlot : MonoBehaviour
 						{
 							canvasGroup.interactable = false;
 						}
+
 						break;
 					}
 				}
