@@ -23,3 +23,7 @@ MonoBehaviour:
   attackRange: 2
   returnRange: 10
   goldReward: 100
+  dropItems:
+  - {fileID: 11400000, guid: 20eed26523d5f3c4a9762a4dcd96864a, type: 2}
+  - {fileID: 11400000, guid: f11f40558aae95b4c8101e0878d192e8, type: 2}
+  - {fileID: 11400000, guid: 1ad7f4488a196014ab25f38c1eabd48e, type: 2}

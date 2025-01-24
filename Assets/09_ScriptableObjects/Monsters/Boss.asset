@@ -23,3 +23,9 @@ MonoBehaviour:
   attackRange: 0
   returnRange: 0
   goldReward: 0
+  dropItems:
+  - {fileID: 11400000, guid: f6e06da10d79f6648987c48d30a86a43, type: 2}
+  - {fileID: 11400000, guid: 5054f12cfa98a5b41bb897a710d3dcb5, type: 2}
+  - {fileID: 11400000, guid: bac05375a62d19343be6f9858006d49b, type: 2}
+  - {fileID: 11400000, guid: 4559711772e86e843a0d69ac8d4ce027, type: 2}
+  - {fileID: 11400000, guid: aa99a83a2831d0b4d8944a80a63d921d, type: 2}
