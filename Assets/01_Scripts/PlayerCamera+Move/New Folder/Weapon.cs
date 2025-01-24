@@ -50,30 +50,11 @@ public class Weapon : MonoBehaviour
 	// 콜라이더 충돌 시 호출
 	private void OnTriggerEnter(Collider collider)
 	{
-		// 충돌한 객체의 레이어가 몬스터라면 실행
-		if (((1 << collider.gameObject.layer) & Monster.value) != 0)
+		print(collider.gameObject.name);
+		if (collider.CompareTag("Monster"))
 		{
-			// 충돌한 객체에서 Monster 스크립트를 참조
-			Monster monster = collider.gameObject.GetComponent<Monster>();
-			if (monster != null)
-			{
-				// 몬스터에게 데미지 적용
-				monster.TakeDamage(damage);
-
-				// 플레이어 스크립트가 유효하다면 흡혈 처리
-				if (player != null)
-				{
-					player.SuckBlood(); // Player 스크립트의 SuckBlood 메서드 호출
-				}
-				else
-				{
-					Debug.LogWarning("Player가 설정되지 않았습니다. SuckBlood 호출 불가");
-				}
-			}
-			else
-			{
-				Debug.LogError($"충돌한 객체에 Monster 스크립트가 없습니다. 객체 이름: {collider.gameObject.name}");
-			}
+			collider.gameObject.GetComponent<Monster>().TakeDamage(damage);
+			player.SuckBlood();
 		}
 	}
 }
