@@ -1,13 +1,13 @@
 using Photon.Pun;
-using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class Monster : MonoBehaviourPun
+public class Monster : MonoBehaviourPun
 {
+    public MonsterData monsterData;
     #region 변수
     private int hp;
     private int maxHp;
@@ -59,8 +59,24 @@ public abstract class Monster : MonoBehaviourPun
     public MonsterStateMachine StateMachine => stateMachine;
     
     #endregion
-    
-    protected virtual void Start()
+
+    private void Awake()
+    {
+        this.hp = monsterData.hp;
+        this.maxHp = monsterData.maxHp;
+        this.damage = monsterData.damage;
+        this.moveSpeed = monsterData.moveSpeed;
+        this.attackSpeed = monsterData.attackSpeed;
+        this.rotationSpeed = monsterData.rotationSpeed;
+        this.patrolRange = monsterData.patrolRange;
+        this.detectionRange = monsterData.detectionRange;
+        this.attackRange = monsterData.attackRange;
+        this.returnRange = monsterData.returnRange;
+        this.goldReward = monsterData.goldReward;
+        this.dropItems = monsterData.dropItems;
+    }
+
+    protected void Start()
     {
         patrolPoint = transform.position;
         animator = GetComponent<Animator>();
@@ -71,6 +87,7 @@ public abstract class Monster : MonoBehaviourPun
         stateMachine.ChangeState(MonsterStateType.Patrol);
         cameraController = FindObjectOfType<VirtualCameraController>();
         monsterHpBar = FindObjectOfType<MonsterHpBar>();
+        
     }
 
     // 플레이어 레이어 찾기
@@ -103,7 +120,7 @@ public abstract class Monster : MonoBehaviourPun
         }
     }
 
-    protected virtual void Update()
+    protected void Update()
     {
         currentState = stateMachine.currentStateType;
         stateMachine.CurrentState?.ExecuteState(this);
