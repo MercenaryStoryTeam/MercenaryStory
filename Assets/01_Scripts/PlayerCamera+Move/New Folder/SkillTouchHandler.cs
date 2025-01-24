@@ -44,18 +44,6 @@ public class SkillTouchHandler : MonoBehaviour
 
     private void Awake()
     {
-        // SkillFsm 참조 확인
-        if (skillFsm == null)
-        {
-            skillFsm = FindObjectOfType<SkillFsm>();
-            if (skillFsm == null)
-            {
-                Debug.LogError("SkillFsm을 찾을 수 없습니다.");
-                enabled = false;
-                return;
-            }
-        }
-
         // 버튼과 스킬 타입 매핑 초기화
         buttonSkillMap = new Dictionary<GameObject, SkillType>();
         foreach (var skillButton in skillButtons)
@@ -72,6 +60,17 @@ public class SkillTouchHandler : MonoBehaviour
 
     private void Update()
     {
+        // SkillFsm 참조 확인
+        if (skillFsm == null)
+        {
+            skillFsm = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<SkillFsm>();
+            if (skillFsm == null)
+            {
+                Debug.LogError("SkillFsm을 찾을 수 없습니다.");
+                enabled = false;
+                return;
+            }
+        }
         UpdateCooldownUI();
     }
 
