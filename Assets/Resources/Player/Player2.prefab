@@ -148310,6 +148310,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 45
       objectReference: {fileID: 0}
+    - target: {fileID: 8688819428145895557, guid: 3600c07e2c8b707489b8a22a20637217, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -148340,6 +148344,10 @@ PrefabInstance:
     - target: {fileID: 3159474977372533262, guid: 8298765ebb8de9a4f9ac050de46afdd6, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3773338481555302512, guid: 8298765ebb8de9a4f9ac050de46afdd6, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4291492670117380738, guid: 8298765ebb8de9a4f9ac050de46afdd6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -149062,6 +149070,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7195537844324561175}
     m_Modifications:
+    - target: {fileID: 4752210575237613166, guid: 2aaf02a017aa7c145a9a79213a156c2c, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5054878965674589916, guid: 2aaf02a017aa7c145a9a79213a156c2c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.12
@@ -150106,6 +150118,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7195537844324561175}
     m_Modifications:
+    - target: {fileID: 5964764576762486062, guid: c827a55221ab7684e9369519f96b2afc, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7380884172882110819, guid: c827a55221ab7684e9369519f96b2afc, type: 3}
       propertyPath: m_Name
       value: PT_Longsword_04_a
@@ -151281,6 +151297,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7195537844324561175}
     m_Modifications:
+    - target: {fileID: 2308367898794511109, guid: c4b4f95010616c9408f3da55476dc6f8, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5285815693148109832, guid: c4b4f95010616c9408f3da55476dc6f8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.12
