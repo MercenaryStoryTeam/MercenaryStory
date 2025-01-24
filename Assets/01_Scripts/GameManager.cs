@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 			FirebaseManager.Instance.UploadCurrentUserData("user_IsOnline",
 				false); // isOnline 업데이트
 			FirebaseManager.Instance.UploadCurrentUserData("user_CurrentParty", "");
+			FirebaseManager.Instance.UploadCurrentUserData("user_Inventory",
+				FirebaseManager.Instance.CurrentUserData.user_Inventory);
 			FirebaseManager.Instance.UploadCurrentPartyData();
 		}
 	}
