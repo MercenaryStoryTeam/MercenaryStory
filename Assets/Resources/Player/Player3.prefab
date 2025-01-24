@@ -42711,6 +42711,7 @@ GameObject:
   - component: {fileID: 9147127068114676749}
   - component: {fileID: 3998805805947729254}
   - component: {fileID: 6204660149819172763}
+  - component: {fileID: 6571806797933288903}
   m_Layer: 6
   m_Name: Player3
   m_TagString: Player
@@ -42972,6 +42973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userName: 
   currentHp: 0
   maxHp: 0
   moveSpeed: 5
@@ -42993,7 +42995,6 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   dieAnimationDuration: 2
   comboResetTime: 1
-  specialScenes: []
 --- !u!114 &9147127068114676749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43149,6 +43150,19 @@ MonoBehaviour:
   - {fileID: 560224401645327574}
   - {fileID: 3337348061980693027}
   - {fileID: 4137177160980694160}
+--- !u!114 &6571806797933288903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2924230139879159387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceMobile: 1
 --- !u!1 &2929419854527992427
 GameObject:
   m_ObjectHideFlags: 0
