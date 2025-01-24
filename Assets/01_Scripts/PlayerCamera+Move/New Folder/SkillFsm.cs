@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -68,7 +67,7 @@ public class Skill
     public float SpeedBoost = 0f;
 
     [Header("Rush 스킬만 해당 (지속 시간)")]
-    public float Duration = 0.5f; 
+    public float Duration = 0.5f;
 
     [Header("스킬 설명")]
     [TextArea]
@@ -79,9 +78,6 @@ public class Skill
 
     [Header("레벨에 따른 이펙트 및 스폰 포인트 리스트")]
     public List<SkillEffect> SkillEffects;
-
-    [Header("쿨타임바")]
-    public Image CooldownImage;
 
     // 쿨타임 작동 여부 체크를 위한 변수
     [HideInInspector]
@@ -103,8 +99,7 @@ public class Skill
         }
     }
 
-    // 쿨타임을 미리 계산하여 저장하고, 필요할 때마다 계산하지 않고 저장된 값을 사용
-    // 사용하는 가장 큰 이유: 중복 계산 방지
+    // 쿨타임을 미리 계산하여 저장
     [HideInInspector]
     public float CachedCooldown;
 
@@ -185,7 +180,7 @@ public class Skill
     }
 }
 
-// ======================================================================================================================================== 분기점
+// ========================================================================================================================================
 
 [RequireComponent(typeof(Animator))]
 public class SkillFsm : MonoBehaviour
@@ -260,7 +255,9 @@ public class SkillFsm : MonoBehaviour
                         // 스폰 포인트가 발견되면 기본 이펙트 프리팹을 지정
                         SkillEffect skillEffect = new SkillEffect
                         {
-                            ParticleEffect = (skill.SkillEffects != null && lvl - 1 < skill.SkillEffects.Count) ? skill.SkillEffects[lvl - 1].ParticleEffect : null,
+                            ParticleEffect = (skill.SkillEffects != null && lvl - 1 < skill.SkillEffects.Count)
+                                ? skill.SkillEffects[lvl - 1].ParticleEffect
+                                : null,
                             ParticleSpawnPoint = spawnPoint
                         };
                         foundSkillEffects.Add(skillEffect);
@@ -277,7 +274,7 @@ public class SkillFsm : MonoBehaviour
                 skill.SkillEffects = foundSkillEffects;
             }
 
-            // SkillFsm 참조 설정
+            // SkillFsm 참조 설정(중복)
             skill.SetSkillFsm(this);
         }
     }
@@ -288,15 +285,10 @@ public class SkillFsm : MonoBehaviour
         foreach (var skill in Skills)
         {
             skill.UpdateCooldown();
-            if (skill.CooldownImage != null)
-            {
-                skill.CooldownImage.fillAmount = 0f;
-                Log($"[SkillFsm] {skill.Name} 스킬의 쿨타임바가 초기화되었습니다.");
-            }
         }
     }
 
-    // 입력 이벤트 등록
+    // 입력 이벤트 등록 (예시)
     private void OnEnable()
     {
         PlayerInputManager.OnSkillInput += TriggerRushSkill;
@@ -305,7 +297,7 @@ public class SkillFsm : MonoBehaviour
         PlayerInputManager.OnShiftRightClickInput += TriggerSkill2;
     }
 
-    // 입력 이벤트 해제
+    // 입력 이벤트 해제 (예시)
     private void OnDisable()
     {
         PlayerInputManager.OnSkillInput -= TriggerRushSkill;
@@ -314,7 +306,7 @@ public class SkillFsm : MonoBehaviour
         PlayerInputManager.OnShiftRightClickInput -= TriggerSkill2;
     }
 
-    // 각 스킬에 대한 트리거
+    // 각 스킬에 대한 트리거 (예시)
     private void TriggerRushSkill()
     {
         ExternalTriggerSkill(SkillType.Rush);
@@ -367,7 +359,7 @@ public class SkillFsm : MonoBehaviour
         animator.SetTrigger(skill.TriggerName);
         Log($"[SkillFsm] {skill.Name} 스킬이 트리거되었습니다.");
 
-        // Rush 스킬이면 소리 재생
+        // 스킬 유형별 사운드 재생 (예시)
         switch (skillType)
         {
             case SkillType.Rush:
@@ -514,13 +506,6 @@ public class SkillFsm : MonoBehaviour
         skill.IsOnCooldown = true;
         skill.RemainingCooldown = skill.CachedCooldown;
 
-        // 쿨타임바 활성화 및 초기화
-        if (skill.CooldownImage != null)
-        {
-            skill.CooldownImage.fillAmount = 1f;
-            Log($"[CooldownCoroutine] {skill.Name} 스킬의 쿨타임바가 활성화되었습니다.");
-        }
-
         float elapsed = 0f;
         float totalCooldown = skill.CachedCooldown;
         float logInterval = 1f;
@@ -533,11 +518,6 @@ public class SkillFsm : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             skill.RemainingCooldown = Mathf.Max(totalCooldown - elapsed, 0f);
-
-            if (skill.CooldownImage != null)
-            {
-                skill.CooldownImage.fillAmount = 1f - (elapsed / totalCooldown);
-            }
 
             if (enableDebugLogs && elapsed >= nextLogTime)
             {
@@ -552,16 +532,9 @@ public class SkillFsm : MonoBehaviour
         skill.IsOnCooldown = false;
         skill.RemainingCooldown = 0f;
         Log($"[SkillFsm] {skill.Name} 스킬 쿨다운 종료");
-
-        // 쿨타임바 비활성화
-        if (skill.CooldownImage != null)
-        {
-            skill.CooldownImage.fillAmount = 0f;
-            Log($"[CooldownCoroutine] {skill.Name} 스킬의 쿨타임바가 비활성화되었습니다.");
-        }
     }
 
-    // 코드 내에서 반복적으로 사용되는 로그 출력을 간소화
+    // 코드 내에서 반복적으로 사용되는 로그 출력
     public void Log(string message)
     {
         if (enableDebugLogs)
@@ -580,11 +553,11 @@ public class SkillFsm : MonoBehaviour
             Debug.LogError(message);
     }
 
+    // 스킬 가져오기
     public Skill GetSkill(SkillType skillType)
     {
         Skill skill = Skills.Find(s => s.skillType == skillType);
 
-        // Skill 검색 결과 로그 출력
         if (skill != null)
         {
             if (enableDebugLogs)
@@ -630,7 +603,7 @@ public class SkillFsm : MonoBehaviour
         switch (skill.skillType)
         {
             case SkillType.Rush:
-                // Rush 스킬의 레벨업 로직 추가 (예: 데미지 증가)
+                // Rush 스킬의 레벨업 로직 필요 시 추가
                 break;
             case SkillType.Parry:
             case SkillType.Skill1:
@@ -642,7 +615,6 @@ public class SkillFsm : MonoBehaviour
                 break;
         }
 
-        // 추가적인 속성 조정이 필요할 경우 여기에 구현
+        // 추가적인 속성 조정이 필요할 경우 여기서 구현
     }
 }
-

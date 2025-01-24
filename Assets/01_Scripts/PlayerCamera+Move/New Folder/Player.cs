@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("유저네임")]
-    public string userName; // 유저네임을 저장할 변수 추가
-
     [Header("현재 체력")] // UserData 공유
-    public float currentHp = 100f;
+    public float currentHp = 0f;
 
-    [Header("최대 체력")] // UserData 공유
+    [Header("최대 체력")]
     public float maxHp = 100;
 
-    [Header("이동 속도")] public float moveSpeed = 5f;
+    [Header("이동 속도")]
+    public float moveSpeed = 5f;
 
-    [Header("흡혈 비율")] public float suckBlood = 3f;
+    [Header("흡혈 비율")]
+    public float suckBlood = 3f;
 
-    [Header("골드")] // UserData 공유
+    [Header("골드")] // UserData 공유 -> 추후에, 일단 고정
     public float gold = 0f;
 
     [HideInInspector] public float originalMoveSpeed;
@@ -44,9 +43,6 @@ public class Player : MonoBehaviour
 
         // FirebaseManager UserData에서 현재 체력 가져오기 (현재 주석 처리됨)
         currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
-
-        // 유저 네임 가져오기 
-        userName = FirebaseManager.Instance.CurrentUserData.user_Name;
 
         // SkillFsm 컴포넌트 가져오기
         skillFsm = GetComponent<SkillFsm>();
