@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class NickName : MonoBehaviour
 {
+    public TextMesh textMesh;
     public GameObject Cam;
     
     Vector3 startScale;
@@ -9,8 +10,10 @@ public class NickName : MonoBehaviour
 
     void Start()
     {
+        textMesh = gameObject.GetComponent<TextMesh>();
         Cam = GameObject.FindGameObjectWithTag("VirtualCamera");
         startScale = transform.localScale; 
+        textMesh.text = FirebaseManager.Instance.CurrentUserData.user_Name;
     }
 
     void Update()
