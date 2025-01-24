@@ -67517,7 +67517,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 3342405826453538178}
     - ParticleEffect: {fileID: 5689774737778594865}
       ParticleSpawnPoint: {fileID: 3342405826453538178}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -67544,7 +67543,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 0}
     - ParticleEffect: {fileID: 0}
       ParticleSpawnPoint: {fileID: 0}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -67571,7 +67569,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 0}
     - ParticleEffect: {fileID: 0}
       ParticleSpawnPoint: {fileID: 0}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -67598,7 +67595,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 0}
     - ParticleEffect: {fileID: 0}
       ParticleSpawnPoint: {fileID: 0}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
