@@ -998,7 +998,7 @@ GameObject:
   - component: {fileID: 675768405701076178}
   m_Layer: 15
   m_Name: Minion
-  m_TagString: Untagged
+  m_TagString: Minion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1091,9 +1091,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectCollider: {fileID: 0}
-  attackSound: {fileID: 0}
-  dieSound: {fileID: 0}
-  hitSound: {fileID: 0}
 --- !u!114 &-1246373072989398009
 MonoBehaviour:
   m_ObjectHideFlags: 0

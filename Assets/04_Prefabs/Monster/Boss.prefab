@@ -1227,7 +1227,7 @@ GameObject:
   - component: {fileID: 3219272887976752092}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1296,7 +1296,7 @@ MonoBehaviour:
   chargeCooltime: 5
   slashCooltime: 6
   hungerCooltime: 13
-  minionPrefab: {fileID: 4401516545361303541, guid: ce4ac5036db59954597bcadcb70111c8, type: 3}
+  minionPrefab: {fileID: 4401516545361303541, guid: 98e4bf65965350e41a28956287090383, type: 3}
   slashCount: 0
   currentState: 0
   Target: {fileID: 0}

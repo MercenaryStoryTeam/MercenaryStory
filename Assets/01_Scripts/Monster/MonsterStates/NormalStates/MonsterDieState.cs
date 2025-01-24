@@ -12,10 +12,10 @@ public class MonsterDieState : MonsterState
         StageManager.Instance.dieMonsterCount++;
 
         // PlayerTransform이 null인지 확인
-        if (monster.playerTransform != null)
+        if (monster.TargetTransform != null)
         {
             // playerTransform에서 Player 컴포넌트 가져오기
-            Player player = monster.playerTransform.GetComponent<Player>();
+            Player player = monster.TargetTransform.GetComponent<Player>();
 
             if (player != null)
             {

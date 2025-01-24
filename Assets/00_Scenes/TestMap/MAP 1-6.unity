@@ -4700,6 +4700,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[0]
+      value: 
+      objectReference: {fileID: 831020774}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[1]
+      value: 
+      objectReference: {fileID: 1404233891}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[2]
+      value: 
+      objectReference: {fileID: 2113970336}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[3]
+      value: 
+      objectReference: {fileID: 1164064706}
+    - target: {fileID: 15105945353806592, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
+      propertyPath: nestList.Array.data[4]
+      value: 
+      objectReference: {fileID: 348052678}
     - target: {fileID: 5863903103508586478, guid: 6c5faca13f204c80a5d24f8ff53af0cd, type: 3}
       propertyPath: m_LocalScale.x
       value: 1

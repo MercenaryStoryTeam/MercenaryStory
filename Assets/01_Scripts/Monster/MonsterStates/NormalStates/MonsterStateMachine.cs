@@ -32,8 +32,7 @@ public class MonsterStateMachine
             { MonsterStateType.Attack, new MonsterAttackState() },
             { MonsterStateType.Return, new MonsterReturnState() },
             { MonsterStateType.Die, new MonsterDieState() },
-            { MonsterStateType.GetHit, new MonsterDieState() }
-        };
+            { MonsterStateType.GetHit, new MonsterGetHitState() } };
     }
 
     public void ChangeState(MonsterStateType stateType)

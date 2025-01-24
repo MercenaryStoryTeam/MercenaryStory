@@ -4,16 +4,16 @@ public class Weapon : MonoBehaviour
 {
 	[Header("무기 공격력")] public int damage = 10;
 
-	[Header("몬스터 레이어")] public LayerMask Monster;
-
 	// Player 스크립트 참조
 	private Player player;
+	private FSMManager manager;
 
 	private void Start()
 	{
 		// 방법1: 부모 객체에 붙어있는 Player 스크립트 참조
 		player = GetComponentInParent<Player>();
-
+		manager = GetComponentInParent<FSMManager>();
+		
 		// 방법1 실패
 		if (player == null)
 		{
@@ -50,29 +50,20 @@ public class Weapon : MonoBehaviour
 	// 콜라이더 충돌 시 호출
 	private void OnTriggerEnter(Collider collider)
 	{
-		// 충돌한 객체의 레이어가 몬스터라면 실행
-		if (((1 << collider.gameObject.layer) & Monster.value) != 0)
+		if (manager.currentState == FSMManager.PlayerState.Attack1 ||
+		    manager.currentState == FSMManager.PlayerState.Attack2 ||
+		    manager.currentState == FSMManager.PlayerState.Skill1 ||
+		    manager.currentState == FSMManager.PlayerState.Skill2)
 		{
-			// 충돌한 객체에서 Monster 스크립트를 참조
-			Monster monster = collider.gameObject.GetComponent<Monster>();
-			if (monster != null)
+			if (collider.CompareTag("Monster"))
 			{
-				// 몬스터에게 데미지 적용
-				monster.TakeDamage(damage);
-
-				// 플레이어 스크립트가 유효하다면 흡혈 처리
-				if (player != null)
-				{
-					player.SuckBlood(); // Player 스크립트의 SuckBlood 메서드 호출
-				}
-				else
-				{
-					Debug.LogWarning("Player가 설정되지 않았습니다. SuckBlood 호출 불가");
-				}
+				collider.gameObject.GetComponent<Monster>().TakeDamage(damage);
+				player.SuckBlood();
 			}
-			else
+			else if (collider.CompareTag("Minion"))
 			{
-				Debug.LogError($"충돌한 객체에 Monster 스크립트가 없습니다. 객체 이름: {collider.gameObject.name}");
+				collider.gameObject.GetComponent<Minion>().TakeDamage(damage);
+				player.SuckBlood();
 			}
 		}
 	}
