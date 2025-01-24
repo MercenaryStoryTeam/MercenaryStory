@@ -67353,7 +67353,7 @@ MonoBehaviour:
   - {fileID: 473193453625847745}
   - {fileID: 1885751989485846024}
   - {fileID: 8476558585014286029}
-  sceneViewId: 0
+  sceneViewId: 6
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &473193453625847745
@@ -90787,7 +90787,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3342405826453538178
 Transform:
   m_ObjectHideFlags: 0
@@ -148870,6 +148870,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4783870109792203325}
     m_Modifications:
+    - target: {fileID: -5466108082153424529, guid: 2aaf02a017aa7c145a9a79213a156c2c, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5054878965674589916, guid: 2aaf02a017aa7c145a9a79213a156c2c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.12
@@ -148941,6 +148945,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4783870109792203325}
     m_Modifications:
+    - target: {fileID: -1206422294890796229, guid: c827a55221ab7684e9369519f96b2afc, type: 3}
+      propertyPath: sceneViewId
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7380884172882110819, guid: c827a55221ab7684e9369519f96b2afc, type: 3}
       propertyPath: m_Name
       value: PT_Longsword_04_a
@@ -149592,6 +149600,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4783870109792203325}
     m_Modifications:
+    - target: {fileID: -9123176761056013507, guid: 8298765ebb8de9a4f9ac050de46afdd6, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3159474977372533262, guid: 8298765ebb8de9a4f9ac050de46afdd6, type: 3}
       propertyPath: m_Name
       value: PT_Longsword_02_c
@@ -149663,6 +149675,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4783870109792203325}
     m_Modifications:
+    - target: {fileID: -5323431928666090469, guid: 3600c07e2c8b707489b8a22a20637217, type: 3}
+      propertyPath: sceneViewId
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1640572854395205642, guid: 3600c07e2c8b707489b8a22a20637217, type: 3}
       propertyPath: m_Name
       value: PT_Longsword_03_a
@@ -149734,6 +149750,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4783870109792203325}
     m_Modifications:
+    - target: {fileID: 200123424680851396, guid: c4b4f95010616c9408f3da55476dc6f8, type: 3}
+      propertyPath: sceneViewId
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5285815693148109832, guid: c4b4f95010616c9408f3da55476dc6f8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.12
