@@ -64,19 +64,30 @@ public class UIManager : SingletonManager<UIManager>
 
 	private void Update()
 	{
-		Scene currentScene = SceneManager.GetActiveScene();
-		if (currentScene.name == "Mobile_TitleScene")
-		{
-			skillUI.gameObject.SetActive(false);
-			mobile.gameObject.SetActive(false);
-		}
-		else
-		{
-			skillUI.gameObject.SetActive(true);
-			mobile.gameObject.SetActive(true);
-		}
+
+		MobileSetting();
 	}
 
+	public void MobileSetting()
+	{
+		GameObject mobileUI = GameObject.Find("MoblieUI");
+        if (mobileUI != null)
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            if (currentScene.name == "Mobile_TitleScene")
+            {
+                skillUI.gameObject.SetActive(false);
+                mobile.gameObject.SetActive(false);
+            }
+            else
+            {
+                skillUI.gameObject.SetActive(true);
+                mobile.gameObject.SetActive(true);
+            }
+        }
+
+		else return;
+    }
 	#region Inventory
 
 	public void OpenInventoryPanel()
