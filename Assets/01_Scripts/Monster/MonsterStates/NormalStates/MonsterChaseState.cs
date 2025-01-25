@@ -13,13 +13,13 @@ public class MonsterChaseState : MonsterState
 
     public override void ExecuteState(Monster monster)
     {
+        monster.Agent.SetDestination(monster.TargetTransform.position);
         if (Time.time - stateEnterTime < minStateTime) return;
         if (IsAttackable(monster))
         {
             monster.ChangeState(MonsterStateType.Attack);
         }
         
-        monster.Agent.SetDestination(monster.TargetTransform.position);
     }
 
     public override void ExitState(Monster monster)
