@@ -120,7 +120,7 @@ public class Monster : MonoBehaviourPun
         if (currentState == MonsterStateType.Attack) 
         {
             TargetTransform.GetComponent<Player>().TakeDamage(damage);
-            ChangeState(MonsterStateType.Patrol);
+            ChangeState(MonsterStateType.Chase);
         }
     }
     
@@ -128,7 +128,7 @@ public class Monster : MonoBehaviourPun
     {
         if (currentState == MonsterStateType.GetHit)
         {
-            ChangeState(MonsterStateType.Patrol);
+            ChangeState(MonsterStateType.Chase);
         }
     }
 
