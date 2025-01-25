@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     public float suckBlood = 3f;
 
     [Header("골드")] // UserData 공유 -> 추후에, 일단 고정
-    public float gold = 0f;
+    public float gold;
 
     [HideInInspector] public float originalMoveSpeed;
 
@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
 
         // FirebaseManager UserData에서 현재 체력 가져오기 (현재 주석 처리됨)
         currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
+        gold = FirebaseManager.Instance.CurrentUserData.user_Gold;
 
         // SkillFsm 컴포넌트 가져오기
         skillFsm = GetComponent<SkillFsm>();
