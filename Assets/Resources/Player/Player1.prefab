@@ -67218,7 +67218,6 @@ GameObject:
   - component: {fileID: 473193453625847745}
   - component: {fileID: 1885751989485846024}
   - component: {fileID: 8476558585014286029}
-  - component: {fileID: 1708585609685523215}
   - component: {fileID: 3109342957528400570}
   - component: {fileID: 461331483928832361}
   - component: {fileID: 5235109630303961540}
@@ -67435,18 +67434,6 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
---- !u!114 &1708585609685523215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3907103267636737127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ac3b52269fc6c84e96d9f3f63b027fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3109342957528400570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67459,7 +67446,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userName: 
   currentHp: 0
   maxHp: 100
   moveSpeed: 5
@@ -67543,7 +67529,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 7590595874633185710}
     - ParticleEffect: {fileID: 7592258577982924686}
       ParticleSpawnPoint: {fileID: 7590595874633185710}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -67570,7 +67555,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 8098440928815862297}
     - ParticleEffect: {fileID: 2046091208076979268}
       ParticleSpawnPoint: {fileID: 2049544767341468612}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -67597,12 +67581,11 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 7861170559290047476}
     - ParticleEffect: {fileID: 1123675413641663058}
       ParticleSpawnPoint: {fileID: 1121050148222200134}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
   player: {fileID: 3109342957528400570}
-  enableDebugLogs: 1
+  enableDebugLogs: 0
 --- !u!114 &-6693327397993148701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67617,6 +67600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFsm: {fileID: 461331483928832361}
   skillFsm: {fileID: 5235109630303961540}
+  currentState: 0
 --- !u!114 &861205683803348506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135030,6 +135014,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   Cam: {fileID: 0}
+  player: {fileID: 0}
   distance: 350
 --- !u!1 &8142869831368052252
 GameObject:
@@ -148930,7 +148915,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4752210575237613166, guid: 2aaf02a017aa7c145a9a79213a156c2c, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5054878965674589916, guid: 2aaf02a017aa7c145a9a79213a156c2c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -149424,7 +149409,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5964764576762486062, guid: c827a55221ab7684e9369519f96b2afc, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7380884172882110819, guid: c827a55221ab7684e9369519f96b2afc, type: 3}
       propertyPath: m_Name
@@ -150902,7 +150887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3773338481555302512, guid: 8298765ebb8de9a4f9ac050de46afdd6, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4291492670117380738, guid: 8298765ebb8de9a4f9ac050de46afdd6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -151256,7 +151241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8688819428145895557, guid: 3600c07e2c8b707489b8a22a20637217, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -151283,7 +151268,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2308367898794511109, guid: c4b4f95010616c9408f3da55476dc6f8, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5285815693148109832, guid: c4b4f95010616c9408f3da55476dc6f8, type: 3}
       propertyPath: m_LocalPosition.x

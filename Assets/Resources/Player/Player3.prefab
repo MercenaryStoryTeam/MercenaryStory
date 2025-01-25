@@ -42703,14 +42703,12 @@ GameObject:
   - component: {fileID: 7690623949527391609}
   - component: {fileID: 3705100012675952067}
   - component: {fileID: 9147117680793716579}
-  - component: {fileID: 6350115552468790465}
   - component: {fileID: 8836709825944835253}
   - component: {fileID: 8285145042828244473}
   - component: {fileID: 9147127068114676749}
   - component: {fileID: 3998805805947729254}
   - component: {fileID: 2327487289394995362}
   - component: {fileID: 6204660149819172763}
-  - component: {fileID: 6571806797933288903}
   m_Layer: 6
   m_Name: Player3
   m_TagString: Player
@@ -42921,18 +42919,6 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
---- !u!114 &6350115552468790465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2924230139879159387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ac3b52269fc6c84e96d9f3f63b027fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8836709825944835253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42945,7 +42931,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34e12168acc33c747951d1a4cf65b2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userName: 
   currentHp: 0
   maxHp: 100
   moveSpeed: 5
@@ -43003,7 +42988,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 6403140183184779664}
     - ParticleEffect: {fileID: 4281964795322000934}
       ParticleSpawnPoint: {fileID: 6403140183184779664}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -43030,7 +43014,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 570952204538020488}
     - ParticleEffect: {fileID: 569219682484935848}
       ParticleSpawnPoint: {fileID: 570952204538020488}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -43057,7 +43040,6 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 2795395625674143803}
     - ParticleEffect: {fileID: 319773092818987751}
       ParticleSpawnPoint: {fileID: 316466833700445543}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -43084,12 +43066,11 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 7207411253698921375}
     - ParticleEffect: {fileID: 4164117763885426025}
       ParticleSpawnPoint: {fileID: 4170112207802441341}
-    CooldownImage: {fileID: 0}
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
   player: {fileID: 8836709825944835253}
-  enableDebugLogs: 1
+  enableDebugLogs: 0
 --- !u!114 &3998805805947729254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43104,6 +43085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerFsm: {fileID: 8285145042828244473}
   skillFsm: {fileID: 9147127068114676749}
+  currentState: 0
 --- !u!114 &2327487289394995362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43135,19 +43117,6 @@ MonoBehaviour:
   - {fileID: 560224401645327574}
   - {fileID: 3337348061980693027}
   - {fileID: 4137177160980694160}
---- !u!114 &6571806797933288903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2924230139879159387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  forceMobile: 1
 --- !u!1 &2929419854527992427
 GameObject:
   m_ObjectHideFlags: 0
@@ -114381,6 +114350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textMesh: {fileID: 0}
   Cam: {fileID: 0}
+  player: {fileID: 0}
   distance: 350
 --- !u!1 &6175524765530701483
 GameObject:
