@@ -2,8 +2,6 @@ using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Monster : MonoBehaviourPun
@@ -119,7 +117,7 @@ public class Monster : MonoBehaviourPun
     {
         if (currentState == MonsterStateType.Attack) 
         {
-            TargetTransform.GetComponent<Player>().TakeDamage(damage);
+            TargetTransform.gameObject.GetComponent<Player>().TakeDamage(damage);
             ChangeState(MonsterStateType.Chase);
         }
     }
