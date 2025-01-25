@@ -78,8 +78,6 @@ public class PlayerInputManager : MonoBehaviourPun
         {
             HandleDesktopInputs();
         }
-
-        player.DropItemInteraction();
     }
 
     // 컴퓨터 입력 
@@ -139,6 +137,31 @@ public class PlayerInputManager : MonoBehaviourPun
             UIManager.Instance.shop.TryOpenShop();
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (player.droppedItems.Count > 0)
+            {
+                for (int i = player.droppedItems.Count - 1; i >= 0; i--)
+                {
+                    if (player.droppedItems[i].droppedItem == null || player.droppedItems[i].droppedLightLine == null)
+                    {
+                        player.droppedItems.RemoveAt(i);
+                        continue;
+                    }
+
+                    if (Vector3.Distance(transform.position, player.droppedItems[i].droppedLightLine.transform.position) < 3f)
+                    {
+
+                        if (player.droppedItems[i].droppedItem != null && player.droppedItems[i].droppedLightLine != null)
+                        {
+                             InventoryManger.Instance.AddItemToInventory(player.droppedItems[i].droppedItem);
+                             Destroy(player.droppedItems[i].droppedLightLine);
+                        }
+                    }
+                }
+            }
+        }
+        
         if (Input.GetKeyDown(KeyCode.Z))
         {
             UIManager.Instance.OpenDungeonPanel();
