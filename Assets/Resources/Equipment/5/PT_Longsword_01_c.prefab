@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4752210575237613166}
   - component: {fileID: -5466108082153424529}
   - component: {fileID: -5629513731863932132}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: PT_Longsword_01_c
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,6 +145,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  Monster:
-    serializedVersion: 2
-    m_Bits: 0
