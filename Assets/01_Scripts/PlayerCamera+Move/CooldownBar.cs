@@ -9,8 +9,9 @@ public class CooldownBar : MonoBehaviour
     [System.Serializable]
     public class SkillCooldown
     {
-        public SkillType skillType;   // SkillFsm에서 정의된 SkillType 사용
-        public Image cooldownImage;   // 쿨타임 이미지
+        // SkillFsm에서 정의된 SkillType 사용
+        public SkillType skillType;   
+        public Image cooldownImage;   
     }
 
     // 스킬-이미지 리스트
@@ -20,9 +21,8 @@ public class CooldownBar : MonoBehaviour
     [Header("SkillFsm 참조")]
     public SkillFsm skillFsm;
 
-    // 참조 시도 간격 (초)
-    [SerializeField]
-    private float retryInterval = 1f;
+    // SkillFsm 참조 간격
+    private const float retryInterval = 1f; 
 
     private void Start()
     {
