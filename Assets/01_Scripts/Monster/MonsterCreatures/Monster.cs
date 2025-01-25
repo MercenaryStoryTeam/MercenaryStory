@@ -193,7 +193,7 @@ public class Monster : MonoBehaviourPun
 
     private void DroppedLightLine(ItemBase item)
     {
-        Player player = FindObjectOfType<Player>();
+        Player player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
         GameObject itemLightLine = Instantiate(item.dropLightLine, this.transform.position, Quaternion.identity);
         player.droppedItems.Add((itemLightLine, item));
     }
