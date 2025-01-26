@@ -10,8 +10,6 @@ public class UserData
 	public int user_Appearance { get; set; }
 	public string user_CurrentServer { get; set; }
 	public string user_CurrentParty { get; set; }
-	public int user_Rank { get; set; }
-	public float user_RankCurrentEXP { get; set; }
 	public float user_HP { get; set; }
 	public int user_weapon_item_Id { get; set; }
 	public List<SlotData> user_Inventory { get; set; } = new List<SlotData>();
@@ -33,11 +31,10 @@ public class UserData
 		user_Appearance = 0;
 		user_CurrentServer = "";
 		user_CurrentParty = "";
-		user_Rank = 1;
-		user_RankCurrentEXP = 0;
 		user_HP = 100;
 		user_weapon_item_Id = 32000;
 		user_Inventory = new List<SlotData>();
+		user_Gold = 500;
 		user_IsOnline = false;
 		user_Skills = new List<SkillData>();
 	}
@@ -47,8 +44,6 @@ public class UserData
 		int? appearance = null,
 		string currentServer = null,
 		string currentParty = null,
-		int? rank = null,
-		float? rankCurrentExp = null,
 		float? hp = null,
 		int? weaponItemId = null,
 		List<SlotData> inventory = null,
@@ -61,8 +56,6 @@ public class UserData
 		if (!string.IsNullOrEmpty(currentServer))
 			user_CurrentServer = currentServer;
 		if (!string.IsNullOrEmpty(currentParty)) user_CurrentParty = currentParty;
-		if (rank.HasValue) user_Rank = rank.Value;
-		if (rankCurrentExp.HasValue) user_RankCurrentEXP = rankCurrentExp.Value;
 		if (hp.HasValue) user_HP = hp.Value;
 		if (weaponItemId.HasValue) user_weapon_item_Id = weaponItemId.Value;
 		if (inventory != null) user_Inventory = inventory;
