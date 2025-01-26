@@ -64,6 +64,7 @@ public class Player : MonoBehaviour
 		currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
 		Debug.Log($"흡혈 회복량: {healAmount}/현재 체력: {currentHp}/{maxHp}");
+		FirebaseManager.Instance.CurrentUserData.user_HP = currentHp;
 	}
 
 	// 데미지 처리
@@ -86,6 +87,7 @@ public class Player : MonoBehaviour
 		currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
 		Debug.Log($"플레이어 체력: {currentHp}/{maxHp} (받은 데미지: {damage})");
+		FirebaseManager.Instance.CurrentUserData.user_HP = currentHp;
 
 		// 체력이 0 이하라면 사망 처리
 		if (currentHp <= 0)
@@ -147,6 +149,7 @@ public class Player : MonoBehaviour
 
 		// 체력을 최대값으로 복원
 		currentHp = maxHp;
+		FirebaseManager.Instance.CurrentUserData.user_HP = currentHp;
 		StageManager.Instance.currentPlayerFsm.ReturnToTown();
 	}
 
