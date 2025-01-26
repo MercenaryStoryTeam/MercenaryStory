@@ -529,6 +529,6 @@ public class PlayerFsm : MonoBehaviourPun
 		player.currentHp = player.maxHp;
 		FirebaseManager.Instance.CurrentUserData.UpdateUserData(
 			hp: player.currentHp);
-		ServerManager.LeaveAndLoadScene("LJW_1-1");
+		ServerManager.LeaveAndLoadScene("LJW_TownScene");
 	}
 }
