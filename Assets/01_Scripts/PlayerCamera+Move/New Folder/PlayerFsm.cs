@@ -40,7 +40,16 @@ public class PlayerFsm : MonoBehaviourPun
 
     private State currentState = State.Idle;
     private bool isDead = false;
-    private int attackCombo = 0;
+
+    // 콤보 시스템
+    private enum ComboState
+    {
+        None,
+        Attack1,
+        Attack2
+    }
+
+    private ComboState currentComboState = ComboState.None;
     private float lastAttackTime = 0f;
 
     // Player 스크립트 참조: 이동 속도, HP 관리 등 플레이어 전반의 데이터를 가져오기 위함
@@ -151,6 +160,7 @@ public class PlayerFsm : MonoBehaviourPun
         if (!isDead)
         {
             HandleState();
+            HandleComboReset();
         }
     }
 
@@ -193,29 +203,58 @@ public class PlayerFsm : MonoBehaviourPun
     // 플레이어가 공격을 시도할 때 호출되는 콤보 처리 함수
     private void HandleAttackInput()
     {
-        // 사망이거나, Idle 상태가 아니거나, 공격 잠금 중이면 공격 불가
-        if (isDead || currentState != State.Idle || isAttackLocked)
+        // 사망이거나, 공격 잠금 중이면 공격 불가
+        if (isDead || isAttackLocked)
         {
-            // 경고 메시지 출력
-            Debug.LogWarning("[PlayerFsm] 현재 Idle 상태가 아니므로 공격을 사용할 수 없습니다.");
+            Debug.LogWarning("[PlayerFsm] 사망했거나 공격이 잠금 상태입니다.");
             return;
         }
 
-        lastAttackTime = Time.time;
-        attackCombo++;
-        if (attackCombo > 2) // 최대 콤보를 2로 제한
+        // 콤보 타이밍 체크
+        if (Time.time - lastAttackTime > comboResetTime)
         {
-            attackCombo = 1;
+            // 콤보 타이머 초과 시 콤보 초기화
+            currentComboState = ComboState.None;
         }
 
-        switch (attackCombo)
+        lastAttackTime = Time.time;
+
+        // 콤보 단계에 따라 공격 처리
+        switch (currentComboState)
         {
-            case 1:
+            case ComboState.None:
+                currentComboState = ComboState.Attack1;
                 TransitionToState(State.Attack1);
                 break;
-            case 2:
+            case ComboState.Attack1:
+                currentComboState = ComboState.Attack2;
                 TransitionToState(State.Attack2);
                 break;
+            case ComboState.Attack2:
+                // 최대 콤보 단계 도달 시 추가 공격 불가 또는 반복
+                Debug.Log("[PlayerFsm] 최대 콤보 단계에 도달했습니다.");
+                currentComboState = ComboState.None;
+                break;
+        }
+
+        // 콤보 타이머 재시작
+        StartCoroutine(ComboResetCoroutine());
+    }
+
+    // 콤보 타이머를 리셋하는 코루틴
+    private IEnumerator ComboResetCoroutine()
+    {
+        yield return new WaitForSeconds(comboResetTime);
+        currentComboState = ComboState.None;
+    }
+
+    // 콤보 리셋을 확인하는 함수
+    private void HandleComboReset()
+    {
+        if (Time.time - lastAttackTime > comboResetTime && currentComboState != ComboState.None)
+        {
+            currentComboState = ComboState.None;
+            Debug.Log("[PlayerFsm] 콤보가 리셋되었습니다.");
         }
     }
 

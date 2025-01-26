@@ -17,7 +17,10 @@ public class Player : MonoBehaviour
     public float suckBlood = 3f;
 
     [Header("골드")] // UserData 공유 -> 추후에, 일단 고정
-    public float gold;
+    public float gold = 0f;
+
+    [Header("hit 애니메이션 쿨타임 시간 (초 단위)")]
+    public float hitCooldown = 6f; 
 
     [HideInInspector] public float originalMoveSpeed;
 
@@ -36,6 +39,9 @@ public class Player : MonoBehaviour
     // SkillFsm 참조
     private SkillFsm skillFsm;
 
+    // 히트 상태 쿨다운을 관리하기 위한 변수
+    private bool isHitCooldown = false; // hit 애니메이션 쿨타임 여부
+
     private void Start()
     {
         // 원래 이동 속도 저장
@@ -43,7 +49,6 @@ public class Player : MonoBehaviour
 
         // FirebaseManager UserData에서 현재 체력 가져오기 (현재 주석 처리됨)
         currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
-        gold = FirebaseManager.Instance.CurrentUserData.user_Gold;
 
         // SkillFsm 컴포넌트 가져오기
         skillFsm = GetComponent<SkillFsm>();
@@ -70,7 +75,7 @@ public class Player : MonoBehaviour
     // 데미지 처리
     public void TakeDamage(float damage)
     {
-        // 사운드 클립 3개중에 랜덤 재생 
+        // 사운드 클립 3개 중 랜덤 재생 
         string[] soundClips = { "sound_player_hit1", "sound_player_hit2", "sound_player_hit3" };
         string randomClip = soundClips[Random.Range(0, soundClips.Length)];
         SoundManager.Instance.PlaySFX(randomClip, gameObject);
@@ -81,7 +86,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-
+        // 데미지 항상 적용
         currentHp -= damage;
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
 
@@ -94,11 +99,22 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // 체력이 남아 있다면 PlayerFsm 실행
-            PlayerFsm playerFsm = GetComponent<PlayerFsm>();
-            if (playerFsm != null)
+            // 쿨타임이 아닐 때만 hit 애니메이션 트리거
+            if (!isHitCooldown)
             {
-                playerFsm.TakeDamage();
+                // hit 애니메이션 트리거
+                PlayerFsm playerFsm = GetComponent<PlayerFsm>();
+                if (playerFsm != null)
+                {
+                    playerFsm.TakeDamage();
+                }
+
+                // 쿨타임 시작
+                StartCoroutine(HitCooldownCoroutine());
+            }
+            else
+            {
+                Debug.Log("hit 애니메이션 쿨타임 중입니다. 애니메이션을 트리거하지 않습니다.");
             }
         }
     }
@@ -113,6 +129,15 @@ public class Player : MonoBehaviour
                 invincibilityCoroutine = StartCoroutine(InvincibilityCoroutine(duration));
             }
         }
+        else
+        {
+            if (invincibilityCoroutine != null)
+            {
+                StopCoroutine(invincibilityCoroutine);
+                invincibilityCoroutine = null;
+            }
+            isInvincible = false;
+        }
     }
 
     // 무적 상태를 처리하는 코루틴
@@ -126,6 +151,15 @@ public class Player : MonoBehaviour
         isInvincible = false;
         invincibilityCoroutine = null;
         Debug.Log("무적 상태 종료.");
+    }
+
+    // hit 애니메이션 쿨타임 처리 코루틴
+    private IEnumerator HitCooldownCoroutine()
+    {
+        isHitCooldown = true; // 쿨타임 시작
+        yield return new WaitForSeconds(hitCooldown); // 쿨타임 시간 대기
+        isHitCooldown = false; // 쿨타임 종료
+        Debug.Log("hit 애니메이션 쿨타임 종료.");
     }
 
     private void Die()
@@ -149,6 +183,38 @@ public class Player : MonoBehaviour
         StageManager.Instance.currentPlayerFsm.ReturnToTown();
     }
 
+    // 드랍된 아이템 상호작용 하는 메서드
+    public void DropItemInteraction()
+    {
+        if (droppedItems.Count > 0)
+        {
+            for (int i = droppedItems.Count - 1; i >= 0; i--)
+            {
+                if (droppedItems[i].droppedItem == null || droppedItems[i].droppedLightLine == null)
+                {
+                    droppedItems.RemoveAt(i);
+                    continue;
+                }
+
+                if (Vector3.Distance(transform.position, droppedItems[i].droppedLightLine.transform.position) < 3f)
+                {
+                    if (Input.GetKeyDown(KeyCode.E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
+                    {
+                        if (droppedItems[i].droppedItem != null && droppedItems[i].droppedLightLine != null)
+                        {
+                            bool isDropped = InventoryManger.Instance.UpdateSlotData();
+                            if (isDropped)
+                            {
+                                InventoryManger.Instance.AddItemToInventory(droppedItems[i].droppedItem);
+                                Destroy(droppedItems[i].droppedLightLine);
+                                droppedItems.RemoveAt(i);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // 골드를 소모
     public bool SpendGold(float amount)
