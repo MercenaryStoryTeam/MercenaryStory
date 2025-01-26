@@ -73,6 +73,12 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				InventoryManger.Instance.SetBasicItem(InventoryManger.Instance
 					.basicEquipWeapon));
 
+			// skill
+			userData.user_Skills.Add(new SkillData(0, 1));
+			userData.user_Skills.Add(new SkillData(1, 1));
+			userData.user_Skills.Add(new SkillData(2, 1));
+			userData.user_Skills.Add(new SkillData(3, 1));
+
 			string userDataJson = JsonConvert.SerializeObject(userData);
 			await DB.GetReference($"users/{result.User.UserId}")
 				.SetRawJsonValueAsync(userDataJson);
