@@ -58,6 +58,6 @@ public class PartyCreatePanel : MonoBehaviour
 
 	private void CancelButtonClick()
 	{
-		gameObject.SetActive(false);
+		UIManager.Instance.ClosePartyCreatePanel();
 	}
 }

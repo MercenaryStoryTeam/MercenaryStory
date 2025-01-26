@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -38,6 +39,7 @@ public class Monster : MonoBehaviourPun
     public VirtualCameraController cameraController;
     public MonsterHpBar monsterHpBar;
 
+    private Vector3 lastPos;
     #endregion
 
     #region 프로퍼티
@@ -86,7 +88,7 @@ public class Monster : MonoBehaviourPun
         stateMachine.ChangeState(MonsterStateType.Patrol);
         cameraController = FindObjectOfType<VirtualCameraController>();
         monsterHpBar = FindObjectOfType<MonsterHpBar>();
-        
+        lastPos.y = transform.position.y;
     }
 
     // 플레이어 레이어 찾기
@@ -170,10 +172,8 @@ public class Monster : MonoBehaviourPun
                 float randomValue = UnityEngine.Random.Range(0f, 1f);
                 if (randomValue <= item.dropPercent)
                 {
-                    Debug.Log($"{dropChance}의 확률로 아이템 획득!");
-
                     droppedItem = item;
-                    Debug.Log($"아이템 {droppedItem}을 {randomValue}의 확률로 얻음!");
+                    Debug.Log($"아이템 {droppedItem.itemName}을 {randomValue}의 확률로 얻음!");
 
 
                     break;
@@ -183,7 +183,7 @@ public class Monster : MonoBehaviourPun
 
         else
         {
-            Debug.Log($"{dropChance}의 확률로 아이템을 획득하지 못함");
+            Debug.Log($"아이템을 획득하지 못함");
         }
 
         return droppedItem;
@@ -192,10 +192,15 @@ public class Monster : MonoBehaviourPun
     private void DroppedLightLine(ItemBase item)
     {
         Player player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
-        GameObject itemLightLine = Instantiate(item.dropLightLine, this.transform.position, Quaternion.identity);
-        player.droppedItems.Add((itemLightLine, item));
+        Vector3 spawnPos = transform.position;
+        spawnPos.y = lastPos.y;
+        if (item != null)
+        {
+            GameObject itemLightLine = Instantiate(item.dropLightLine, spawnPos, Quaternion.identity);
+            player.droppedItems.Add((itemLightLine, item));
+        }
     }
-    
+
     private void OnDrawGizmos()
     {
         // 감지 범위

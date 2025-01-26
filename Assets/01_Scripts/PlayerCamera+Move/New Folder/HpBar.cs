@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; 
 
 public class HpBar : MonoBehaviour
 {
@@ -10,6 +11,24 @@ public class HpBar : MonoBehaviour
 
     private void Awake()
     {
+        FindPlayer();
+    }
+
+    private void OnEnable()
+    {
+        // 씬 로드 이벤트에 메서드 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        // 씬 로드 이벤트에서 메서드 제거
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 새로운 씬이 로드될 때마다 플레이어를 다시 찾음
         FindPlayer();
     }
 
@@ -34,6 +53,12 @@ public class HpBar : MonoBehaviour
         // 플레이어 레이어 설정
         int playerLayer = LayerMask.NameToLayer("Player");
 
+        if (playerLayer == -1)
+        {
+            Debug.LogError("[HpBar] 'Player' 레이어가 존재하지 않습니다.");
+            return;
+        }
+
         // 모든 오브젝트를 검색
         GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
         foreach (GameObject obj in allObjects)
@@ -45,13 +70,18 @@ public class HpBar : MonoBehaviour
                 if (player != null)
                 {
                     // 첫 번째로 찾은 플레이어 오브젝트를 할당하고 종료
-                    break; 
+                    Debug.Log($"[HpBar] Player를 '{obj.name}' 오브젝트에서 찾았습니다.");
+                    break;
                 }
             }
+        }
+
+        if (player == null)
+        {
+            Debug.LogWarning("[HpBar] Player를 찾지 못했습니다.");
         }
     }
 }
 
 // 멀티에서 구분: 레이어가 플레이어이면서 오브젝트면이 Clone이 아닌 오브젝트의 ooo 스크립트를 참조하도록 설정
-
 // 필요한 스크립트 자동 참조하도록,그리고 미씽나거나 참조를 못하면 계속 참조하도록 설정

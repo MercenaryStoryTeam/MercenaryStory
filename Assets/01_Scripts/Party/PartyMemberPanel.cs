@@ -41,7 +41,8 @@ public class PartyMemberPanel : MonoBehaviour
 		{
 			foreach (var member in partyMembers)
 			{
-				PartyMemberEntry memberEntry = Instantiate(PartyMemberEntryPrefab, content);
+				PartyMemberEntry memberEntry =
+					Instantiate(PartyMemberEntryPrefab, content);
 				if (member.user_Id ==
 				    FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Id)
 				{
@@ -60,7 +61,7 @@ public class PartyMemberPanel : MonoBehaviour
 
 	private void CancelButtonClick()
 	{
-		gameObject.SetActive(false);
+		UIManager.Instance.ClosePartyPanel();
 	}
 
 	private void ExitButtonClick()

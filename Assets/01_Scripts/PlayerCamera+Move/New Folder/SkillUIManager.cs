@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // 스킬 업그레이드 UI 관리
 public class SkillUIManager : MonoBehaviour
@@ -36,14 +37,34 @@ public class SkillUIManager : MonoBehaviour
     // Player 스크립트 참조
     private Player player;
 
-    private void Start()
+    private void OnEnable()
     {
-        // 필요한 스크립트들을 자동 참조하고, 만약 찾지 못하면 계속 시도하도록 하는 코루틴 시작
+        // 씬 로드 이벤트 구독
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // 현재 씬이 이미 로드된 상태라면 참조 시도
+        StartCoroutine(FindReferencesRoutine());
+    }
+
+    private void OnDisable()
+    {
+        // 씬 로드 이벤트 해제
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        // 코루틴 정지
+        StopAllCoroutines();
+    }
+
+    /// <summary>
+    /// 씬이 로드될 때 호출되는 메서드
+    /// </summary>
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
         StartCoroutine(FindReferencesRoutine());
     }
 
     /// <summary>
-    /// 스크립트에서 필요한 Player, SkillFsm 등을 레이어/이름 조건에 따라 찾아서 할당하는 코루틴
+    /// 스크립트에서 필요한 Player, SkillFsm 등을 레이어/태그 조건에 따라 찾아서 할당하는 코루틴
     /// </summary>
     private IEnumerator FindReferencesRoutine()
     {
@@ -55,8 +76,8 @@ public class SkillUIManager : MonoBehaviour
                 GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
                 foreach (var go in allGameObjects)
                 {
-                    // 레이어가 "Player"이고, 이름에 "Clone"이 포함되지 않은 오브젝트 찾기
-                    if (go.layer == LayerMask.NameToLayer("Player") && !go.name.Contains("Clone"))
+                    // 태그가 "Player"이고, 이름에 "Clone"이 포함되지 않은 오브젝트 찾기
+                    if (go.CompareTag("Player") && !go.name.Contains("Clone"))
                     {
                         if (skillFsm == null)
                             skillFsm = go.GetComponent<SkillFsm>();
@@ -85,13 +106,20 @@ public class SkillUIManager : MonoBehaviour
             }
             else
             {
-                // 필요한 참조를 모두 얻었다면 반복 종료
-                break;
+                // 필요한 참조를 모두 얻었다면 초기화 메서드 호출
+                InitializeUI();
+                yield break; // 코루틴 종료
             }
 
             yield return new WaitForSeconds(1f);
         }
+    }
 
+    /// <summary>
+    /// UI 초기화 및 리스너 할당
+    /// </summary>
+    private void InitializeUI()
+    {
         // 스킬 선택 버튼의 기본 색상 저장 및 리스너 할당
         if (skillButtons != null)
         {
@@ -139,7 +167,7 @@ public class SkillUIManager : MonoBehaviour
         PlayerInputManager.OnKInput += ToggleSkillUpgradeUI;
 
         // 골드 표시 업데이트 (현재 골드 값 전달)
-        UpdateGoldDisplay(player.gold);
+        UpdateGoldDisplay(FirebaseManager.Instance.CurrentUserData.user_Gold);
     }
 
     private void OnDestroy()
@@ -349,7 +377,7 @@ public class SkillUIManager : MonoBehaviour
             // 다음 업그레이드 비용 가져오기
             float nextUpgradeCost = selectedSkill.UpgradeCosts[selectedSkill.Level - 1];
             // 플레이어가 충분한 골드를 가지고 있는지 확인하여 버튼 활성화 여부 결정
-            upgradeButton.interactable = player.gold >= nextUpgradeCost;
+            upgradeButton.interactable = FirebaseManager.Instance.CurrentUserData.user_Gold >= nextUpgradeCost;
         }
     }
 

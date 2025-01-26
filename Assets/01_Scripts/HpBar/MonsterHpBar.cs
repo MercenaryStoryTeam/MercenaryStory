@@ -5,7 +5,7 @@ using System.Collections;
 public class MonsterHpBar : MonoBehaviour
 {
     [Header("몬스터 스크립트 참조")]
-    public MonsterTest monsterTest;
+    public Monster monster;
 
     [Header("HpBarPanel 참조")]
     public Image HpBarPanel;
@@ -20,10 +20,10 @@ public class MonsterHpBar : MonoBehaviour
 
     private void Update()
     {
-        if (monsterTest != null && HpBarPanel != null)
+        if (monster != null && HpBarPanel != null)
         {
             // Fill Amount를 현재 체력 비율로 설정
-            HpBarPanel.fillAmount = monsterTest.currentHp / monsterTest.maxHp;
+            HpBarPanel.fillAmount = monster.Hp / monster.MaxHp;
         }
     }
 

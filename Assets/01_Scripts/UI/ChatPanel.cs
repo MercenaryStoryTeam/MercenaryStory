@@ -18,7 +18,15 @@ public class ChatPanel : MonoBehaviour
 	private void Awake()
 	{
 		closeButton.onClick.AddListener(OnCloseButtonClick);
-		sendButton.onClick.AddListener(OnSendButtonClick);
+		sendButton.onClick.AddListener(Send);
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Return))
+		{
+			Send();
+		}
 	}
 
 	private void OnEnable()
@@ -33,11 +41,10 @@ public class ChatPanel : MonoBehaviour
 
 	private void OnCloseButtonClick()
 	{
-		gameObject.SetActive(false);
-		UIManager.Instance.currentPanel = null;
+		UIManager.Instance.CloseChatPanel();
 	}
 
-	private void OnSendButtonClick()
+	private void Send()
 	{
 		if (isCooldown)
 		{

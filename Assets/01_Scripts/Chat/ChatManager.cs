@@ -1,3 +1,4 @@
+using System.Collections;
 using ExitGames.Client.Photon;
 using Photon.Chat;
 using Photon.Chat.Demo;
@@ -14,6 +15,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 	public string currentChannel;
 
 	public ChatPanel chatPanel;
+	private bool _isReconnecting = false;
 
 	public static ChatManager Instance
 	{
@@ -57,6 +59,29 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 		_client.ConnectUsingSettings(chatSettings);
 	}
 
+	private IEnumerator ReconnectCoroutine()
+	{
+		_isReconnecting = true;
+		while (_client == null || !_client.CanChat)
+		{
+			Debug.Log("Attempting to reconnect to Photon Chat...");
+			_client.ConnectUsingSettings(PhotonNetwork.PhotonServerSettings
+				.AppSettings.GetChatSettings());
+			yield return new WaitForSeconds(5); // 5초 간격으로 재시도
+		}
+
+		Debug.Log("Reconnected to Photon Chat successfully!");
+		_isReconnecting = false;
+	}
+
+	public void OnDisconnected()
+	{
+		if (!_isReconnecting)
+		{
+			StartCoroutine(ReconnectCoroutine());
+		}
+	}
+
 	#endregion
 
 	#region Channel Subscribe
@@ -95,7 +120,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 		_client.PublishMessage(currentChannel, message);
 	}
 
-	public void OnGetMessages(string channelName, string[] senders, object[] messages)
+	public void OnGetMessages(string channelName, string[] senders,
+		object[] messages)
 	{
 		chatPanel.NotificationOn();
 		for (int i = 0; i < senders.Length; i++)
@@ -110,15 +136,12 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 	{
 	}
 
-	public void OnDisconnected()
-	{
-	}
-
 	public void OnConnected()
 	{
 	}
 
-	public void OnPrivateMessage(string sender, object message, string channelName)
+	public void OnPrivateMessage(string sender, object message,
+		string channelName)
 	{
 	}
 
@@ -126,7 +149,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 	{
 	}
 
-	public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
+	public void OnStatusUpdate(string user, int status, bool gotMessage,
+		object message)
 	{
 	}
 
