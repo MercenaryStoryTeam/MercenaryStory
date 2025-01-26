@@ -67450,7 +67450,7 @@ MonoBehaviour:
   maxHp: 100
   moveSpeed: 5
   suckBlood: 3
-  gold: 500
+  hitCooldown: 6
   originalMoveSpeed: 0
 --- !u!114 &461331483928832361
 MonoBehaviour:
@@ -67585,7 +67585,8 @@ MonoBehaviour:
     RemainingCooldown: 0
     CachedCooldown: 0
   player: {fileID: 3109342957528400570}
-  enableDebugLogs: 0
+  playerFsm: {fileID: 461331483928832361}
+  enableDebugLogs: 1
 --- !u!114 &-6693327397993148701
 MonoBehaviour:
   m_ObjectHideFlags: 0
