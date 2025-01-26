@@ -13,9 +13,6 @@ public class Player : MonoBehaviour
 
 	[Header("흡혈 비율")] public float suckBlood = 3f;
 
-	[Header("골드")] // UserData 공유 -> 추후에, 일단 고정
-	public float gold;
-
 	[HideInInspector] public float originalMoveSpeed;
 
 	[HideInInspector]
@@ -42,7 +39,6 @@ public class Player : MonoBehaviour
 
 		// FirebaseManager UserData에서 현재 체력 가져오기 (현재 주석 처리됨)
 		currentHp = FirebaseManager.Instance.CurrentUserData.user_HP;
-		gold = FirebaseManager.Instance.CurrentUserData.user_Gold;
 
 		// SkillFsm 컴포넌트 가져오기
 		skillFsm = GetComponent<SkillFsm>();
@@ -157,19 +153,20 @@ public class Player : MonoBehaviour
 	// 골드를 소모
 	public bool SpendGold(float amount)
 	{
-		if (gold >= amount)
+		if (FirebaseManager.Instance.CurrentUserData.user_Gold >= amount)
 		{
-			gold -= amount;
-			FirebaseManager.Instance.CurrentUserData.UpdateUserData(gold: gold);
-			Debug.Log($"[Player] 골드 {amount}을 사용했습니다. 남은 골드: {gold}");
+			FirebaseManager.Instance.CurrentUserData.user_Gold -= amount;
+			Debug.Log(
+				$"[Player] 골드 {amount}을 사용했습니다. 남은 골드: {FirebaseManager.Instance.CurrentUserData.user_Gold}");
 
 			// 골드 변경 이벤트 호출
-			OnGoldChanged?.Invoke(gold);
+			OnGoldChanged?.Invoke(FirebaseManager.Instance.CurrentUserData.user_Gold);
 			return true;
 		}
 		else
 		{
-			Debug.LogWarning($"[Player] 골드가 부족합니다. 필요: {amount}, 현재: {gold}");
+			Debug.LogWarning(
+				$"[Player] 골드가 부족합니다. 필요: {amount}, 현재: {FirebaseManager.Instance.CurrentUserData.user_Gold}");
 			return false;
 		}
 	}
@@ -177,11 +174,11 @@ public class Player : MonoBehaviour
 	// 골드를 추가
 	public void AddGold(float amount)
 	{
-		gold += amount;
-		FirebaseManager.Instance.CurrentUserData.UpdateUserData(gold: gold);
-		Debug.Log($"[Player] 골드 {amount}을 획득했습니다. 현재 골드: {gold}");
+		FirebaseManager.Instance.CurrentUserData.user_Gold += amount;
+		Debug.Log(
+			$"[Player] 골드 {amount}을 획득했습니다. 현재 골드: {FirebaseManager.Instance.CurrentUserData.user_Gold}");
 
 		// 골드 변경 이벤트 호출
-		OnGoldChanged?.Invoke(gold);
+		OnGoldChanged?.Invoke(FirebaseManager.Instance.CurrentUserData.user_Gold);
 	}
 }

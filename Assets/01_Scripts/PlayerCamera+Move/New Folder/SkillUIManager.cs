@@ -151,7 +151,7 @@ public class SkillUIManager : MonoBehaviour
 		PlayerInputManager.OnKInput += ToggleSkillUpgradeUI;
 
 		// 골드 표시 업데이트 (현재 골드 값 전달)
-		UpdateGoldDisplay(player.gold);
+		UpdateGoldDisplay(FirebaseManager.Instance.CurrentUserData.user_Gold);
 	}
 
 	private void OnDestroy()
@@ -367,7 +367,8 @@ public class SkillUIManager : MonoBehaviour
 			float nextUpgradeCost =
 				selectedSkill.UpgradeCosts[selectedSkill.Level - 1];
 			// 플레이어가 충분한 골드를 가지고 있는지 확인하여 버튼 활성화 여부 결정
-			upgradeButton.interactable = player.gold >= nextUpgradeCost;
+			upgradeButton.interactable =
+				FirebaseManager.Instance.CurrentUserData.user_Gold >= nextUpgradeCost;
 		}
 	}
 
