@@ -6,6 +6,8 @@ public class Portal : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		if (StageManager.Instance.portalIsActive) return;
+		if (other.gameObject.name !=
+		    FirebaseManager.Instance.CurrentUserData.user_Name) return;
 		if (FirebaseManager.Instance.CurrentPartyData == null)
 		{
 			UIManager.Instance.popUp.PopUpOpen("파티에 가입하고 참여해 주세요.",
