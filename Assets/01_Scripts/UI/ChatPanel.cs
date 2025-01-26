@@ -41,8 +41,7 @@ public class ChatPanel : MonoBehaviour
 
 	private void OnCloseButtonClick()
 	{
-		gameObject.SetActive(false);
-		UIManager.Instance.currentPanel = null;
+		UIManager.Instance.CloseChatPanel();
 	}
 
 	private void Send()

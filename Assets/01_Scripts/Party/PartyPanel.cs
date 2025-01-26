@@ -52,16 +52,11 @@ public class PartyPanel : MonoBehaviour
 		print(JsonConvert.SerializeObject(parties));
 		if (parties != null)
 		{
-			print($"parties count: {parties.Count}");
 			foreach (var party in parties)
 			{
 				// 가입 가능한 지 확인하기
 				// 1. 해당 파티장이 CurrentUser와 같은 room에 있는 가?
 				// 2. 인원이 가득 차지 않았는 가?
-				print(
-					$"FirebaseManager.Instance.CurrentUserData.user_CurrentServer: {FirebaseManager.Instance.CurrentUserData.user_CurrentServer}");
-				print(
-					$"party.party_Owner.user_CurrentServer: {party.party_Owner.user_CurrentServer}");
 				if (party.party_size > party.party_Members.Count &&
 				    FirebaseManager.Instance.CurrentUserData.user_CurrentServer ==
 				    party.party_Owner.user_CurrentServer)
@@ -105,6 +100,6 @@ public class PartyPanel : MonoBehaviour
 
 	private void CancelButtonClick()
 	{
-		gameObject.SetActive(false);
+		UIManager.Instance.ClosePartyPanel();
 	}
 }

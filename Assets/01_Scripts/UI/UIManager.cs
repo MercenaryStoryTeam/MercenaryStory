@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -7,7 +6,7 @@ using UnityEngine.UI;
 public class UIManager : SingletonManager<UIManager>
 {
 	public GameObject currentPanel;
-	
+
 	public ItemInfoPanel itemInfo;
 	public InventoryPanel inventory;
 	public ShopPanel shop;
@@ -21,21 +20,28 @@ public class UIManager : SingletonManager<UIManager>
 	// Chat
 	public ChatPanel chatPanel;
 	public Button chatButton;
+	[HideInInspector] public bool isChatActive = false;
 
 	// Party
 	public PartyPanel partyPanel;
 	public PartyCreatePanel partyCreatePanel;
 	public PartyMemberPanel partyMemberPanel;
 	public Button partyButton;
+	[HideInInspector] public bool isPartyActive = false;
+	[HideInInspector] public bool isPartyCreateActive = false;
+	[HideInInspector] public bool isPartyMemberActive = false;
+
+	// Dungeon
 	public DungeonPanel dungeonPanel;
+	[HideInInspector] public bool isDungeonActive = false;
 
 	//Option
 	public OptionPanel optionPanel;
 	[HideInInspector] public bool isOptionActive = false;
-	
+
 	//Skill UI
 	[FormerlySerializedAs("InGamePanel")] public GameObject InGamePanel;
-	
+
 	//Mobile UI
 	public SkillUIManager skillUI;
 	public MobileUI mobile;
@@ -64,30 +70,30 @@ public class UIManager : SingletonManager<UIManager>
 
 	private void Update()
 	{
-
 		MobileSetting();
 	}
 
 	public void MobileSetting()
 	{
 		GameObject mobileUI = GameObject.Find("MoblieUI");
-        if (mobileUI != null)
-        {
-            Scene currentScene = SceneManager.GetActiveScene();
-            if (currentScene.name == "Mobile_TitleScene")
-            {
-                skillUI.gameObject.SetActive(false);
-                mobile.gameObject.SetActive(false);
-            }
-            else
-            {
-                skillUI.gameObject.SetActive(true);
-                mobile.gameObject.SetActive(true);
-            }
-        }
+		if (mobileUI != null)
+		{
+			Scene currentScene = SceneManager.GetActiveScene();
+			if (currentScene.name == "Mobile_TitleScene")
+			{
+				skillUI.gameObject.SetActive(false);
+				mobile.gameObject.SetActive(false);
+			}
+			else
+			{
+				skillUI.gameObject.SetActive(true);
+				mobile.gameObject.SetActive(true);
+			}
+		}
 
 		else return;
-    }
+	}
+
 	#region Inventory
 
 	public void OpenInventoryPanel()
@@ -96,7 +102,7 @@ public class UIManager : SingletonManager<UIManager>
 		{
 			isInventoryActive = true;
 			inventory.panel.SetActive(true);
-			currentPanel=inventory.panel;
+			currentPanel = inventory.panel;
 		}
 	}
 
@@ -109,7 +115,7 @@ public class UIManager : SingletonManager<UIManager>
 	}
 
 	#endregion
-	
+
 	#region Shop
 
 	public void OpenShopPanel()
@@ -179,8 +185,9 @@ public class UIManager : SingletonManager<UIManager>
 	}
 
 	#endregion
-	
+
 	#region Option
+
 	public void OpenOptionPanel()
 	{
 		if (!IsAnyPanelOpen())
@@ -199,19 +206,23 @@ public class UIManager : SingletonManager<UIManager>
 	}
 
 	#endregion
-	
-	public bool IsAnyPanelOpen()
-	{
-		return isInventoryActive || isItemInfoActive || isShopActive || isOptionActive;
-	}
 
 	#region Chat
 
 	public void ChatButtonClick()
 	{
+		if (IsAnyPanelOpen() || IsPopUpOpen()) return;
 		chatPanel.gameObject.SetActive(true);
 		chatButton.gameObject.SetActive(false);
 		currentPanel = chatPanel.gameObject;
+		isChatActive = true;
+	}
+
+	public void CloseChatPanel()
+	{
+		chatPanel.gameObject.SetActive(false);
+		currentPanel = null;
+		isChatActive = false;
 	}
 
 	#endregion
@@ -220,45 +231,74 @@ public class UIManager : SingletonManager<UIManager>
 
 	public void OnPartyButtonClick()
 	{
-		// 파티 업데이트 
+		if (IsAnyPanelOpen() || IsPopUpOpen()) return;
+
+		// 파티 업데이트
 		FirebaseManager.Instance.UpdatePartyAndList();
 		// party member 확인 후 파티에 가입되어 있는 지 확인 후 맞는 패널을 열어야 함.
+		// 파티 없을 때
 		if (FirebaseManager.Instance.CurrentUserData.user_CurrentParty == "")
 		{
 			partyPanel.gameObject.SetActive(true);
 			partyMemberPanel.gameObject.SetActive(false);
+			isPartyActive = true;
 		}
+		// 파티 있을 때
 		else
 		{
 			partyPanel.gameObject.SetActive(false);
 			partyMemberPanel.gameObject.SetActive(false);
 			partyMemberPanel.gameObject.SetActive(true);
+			isPartyMemberActive = true;
 		}
 
 		// party create panel은 비활성화 해야함
 		partyCreatePanel.gameObject.SetActive(false);
 	}
 
-	public void OpenPartyCreatePanel()
-	{
-		partyCreatePanel.gameObject.SetActive(true);
-	}
-
 	public void ClosePartyPanel()
 	{
 		partyPanel.gameObject.SetActive(false);
+		partyMemberPanel.gameObject.SetActive(false);
+		isPartyActive = false;
+		isPartyMemberActive = false;
+		ClosePartyCreatePanel();
+	}
+
+	public void OpenPartyCreatePanel()
+	{
+		partyCreatePanel.gameObject.SetActive(true);
+		isPartyCreateActive = true;
 	}
 
 	public void ClosePartyCreatePanel()
 	{
 		partyCreatePanel.gameObject.SetActive(false);
+		isPartyCreateActive = false;
 	}
 
 	#endregion
 
+	#region Dungeon
+
 	public void OpenDungeonPanel()
 	{
+		if (IsAnyPanelOpen() || IsPopUpOpen()) return;
 		FirebaseManager.Instance.UpdatePartyAndList();
 		dungeonPanel.gameObject.SetActive(true);
+	}
+
+	#endregion
+
+	public bool IsAnyPanelOpen()
+	{
+		return isInventoryActive || isItemInfoActive || isShopActive ||
+		       isOptionActive || isChatActive || isPartyActive ||
+		       isPartyCreateActive || isPartyMemberActive || isDungeonActive;
+	}
+
+	private bool IsPopUpOpen()
+	{
+		return popUp.gameObject.activeSelf;
 	}
 }
