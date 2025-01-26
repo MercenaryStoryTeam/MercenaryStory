@@ -14,7 +14,7 @@ public class DungeonPanel : MonoBehaviour
 
 	private void OnCloseButtonClick()
 	{
-		gameObject.SetActive(false);
+		UIManager.Instance.CloseDungeonPanel();
 	}
 
 	private void OnEnterButtonClick()

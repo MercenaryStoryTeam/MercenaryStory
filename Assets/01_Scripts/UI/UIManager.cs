@@ -286,9 +286,31 @@ public class UIManager : SingletonManager<UIManager>
 		if (IsAnyPanelOpen() || IsPopUpOpen()) return;
 		FirebaseManager.Instance.UpdatePartyAndList();
 		dungeonPanel.gameObject.SetActive(true);
+		isDungeonActive = true;
+	}
+
+	public void CloseDungeonPanel()
+	{
+		dungeonPanel.gameObject.SetActive(false);
+		isDungeonActive = false;
 	}
 
 	#endregion
+
+	public void CloseAllPanels()
+	{
+		// 장소영
+		CloseInventoryPanel();
+		CloseShopPanel();
+		CloseItemInfoPanel();
+		CloseOptionPanel();
+
+		// 이지원
+		CloseChatPanel();
+		ClosePartyPanel();
+		ClosePartyCreatePanel();
+		CloseDungeonPanel();
+	}
 
 	public bool IsAnyPanelOpen()
 	{
