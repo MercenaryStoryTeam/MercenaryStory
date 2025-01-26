@@ -22,7 +22,9 @@ public class DungeonPanel : MonoBehaviour
 		// 던전 들어가기
 		// ServerManager.LoadScene("LJW_1-1");
 		PlayerFsm playerFsm = GameObject
-			.Find(FirebaseManager.Instance.CurrentUserData.user_Name).GetComponent<PlayerFsm>();
+			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)
+			.GetComponent<PlayerFsm>();
+		FirebaseManager.Instance.UploadCurrentUserData();
 		playerFsm.MoveMembersToRoom("LJW_1-1");
 		gameObject.SetActive(false);
 	}

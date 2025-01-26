@@ -70,7 +70,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 			UserData userData = new UserData(result.User.UserId, email, user_Name);
 			userData.user_Inventory.Add(
-				InventoryManger.Instance.SetBasicItem(InventoryManger.Instance.basicEquipWeapon));
+				InventoryManger.Instance.SetBasicItem(InventoryManger.Instance
+					.basicEquipWeapon));
 
 			string userDataJson = JsonConvert.SerializeObject(userData);
 			await DB.GetReference($"users/{result.User.UserId}")
@@ -142,7 +143,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			if (userSnapshot.Exists)
 			{
 				userData =
-					JsonConvert.DeserializeObject<UserData>(userSnapshot.GetRawJsonValue());
+					JsonConvert.DeserializeObject<UserData>(
+						userSnapshot.GetRawJsonValue());
 			}
 
 			CurrentUserData = userData;
@@ -180,7 +182,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UploadCurrnetInvenData(string childName, List<SlotData> value)
+	public async void UploadCurrnetInvenData(string childName,
+		List<SlotData> value)
 	{
 		try
 		{
@@ -191,6 +194,24 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			await targetRef.SetRawJsonValueAsync(jsonData);
 		}
 
+		catch (FirebaseException e)
+		{
+			ExceptionManager.HandleFirebaseException(e);
+		}
+		catch (Exception e)
+		{
+			ExceptionManager.HandleException(e);
+		}
+	}
+
+	public async Task UploadCurrentUserData()
+	{
+		try
+		{
+			string userDataJson = JsonConvert.SerializeObject(CurrentUserData);
+			await DB.GetReference($"users/{CurrentUserData.user_Id}")
+				.SetRawJsonValueAsync(userDataJson);
+		}
 		catch (FirebaseException e)
 		{
 			ExceptionManager.HandleFirebaseException(e);
@@ -225,7 +246,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			DataSnapshot usersSnapshot = await DB.GetReference("users").GetValueAsync();
+			DataSnapshot usersSnapshot =
+				await DB.GetReference("users").GetValueAsync();
 			userDictionary =
 				JsonConvert.DeserializeObject<Dictionary<string, UserData>>(
 					usersSnapshot.GetRawJsonValue());
@@ -259,7 +281,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		{
 			// Create PartyData
 			PartyData partyData = new PartyData(CurrentUserData.user_CurrentServer,
-				CurrentUserData.user_CurrentServer, party_Name, party_Size, CurrentUserData);
+				CurrentUserData.user_CurrentServer, party_Name, party_Size,
+				CurrentUserData);
 			CurrentPartyData = partyData;
 
 			// Set current user's party data
@@ -308,7 +331,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 					partyList = new List<PartyData>(partyDictionary.Values);
 					if (CurrentPartyData != null)
 					{
-						if (partyDictionary.TryGetValue(CurrentPartyData.party_Id, out var value))
+						if (partyDictionary.TryGetValue(CurrentPartyData.party_Id,
+							    out var value))
 						{
 							CurrentPartyData = value;
 						}
@@ -353,7 +377,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 							// 가입
 							CurrentPartyData = partyData;
 							CurrentPartyData.AddMember(CurrentUserData);
-							CurrentUserData.UpdateUserData(currentParty: CurrentPartyData.party_Id);
+							CurrentUserData.UpdateUserData(
+								currentParty: CurrentPartyData.party_Id);
 							UploadCurrentUserData("user_CurrentParty",
 								CurrentPartyData.party_Id);
 							UploadCurrentPartyData();
@@ -508,13 +533,15 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		try
 		{
 			DataSnapshot partyData =
-				await DB.GetReference($"parties/{CurrentPartyData.party_Id}").GetValueAsync();
+				await DB.GetReference($"parties/{CurrentPartyData.party_Id}")
+					.GetValueAsync();
 			bool isReady = false;
 
 			while (!isReady)
 			{
 				partyData =
-					await DB.GetReference($"parties/{CurrentPartyData.party_Id}").GetValueAsync();
+					await DB.GetReference($"parties/{CurrentPartyData.party_Id}")
+						.GetValueAsync();
 				CurrentPartyData =
 					JsonConvert.DeserializeObject<PartyData>(partyData.GetRawJsonValue());
 				if (CurrentPartyData.party_ServerName == sceneName) isReady = true;
@@ -539,11 +566,14 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		{
 			print($"삭제하려는 파티id: {CurrentPartyData.party_Id}");
 			DataSnapshot partySnapshot =
-				await DB.GetReference($"parties/{CurrentPartyData.party_Id}").GetValueAsync();
+				await DB.GetReference($"parties/{CurrentPartyData.party_Id}")
+					.GetValueAsync();
 			PartyData targetParty =
-				JsonConvert.DeserializeObject<PartyData>(partySnapshot.GetRawJsonValue());
+				JsonConvert.DeserializeObject<PartyData>(
+					partySnapshot.GetRawJsonValue());
 
-			await DB.GetReference($"parties/{CurrentPartyData.party_Id}").RemoveValueAsync();
+			await DB.GetReference($"parties/{CurrentPartyData.party_Id}")
+				.RemoveValueAsync();
 			if (targetParty.party_Owner.user_Id != partyId)
 			{
 				// 멤버 제거
@@ -621,7 +651,8 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 	{
 		try
 		{
-			DataSnapshot partiesSnapshot = await DB.GetReference("parties").GetValueAsync();
+			DataSnapshot partiesSnapshot =
+				await DB.GetReference("parties").GetValueAsync();
 			partyDictionary =
 				JsonConvert.DeserializeObject<Dictionary<string, PartyData>>(
 					partiesSnapshot.GetRawJsonValue());
