@@ -1,16 +1,12 @@
 using System;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+using UnityEngine;
+using UnityEngine.UI;
 
 // 스킬 업그레이드 UI 관리
 public class SkillUIManager : MonoBehaviour
 {
-    [Header("Player FSM 스크립트")]
-    public PlayerFsm playerFsm;
-
     [Header("Skill FSM 스크립트")]
     public SkillFsm skillFsm;
 
@@ -30,6 +26,7 @@ public class SkillUIManager : MonoBehaviour
     [Header("닫기 버튼")] public Button exitButton;
     [Header("열기 버튼")] public Button openButton;
     [Header("골드 표시 텍스트")] public Text goldText;
+
     // 기본 버튼 색상 저장
     private Dictionary<Button, Color> buttonDefaultColors = new Dictionary<Button, Color>();
     // 선택된 버튼 색상
@@ -39,102 +36,110 @@ public class SkillUIManager : MonoBehaviour
     // Player 스크립트 참조
     private Player player;
 
-    private void Update()
+    private void Start()
     {
-        FindPlayer();
+        // 필요한 스크립트들을 자동 참조하고, 만약 찾지 못하면 계속 시도하도록 하는 코루틴 시작
+        StartCoroutine(FindReferencesRoutine());
     }
 
-    private void FindPlayer()
+    /// <summary>
+    /// 스크립트에서 필요한 Player, SkillFsm 등을 레이어/이름 조건에 따라 찾아서 할당하는 코루틴
+    /// </summary>
+    private IEnumerator FindReferencesRoutine()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        if (currentScene.name != "Mobile_TitleScene")
+        while (true)
         {
-            playerFsm = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}")
-                .GetComponent<PlayerFsm>();
-            skillFsm = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}")
-                .GetComponent<SkillFsm>();
-
-            if (playerFsm == null)
+            if (skillFsm == null || player == null)
             {
-                playerFsm = StageManager.Instance?.currentPlayerFsm;
-                if (playerFsm == null)
+                // 씬 내 모든 오브젝트를 탐색
+                GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
+                foreach (var go in allGameObjects)
                 {
-                    Debug.LogWarning("[SkillUpgradeUI] PlayerFsm 참조를 찾지 못했습니다. 1초 후 다시 시도합니다.");
-                }
-            }
+                    // 레이어가 "Player"이고, 이름에 "Clone"이 포함되지 않은 오브젝트 찾기
+                    if (go.layer == LayerMask.NameToLayer("Player") && !go.name.Contains("Clone"))
+                    {
+                        if (skillFsm == null)
+                            skillFsm = go.GetComponent<SkillFsm>();
 
-            if (skillFsm == null && playerFsm != null)
-            {
-                skillFsm = playerFsm.gameObject.GetComponent<SkillFsm>();
+                        if (player == null)
+                            player = go.GetComponent<Player>();
+                    }
+                }
+
+                // Player 스크립트를 찾지 못했다면 경고 로그 출력
+                if (player == null)
+                {
+                    Debug.LogWarning("[SkillUpgradeUI] Player 인스턴스를 찾지 못했습니다. 1초 후 다시 시도합니다.");
+                }
+                else
+                {
+                    // 플레이어의 골드 변경 이벤트 구독
+                    player.OnGoldChanged += UpdateGoldDisplay;
+                }
+
+                // SkillFsm을 찾지 못했다면 경고 로그 출력
                 if (skillFsm == null)
                 {
                     Debug.LogWarning("[SkillUpgradeUI] SkillFsm 참조를 찾지 못했습니다. 1초 후 다시 시도합니다.");
                 }
             }
-
-
-            // Player 인스턴스 찾기
-            player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
-
-            if (player == null)
+            else
             {
-                Debug.LogError("[SkillUpgradeUI] Player 인스턴스를 찾을 수 없습니다.");
+                // 필요한 참조를 모두 얻었다면 반복 종료
+                break;
             }
 
-            // Player의 골드 변경 이벤트 구독
-            player.OnGoldChanged += UpdateGoldDisplay;
+            yield return new WaitForSeconds(1f);
+        }
 
-            if (skillButtons == null)
+        // 스킬 선택 버튼의 기본 색상 저장 및 리스너 할당
+        if (skillButtons != null)
+        {
+            for (int i = 0; i < skillButtons.Count; i++)
             {
-                // 기본 버튼 색상 저장 및 리스너 할당
-                for (int i = 0; i < skillButtons.Count; i++)
+                var button = skillButtons[i];
+                if (button != null)
                 {
-                    var button = skillButtons[i];
-                    if (button != null)
+                    buttonDefaultColors[button] = button.image.color;
+                    if (i < skillTypes.Count)
                     {
-                        buttonDefaultColors[button] = button.image.color;
-
-                        // 스킬 타입이 유효한지 확인
-                        if (i < skillTypes.Count)
-                        {
-                            SkillType skillType = skillTypes[i];
-                            // 람다 캡처 문제를 방지하기 위해 지역 변수 사용
-                            button.onClick.AddListener(() => SelectSkill(skillType));
-                        }
-                        else
-                        {
-                            Debug.LogWarning($"[SkillUpgradeUI] 스킬 타입이 버튼 수보다 적습니다. 버튼: {button.name}");
-                        }
+                        SkillType skillType = skillTypes[i];
+                        // 람다 캡처 문제를 방지하기 위해 지역 변수 사용
+                        button.onClick.AddListener(() => SelectSkill(skillType));
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[SkillUpgradeUI] 스킬 타입이 버튼 수보다 적습니다. 버튼: {button.name}");
                     }
                 }
             }
-
-            // 다른 버튼들에 리스너 할당
-            if (upgradeButton != null)
-                upgradeButton.onClick.AddListener(UpgradeSelectedSkill);
-
-            if (exitButton != null)
-                exitButton.onClick.AddListener(CloseSkillUpgradeUI);
-
-            if (openButton != null)
-                openButton.onClick.AddListener(OpenSkillUpgradeUI);
-
-            // 초기에는 Skill Upgrade Panel을 숨김
-            if (skillPanel != null)
-                skillPanel.SetActive(false);
-
-            // 선택된 스킬이 없으므로 'M' 표시 초기화
-            if (skillLevelText != null)
-            {
-                skillLevelText.text = "";
-            }
-
-            // PlayerInputManager의 OnKInput 이벤트에 리스너 추가
-            PlayerInputManager.OnKInput += ToggleSkillUpgradeUI;
-
-            // 골드 표시 업데이트 (현재 골드 값 전달)
-            UpdateGoldDisplay(player.gold);
         }
+
+        // 다른 버튼들에 리스너 할당
+        if (upgradeButton != null)
+            upgradeButton.onClick.AddListener(UpgradeSelectedSkill);
+
+        if (exitButton != null)
+            exitButton.onClick.AddListener(CloseSkillUpgradeUI);
+
+        if (openButton != null)
+            openButton.onClick.AddListener(OpenSkillUpgradeUI);
+
+        // 초기에는 Skill Upgrade Panel을 숨김
+        if (skillPanel != null)
+            skillPanel.SetActive(false);
+
+        // 선택된 스킬이 없으므로 'M' 표시 초기화
+        if (skillLevelText != null)
+        {
+            skillLevelText.text = "";
+        }
+
+        // PlayerInputManager의 OnKInput 이벤트에 리스너 추가
+        PlayerInputManager.OnKInput += ToggleSkillUpgradeUI;
+
+        // 골드 표시 업데이트 (현재 골드 값 전달)
+        UpdateGoldDisplay(player.gold);
     }
 
     private void OnDestroy()
@@ -366,7 +371,6 @@ public class SkillUIManager : MonoBehaviour
             upgradeCostText.text = $"비용: <color=#FFFF00>{nextUpgradeCost}</color> 골드";
         }
     }
-
 
     // 골드 표시 업데이트
     private void UpdateGoldDisplay(float newGold)
