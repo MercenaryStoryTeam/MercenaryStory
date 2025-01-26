@@ -184,44 +184,6 @@ public class Player : MonoBehaviour
 		StageManager.Instance.currentPlayerFsm.ReturnToTown();
 	}
 
-	// 드랍된 아이템 상호작용 하는 메서드
-	public void DropItemInteraction()
-	{
-		if (droppedItems.Count > 0)
-		{
-			for (int i = droppedItems.Count - 1; i >= 0; i--)
-			{
-				if (droppedItems[i].droppedItem == null ||
-				    droppedItems[i].droppedLightLine == null)
-				{
-					droppedItems.RemoveAt(i);
-					continue;
-				}
-
-				if (Vector3.Distance(transform.position,
-					    droppedItems[i].droppedLightLine.transform.position) < 3f)
-				{
-					if (Input.GetKeyDown(KeyCode
-						    .E)) // E키 누르면 반경 안에 있는 아이템 인벤토리로 들어감. 테스트용 키임
-					{
-						if (droppedItems[i].droppedItem != null &&
-						    droppedItems[i].droppedLightLine != null)
-						{
-							bool isDropped = InventoryManger.Instance.UpdateSlotData();
-							if (isDropped)
-							{
-								InventoryManger.Instance.AddItemToInventory(droppedItems[i]
-									.droppedItem);
-								Destroy(droppedItems[i].droppedLightLine);
-								droppedItems.RemoveAt(i);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
 	// 골드를 소모
 	public bool SpendGold(float amount)
 	{
