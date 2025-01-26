@@ -18,7 +18,15 @@ public class ChatPanel : MonoBehaviour
 	private void Awake()
 	{
 		closeButton.onClick.AddListener(OnCloseButtonClick);
-		sendButton.onClick.AddListener(OnSendButtonClick);
+		sendButton.onClick.AddListener(Send);
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Return))
+		{
+			Send();
+		}
 	}
 
 	private void OnEnable()
@@ -37,7 +45,7 @@ public class ChatPanel : MonoBehaviour
 		UIManager.Instance.currentPanel = null;
 	}
 
-	private void OnSendButtonClick()
+	private void Send()
 	{
 		if (isCooldown)
 		{
