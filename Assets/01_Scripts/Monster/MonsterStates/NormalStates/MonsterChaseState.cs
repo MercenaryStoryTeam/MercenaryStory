@@ -2,20 +2,24 @@ using UnityEngine;
 
 public class MonsterChaseState : MonsterState
 {
+    private float minStateTime = 0.1f;
+    private float stateEnterTime;
     public override void EnterState(Monster monster)
     {
+        stateEnterTime = Time.time;
         monster.Agent.isStopped = false;
         monster.Animator.SetBool("IsMoving", true);
     }
 
     public override void ExecuteState(Monster monster)
     {
+        monster.Agent.SetDestination(monster.TargetTransform.position);
+        if (Time.time - stateEnterTime < minStateTime) return;
         if (IsAttackable(monster))
         {
             monster.ChangeState(MonsterStateType.Attack);
         }
         
-        monster.Agent.SetDestination(monster.TargetTransform.position);
     }
 
     public override void ExitState(Monster monster)
