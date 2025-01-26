@@ -23,6 +23,8 @@ public class Portal : MonoBehaviour
 		else if (StageManager.Instance.hostPlayerFsm.gameObject == other.gameObject)
 		{
 			StageManager.Instance.portalIsActive = true;
+			// 서버에 업로드
+			FirebaseManager.Instance.UploadCurrentUserData();
 			ServerManager.LoadScene(StageManager.Instance
 				.stageDatas[StageManager.Instance.currentStage].nextSceneName);
 		}
