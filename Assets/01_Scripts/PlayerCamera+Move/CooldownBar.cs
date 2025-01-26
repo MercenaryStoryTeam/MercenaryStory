@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class CooldownBar : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class CooldownBar : MonoBehaviour
     public class SkillCooldown
     {
         // SkillFsm에서 정의된 SkillType 사용
-        public SkillType skillType;   
-        public Image cooldownImage;   
+        public SkillType skillType;
+        public Image cooldownImage;
     }
 
     // 스킬-이미지 리스트
@@ -22,16 +23,61 @@ public class CooldownBar : MonoBehaviour
     public SkillFsm skillFsm;
 
     // SkillFsm 참조 간격
-    private const float retryInterval = 1f; 
+    private const float retryInterval = 1f;
+
+    private Coroutine findSkillFsmCoroutine;
 
     private void Start()
     {
         // 인스펙터에서 참조가 안 되어 있으면 자동으로 찾아보기
         if (skillFsm == null)
         {
-            StartCoroutine(FindSkillFsm());
+            findSkillFsmCoroutine = StartCoroutine(FindSkillFsm());
         }
 
+        // 모든 쿨타임 이미지의 fillAmount를 0으로 초기화 (옵션)
+        InitializeCooldownImages();
+    }
+
+    private void OnEnable()
+    {
+        // 씬 로드 이벤트에 메서드 등록
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        // 씬 로드 이벤트에서 메서드 제거
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        // 코루틴 정지
+        if (findSkillFsmCoroutine != null)
+        {
+            StopCoroutine(findSkillFsmCoroutine);
+            findSkillFsmCoroutine = null;
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 새로운 씬이 로드될 때마다 스킬 이미지를 초기화하고 SkillFsm을 다시 찾음
+        InitializeCooldownImages();
+
+        // 기존의 SkillFsm 참조를 초기화
+        skillFsm = null;
+
+        // 기존의 코루틴이 실행 중이라면 정지
+        if (findSkillFsmCoroutine != null)
+        {
+            StopCoroutine(findSkillFsmCoroutine);
+        }
+
+        // SkillFsm을 다시 찾기 위해 코루틴 시작
+        findSkillFsmCoroutine = StartCoroutine(FindSkillFsm());
+    }
+
+    private void InitializeCooldownImages()
+    {
         // 모든 쿨타임 이미지의 fillAmount를 0으로 초기화 (옵션)
         foreach (var skillCooldown in skillCooldowns)
         {
