@@ -10,6 +10,6 @@ public class SceneLoader : MonoBehaviour
     public void LoadScene()
     {
         // 지정된 씬으로 이동
-        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+       SceneManager.LoadScene(sceneName);
     }
 }

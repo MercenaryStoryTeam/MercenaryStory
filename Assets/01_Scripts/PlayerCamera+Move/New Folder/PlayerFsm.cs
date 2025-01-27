@@ -551,14 +551,14 @@ public class PlayerFsm : MonoBehaviourPun
 
     public void InstantiatePlayerPrefabs()
     {
-        GameManager.Instance.ChangeStage(GameManager.Instance.CurrentScene+1);
+        GameManager.Instance.ChangeScene(GameManager.Instance.CurrentScene+1);
         photonView.RPC("RPC_InstantiatePlayerPrefabs", RpcTarget.Others);
     }
 
     [PunRPC]
     private void RPC_InstantiatePlayerPrefabs()
     {
-        GameManager.Instance.ChangeStage(GameManager.Instance.CurrentScene+1);
+        GameManager.Instance.ChangeScene(GameManager.Instance.CurrentScene+1);
         GameManager.Instance.PlayerSpawn();
     }
 
@@ -574,7 +574,7 @@ public class PlayerFsm : MonoBehaviourPun
         FirebaseManager.Instance.CurrentUserData.UpdateUserData(
             hp: player.currentHp);
         FirebaseManager.Instance.UploadCurrentUserData();
-        GameManager.Instance.ChangeStage(1);
+        GameManager.Instance.ChangeScene(1);
         ServerManager.LeaveAndLoadScene("LJW_TownScene");
     }
 }

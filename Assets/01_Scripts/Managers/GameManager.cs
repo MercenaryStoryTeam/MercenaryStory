@@ -41,7 +41,7 @@ public class GameManager : SingletonManager<GameManager>
 		}
 	}
 
-	public void ChangeStage(int stageIndex)
+	public void ChangeScene(int stageIndex)
 	{
 		if (stageIndex < sceneDatas.Length)
 		{
