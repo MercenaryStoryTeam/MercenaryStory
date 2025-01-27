@@ -24,3 +24,12 @@ MonoBehaviour:
   returnRange: 0
   goldReward: 0
   dropItems: []
+  attackSound: mulock_attack
+  dieSound: mulock_die
+  damageSound:
+  - player_hit1
+  - player_hit2
+  - player_hit3
+  - player_hit4
+  - player_hit5
+  - player_hit6

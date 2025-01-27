@@ -27,3 +27,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 826b09db2abedcf41be9b5bd4237a990, type: 2}
   - {fileID: 11400000, guid: 8289d521e9236da4d9764b9384419549, type: 2}
   - {fileID: 11400000, guid: 9323e3dd4c5d95c428335c0c7bd90913, type: 2}
+  attackSound: rat_attack
+  dieSound: rat_die
+  damageSound:
+  - player_hit1
+  - player_hit2
+  - player_hit3
+  - player_hit4
+  - player_hit5
+  - player_hit6

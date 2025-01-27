@@ -20,6 +20,12 @@ public class MonsterData : ScriptableObject
 
     [Header("보상 골드")]
     public float goldReward;
+    
     [Header("보상 아이템")]
     public List<ItemBase> dropItems;
+
+    [Header("효과음")]
+    public string attackSound;
+    public string dieSound;
+    public List<string> damageSound;
 }
