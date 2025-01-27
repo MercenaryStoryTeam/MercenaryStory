@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7202429d30ec1e42a77eb2f30139e3e, type: 3}
-  m_Name: TownStage
+  m_Name: 1-1StageScene
   m_EditorClassIdentifier: 
-  stageName: TownStage
-  bgmName: sound_lobby_BGM
-  monsterCount: 0
-  nextSceneName: LJW_1-1
-  playerSpawnPos: {x: 485, y: 30, z: -177}
+  stageName: MAP 1-1
+  bgmName: sound_dungeon_1-1BGM
+  monsterCount: 13
+  nextSceneName: MAP 1-2
+  playerSpawnPos: {x: 96, y: 1, z: 142}
