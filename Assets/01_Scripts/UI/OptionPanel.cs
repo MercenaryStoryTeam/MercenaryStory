@@ -53,7 +53,7 @@ public class OptionPanel : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if (SceneManager.Instance.CurrentScene > 1)
+		if (GameManager.Instance.CurrentScene > 1)
 		{
 			gameQuitButton.gameObject.SetActive(false);
 			returnToTownButton.gameObject.SetActive(true);
@@ -75,7 +75,7 @@ public class OptionPanel : MonoBehaviour
 
 	private void returnToTownButtonClick()
 	{
-		SceneManager.Instance.currentPlayerFsm.ReturnToTown();
+		GameManager.Instance.currentPlayerFsm.ReturnToTown();
 		UIManager.Instance.CloseAllPanels();
 	}
 

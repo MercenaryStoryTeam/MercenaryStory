@@ -181,21 +181,21 @@ public class VirtualCameraController : MonoBehaviour
     private void SetTargets()
     {
         // 1) StageManager 자체가 있는지 먼저 확인
-        if (SceneManager.Instance == null)
+        if (GameManager.Instance == null)
         {
             Debug.LogWarning("StageManager.Instance가 존재하지 않습니다. 아직 초기화되지 않았거나 씬에 없습니다.");
             return;
         }
 
         // 2) currentPlayerFsm이 세팅되어 있는지 확인
-        if (SceneManager.Instance.currentPlayerFsm == null)
+        if (GameManager.Instance.currentPlayerFsm == null)
         {
             Debug.LogWarning("StageManager.Instance.currentPlayerFsm이 null입니다. 플레이어 FSM이 할당되지 않았습니다.");
             return;
         }
 
         // 3) 실제 player 오브젝트 체크
-        GameObject player = SceneManager.Instance.currentPlayerFsm.gameObject;
+        GameObject player = GameManager.Instance.currentPlayerFsm.gameObject;
         if (player == null)
         {
             Debug.LogWarning("StageManager.Instance.currentPlayerFsm.gameObject가 null입니다. 플레이어 오브젝트를 찾을 수 없습니다.");

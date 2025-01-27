@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
 		// 체력을 최대값으로 복원
 		currentHp = maxHp;
 		FirebaseManager.Instance.CurrentUserData.user_HP = currentHp;
-		SceneManager.Instance.currentPlayerFsm.ReturnToTown();
+		GameManager.Instance.currentPlayerFsm.ReturnToTown();
 	}
 
 	// 골드를 소모

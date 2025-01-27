@@ -6,7 +6,7 @@ public class Portal : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		// 마을 포탈일 때
-		if (SceneManager.Instance.CurrentScene == 0)
+		if (GameManager.Instance.CurrentScene == 0)
 		{
 			// 파티가 없을 때
 			if (FirebaseManager.Instance.CurrentPartyData == null)
@@ -26,16 +26,16 @@ public class Portal : MonoBehaviour
 		// 던전 포탈일 때
 		else
 		{
-			if (SceneManager.Instance.portalIsActive) return;
+			if (GameManager.Instance.portalIsActive) return;
 			// 파티장일 때
 			if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name ==
 			    other.gameObject.name)
 			{
-				SceneManager.Instance.portalIsActive = true;
+				GameManager.Instance.portalIsActive = true;
 				// 서버에 업로드
 				FirebaseManager.Instance.UploadCurrentUserData();
-				ServerManager.LoadScene(SceneManager.Instance
-					.sceneDatas[SceneManager.Instance.CurrentScene].nextSceneName);
+				ServerManager.LoadScene(GameManager.Instance
+					.sceneDatas[GameManager.Instance.CurrentScene].nextSceneName);
 			}
 		}
 	}

@@ -72,14 +72,14 @@ public class PlayerFsm : MonoBehaviourPun
     {
         if (FirebaseManager.Instance.CurrentUserData.user_Name == gameObject.name)
         {
-            SceneManager.Instance.currentPlayerFsm = this;
+            GameManager.Instance.currentPlayerFsm = this;
         }
 
-        if (PhotonNetwork.IsMasterClient && SceneManager.Instance != null)
+        if (PhotonNetwork.IsMasterClient && GameManager.Instance != null)
         {
             if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name == gameObject.name)
             {
-                SceneManager.Instance.hostPlayerFsm = this;
+                GameManager.Instance.hostPlayerFsm = this;
             }
         }
     }
@@ -551,15 +551,15 @@ public class PlayerFsm : MonoBehaviourPun
 
     public void InstantiatePlayerPrefabs()
     {
-        SceneManager.Instance.ChangeStage(SceneManager.Instance.CurrentScene+1);
+        GameManager.Instance.ChangeStage(GameManager.Instance.CurrentScene+1);
         photonView.RPC("RPC_InstantiatePlayerPrefabs", RpcTarget.Others);
     }
 
     [PunRPC]
     private void RPC_InstantiatePlayerPrefabs()
     {
-        SceneManager.Instance.ChangeStage(SceneManager.Instance.CurrentScene+1);
-        SceneManager.Instance.PlayerSpawn();
+        GameManager.Instance.ChangeStage(GameManager.Instance.CurrentScene+1);
+        GameManager.Instance.PlayerSpawn();
     }
 
     public void ReturnToTown()
@@ -574,7 +574,7 @@ public class PlayerFsm : MonoBehaviourPun
         FirebaseManager.Instance.CurrentUserData.UpdateUserData(
             hp: player.currentHp);
         FirebaseManager.Instance.UploadCurrentUserData();
-        SceneManager.Instance.ChangeStage(1);
+        GameManager.Instance.ChangeStage(1);
         ServerManager.LeaveAndLoadScene("LJW_TownScene");
     }
 }
