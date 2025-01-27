@@ -97,48 +97,11 @@ public class Equipment : MonoBehaviourPunCallbacks
 	{
 		if (item is WeaponItem weapon)
 		{
-			if (weapon.rank == 1) // 장비 랭크가 1인 경우
-			{
-				equipments[0].SetActive(true);
-				equipments[1].SetActive(false);
-				equipments[2].SetActive(false);
-				equipments[3].SetActive(false);
-				equipments[4].SetActive(false);
-			}
-			else if (weapon.rank == 2)
-			{
-				equipments[0].SetActive(false);
-				equipments[1].SetActive(true);
-				equipments[2].SetActive(false);
-				equipments[3].SetActive(false);
-				equipments[4].SetActive(false);
-			}
-			else if (weapon.rank == 3)
-			{
-				equipments[0].SetActive(false);
-				equipments[1].SetActive(false);
-				equipments[2].SetActive(true);
-				equipments[3].SetActive(false);
-				equipments[4].SetActive(false);
-			}
-
-			else if (weapon.rank == 4)
-			{
-				equipments[0].SetActive(false);
-				equipments[1].SetActive(false);
-				equipments[2].SetActive(false);
-				equipments[3].SetActive(true);
-				equipments[4].SetActive(false);
-			}
-
-			else if (weapon.rank == 5)
-			{
-				equipments[0].SetActive(false);
-				equipments[1].SetActive(false);
-				equipments[2].SetActive(false);
-				equipments[3].SetActive(false);
-				equipments[4].SetActive(true);
-			}
-		}
+            for (int i = 0; i < equipments.Length; i++)
+            {
+                equipments[i].SetActive(i + 1 == weapon.rank);
+            }
+            
+        }
 	}
 }
