@@ -26,21 +26,14 @@ public class ServerManager
 			EmptyRoomTtl = 60000
 		};
 
-		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: roomName);
+		FirebaseManager.Instance.CurrentUserData.UpdateUserData(
+			currentServer: roomName);
 
 		FirebaseManager.Instance.UploadCurrentUserData("user_CurrentServer",
 			FirebaseManager.Instance.CurrentUserData.user_CurrentServer);
 
 		ChatManager.Instance.ChatStart(roomName);
 		PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, TypedLobby.Default);
-	}
-
-	public static void LoadLobbyScene(string sceneName)
-	{
-		PhotonNetwork.LoadLevel(sceneName);
-		TitleUI.Instance.PanelCloseAll();
-		UIManager.Instance.chatButton.gameObject.SetActive(true);
-		UIManager.Instance.partyButton.gameObject.SetActive(true);
 	}
 
 	// 씬(룸)이동 구현을 위한 부분
@@ -62,9 +55,10 @@ public class ServerManager
 		};
 		PhotonNetwork.JoinOrCreateRoom(sceneName, options, TypedLobby.Default);
 		Debug.Log($"Loading first dungeon scene: {sceneName}");
-		FirebaseManager.Instance.CurrentPartyData.party_Members.Remove(FirebaseManager
-			.Instance.CurrentUserData);
-		FirebaseManager.Instance.CurrentUserData.UpdateUserData(currentServer: sceneName);
+		FirebaseManager.Instance.CurrentPartyData.party_Members.Remove(
+			FirebaseManager.Instance.CurrentUserData);
+		FirebaseManager.Instance.CurrentUserData.UpdateUserData(
+			currentServer: sceneName);
 		FirebaseManager.Instance.CurrentPartyData.AddMember(FirebaseManager.Instance
 			.CurrentUserData);
 
@@ -84,11 +78,9 @@ public class ServerManager
 
 	public static void PlayerSpawn(Vector3 spawnPoint)
 	{
-		Debug.Log("ServerManager::PlayerSpawn");
-		GameObject go = PhotonNetwork
-			.Instantiate(
-				$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
-				spawnPoint, Quaternion.identity);
+		GameObject go = PhotonNetwork.Instantiate(
+			$"Player/Player{FirebaseManager.Instance.CurrentUserData.user_Appearance}",
+			spawnPoint, Quaternion.identity);
 		go.name = PhotonNetwork.NickName;
 	}
 

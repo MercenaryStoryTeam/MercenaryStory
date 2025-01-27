@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -59,11 +58,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedLobby()
 	{
-		if (FirebaseManager.Instance.CurrentPartyData.party_ServerName == "LJW_TownScene")
+		if (FirebaseManager.Instance.CurrentPartyData.party_ServerName ==
+		    "LJW_TownScene")
 		{
 			FirebaseManager.Instance.ExitParty();
 			// 방 확인하고 들어가기
-			ServerManager.JoinOrCreatePersistentRoom(ServerManager.GetRoomWithFewestPlayers());
+			ServerManager.JoinOrCreatePersistentRoom(ServerManager
+				.GetRoomWithFewestPlayers());
 			PhotonNetwork.LoadLevel("LJW_TownScene");
 		}
 	}
@@ -85,7 +86,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 			if (FirebaseManager.Instance.CurrentPartyData.party_ServerName ==
 			    "LJW_1-1")
 			{
-				FirebaseManager.Instance.CurrentPartyData.party_ServerName = "LJW_TownScene";
+				FirebaseManager.Instance.CurrentPartyData.party_ServerName =
+					"LJW_TownScene";
 				GameManager.Instance.ChangeScene(2);
 				GameManager.Instance.PlayerSpawn();
 				UIManager.Instance.partyButton.gameObject.SetActive(false);
