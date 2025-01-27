@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.Interactions;
 
 public class BossChargeState : BossState
 {
@@ -13,7 +14,7 @@ public class BossChargeState : BossState
     public override void ExecuteState(BossMonster boss)
     {
         boss.Agent.SetDestination(boss.Target.position);
-        if (boss.Agent.remainingDistance <= boss.Agent.stoppingDistance)
+        if (boss.Agent.remainingDistance <= 1f)
         {
             boss.ChangeState(BossStateType.Idle);
         }
@@ -22,5 +23,6 @@ public class BossChargeState : BossState
     public override void ExitState(BossMonster boss)
     {
         boss.Animator.SetBool("Charge",false);
+        boss.Target.gameObject.GetComponent<Player>().TakeDamage(boss.damage);
     }
 }

@@ -57,7 +57,16 @@ public class Weapon : MonoBehaviour
 		{
 			if (collider.CompareTag("Monster"))
 			{
-				collider.gameObject.GetComponent<Monster>().TakeDamage(damage);
+				if (collider.gameObject.TryGetComponent<Monster>(out Monster monster))
+				{
+					monster.TakeDamage(damage);
+				}
+
+				else if (collider.gameObject.TryGetComponent<BossMonster>(out BossMonster bossMonster))
+				{
+					bossMonster.TakeDamage(damage);
+				}
+
 				player.SuckBlood();
 			}
 			else if (collider.CompareTag("Minion"))

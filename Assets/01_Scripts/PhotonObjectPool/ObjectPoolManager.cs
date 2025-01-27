@@ -1,12 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 public class ObjectPoolManager : MonoBehaviour
 {
-    private Dictionary<string, object> pools = new Dictionary<string, object>();
+    private static ObjectPoolManager instance;
+    private Dictionary<string, PhotonObjectPool> pools = new Dictionary<string, PhotonObjectPool>();
 
-    public PhotonObjectPool<T> GetPool<T>(T prefab, int initialSize) where T : MonoBehaviour
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public PhotonObjectPool GetPool(GameObject prefab, int initialSize)
     {
         if (prefab == null)
         {
@@ -16,13 +29,26 @@ public class ObjectPoolManager : MonoBehaviour
 
         string key = prefab.name;
 
-        if (!pools.ContainsKey(key))
+        // 이미 존재하는 풀이 있다면 그것을 반환
+        if (pools.TryGetValue(key, out PhotonObjectPool existingPool))
         {
-            PhotonObjectPool<T> pool = new PhotonObjectPool<T>(prefab, initialSize);
-            pools[key] = pool;
-            return pool;
+            if (existingPool != null)
+            {
+                return existingPool;
+            }
+            else
+            {
+                // 풀이 존재하지만 null인 경우 Dictionary에서 제거
+                pools.Remove(key);
+            }
         }
 
-        return (PhotonObjectPool<T>)pools[key];
+        // 새로운 풀 생성
+        GameObject poolGO = new GameObject($"Pool_{key}");
+        poolGO.transform.SetParent(transform);
+        PhotonObjectPool pool = poolGO.AddComponent<PhotonObjectPool>();
+        pool.Init(prefab, initialSize);
+        pools[key] = pool;
+        return pool;
     }
-} 
+}
