@@ -480,12 +480,12 @@ public class SkillFsm : MonoBehaviour
     // 파티클 이펙트를 활성화
     private void ActivateSkillParticle(SkillEffect skillEffect, Skill skill)
     {
+        if (FirebaseManager.Instance.CurrentUserData.user_Name != gameObject.name) return;
         if (skillEffect.ParticleEffect == null)
         {
             LogWarning($"[SkillFsm] {skill.Name} 스킬의 파티클 이펙트 프리팹이 null입니다.");
             return;
         }
-
         Vector3 spawnPosition;
         Quaternion spawnRotation;
 
