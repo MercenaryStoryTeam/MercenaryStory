@@ -67505,6 +67505,9 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 3342405826453538178}
     - ParticleEffect: {fileID: 5689774737778594865}
       ParticleSpawnPoint: {fileID: 3342405826453538178}
+    SkillSounds:
+    - SoundName: player_Twohandtackle
+      DelayBeforePlay: 0
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -67531,6 +67534,9 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 7590595874633185710}
     - ParticleEffect: {fileID: 7592258577982924686}
       ParticleSpawnPoint: {fileID: 7590595874633185710}
+    SkillSounds:
+    - SoundName: player_Twohandparrying
+      DelayBeforePlay: 0
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -67557,6 +67563,13 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 8098440928815862297}
     - ParticleEffect: {fileID: 2046091208076979268}
       ParticleSpawnPoint: {fileID: 2049544767341468612}
+    SkillSounds:
+    - SoundName: player_Twohandmoon1
+      DelayBeforePlay: 0.3
+    - SoundName: player_Twohandmoon1
+      DelayBeforePlay: 0.3
+    - SoundName: player_Twohandmoon2
+      DelayBeforePlay: 0.3
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
@@ -67583,6 +67596,9 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 7861170559290047476}
     - ParticleEffect: {fileID: 1123675413641663058}
       ParticleSpawnPoint: {fileID: 1121050148222200134}
+    SkillSounds:
+    - SoundName: player_Twohandcresent
+      DelayBeforePlay: 0.6
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
