@@ -306,8 +306,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			{
 				UIManager.Instance.popUp.PopUpClose();
 				// Update party list
-				UIManager.Instance.ClosePartyCreatePanel();
-				UIManager.Instance.OnPartyButtonClick();
+				UIManager.Instance.ClosePartyPanel();
 			});
 		}
 		catch (FirebaseException e)
@@ -391,7 +390,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 							UIManager.Instance.popUp.PopUpOpen(
 								$"{CurrentPartyData.party_Name}\n파티에 가입하였습니다.",
 								() => UIManager.Instance.popUp.PopUpClose());
-							UIManager.Instance.OnPartyButtonClick();
+							UIManager.Instance.ClosePartyPanel();
 						}
 						else
 						{

@@ -12,32 +12,53 @@ public class UIManager : SingletonManager<UIManager>
 	public ShopPanel shop;
 	public EquipmentPanel equipment;
 	public InventoryManger inventoryMangerSystem;
+
 	public PopUp popUp;
-	[HideInInspector] public bool isInventoryActive = false;
-	[HideInInspector] public bool isItemInfoActive = false;
-	[HideInInspector] public bool isShopActive = false;
+
+	/*[HideInInspector]*/
+	public bool isInventoryActive = false;
+
+	/*[HideInInspector]*/
+	public bool isItemInfoActive = false;
+
+	/*[HideInInspector]*/
+	public bool isShopActive = false;
 
 	// Chat
 	public ChatPanel chatPanel;
+
 	public Button chatButton;
-	[HideInInspector] public bool isChatActive = false;
+
+	/*[HideInInspector]*/
+	public bool isChatActive = false;
 
 	// Party
 	public PartyPanel partyPanel;
 	public PartyCreatePanel partyCreatePanel;
 	public PartyMemberPanel partyMemberPanel;
+
 	public Button partyButton;
-	[HideInInspector] public bool isPartyActive = false;
-	[HideInInspector] public bool isPartyCreateActive = false;
-	[HideInInspector] public bool isPartyMemberActive = false;
+
+	/*[HideInInspector]*/
+	public bool isPartyActive = false;
+
+	/*[HideInInspector]*/
+	public bool isPartyCreateActive = false;
+
+	/*[HideInInspector]*/
+	public bool isPartyMemberActive = false;
 
 	// Dungeon
 	public DungeonPanel dungeonPanel;
-	[HideInInspector] public bool isDungeonActive = false;
+
+	/*[HideInInspector]*/
+	public bool isDungeonActive = false;
 
 	//Option
 	public OptionPanel optionPanel;
-	[HideInInspector] public bool isOptionActive = false;
+
+	/*[HideInInspector]*/
+	public bool isOptionActive = false;
 
 	//Skill UI
 	[FormerlySerializedAs("InGamePanel")] public GameObject InGamePanel;
@@ -299,13 +320,10 @@ public class UIManager : SingletonManager<UIManager>
 
 	public void CloseAllPanels()
 	{
-		// 장소영
 		CloseInventoryPanel();
 		CloseShopPanel();
 		CloseItemInfoPanel();
 		CloseOptionPanel();
-
-		// 이지원
 		CloseChatPanel();
 		ClosePartyPanel();
 		ClosePartyCreatePanel();
