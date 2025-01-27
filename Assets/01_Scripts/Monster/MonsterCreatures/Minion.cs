@@ -27,6 +27,8 @@ public class Minion : MonoBehaviourPun
     public DetectCollider detectCollider;
     private PhotonObjectPool pool;
     
+    public MonsterData minionData;
+    
     protected virtual void Start()
     {
         animator = GetComponent<Animator>();
