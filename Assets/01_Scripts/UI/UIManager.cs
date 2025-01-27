@@ -193,13 +193,6 @@ public class UIManager : SingletonManager<UIManager>
 			itemInfo.firstOptionText.text = item.currentItemCount + "개";
 		}
 
-		if (item.itemClass == 3)
-		{
-			itemInfo.firstOptionButton.enabled = false;
-			itemInfo.secondOption.SetActive(false);
-			itemInfo.firstOptionText.text = item.currentItemCount + "개";
-		}
-
 		itemInfo.itemName.text = item.itemName.ToString();
 		itemInfo.itemDescription.text = item.description.ToString();
 		itemInfo.itemImage.sprite = item.image;
