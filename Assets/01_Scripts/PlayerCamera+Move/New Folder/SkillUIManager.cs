@@ -418,7 +418,7 @@ public class SkillUIManager : MonoBehaviour
         if (skillPanel != null)
             skillPanel.SetActive(false);
 
-        SoundManager.Instance.PlaySFX("sound_ui_close", gameObject);
+        SoundManager.Instance.PlaySFX("ui_off", gameObject);
     }
 
     // Skill Upgrade UI 패널을 여는 메서드
@@ -427,7 +427,7 @@ public class SkillUIManager : MonoBehaviour
         if (skillPanel != null)
             skillPanel.SetActive(true);
 
-        SoundManager.Instance.PlaySFX("sound_ui_entry", gameObject);
+        SoundManager.Instance.PlaySFX("ui_on", gameObject);
     }
 
     // Skill Upgrade UI 패널의 활성화 상태를 토글하는 메서드
