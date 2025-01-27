@@ -79,7 +79,7 @@ public class ServerManager
 		PhotonNetwork.LoadLevel(sceneName);
 		// 여기서 미뤄야 함...
 
-		StageManager.Instance.PlayerSpawnWaiting();
+		SceneManager.Instance.PlayerSpawnWaiting();
 	}
 
 	public static void PlayerSpawn(Vector3 spawnPoint)
