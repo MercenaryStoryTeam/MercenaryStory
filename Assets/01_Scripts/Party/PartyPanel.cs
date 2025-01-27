@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,7 +48,6 @@ public class PartyPanel : MonoBehaviour
 		FirebaseManager.Instance.UpdatePartyAndList();
 		parties = null;
 		parties = FirebaseManager.Instance.GetPartyList();
-		print(JsonConvert.SerializeObject(parties));
 		if (parties != null)
 		{
 			foreach (var party in parties)
