@@ -38,7 +38,7 @@ public class Monster : MonoBehaviourPun
     public VirtualCameraController cameraController;
     public MonsterHpBar monsterHpBar;
 
-    private Vector3 lastPos;
+    private Vector3 originPos;
     #endregion
 
     #region 프로퍼티
@@ -87,7 +87,7 @@ public class Monster : MonoBehaviourPun
         stateMachine.ChangeState(MonsterStateType.Patrol);
         cameraController = FindObjectOfType<VirtualCameraController>();
         monsterHpBar = FindObjectOfType<MonsterHpBar>();
-        lastPos.y = transform.position.y;
+        originPos.y = transform.position.y;
     }
 
     // 플레이어 레이어 찾기
@@ -193,7 +193,7 @@ public class Monster : MonoBehaviourPun
     {
         Player player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
         Vector3 spawnPos = transform.position;
-        spawnPos.y = lastPos.y;
+        spawnPos.y = originPos.y;
         if (item != null)
         {
             GameObject itemLightLine = Instantiate(item.dropLightLine, spawnPos, Quaternion.identity);

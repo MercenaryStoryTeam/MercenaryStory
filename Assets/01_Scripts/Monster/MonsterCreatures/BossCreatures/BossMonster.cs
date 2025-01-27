@@ -49,6 +49,8 @@ public class BossMonster : MonoBehaviourPun
     private ObjectPoolManager poolManager;
     private PhotonObjectPool minionPool;
 
+    private Vector3 originPos;
+
     #endregion
 
     #region 프로퍼티
@@ -76,6 +78,8 @@ public class BossMonster : MonoBehaviourPun
         {
             minionPool = poolManager.GetPool(minionPrefab, 10);
         }
+
+        originPos.y = transform.position.y;
     }
     
     protected virtual void Update()
@@ -231,6 +235,7 @@ public class BossMonster : MonoBehaviourPun
 
     #region 아이템 드랍
 
+
     private ItemBase TryDropItem(List<ItemBase> items)
     {
         ItemBase droppedItem = null;
@@ -243,10 +248,8 @@ public class BossMonster : MonoBehaviourPun
                 float randomValue = UnityEngine.Random.Range(0f, 1f);
                 if (randomValue <= item.dropPercent)
                 {
-                    Debug.Log($"{dropChance}의 확률로 아이템 획득!");
-
                     droppedItem = item;
-                    Debug.Log($"아이템 {droppedItem}을 {randomValue}의 확률로 얻음!");
+                    Debug.Log($"아이템 {droppedItem.itemName}을 {randomValue}의 확률로 얻음!");
 
 
                     break;
@@ -256,7 +259,7 @@ public class BossMonster : MonoBehaviourPun
 
         else
         {
-            Debug.Log($"{dropChance}의 확률로 아이템을 획득하지 못함");
+            Debug.Log($"아이템을 획득하지 못함");
         }
 
         return droppedItem;
@@ -264,13 +267,18 @@ public class BossMonster : MonoBehaviourPun
 
     private void DroppedLightLine(ItemBase item)
     {
-        Player player = FindObjectOfType<Player>();
-        GameObject itemLightLine = Instantiate(item.dropLightLine, this.transform.position, Quaternion.identity);
-        player.droppedItems.Add((itemLightLine, item));
+        Player player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
+        Vector3 spawnPos = transform.position;
+        spawnPos.y = originPos.y;
+        if (item != null)
+        {
+            GameObject itemLightLine = Instantiate(item.dropLightLine, spawnPos, Quaternion.identity);
+            player.droppedItems.Add((itemLightLine, item));
+        }
     }
 
     #endregion
-    
+
     private void OnDrawGizmos()
     {
         // 도륙내기 공격 범위
