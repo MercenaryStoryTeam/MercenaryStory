@@ -543,16 +543,14 @@ public class PlayerFsm : MonoBehaviourPun
 
 	public void InstantiatePlayerPrefabs()
 	{
-		StageManager.Instance.currentStage++;
-		StageManager.Instance.ChangeStage(StageManager.Instance.currentStage);
+		StageManager.Instance.ChangeStage(++StageManager.Instance.currentStage);
 		photonView.RPC("RPC_InstantiatePlayerPrefabs", RpcTarget.Others);
 	}
 
 	[PunRPC]
 	private void RPC_InstantiatePlayerPrefabs()
 	{
-		StageManager.Instance.currentStage++;
-		StageManager.Instance.ChangeStage(StageManager.Instance.currentStage);
+		StageManager.Instance.ChangeStage(++StageManager.Instance.currentStage);
 		StageManager.Instance.PlayerSpawn();
 	}
 
@@ -568,6 +566,7 @@ public class PlayerFsm : MonoBehaviourPun
 		FirebaseManager.Instance.CurrentUserData.UpdateUserData(
 			hp: player.currentHp);
 		FirebaseManager.Instance.UploadCurrentUserData();
+		StageManager.Instance.ChangeStage(0);
 		ServerManager.LeaveAndLoadScene("LJW_TownScene");
 	}
 }

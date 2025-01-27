@@ -43,6 +43,7 @@ public class StageManager : SingletonManager<StageManager>
 			portalIsActive = false;
 			dieMonsterCount = 0;
 			StageClear = false;
+			currentStage = stageIndex;
 			PlayStageBGM();
 		}
 	}
