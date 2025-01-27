@@ -11,12 +11,12 @@ public class GameManager : SingletonManager<GameManager>
 	public bool portalIsActive;
 
 	public Vector3 spawnPoint;
-	public int CurrentScene{ get; private set; }
-	
+	public int CurrentScene { get; private set; }
+
 
 	private void Start()
 	{
-		CurrentScene = 0;	
+		CurrentScene = 0;
 		PlayStageBGM();
 	}
 
@@ -26,6 +26,7 @@ public class GameManager : SingletonManager<GameManager>
 		{
 			UIManager.Instance.InGamePanel.gameObject.SetActive(true);
 		}
+
 		if (dieMonsterCount == sceneDatas[CurrentScene].monsterCount)
 		{
 			StageClear = true;
@@ -49,6 +50,7 @@ public class GameManager : SingletonManager<GameManager>
 			dieMonsterCount = 0;
 			StageClear = false;
 			CurrentScene = stageIndex;
+			UIManager.Instance.CloseAllPanels();
 			PlayStageBGM();
 		}
 	}
@@ -73,6 +75,7 @@ public class GameManager : SingletonManager<GameManager>
 			.GetComponent<PlayerFsm>();
 		playerFsm.InstantiatePlayerPrefabs();
 	}
+
 	private void OnApplicationQuit()
 	{
 		// 사용자가 방을 나갈 때 isOnline을 false로 설정
