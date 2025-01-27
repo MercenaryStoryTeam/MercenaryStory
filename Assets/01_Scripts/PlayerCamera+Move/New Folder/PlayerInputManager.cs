@@ -23,10 +23,15 @@ public class PlayerInputManager : MonoBehaviourPun
 	// 모바일 플랫폼 여부
 	private bool useMobileInput;
 
+	private GameObject shop; // 상점 오브젝트
+
 	private void Awake()
 	{
 		// Player 스크립트 자동 참조 -> PlayerInputManager 스크립트가 속한 부모 객체에서 찾음
 		player = GetComponent<Player>();
+
+		shop = GameObject.Find("Store");
+		print(shop);
 
 		// 모바일 입력 활성화 여부 설정 (모바일 테스트 true 또는 모바일 플랫폼 감지)
 		useMobileInput = forceMobile || Application.isMobilePlatform;
@@ -131,11 +136,6 @@ public class PlayerInputManager : MonoBehaviourPun
 			UIManager.Instance.inventory.TryOpenInventory();
 		}
 
-		if (Input.GetKeyDown(KeyCode.O)) // 상점 테스트용
-		{
-			UIManager.Instance.shop.TryOpenShop();
-		}
-
 		if (Input.GetKeyDown(KeyCode.E))
 		{
 			if (player.droppedItems.Count > 0)
@@ -162,6 +162,11 @@ public class PlayerInputManager : MonoBehaviourPun
 						}
 					}
 				}
+			}
+
+			if(Vector3.Distance(transform.position, shop.transform.position) < 7f)
+			{
+				UIManager.Instance.shop.TryOpenShop();
 			}
 		}
 
