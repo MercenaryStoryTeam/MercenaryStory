@@ -67584,9 +67584,7 @@ MonoBehaviour:
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
-  player: {fileID: 3109342957528400570}
-  playerFsm: {fileID: 461331483928832361}
-  enableDebugLogs: 1
+  enableDebugLogs: 0
 --- !u!114 &-6693327397993148701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67599,8 +67597,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c590c90fe733c0f47a59f30c9c16fc17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerFsm: {fileID: 461331483928832361}
-  skillFsm: {fileID: 5235109630303961540}
   currentState: 0
 --- !u!114 &861205683803348506
 MonoBehaviour:

@@ -207,7 +207,7 @@ public class SkillFsm : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // 입력 이벤트 등록 (예시)
+        // 입력 이벤트 등록 
         PlayerInputManager.OnSkillInput += TriggerRushSkill;
         PlayerInputManager.OnRightClickInput += TriggerParrySkill;
         PlayerInputManager.OnShiftLeftClickInput += TriggerSkill1;
@@ -218,16 +218,14 @@ public class SkillFsm : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
-        // 입력 이벤트 해제 (예시)
+        // 입력 이벤트 해제 
         PlayerInputManager.OnSkillInput -= TriggerRushSkill;
         PlayerInputManager.OnRightClickInput -= TriggerParrySkill;
         PlayerInputManager.OnShiftLeftClickInput -= TriggerSkill1;
         PlayerInputManager.OnShiftRightClickInput -= TriggerSkill2;
     }
 
-    /// <summary>
-    /// 컴포넌트 초기화 메서드
-    /// </summary>
+    // 컴포넌트 초기화 메서드
     private void InitializeComponents()
     {
         // Animator 컴포넌트 가져오기
@@ -238,35 +236,33 @@ public class SkillFsm : MonoBehaviour
         }
         else
         {
-            LogError("[SkillFsm] Animator 컴포넌트를 찾을 수 없습니다. SkillFsm 기능이 제한될 수 있습니다.");
+            LogError("[SkillFsm] Animator 컴포넌트를 찾을 수 없습니다.");
         }
 
-        // Player 컴포넌트 가져오기
+        // Player 스크립트 가져오기
         player = GetComponent<Player>();
         if (player != null)
         {
-            Log("[SkillFsm] Player 컴포넌트를 성공적으로 가져왔습니다.");
+            Log("[SkillFsm] Player 스크립트를 성공적으로 가져왔습니다.");
         }
         else
         {
-            LogError("[SkillFsm] Player 컴포넌트를 찾을 수 없습니다. SkillFsm 기능이 제한될 수 있습니다.");
+            LogError("[SkillFsm] Player 스크립트를 찾을 수 없습니다.");
         }
 
-        // PlayerFsm 컴포넌트 가져오기
+        // PlayerFsm 스크립트 가져오기
         playerFsm = GetComponent<PlayerFsm>();
         if (playerFsm != null)
         {
-            Log("[SkillFsm] PlayerFsm 컴포넌트를 성공적으로 가져왔습니다.");
+            Log("[SkillFsm] PlayerFsm 스크립트를 성공적으로 가져왔습니다.");
         }
         else
         {
-            LogError("[SkillFsm] PlayerFsm 컴포넌트를 찾을 수 없습니다. SkillFsm 기능이 제한될 수 있습니다.");
+            LogError("[SkillFsm] PlayerFsm 스크립트를 찾을 수 없습니다.");
         }
     }
 
-    /// <summary>
-    /// SkillFsm 초기화 메서드
-    /// </summary>
+    // SkillFsm 초기화 메서드
     private void InitializeSkillFsm()
     {
         // SkillFsm 참조 설정
@@ -299,11 +295,7 @@ public class SkillFsm : MonoBehaviour
         InitializeCooldowns();
     }
 
-    /// <summary>
-    /// 씬 로딩 시 호출되는 메서드
-    /// </summary>
-    /// <param name="scene">로드된 씬</param>
-    /// <param name="mode">로드 모드</param>
+    // 씬 로딩 시 호출되는 메서드
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Log($"[SkillFsm] 씬 '{scene.name}'이(가) 로드되었습니다. 로드 모드: {mode}");
@@ -313,9 +305,7 @@ public class SkillFsm : MonoBehaviour
         InitializeSkillFsm();
     }
 
-    /// <summary>
-    /// 스킬 이펙트 초기화
-    /// </summary>
+    // 스킬 이펙트 초기화
     private void InitializeSkillEffects()
     {
         foreach (var skill in Skills)
@@ -359,9 +349,7 @@ public class SkillFsm : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 쿨타임 초기화
-    /// </summary>
+    // 쿨타임 초기화
     private void InitializeCooldowns()
     {
         foreach (var skill in Skills)
