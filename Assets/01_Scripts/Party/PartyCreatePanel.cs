@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,6 +49,21 @@ public class PartyCreatePanel : MonoBehaviour
 
 	private void CreateButtonClick()
 	{
+		// 파티명이 이미 존재하는 지 확인하기
+		List<PartyData> partyList = FirebaseManager.Instance.GetPartyList();
+		if (partyList != null)
+		{
+			foreach (PartyData party in partyList)
+			{
+				if (party.party_Name == partyName.text)
+				{
+					UIManager.Instance.popUp.PopUpOpen("파티명이 이미 존재합니다.\n다른 파티명을 입력하세요.",
+						() => UIManager.Instance.popUp.PopUpClose());
+					return;
+				}
+			}
+		}
+
 		if (size1.isOn) size = 1;
 		else if (size2.isOn) size = 2;
 		else if (size3.isOn) size = 3;
