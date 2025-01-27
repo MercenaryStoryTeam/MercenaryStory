@@ -63,6 +63,9 @@ public class OptionPanel : MonoBehaviour
 			gameQuitButton.gameObject.SetActive(false);
 			returnToTownButton.gameObject.SetActive(true);
 		}
+
+		// 서버에 저장하기
+		FirebaseManager.Instance.UploadCurrentUserData();
 	}
 
 	private void exitButtonClick()
