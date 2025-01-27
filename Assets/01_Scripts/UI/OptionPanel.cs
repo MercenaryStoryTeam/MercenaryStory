@@ -70,7 +70,7 @@ public class OptionPanel : MonoBehaviour
 
 	private void exitButtonClick()
 	{
-		gameObject.SetActive(false);
+		UIManager.Instance.CloseOptionPanel();
 	}
 
 	private void returnToTownButtonClick()
