@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-// 스킬 업그레이드 UI 관리
+/// <summary>
+/// 스킬 업그레이드 UI를 관리하는 스크립트
+/// </summary>
 public class SkillUIManager : MonoBehaviour
 {
     [Header("Skill FSM 스크립트")]
@@ -39,19 +41,25 @@ public class SkillUIManager : MonoBehaviour
     private void OnEnable()
     {
         // 씬 로드 이벤트 구독
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         // 현재 씬이 이미 로드된 상태라면 참조 시도
         StartCoroutine(FindReferencesRoutine());
+
+        // ESC 키 이벤트 수신
+        PlayerInputManager.OnEscapePressed += HandleEscapePressed;
     }
 
     private void OnDisable()
     {
         // 씬 로드 이벤트 해제
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
 
         // 코루틴 정지
         StopAllCoroutines();
+
+        // ESC 키 이벤트 해제
+        PlayerInputManager.OnEscapePressed -= HandleEscapePressed;
     }
 
     /// <summary>
@@ -193,10 +201,24 @@ public class SkillUIManager : MonoBehaviour
         // OnKInput 이벤트에서 리스너 해제
         PlayerInputManager.OnKInput -= ToggleSkillUpgradeUI;
 
+        // OnEscapePressed 이벤트에서 리스너 해제
+        PlayerInputManager.OnEscapePressed -= HandleEscapePressed;
+
         // Player의 골드 변경 이벤트 해제
         if (player != null)
         {
             player.OnGoldChanged -= UpdateGoldDisplay;
+        }
+    }
+
+    /// <summary>
+    /// ESC 키 처리 메서드
+    /// </summary>
+    private void HandleEscapePressed()
+    {
+        if (skillPanel.activeSelf)
+        {
+            CloseSkillUpgradeUI();
         }
     }
 
@@ -224,7 +246,9 @@ public class SkillUIManager : MonoBehaviour
         UpdateUpgradeCostDisplay();
     }
 
-    // 선택된 스킬을 업그레이드하는 메서드
+    /// <summary>
+    /// 선택된 스킬을 업그레이드하는 메서드
+    /// </summary>
     public void UpgradeSelectedSkill()
     {
         if (selectedSkill == null)
@@ -411,7 +435,9 @@ public class SkillUIManager : MonoBehaviour
         UpdateUpgradeButtonState();
     }
 
-    // Skill Upgrade UI 패널을 닫는 메서드
+    /// <summary>
+    /// Skill Upgrade UI 패널을 닫는 메서드
+    /// </summary>
     public void CloseSkillUpgradeUI()
     {
         if (skillPanel != null)
@@ -420,7 +446,9 @@ public class SkillUIManager : MonoBehaviour
         SoundManager.Instance.PlaySFX("ui_off", gameObject);
     }
 
-    // Skill Upgrade UI 패널을 여는 메서드
+    /// <summary>
+    /// Skill Upgrade UI 패널을 여는 메서드
+    /// </summary>
     public void OpenSkillUpgradeUI()
     {
         if (skillPanel != null)
@@ -429,7 +457,9 @@ public class SkillUIManager : MonoBehaviour
         SoundManager.Instance.PlaySFX("ui_on", gameObject);
     }
 
-    // Skill Upgrade UI 패널의 활성화 상태를 토글하는 메서드
+    /// <summary>
+    /// Skill Upgrade UI 패널의 활성화 상태를 토글하는 메서드
+    /// </summary>
     private void ToggleSkillUpgradeUI()
     {
         if (skillPanel == null)
