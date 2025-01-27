@@ -84867,21 +84867,23 @@ MonoBehaviour:
     - 200
     - 300
     - 400
-    BaseCooldown: 2
+    BaseCooldown: 1
     CooldownReductionPerLevel: 5
     SpeedBoost: 2
     Duration: 0.5
-    Description: "Rush\uC785\uB2C8\uB2E4."
+    Description: "\uC7A0\uAE50 \uBB34\uC801 \uC0C1\uD0DC\uAC00 \uB418\uC5B4 \uB3CC\uC9C4\uD574
+      \uC801\uC744 \uBC00\uCE58\uBA70 \uC774\uB3D9\uD558\uB294 \uB300\uAC80\uC6A9
+      \uC774\uB3D9 \uC2A4\uD0AC"
     Icon: {fileID: 21300000, guid: 123512915c81a4442b02cf3599022563, type: 3}
     SkillEffects:
-    - ParticleEffect: {fileID: 788006982164292762}
-      ParticleSpawnPoint: {fileID: 5518001625605762270}
-    - ParticleEffect: {fileID: 788006982164292762}
-      ParticleSpawnPoint: {fileID: 5518001625605762270}
-    - ParticleEffect: {fileID: 788006982164292762}
-      ParticleSpawnPoint: {fileID: 5518001625605762270}
-    - ParticleEffect: {fileID: 788006982164292762}
-      ParticleSpawnPoint: {fileID: 5518001625605762270}
+    - ParticleEffect: {fileID: 5689774737778594865, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 3342405826453538178, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 5689774737778594865, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 3342405826453538178, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 5689774737778594865, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 3342405826453538178, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 5689774737778594865, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 3342405826453538178, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
     SkillSounds:
     - SoundName: player_Twohandtackle
       DelayBeforePlay: 0
@@ -84900,17 +84902,19 @@ MonoBehaviour:
     CooldownReductionPerLevel: 5
     SpeedBoost: 0
     Duration: 0
-    Description: "Parry\uC785\uB2C8\uB2E4."
+    Description: "\uBB34\uAE30\uB97C \uD06C\uAC8C \uC62C\uB824 \uBCA0\uBA70 \uCE74\uC6B4\uD130
+      \uC0C1\uD0DC\uC758 \uC801\uC744 \uACBD\uC9C1 \uC0C1\uD0DC\uB85C \uB9CC\uB4DC\uB294
+      \uB300\uAC80\uC6A9 \uD328\uB9C1 \uC2A4\uD0AC"
     Icon: {fileID: 21300000, guid: f5d62c0124618e04d8836cd7c9e6c0eb, type: 3}
     SkillEffects:
-    - ParticleEffect: {fileID: 4334954489239755551}
-      ParticleSpawnPoint: {fileID: 4333292335980152127}
-    - ParticleEffect: {fileID: 4334954489239755551}
-      ParticleSpawnPoint: {fileID: 4333292335980152127}
-    - ParticleEffect: {fileID: 4334954489239755551}
-      ParticleSpawnPoint: {fileID: 4333292335980152127}
-    - ParticleEffect: {fileID: 4334954489239755551}
-      ParticleSpawnPoint: {fileID: 4333292335980152127}
+    - ParticleEffect: {fileID: 7592258577982924686, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 7590595874633185710, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 7592258577982924686, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 7590595874633185710, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 7592258577982924686, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 7590595874633185710, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 7592258577982924686, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 7590595874633185710, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
     SkillSounds:
     - SoundName: player_Twohandparrying
       DelayBeforePlay: 0
@@ -84929,17 +84933,18 @@ MonoBehaviour:
     CooldownReductionPerLevel: 5
     SpeedBoost: 0
     Duration: 0
-    Description: "Skill1\uC785\uB2C8\uB2E4."
-    Icon: {fileID: 21300000, guid: f5d62c0124618e04d8836cd7c9e6c0eb, type: 3}
+    Description: "\uBB34\uAE30\uB97C 3\uBC88 \uC5F0\uC18D \uD718\uB458\uB7EC \uACF5\uACA9\uD558\uB294
+      \uB300\uAC80\uC6A9 \uACF5\uACA9 \uC2A4\uD0AC"
+    Icon: {fileID: 21300000, guid: cbf4d6d2f9f205441a8f4b0fbd5a1e3f, type: 3}
     SkillEffects:
-    - ParticleEffect: {fileID: 7512276625655412807}
-      ParticleSpawnPoint: {fileID: 7517819279051673543}
-    - ParticleEffect: {fileID: 709260976045954512}
-      ParticleSpawnPoint: {fileID: 703566624373367376}
-    - ParticleEffect: {fileID: 6358832402399548455}
-      ParticleSpawnPoint: {fileID: 6353245807664735143}
-    - ParticleEffect: {fileID: 5720481189942563700}
-      ParticleSpawnPoint: {fileID: 5726155758417536244}
+    - ParticleEffect: {fileID: 5012464498071988643, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 5015750910715502115, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 7436909704781539316, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 7431338502781194356, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 8103996742058485145, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 8098440928815862297, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 2046091208076979268, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 2049544767341468612, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
     SkillSounds:
     - SoundName: player_Twohandmoon1
       DelayBeforePlay: 0.3
@@ -84962,17 +84967,18 @@ MonoBehaviour:
     CooldownReductionPerLevel: 5
     SpeedBoost: 0
     Duration: 0
-    Description: "Skill2\uC785\uB2C8\uB2E4."
+    Description: "\uBB34\uAE30\uB97C \uAC15\uD558\uAC8C \uB0B4\uB824\uCE58\uBA70
+      \uACF5\uACA9\uD558\uB294 \uB300\uAC80\uC6A9 \uACF5\uACA9 \uC2A4"
     Icon: {fileID: 21300000, guid: a6a8e5118e75e9442ade6f829436bf32, type: 3}
     SkillEffects:
-    - ParticleEffect: {fileID: 6096914065176851560}
-      ParticleSpawnPoint: {fileID: 6091763859351113596}
-    - ParticleEffect: {fileID: 1203207099712993396}
-      ParticleSpawnPoint: {fileID: 1199219212976096096}
-    - ParticleEffect: {fileID: 2904988495413206553}
-      ParticleSpawnPoint: {fileID: 2902088766559495437}
-    - ParticleEffect: {fileID: 5308089731471595858}
-      ParticleSpawnPoint: {fileID: 5313335526216835654}
+    - ParticleEffect: {fileID: 3518621624461594889, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 3513505108385589789, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 2829601289358718259, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 2833360784773074471, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 7858395453222584544, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 7861170559290047476, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+    - ParticleEffect: {fileID: 1123675413641663058, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
+      ParticleSpawnPoint: {fileID: 1121050148222200134, guid: 08b041d7b56f4294d8556cbf4f2440ca, type: 3}
     SkillSounds:
     - SoundName: player_Twohandcresent
       DelayBeforePlay: 0.6
@@ -148638,11 +148644,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4843998471254306, guid: 055e1ed348b6150459b94e5593a0d932, type: 3}
   m_PrefabInstance: {fileID: 707812299539452786}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &709260976045954512 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1524545281820322, guid: 055e1ed348b6150459b94e5593a0d932, type: 3}
-  m_PrefabInstance: {fileID: 707812299539452786}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1203617991381235274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149055,11 +149056,6 @@ PrefabInstance:
 --- !u!4 &1199219212976096096 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4617582033220906, guid: 4f07bab31b949ad4d9fe5a7ddfbcf93b, type: 3}
-  m_PrefabInstance: {fileID: 1203617991381235274}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1203207099712993396 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1893723492503102, guid: 4f07bab31b949ad4d9fe5a7ddfbcf93b, type: 3}
   m_PrefabInstance: {fileID: 1203617991381235274}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2254382475004754695
@@ -149571,11 +149567,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4617582033220906, guid: dae4db6a36903604c9f0110bce922641, type: 3}
   m_PrefabInstance: {fileID: 2906561126611390503}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2904988495413206553 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1893723492503102, guid: dae4db6a36903604c9f0110bce922641, type: 3}
-  m_PrefabInstance: {fileID: 2906561126611390503}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4336050203802808741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -149664,11 +149655,6 @@ PrefabInstance:
 --- !u!4 &4333292335980152127 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4025056114521242, guid: 50ac90cee7318224e9fd227b34906341, type: 3}
-  m_PrefabInstance: {fileID: 4336050203802808741}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4334954489239755551 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1236453127613114, guid: 50ac90cee7318224e9fd227b34906341, type: 3}
   m_PrefabInstance: {fileID: 4336050203802808741}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5308799652455356268
@@ -150104,11 +150090,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdae867443f4c4443b86dc8ff1c7da39, type: 3}
---- !u!1 &5308089731471595858 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1893723492503102, guid: fdae867443f4c4443b86dc8ff1c7da39, type: 3}
-  m_PrefabInstance: {fileID: 5308799652455356268}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5313335526216835654 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4617582033220906, guid: fdae867443f4c4443b86dc8ff1c7da39, type: 3}
@@ -150422,11 +150403,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbd32d6ff60f63140b48f49ca590ff13, type: 3}
---- !u!1 &5720481189942563700 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1524545281820322, guid: cbd32d6ff60f63140b48f49ca590ff13, type: 3}
-  m_PrefabInstance: {fileID: 5721350286075958742}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5726155758417536244 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4843998471254306, guid: cbd32d6ff60f63140b48f49ca590ff13, type: 3}
@@ -150798,11 +150774,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4617582033220906, guid: 05b9356c7021c9b41be9d4fd51edbde3, type: 3}
   m_PrefabInstance: {fileID: 6096234930652592726}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6096914065176851560 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1893723492503102, guid: 05b9356c7021c9b41be9d4fd51edbde3, type: 3}
-  m_PrefabInstance: {fileID: 6096234930652592726}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6357524605618573957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -151035,11 +151006,6 @@ PrefabInstance:
 --- !u!4 &6353245807664735143 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4843998471254306, guid: a186bc9f4f64bc7428d4b7613dfd55da, type: 3}
-  m_PrefabInstance: {fileID: 6357524605618573957}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &6358832402399548455 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1524545281820322, guid: a186bc9f4f64bc7428d4b7613dfd55da, type: 3}
   m_PrefabInstance: {fileID: 6357524605618573957}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7513584566789914341
@@ -151287,11 +151253,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 244cc94eeef1a1e44ab11047f8a54e49, type: 3}
---- !u!1 &7512276625655412807 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1524545281820322, guid: 244cc94eeef1a1e44ab11047f8a54e49, type: 3}
-  m_PrefabInstance: {fileID: 7513584566789914341}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7517819279051673543 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4843998471254306, guid: 244cc94eeef1a1e44ab11047f8a54e49, type: 3}
