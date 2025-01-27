@@ -92,6 +92,7 @@ public class SoundManager : MonoBehaviour
                 audioSource.spatialBlend = 1f;  // 3D 사운드
             }
             
+            print($"Playing SFX: {source} : {clipName}");
             audioSource.PlayOneShot(audioClips[clipName]);
         }
     }
