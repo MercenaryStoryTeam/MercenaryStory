@@ -38,7 +38,10 @@ public class PlayerInputManager : MonoBehaviourPun
         player = GetComponent<Player>();
 
         shop = GameObject.Find("Store");
-        print(shop);
+        if (shop == null)
+        {
+            Debug.LogError("[PlayerInputManager] 씬에 'Store' GameObject가 없습니다.");
+        }
 
         // 모바일 입력 활성화 여부 설정 (모바일 테스트 true 또는 모바일 플랫폼 감지)
         useMobileInput = forceMobile || Application.isMobilePlatform;
@@ -132,16 +135,21 @@ public class PlayerInputManager : MonoBehaviourPun
         // 항상 호출하여 Idle 상태 전환 가능하게 함
         OnMoveInput?.Invoke(movement);
 
+        // 스킬 패널이 활성화된 경우 특정 입력 비활성화
+        bool isSkillPanelActive = skillUIManager != null && skillUIManager.skillPanel.activeSelf;
+
         if (Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                OnShiftLeftClickInput?.Invoke();
+                if (!isSkillPanelActive)
+                    OnShiftLeftClickInput?.Invoke();
             }
             else
             {
-                OnAttackInput?.Invoke();
+                if (!isSkillPanelActive)
+                    OnAttackInput?.Invoke();
             }
         }
 
@@ -150,17 +158,20 @@ public class PlayerInputManager : MonoBehaviourPun
             if (EventSystem.current.IsPointerOverGameObject()) return;
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                OnShiftRightClickInput?.Invoke();
+                if (!isSkillPanelActive)
+                    OnShiftRightClickInput?.Invoke();
             }
             else
             {
-                OnRightClickInput?.Invoke();
+                if (!isSkillPanelActive)
+                    OnRightClickInput?.Invoke();
             }
         }
 
         if (Input.GetButtonDown("Jump"))
         {
-            OnSkillInput?.Invoke();
+            if (!isSkillPanelActive)
+                OnSkillInput?.Invoke();
         }
 
         if (Input.GetKeyDown(KeyCode.B))
@@ -224,6 +235,9 @@ public class PlayerInputManager : MonoBehaviourPun
     // 모바일 입력 
     private void HandleMobileInputs()
     {
+        // 스킬 패널이 활성화된 경우 공격 입력 비활성화
+        bool isSkillPanelActive = skillUIManager != null && skillUIManager.skillPanel.activeSelf;
+
         // 조이스틱을 통한 이동 처리
         if (virtualJoystick != null)
         {
@@ -244,8 +258,9 @@ public class PlayerInputManager : MonoBehaviourPun
                     // 터치가 UI 위에 있는지 확인
                     if (!IsPointerOverUIObject(touch))
                     {
-                        // 빈 공간 터치 시 공격
-                        OnAttackInput?.Invoke();
+                        // 스킬 패널이 활성화되지 않은 경우 공격
+                        if (!isSkillPanelActive)
+                            OnAttackInput?.Invoke();
                     }
                 }
 
