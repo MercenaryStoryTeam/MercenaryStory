@@ -12,6 +12,17 @@ public enum SkillType
     Skill2
 }
 
+// 스킬 사운드 정보를 정의하는 클래스
+[System.Serializable]
+public class SkillSound
+{
+    [Header("재생할 사운드 이름")]
+    public string SoundName;
+
+    [Header("이 사운드 재생 전 대기 시간 (초 단위)")]
+    public float DelayBeforePlay = 0f;
+}
+
 // 스킬 이펙트
 [System.Serializable]
 public class SkillEffect
@@ -75,6 +86,9 @@ public class Skill
 
     [Header("레벨에 따른 이펙트 및 스폰 포인트 리스트")]
     public List<SkillEffect> SkillEffects;
+
+    [Header("스킬 사운드 리스트")]
+    public List<SkillSound> SkillSounds = new List<SkillSound>();
 
     // 쿨타임 작동 여부 체크를 위한 변수
     [HideInInspector] public bool IsOnCooldown = false;
@@ -403,8 +417,7 @@ public class SkillFsm : MonoBehaviour
 
         if (skill.IsOnCooldown)
         {
-            Log(
-                $"[SkillFsm] {skill.Name} 스킬은 쿨다운 중입니다. 남은 시간: {skill.RemainingCooldown:F2}초");
+            Log($"[SkillFsm] {skill.Name} 스킬은 쿨다운 중입니다. 남은 시간: {skill.RemainingCooldown:F2}초");
             return;
         }
 
@@ -412,22 +425,8 @@ public class SkillFsm : MonoBehaviour
         animator.SetTrigger(skill.TriggerName);
         Log($"[SkillFsm] {skill.Name} 스킬이 트리거되었습니다.");
 
-        // 스킬 유형별 사운드 재생 (예시)
-        switch (skillType)
-        {
-            case SkillType.Rush:
-                SoundManager.Instance?.PlaySFX("Dash", gameObject);
-                break;
-            case SkillType.Parry:
-            case SkillType.Skill1:
-                SoundManager.Instance?.PlaySFX("rush_skill_sound", gameObject);
-                break;
-            case SkillType.Skill2:
-                StartCoroutine(PlayDelayedSound("sound_player_Twohandskill4", 0.6f));
-                break;
-            default:
-                break;
-        }
+        // 스킬 유형별 사운드 재생 (수정된 부분)
+        PlaySkillSound(skillType);
 
         // 레벨에 따른 파티클 이펙트 활성화
         SkillEffect currentSkillEffect = skill.GetCurrentSkillEffect();
@@ -461,11 +460,35 @@ public class SkillFsm : MonoBehaviour
         StartCoroutine(CooldownCoroutine(skill));
     }
 
-    // 지연된 사운드 재생 메서드
-    private IEnumerator PlayDelayedSound(string soundName, float delay)
+    // 스킬 사운드를 재생하는 메서드 (수정된 메서드)
+    private void PlaySkillSound(SkillType skillType)
     {
-        yield return new WaitForSeconds(delay);
-        SoundManager.Instance?.PlaySFX(soundName, gameObject);
+        Skill skill = GetSkill(skillType);
+        if (skill == null || skill.SkillSounds.Count == 0)
+            return;
+
+        StartCoroutine(PlaySequentialSounds(skill.SkillSounds));
+    }
+
+    // 순차적으로 사운드를 재생하는 코루틴
+    private IEnumerator PlaySequentialSounds(List<SkillSound> skillSounds)
+    {
+        foreach (var skillSound in skillSounds)
+        {
+            if (!string.IsNullOrEmpty(skillSound.SoundName))
+            {
+                if (skillSound.DelayBeforePlay > 0f)
+                {
+                    yield return new WaitForSeconds(skillSound.DelayBeforePlay);
+                }
+
+                SoundManager.Instance?.PlaySFX(skillSound.SoundName, gameObject);
+                Log($"[SkillFsm] {skillSound.SoundName} 사운드가 재생되었습니다.");
+
+                // 사운드 간의 딜레이 설정 (필요에 따라 조정 가능)
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
     }
 
     // Rush 스킬의 지속 시간 동안 Rush 활성화 상태를 유지하는 코루틴
