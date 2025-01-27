@@ -12,7 +12,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 	private static ChatManager _instance;
 	private ChatClient _client;
 	public ChatState state = 0;
-	public string currentChannel;
+	public string[] subscribedChannel;
 
 	public ChatPanel chatPanel;
 	private bool _isReconnecting = false;
@@ -70,6 +70,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 			yield return new WaitForSeconds(5); // 5초 간격으로 재시도
 		}
 
+		// 구독 다시 하기
+		ChatStart(FirebaseManager.Instance.CurrentUserData.user_CurrentServer);
 		Debug.Log("Reconnected to Photon Chat successfully!");
 		_isReconnecting = false;
 	}
@@ -88,12 +90,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
 	public void ChatStart(string roomName)
 	{
+		_client.Unsubscribe(subscribedChannel);
 		_client.Subscribe(new string[] { roomName });
-	}
-
-	public void ChatFinish(string roomName)
-	{
-		_client.Unsubscribe(new string[] { roomName });
 	}
 
 	public void OnChatStateChange(ChatState state)
@@ -107,8 +105,8 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
 	public void OnSubscribed(string[] channels, bool[] results)
 	{
-		currentChannel = channels[0];
-		print($"채팅 시작. current channel: {currentChannel}");
+		subscribedChannel = channels;
+		print($"채팅 시작. current channel: {subscribedChannel}");
 	}
 
 	#endregion
@@ -117,7 +115,7 @@ public class ChatManager : MonoBehaviour, IChatClientListener
 
 	public void SendChatMessage(string message)
 	{
-		_client.PublishMessage(currentChannel, message);
+		_client.PublishMessage(subscribedChannel[0], message);
 	}
 
 	public void OnGetMessages(string channelName, string[] senders,
