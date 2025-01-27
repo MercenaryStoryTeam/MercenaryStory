@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class StageManager : SingletonManager<StageManager>
+public class SceneManager : SingletonManager<SceneManager>
 {
-	public StageData[] stageDatas;
+	public SceneData[] sceneDatas;
 	public int dieMonsterCount;
 	public PlayerFsm hostPlayerFsm;
 	public PlayerFsm currentPlayerFsm;
@@ -11,17 +12,22 @@ public class StageManager : SingletonManager<StageManager>
 	public bool portalIsActive;
 
 	public Vector3 spawnPoint;
-	public int currentStage = 0;
+	public int CurrentScene{ get; private set; }
+	
 
 	private void Start()
 	{
-		// PlayStageBGM();
-		UIManager.Instance.InGamePanel.gameObject.SetActive(true);
+		CurrentScene = 0;	
+		PlayStageBGM();
 	}
 
 	public void Update()
 	{
-		if (dieMonsterCount == stageDatas[currentStage].monsterCount)
+		if (CurrentScene != 0)
+		{
+			UIManager.Instance.InGamePanel.gameObject.SetActive(true);
+		}
+		if (dieMonsterCount == sceneDatas[CurrentScene].monsterCount)
 		{
 			StageClear = true;
 		}
@@ -29,21 +35,21 @@ public class StageManager : SingletonManager<StageManager>
 
 	private void PlayStageBGM()
 	{
-		if (currentStage < stageDatas.Length)
+		if (CurrentScene < sceneDatas.Length)
 		{
 			print($"Playing BGM");
-			SoundManager.Instance.PlayBGM(stageDatas[currentStage].bgmName);
+			SoundManager.Instance.PlayBGM(sceneDatas[CurrentScene].bgmName);
 		}
 	}
 
 	public void ChangeStage(int stageIndex)
 	{
-		if (stageIndex < stageDatas.Length)
+		if (stageIndex < sceneDatas.Length)
 		{
 			portalIsActive = false;
 			dieMonsterCount = 0;
 			StageClear = false;
-			currentStage = stageIndex;
+			CurrentScene = stageIndex;
 			PlayStageBGM();
 		}
 	}
@@ -62,7 +68,7 @@ public class StageManager : SingletonManager<StageManager>
 	public IEnumerator PlayerSpawnCoroutine()
 	{
 		yield return new WaitForSeconds(2f);
-		StageManager.Instance.PlayerSpawn();
+		SceneManager.Instance.PlayerSpawn();
 		PlayerFsm playerFsm = GameObject
 			.Find(FirebaseManager.Instance.CurrentUserData.user_Name)
 			.GetComponent<PlayerFsm>();
