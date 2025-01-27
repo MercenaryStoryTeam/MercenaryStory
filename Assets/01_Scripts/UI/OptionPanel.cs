@@ -14,7 +14,7 @@ public class OptionPanel : MonoBehaviour
 	public Button returnToTownButton;
 	public Button gameQuitButton;
 
-	private void Start()
+	private void Awake()
 	{
 		// 슬라이더 값 범위 설정
 		masterSlider.minValue = 0f;
@@ -42,18 +42,6 @@ public class OptionPanel : MonoBehaviour
 		sfxText.text = $"{(int)sfxValue}%";
 		SoundManager.Instance.SetSFXVolume(sfxValue / 100f);
 
-		if (StageManager.Instance.currentStage == 0)
-		{
-			gameQuitButton.gameObject.SetActive(true);
-			returnToTownButton.gameObject.SetActive(false);
-		}
-
-		else
-		{
-			gameQuitButton.gameObject.SetActive(false);
-			returnToTownButton.gameObject.SetActive(true);
-		}
-
 		masterSlider.onValueChanged.AddListener(OnMasterSliderChanged);
 		bgmSlider.onValueChanged.AddListener(OnBGMSliderChanged);
 		sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
@@ -61,6 +49,20 @@ public class OptionPanel : MonoBehaviour
 		gameQuitButton.onClick.AddListener(gameQuitButtonClick);
 		returnToTownButton.onClick.AddListener(returnToTownButtonClick);
 		exitButton.onClick.AddListener(exitButtonClick);
+	}
+
+	private void OnEnable()
+	{
+		if (StageManager.Instance.currentStage == 0)
+		{
+			gameQuitButton.gameObject.SetActive(true);
+			returnToTownButton.gameObject.SetActive(false);
+		}
+		else
+		{
+			gameQuitButton.gameObject.SetActive(false);
+			returnToTownButton.gameObject.SetActive(true);
+		}
 	}
 
 	private void exitButtonClick()
@@ -71,6 +73,7 @@ public class OptionPanel : MonoBehaviour
 	private void returnToTownButtonClick()
 	{
 		StageManager.Instance.currentPlayerFsm.ReturnToTown();
+		UIManager.Instance.CloseAllPanels();
 	}
 
 	private void gameQuitButtonClick()
