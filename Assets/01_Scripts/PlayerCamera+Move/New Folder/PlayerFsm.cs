@@ -73,6 +73,10 @@ public class PlayerFsm : MonoBehaviourPun
 
 	private void Start()
 	{
+		if (photonView.IsMine)
+		{
+			gameObject.AddComponent<AudioListener>();
+		}
 		if (FirebaseManager.Instance.CurrentUserData.user_Name == gameObject.name)
 		{
 			GameManager.Instance.currentPlayerFsm = this;
