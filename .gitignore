@@ -123,3 +123,8 @@ ProjectSettings/GvhProjectSettings.xml
 ProjectSettings/EditorBuildSettings.asset
 ProjectSettings/Packages/com.unity.polybrush/Settings.json
 Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+Assets/Editor Default Resources
+Assets/ExternalDependencyManager
+Assets/Firebase
+Assets/Plugins
+Assets/TextMesh Pro
