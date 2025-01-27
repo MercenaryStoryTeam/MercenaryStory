@@ -27,3 +27,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a4c429faf218a5b4abca1a780d68fdcd, type: 2}
   - {fileID: 11400000, guid: 3d5f61585f5f5c84c9601824382290d7, type: 2}
   - {fileID: 11400000, guid: dcaf9b0943064994cae3d8442704f9f8, type: 2}
+  attackSound: mulock_attack
+  dieSound: mulock_die
+  damageSound:
+  - player_hit1
+  - player_hit2
+  - player_hit3
+  - player_hit4
+  - player_hit5
+  - player_hit6

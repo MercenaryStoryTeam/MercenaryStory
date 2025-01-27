@@ -8,6 +8,8 @@ public class MinionGetHitState : MinionState
     {
         minion.agent.ResetPath();
         minion.animator.SetTrigger("GetHit");
+        int num = Random.Range(0, 6);
+        SoundManager.Instance.PlaySFX(minion.minionData.damageSound[num], minion.gameObject);
     }
 
     public override void ExecuteState(Minion minion)

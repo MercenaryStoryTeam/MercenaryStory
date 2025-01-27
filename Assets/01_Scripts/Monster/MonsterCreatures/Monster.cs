@@ -1,5 +1,4 @@
 using Photon.Pun;
-using Photon.Realtime;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -132,13 +131,14 @@ public class Monster : MonoBehaviourPun
         }
     }
 
+    public void OnDieAnimationEnd()
+    {
+        Destroy(gameObject, 3f);
+    }
+
     public void TakeDamage(int damage)
     {
         ChangeState(MonsterStateType.GetHit);
-        // 사운드 클립 3개중에 랜덤 재생 
-        // string[] soundClips = { "monster_potbellied_damage_4", "monster_potbellied_damage_7", "monster_potbellied_damage_13", "monster_potbellied_damage_15" };
-        // string randomClip = soundClips[Random.Range(0, soundClips.Length)];
-        // SoundManager.Instance.PlaySFX(randomClip, gameObject);
         Hp -= damage;
 
         Debug.Log($"Monster HP: {Hp}/{maxHp} (받은 Damage: {damage})");

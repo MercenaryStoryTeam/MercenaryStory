@@ -86,7 +86,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 			    "LJW_1-1")
 			{
 				FirebaseManager.Instance.CurrentPartyData.party_ServerName = "LJW_TownScene";
-				GameManager.Instance.ChangeStage(2);
+				GameManager.Instance.ChangeScene(2);
 				GameManager.Instance.PlayerSpawn();
 				UIManager.Instance.partyButton.gameObject.SetActive(false);
 				UIManager.Instance.partyMemberPanel.gameObject.SetActive(false);

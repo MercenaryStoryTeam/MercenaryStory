@@ -8,6 +8,7 @@ public class MinionAttackState : MinionState
     {
         minion.agent.isStopped = true;
         minion.animator.SetTrigger("Attack");
+        SoundManager.Instance.PlaySFX(minion.minionData.attackSound, minion.gameObject);
     }
 
     public override void ExecuteState(Minion minion)
