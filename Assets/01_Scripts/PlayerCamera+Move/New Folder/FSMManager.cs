@@ -22,7 +22,7 @@ public class FSMManager : MonoBehaviour
     private PlayerFsm playerFsm;
     private SkillFsm skillFsm;
 
-    public PlayerState currentState = PlayerState.Idle;
+    private PlayerState currentState = PlayerState.Idle;
 
     private void Awake()
     {
