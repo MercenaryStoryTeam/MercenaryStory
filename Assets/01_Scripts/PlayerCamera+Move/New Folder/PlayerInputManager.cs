@@ -94,6 +94,7 @@ public class PlayerInputManager : MonoBehaviourPun
 
 		if (Input.GetMouseButtonDown(0))
 		{
+			if (EventSystem.current.IsPointerOverGameObject())return;
 			if (Input.GetKey(KeyCode.LeftShift))
 			{
 				OnShiftLeftClickInput?.Invoke();
@@ -106,6 +107,7 @@ public class PlayerInputManager : MonoBehaviourPun
 
 		if (Input.GetMouseButtonDown(1))
 		{
+			if (EventSystem.current.IsPointerOverGameObject())return;
 			if (Input.GetKey(KeyCode.LeftShift))
 			{
 				OnShiftRightClickInput?.Invoke();
