@@ -40,7 +40,7 @@ public class SkillUIManager : MonoBehaviour
     private void OnEnable()
     {
         // 씬 로드 이벤트 구독
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 
         // 현재 씬이 이미 로드된 상태라면 참조 시도
         StartCoroutine(FindReferencesRoutine());
@@ -49,7 +49,7 @@ public class SkillUIManager : MonoBehaviour
     private void OnDisable()
     {
         // 씬 로드 이벤트 해제
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
 
         // 코루틴 정지
         StopAllCoroutines();

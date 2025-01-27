@@ -42,13 +42,13 @@ public class CooldownBar : MonoBehaviour
     private void OnEnable()
     {
         // 씬 로드 이벤트에 메서드 등록
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
         // 씬 로드 이벤트에서 메서드 제거
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
 
         // 코루틴 정지
         if (findSkillFsmCoroutine != null)

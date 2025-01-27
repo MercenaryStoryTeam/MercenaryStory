@@ -99,7 +99,7 @@ public class UIManager : SingletonManager<UIManager>
 		GameObject mobileUI = GameObject.Find("MoblieUI");
 		if (mobileUI != null)
 		{
-			Scene currentScene = SceneManager.GetActiveScene();
+			Scene currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
 			if (currentScene.name == "Mobile_TitleScene")
 			{
 				skillUI.gameObject.SetActive(false);

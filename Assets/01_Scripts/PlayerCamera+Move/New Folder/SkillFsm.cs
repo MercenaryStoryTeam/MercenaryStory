@@ -205,7 +205,7 @@ public class SkillFsm : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 
         // 입력 이벤트 등록 
         PlayerInputManager.OnSkillInput += TriggerRushSkill;
@@ -216,7 +216,7 @@ public class SkillFsm : MonoBehaviour
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
 
         // 입력 이벤트 해제 
         PlayerInputManager.OnSkillInput -= TriggerRushSkill;
