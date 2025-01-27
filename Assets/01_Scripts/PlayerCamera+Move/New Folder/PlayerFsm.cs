@@ -72,21 +72,21 @@ public class PlayerFsm : MonoBehaviourPun
     {
         if (FirebaseManager.Instance.CurrentUserData.user_Name == gameObject.name)
         {
-            StageManager.Instance.currentPlayerFsm = this;
+            SceneManager.Instance.currentPlayerFsm = this;
         }
 
-        if (PhotonNetwork.IsMasterClient && StageManager.Instance != null)
+        if (PhotonNetwork.IsMasterClient && SceneManager.Instance != null)
         {
             if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name == gameObject.name)
             {
-                StageManager.Instance.hostPlayerFsm = this;
+                SceneManager.Instance.hostPlayerFsm = this;
             }
         }
     }
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 
         PlayerInputManager.OnMoveInput += HandleMoveInput;
         PlayerInputManager.OnAttackInput += HandleAttackInput;
@@ -94,7 +94,7 @@ public class PlayerFsm : MonoBehaviourPun
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
 
         PlayerInputManager.OnMoveInput -= HandleMoveInput;
         PlayerInputManager.OnAttackInput -= HandleAttackInput;
@@ -551,15 +551,15 @@ public class PlayerFsm : MonoBehaviourPun
 
     public void InstantiatePlayerPrefabs()
     {
-        StageManager.Instance.ChangeStage(++StageManager.Instance.currentStage);
+        SceneManager.Instance.ChangeStage(SceneManager.Instance.CurrentScene+1);
         photonView.RPC("RPC_InstantiatePlayerPrefabs", RpcTarget.Others);
     }
 
     [PunRPC]
     private void RPC_InstantiatePlayerPrefabs()
     {
-        StageManager.Instance.ChangeStage(++StageManager.Instance.currentStage);
-        StageManager.Instance.PlayerSpawn();
+        SceneManager.Instance.ChangeStage(SceneManager.Instance.CurrentScene+1);
+        SceneManager.Instance.PlayerSpawn();
     }
 
     public void ReturnToTown()
@@ -574,7 +574,7 @@ public class PlayerFsm : MonoBehaviourPun
         FirebaseManager.Instance.CurrentUserData.UpdateUserData(
             hp: player.currentHp);
         FirebaseManager.Instance.UploadCurrentUserData();
-        StageManager.Instance.ChangeStage(0);
+        SceneManager.Instance.ChangeStage(1);
         ServerManager.LeaveAndLoadScene("LJW_TownScene");
     }
 }

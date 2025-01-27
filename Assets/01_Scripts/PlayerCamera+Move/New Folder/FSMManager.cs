@@ -32,7 +32,7 @@ public class FSMManager : MonoBehaviour
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
 
         if (playerFsm != null)
             playerFsm.OnStateChanged += HandlePlayerStateChanged;
@@ -43,7 +43,7 @@ public class FSMManager : MonoBehaviour
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
 
         if (playerFsm != null)
             playerFsm.OnStateChanged -= HandlePlayerStateChanged;

@@ -53,15 +53,15 @@ public class OptionPanel : MonoBehaviour
 
 	private void OnEnable()
 	{
-		if (StageManager.Instance.currentStage == 0)
-		{
-			gameQuitButton.gameObject.SetActive(true);
-			returnToTownButton.gameObject.SetActive(false);
-		}
-		else
+		if (SceneManager.Instance.CurrentScene > 1)
 		{
 			gameQuitButton.gameObject.SetActive(false);
 			returnToTownButton.gameObject.SetActive(true);
+		}
+		else
+		{
+			gameQuitButton.gameObject.SetActive(true);
+			returnToTownButton.gameObject.SetActive(false);
 		}
 
 		// 서버에 저장하기
@@ -75,7 +75,7 @@ public class OptionPanel : MonoBehaviour
 
 	private void returnToTownButtonClick()
 	{
-		StageManager.Instance.currentPlayerFsm.ReturnToTown();
+		SceneManager.Instance.currentPlayerFsm.ReturnToTown();
 		UIManager.Instance.CloseAllPanels();
 	}
 
