@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 
 public enum SkillType
 {
@@ -48,31 +49,31 @@ public class Skill
         }
     }
 
-    [Header("최대 스킬 레벨")] 
+    [Header("최대 스킬 레벨")]
     public int MaxLevel = 4;
 
-    [Header("스킬 레벨별 업그레이드 비용")] 
+    [Header("스킬 레벨별 업그레이드 비용")]
     public List<float> UpgradeCosts;
 
-    [Header("기본 쿨타임 (초 단위)")] 
+    [Header("기본 쿨타임 (초 단위)")]
     public float BaseCooldown = 2f;
 
-    [Header("레벨당 쿨타임 감소 비율 (백분율)")] 
+    [Header("레벨당 쿨타임 감소 비율 (백분율)")]
     public int CooldownReductionPerLevel = 5;
 
-    [Header("Rush 스킬만 해당 (이동 속도 배수 처리)")] 
+    [Header("Rush 스킬만 해당 (이동 속도 배수 처리)")]
     public float SpeedBoost = 0f;
 
-    [Header("Rush 스킬만 해당 (지속 시간)")] 
+    [Header("Rush 스킬만 해당 (지속 시간)")]
     public float Duration = 0.5f;
 
     [Header("스킬 설명")]
     [TextArea] public string Description;
 
-    [Header("스킬 이미지")] 
+    [Header("스킬 이미지")]
     public Sprite Icon;
 
-    [Header("레벨에 따른 이펙트 및 스폰 포인트 리스트")] 
+    [Header("레벨에 따른 이펙트 및 스폰 포인트 리스트")]
     public List<SkillEffect> SkillEffects;
 
     // 쿨타임 작동 여부 체크를 위한 변수
@@ -173,7 +174,7 @@ public class Skill
 
 // ========================================================================================================================================
 
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Animator), typeof(Player), typeof(PlayerFsm))]
 public class SkillFsm : MonoBehaviour
 {
     private Animator animator;
@@ -183,14 +184,12 @@ public class SkillFsm : MonoBehaviour
 
     private bool isSpeedBoostActive = false;
 
-    [Header("Player 스크립트")]
-    [SerializeField] private Player player; // 변경: Inspector에서 할당하도록 수정
-
-    [Header("PlayerFsm 스크립트")]
-    [SerializeField] private PlayerFsm playerFsm; // 추가: PlayerFsm을 Inspector에서 할당
-
     [Header("디버그 설정 (출력 유/무)")]
     public bool enableDebugLogs = true;
+
+    // Player 및 PlayerFsm 컴포넌트 참조
+    private Player player;
+    private PlayerFsm playerFsm;
 
     // Rush 스킬 활성화 상태를 나타내는 프로퍼티
     public bool IsRushActive { get; private set; } = false;
@@ -200,41 +199,123 @@ public class SkillFsm : MonoBehaviour
 
     private void Awake()
     {
+        InitializeComponents();
+        InitializeSkillFsm();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // 입력 이벤트 등록 (예시)
+        PlayerInputManager.OnSkillInput += TriggerRushSkill;
+        PlayerInputManager.OnRightClickInput += TriggerParrySkill;
+        PlayerInputManager.OnShiftLeftClickInput += TriggerSkill1;
+        PlayerInputManager.OnShiftRightClickInput += TriggerSkill2;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        // 입력 이벤트 해제 (예시)
+        PlayerInputManager.OnSkillInput -= TriggerRushSkill;
+        PlayerInputManager.OnRightClickInput -= TriggerParrySkill;
+        PlayerInputManager.OnShiftLeftClickInput -= TriggerSkill1;
+        PlayerInputManager.OnShiftRightClickInput -= TriggerSkill2;
+    }
+
+    /// <summary>
+    /// 컴포넌트 초기화 메서드
+    /// </summary>
+    private void InitializeComponents()
+    {
+        // Animator 컴포넌트 가져오기
         animator = GetComponent<Animator>();
-
-        // 변경: 자동 참조 제거 및 Inspector 할당 검증
-        if (player == null)
+        if (animator != null)
         {
-            LogError("[SkillFsm] Player 오브젝트가 Inspector에서 할당되지 않았습니다.");
-            enabled = false;
-            return;
+            Log("[SkillFsm] Animator 컴포넌트를 성공적으로 가져왔습니다.");
+        }
+        else
+        {
+            LogError("[SkillFsm] Animator 컴포넌트를 찾을 수 없습니다. SkillFsm 기능이 제한될 수 있습니다.");
         }
 
-        if (playerFsm == null)
+        // Player 컴포넌트 가져오기
+        player = GetComponent<Player>();
+        if (player != null)
         {
-            LogError("[SkillFsm] PlayerFsm 스크립트가 Inspector에서 할당되지 않았습니다.");
-            enabled = false;
-            return;
+            Log("[SkillFsm] Player 컴포넌트를 성공적으로 가져왔습니다.");
+        }
+        else
+        {
+            LogError("[SkillFsm] Player 컴포넌트를 찾을 수 없습니다. SkillFsm 기능이 제한될 수 있습니다.");
         }
 
+        // PlayerFsm 컴포넌트 가져오기
+        playerFsm = GetComponent<PlayerFsm>();
+        if (playerFsm != null)
+        {
+            Log("[SkillFsm] PlayerFsm 컴포넌트를 성공적으로 가져왔습니다.");
+        }
+        else
+        {
+            LogError("[SkillFsm] PlayerFsm 컴포넌트를 찾을 수 없습니다. SkillFsm 기능이 제한될 수 있습니다.");
+        }
+    }
+
+    /// <summary>
+    /// SkillFsm 초기화 메서드
+    /// </summary>
+    private void InitializeSkillFsm()
+    {
         // SkillFsm 참조 설정
         foreach (var skill in Skills)
         {
             skill.SetSkillFsm(this);
         }
 
-        for (int i = 0; i < Skills.Count; i++)
+        // FirebaseManager가 초기화되었는지 확인
+        if (FirebaseManager.Instance != null && FirebaseManager.Instance.CurrentUserData != null)
         {
-            // 주의: FirebaseManager 관련 로직은 프로젝트에 맞게 조정 필요
-            Skills[i].level =
-                FirebaseManager.Instance.CurrentUserData.user_Skills[i].skill_Level;
+            for (int i = 0; i < Skills.Count; i++)
+            {
+                if (i < FirebaseManager.Instance.CurrentUserData.user_Skills.Count)
+                {
+                    Skills[i].level = FirebaseManager.Instance.CurrentUserData.user_Skills[i].skill_Level;
+                }
+                else
+                {
+                    LogWarning($"[SkillFsm] user_Skills 리스트에 인덱스 {i}가 존재하지 않습니다.");
+                }
+            }
+        }
+        else
+        {
+            LogError("[SkillFsm] FirebaseManager 또는 CurrentUserData가 초기화되지 않았습니다.");
         }
 
         InitializeSkillEffects();
         InitializeCooldowns();
     }
 
-    // 스킬 이펙트 초기화
+    /// <summary>
+    /// 씬 로딩 시 호출되는 메서드
+    /// </summary>
+    /// <param name="scene">로드된 씬</param>
+    /// <param name="mode">로드 모드</param>
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Log($"[SkillFsm] 씬 '{scene.name}'이(가) 로드되었습니다. 로드 모드: {mode}");
+
+        // 컴포넌트 재초기화
+        InitializeComponents();
+        InitializeSkillFsm();
+    }
+
+    /// <summary>
+    /// 스킬 이펙트 초기화
+    /// </summary>
     private void InitializeSkillEffects()
     {
         foreach (var skill in Skills)
@@ -244,9 +325,8 @@ public class SkillFsm : MonoBehaviour
                 List<SkillEffect> foundSkillEffects = new List<SkillEffect>();
                 for (int lvl = 1; lvl <= skill.MaxLevel; lvl++)
                 {
-                    string spawnPointName =
-                        $"{skill.skillType}Level{lvl}ParticleSpawnPoint";
-                    Transform spawnPoint = player.transform.Find(spawnPointName);
+                    string spawnPointName = $"{skill.skillType}Level{lvl}ParticleSpawnPoint";
+                    Transform spawnPoint = player != null ? player.transform.Find(spawnPointName) : null;
                     if (spawnPoint != null)
                     {
                         // 스폰 포인트가 발견되면 기본 이펙트 프리팹을 지정
@@ -279,7 +359,9 @@ public class SkillFsm : MonoBehaviour
         }
     }
 
-    // 쿨타임 초기화
+    /// <summary>
+    /// 쿨타임 초기화
+    /// </summary>
     private void InitializeCooldowns()
     {
         foreach (var skill in Skills)
@@ -289,24 +371,6 @@ public class SkillFsm : MonoBehaviour
     }
 
     // 입력 이벤트 등록 (예시)
-    private void OnEnable()
-    {
-        PlayerInputManager.OnSkillInput += TriggerRushSkill;
-        PlayerInputManager.OnRightClickInput += TriggerParrySkill;
-        PlayerInputManager.OnShiftLeftClickInput += TriggerSkill1;
-        PlayerInputManager.OnShiftRightClickInput += TriggerSkill2;
-    }
-
-    // 입력 이벤트 해제 (예시)
-    private void OnDisable()
-    {
-        PlayerInputManager.OnSkillInput -= TriggerRushSkill;
-        PlayerInputManager.OnRightClickInput -= TriggerParrySkill;
-        PlayerInputManager.OnShiftLeftClickInput -= TriggerSkill1;
-        PlayerInputManager.OnShiftRightClickInput -= TriggerSkill2;
-    }
-
-    // 각 스킬에 대한 트리거 (예시)
     private void TriggerRushSkill()
     {
         ExternalTriggerSkill(SkillType.Rush);
@@ -364,11 +428,11 @@ public class SkillFsm : MonoBehaviour
         switch (skillType)
         {
             case SkillType.Rush:
-                SoundManager.Instance.PlaySFX("Dash", gameObject);
+                SoundManager.Instance?.PlaySFX("Dash", gameObject);
                 break;
             case SkillType.Parry:
             case SkillType.Skill1:
-                SoundManager.Instance.PlaySFX("rush_skill_sound", gameObject);
+                SoundManager.Instance?.PlaySFX("rush_skill_sound", gameObject);
                 break;
             case SkillType.Skill2:
                 StartCoroutine(PlayDelayedSound("sound_player_Twohandskill4", 0.6f));
@@ -390,7 +454,7 @@ public class SkillFsm : MonoBehaviour
         }
 
         // Rush 스킬이면 이동 속도 증가 및 Rush 활성화 상태 설정
-        if (skillType == SkillType.Rush)
+        if (skillType == SkillType.Rush && player != null)
         {
             IsRushActive = true; // Rush 활성화
             Log("Rush 스킬이 활성화되었습니다.");
@@ -413,7 +477,7 @@ public class SkillFsm : MonoBehaviour
     private IEnumerator PlayDelayedSound(string soundName, float delay)
     {
         yield return new WaitForSeconds(delay);
-        SoundManager.Instance.PlaySFX(soundName, gameObject);
+        SoundManager.Instance?.PlaySFX(soundName, gameObject);
     }
 
     // Rush 스킬의 지속 시간 동안 Rush 활성화 상태를 유지하는 코루틴
@@ -445,7 +509,7 @@ public class SkillFsm : MonoBehaviour
         else
         {
             // 기본 위치 사용
-            spawnPosition = player.transform.position + player.transform.forward;
+            spawnPosition = player != null ? player.transform.position + player.transform.forward : Vector3.zero;
             spawnRotation = Quaternion.identity;
             LogWarning($"[SkillFsm] {skill.Name} 스킬의 파티클이 기본 위치에서 생성됩니다.");
         }
@@ -495,16 +559,31 @@ public class SkillFsm : MonoBehaviour
     {
         isSpeedBoostActive = true;
 
-        float originalSpeed = player.moveSpeed;
-        player.moveSpeed *= speedBoost;
-        Log(
-            $"[SkillFsm] Rush 이동 속도 상승 시작 ({speedBoost}배, {duration}초). 원래 속도: {originalSpeed}, 새로운 속도: {player.moveSpeed}");
+        float originalSpeed = player != null ? player.moveSpeed : 0f;
+        if (player != null)
+        {
+            player.moveSpeed *= speedBoost;
+            Log(
+                $"[SkillFsm] Rush 이동 속도 상승 시작 ({speedBoost}배, {duration}초). 원래 속도: {originalSpeed}, 새로운 속도: {player.moveSpeed}");
+        }
+        else
+        {
+            LogWarning("[SkillFsm] Player 참조가 없으므로 이동 속도 증가를 적용할 수 없습니다.");
+        }
 
         yield return new WaitForSeconds(duration);
 
-        player.moveSpeed = originalSpeed;
+        if (player != null)
+        {
+            player.moveSpeed = originalSpeed;
+            Log($"[SkillFsm] Rush 이동 속도 상승 종료. 속도 복원: {player.moveSpeed}");
+        }
+        else
+        {
+            LogWarning("[SkillFsm] Player 참조가 없으므로 이동 속도 복원을 할 수 없습니다.");
+        }
+
         isSpeedBoostActive = false;
-        Log($"[SkillFsm] Rush 이동 속도 상승 종료. 속도 복원: {player.moveSpeed}");
     }
 
     // 쿨타임을 처리하는 코루틴
@@ -596,8 +675,22 @@ public class SkillFsm : MonoBehaviour
 
         bool leveledUp = skill.LevelUp();
 
-        FirebaseManager.Instance.CurrentUserData.user_Skills[(int)skillType] =
-            new SkillData((int)skillType, skill.Level);
+        if (FirebaseManager.Instance != null && FirebaseManager.Instance.CurrentUserData != null)
+        {
+            if ((int)skillType < FirebaseManager.Instance.CurrentUserData.user_Skills.Count)
+            {
+                FirebaseManager.Instance.CurrentUserData.user_Skills[(int)skillType] =
+                    new SkillData((int)skillType, skill.Level);
+            }
+            else
+            {
+                LogWarning($"[SkillFsm] user_Skills 리스트에 인덱스 {(int)skillType}가 존재하지 않습니다.");
+            }
+        }
+        else
+        {
+            LogError("[SkillFsm] FirebaseManager 또는 CurrentUserData가 초기화되지 않았습니다.");
+        }
 
         if (leveledUp)
         {
