@@ -8,9 +8,9 @@ public class MonsterDieState : MonsterState
     {
         monster.GetComponent<Collider>().enabled = false;
         monster.Animator.SetTrigger("Die");
-        SoundManager.Instance.PlaySFX("sound_mulock_die", monster.gameObject);
+        SoundManager.Instance.PlaySFX(monster.monsterData.dieSound, monster.gameObject);
         GameManager.Instance.dieMonsterCount++;
-
+        
         // PlayerTransform이 null인지 확인
         if (monster.TargetTransform != null)
         {

@@ -9,7 +9,7 @@ public class MonsterAttackState : MonsterState
         monster.Agent.isStopped = true;
         monster.Animator.SetTrigger("Attack");
         monster.Agent.SetDestination(monster.transform.position);
-        //SoundManager.Instance.PlaySFX("sound_mulock_attack", monster.gameObject);
+        SoundManager.Instance.PlaySFX(monster.monsterData.attackSound, monster.gameObject);
     }
 
     public override void ExecuteState(Monster monster)
