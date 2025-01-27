@@ -17,6 +17,10 @@ public class PlayerFsm : MonoBehaviourPun
     [Header("콤보 타이머")]
     public float comboResetTime = 1.0f;
 
+    [Header("기본 공격 소리 딜레이 조정")]
+    public float soundDelay = 0.8f;
+
+
     private Rigidbody rb;
     private Animator animator;
     private Vector3 movementInput;
@@ -405,9 +409,9 @@ public class PlayerFsm : MonoBehaviourPun
 
     private void EnterAttackState(int attackNumber)
     {
-        string[] comboSoundClips = { "sound_player_hit1", "sound_player_hit2" };
+        string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
 
-        float delay = 0.8f;
+        float delay = soundDelay;
 
         StartCoroutine(PlayDelayedRandomSound(comboSoundClips, delay));
 
