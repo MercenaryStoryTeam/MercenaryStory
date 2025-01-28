@@ -60,7 +60,8 @@ public class ServerManager
 			IsOpen = true
 		};
 		PhotonNetwork.JoinOrCreateRoom(sceneName, options, TypedLobby.Default);
-		Debug.Log($"Loading first dungeon scene: {sceneName}");
+		ChatManager.Instance.ChatStart(sceneName);
+
 		FirebaseManager.Instance.CurrentPartyData.party_Members.Remove(
 			FirebaseManager.Instance.CurrentUserData);
 		FirebaseManager.Instance.CurrentUserData.UpdateUserData(
