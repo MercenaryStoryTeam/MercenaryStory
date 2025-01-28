@@ -40,13 +40,13 @@ public class ServerSelectPanel : MonoBehaviour
 	private void Update()
 	{
 		connectButton.interactable =
-			PhotonManager.Instance.isReadyToJoinGameServer && serverNum != 0;
+			ServerManager.IsConnectedToMasterServer() && serverNum != 0;
 	}
 
 	private void OnConnectButtonClick()
 	{
 		SceneManager.LoadScene("LJW_TownScene");
 		ServerManager.JoinOrCreatePersistentRoom(serverNum.ToString());
-		GameManager.Instance.ChangeScene(GameManager.Instance.CurrentScene+1);
+		GameManager.Instance.ChangeScene(GameManager.Instance.CurrentScene + 1);
 	}
 }

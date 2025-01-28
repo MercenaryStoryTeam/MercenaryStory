@@ -7,6 +7,12 @@ public class ServerManager
 {
 	public static List<RoomInfo> availableRooms = new List<RoomInfo>();
 
+	public static bool IsConnectedToMasterServer()
+	{
+		return PhotonNetwork.NetworkClientState ==
+		       ClientState.ConnectedToMasterServer;
+	}
+
 	public static void ConnectLobby()
 	{
 		string nickName = FirebaseManager.Instance.CurrentUserData.user_Name;
