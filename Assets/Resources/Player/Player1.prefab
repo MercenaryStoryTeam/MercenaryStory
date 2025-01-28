@@ -67569,11 +67569,11 @@ MonoBehaviour:
       ParticleSpawnPoint: {fileID: 2049544767341468612}
     SkillSounds:
     - SoundName: player_Twohandmoon1
-      DelayBeforePlay: 0.3
+      DelayBeforePlay: 0.1
     - SoundName: player_Twohandmoon1
-      DelayBeforePlay: 0.3
+      DelayBeforePlay: 0.1
     - SoundName: player_Twohandmoon2
-      DelayBeforePlay: 0.3
+      DelayBeforePlay: 0.1
     IsOnCooldown: 0
     RemainingCooldown: 0
     CachedCooldown: 0
