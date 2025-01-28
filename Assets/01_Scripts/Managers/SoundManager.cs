@@ -3,10 +3,8 @@ using UnityEngine.Audio;
 using System.Collections;
 using System.Collections.Generic;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : SingletonManager<SoundManager>
 {
-    public static SoundManager Instance { get; private set; }
-    
     [SerializeField] private AudioMixer audioMixer;
     private AudioSource bgmSource;
     private Dictionary<string, AudioClip> audioClips;
@@ -16,24 +14,15 @@ public class SoundManager : MonoBehaviour
     private const string SFX_VOLUME_KEY = "SFX";
     private const string MASTER_VOLUME_KEY = "Master";
 
-    private void Awake()
+    private void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            SetupAudio();
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        SetupAudio();
     }
 
     private void SetupAudio()
     {
         bgmSource = gameObject.AddComponent<AudioSource>();
-        bgmSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("BGM")[0];  // BGM 그룹에 연결
+        bgmSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(BGM_VOLUME_KEY)[0];  // BGM 그룹에 연결
         bgmSource.spatialBlend = 0f;  // 2D 사운드로 설정
         bgmSource.loop = true;  
 
@@ -88,7 +77,7 @@ public class SoundManager : MonoBehaviour
             if (audioSource == null)
             {
                 audioSource = source.AddComponent<AudioSource>();
-                audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups("SFX")[0];
+                audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(SFX_VOLUME_KEY)[0];
                 audioSource.spatialBlend = 1f;  // 3D 사운드
             }
             
