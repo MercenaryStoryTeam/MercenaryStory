@@ -13,8 +13,6 @@ public class ChatPanel : MonoBehaviour
 	public Image notification;
 	public Button chatButton;
 
-	private bool isCooldown = false;
-
 	private void Awake()
 	{
 		closeButton.onClick.AddListener(OnCloseButtonClick);
@@ -46,26 +44,11 @@ public class ChatPanel : MonoBehaviour
 
 	private void Send()
 	{
-		if (isCooldown)
-		{
-			UIManager.Instance.popUp.PopUpOpen("아직 메시지를 전송할 수 없습니다.",
-				() => UIManager.Instance.popUp.PopUpClose());
-			return;
-		}
-
 		string message = messageInput.text;
 		if (string.IsNullOrEmpty(message)) return;
 		ChatManager.Instance.SendChatMessage(message);
 		messageInput.text = "";
-		// messageInput.ActivateInputField();
-		StartCoroutine(SendCooldownCoroutine());
-	}
-
-	private IEnumerator SendCooldownCoroutine()
-	{
-		isCooldown = true;
-		yield return new WaitForSeconds(chatCool);
-		isCooldown = false;
+		messageInput.ActivateInputField();
 	}
 
 	public void ReceiveChatMessage(string nickName, string message)
