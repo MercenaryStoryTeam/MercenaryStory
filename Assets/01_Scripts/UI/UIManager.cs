@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : SingletonManager<UIManager>
@@ -61,7 +60,9 @@ public class UIManager : SingletonManager<UIManager>
 	public bool isOptionActive = false;
 
 	//Skill UI
-	[FormerlySerializedAs("InGamePanel")] public GameObject InGamePanel;
+	public GameObject InGamePanel;
+	public GameObject skillUIPanel;
+	public bool isSkillPanelActive = false;
 
 	//Mobile UI
 	public SkillUIManager skillUI;
@@ -91,6 +92,7 @@ public class UIManager : SingletonManager<UIManager>
 
 	private void Update()
 	{
+		if (!skillUIPanel.activeSelf) isSkillPanelActive = false;
 		MobileSetting();
 	}
 
@@ -99,7 +101,8 @@ public class UIManager : SingletonManager<UIManager>
 		GameObject mobileUI = GameObject.Find("MoblieUI");
 		if (mobileUI != null)
 		{
-			Scene currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+			Scene currentScene =
+				UnityEngine.SceneManagement.SceneManager.GetActiveScene();
 			if (currentScene.name == "Mobile_TitleScene")
 			{
 				skillUI.gameObject.SetActive(false);
@@ -311,6 +314,23 @@ public class UIManager : SingletonManager<UIManager>
 
 	#endregion
 
+	#region Skill
+
+	public void OpenSkillPanel()
+	{
+		if (IsAnyPanelOpen() || IsPopUpOpen()) return;
+		skillUIPanel.gameObject.SetActive(true);
+		isSkillPanelActive = true;
+	}
+
+	public void CloseSkillPanel()
+	{
+		skillUIPanel.gameObject.SetActive(false);
+		isSkillPanelActive = false;
+	}
+
+	#endregion
+
 	public void CloseAllPanels()
 	{
 		CloseInventoryPanel();
@@ -321,16 +341,18 @@ public class UIManager : SingletonManager<UIManager>
 		ClosePartyPanel();
 		ClosePartyCreatePanel();
 		CloseDungeonPanel();
+		CloseSkillPanel();
 	}
 
 	public bool IsAnyPanelOpen()
 	{
 		return isInventoryActive || isItemInfoActive || isShopActive ||
 		       isOptionActive || isChatActive || isPartyActive ||
-		       isPartyCreateActive || isPartyMemberActive || isDungeonActive;
+		       isPartyCreateActive || isPartyMemberActive || isDungeonActive ||
+		       isSkillPanelActive;
 	}
 
-	private bool IsPopUpOpen()
+	public bool IsPopUpOpen()
 	{
 		return popUp.gameObject.activeSelf;
 	}
