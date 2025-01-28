@@ -50,8 +50,6 @@ public class PlayerInputManager : MonoBehaviourPun
 			}
 		}
 
-		// 모바일 플랫폼에서 활성화
-#if UNITY_IOS || UNITY_ANDROID
         if (useMobileInput)
         {
             if (virtualJoystick == null)
@@ -63,7 +61,6 @@ public class PlayerInputManager : MonoBehaviourPun
                 }
             }
         }
-#endif
 
 		// SkillUIManager 자동 참조
 		skillUIManager = FindObjectOfType<SkillUIManager>();
@@ -167,8 +164,10 @@ public class PlayerInputManager : MonoBehaviourPun
 	// 모바일 입력 
 	private void HandleMobileInputs()
 	{
-		// 조이스틱을 통한 이동 처리
-		if (virtualJoystick != null)
+        if (!photonView.IsMine) return;
+
+        // 조이스틱을 통한 이동 처리
+        if (virtualJoystick != null)
 		{
 			Vector2 mobileMovement = virtualJoystick.InputVector;
 
