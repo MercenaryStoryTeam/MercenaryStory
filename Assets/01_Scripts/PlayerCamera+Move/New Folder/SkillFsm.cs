@@ -497,7 +497,7 @@ public class SkillFsm : MonoBehaviour
         animator.SetTrigger(skill.TriggerName);
         Log($"[SkillFsm] {skill.Name} 스킬이 트리거되었습니다.");
 
-        // 스킬 유형별 사운드 재생 (수정된 부분)
+        // 스킬 유형별 사운드 재생
         PlaySkillSound(skillType);
 
         // 레벨에 따른 파티클 이펙트 활성화
@@ -513,46 +513,31 @@ public class SkillFsm : MonoBehaviour
         }
 
         // 스킬 실행 시 FSMManager의 상태 전환
-        switch (skillType)
-        {
-            case SkillType.Rush:
-                IsRushActive = true; // Rush 활성화
-                Log("Rush 스킬이 활성화되었습니다.");
-
-                // 플레이어의 무적 상태를 스킬의 지속 시간과 동일하게 설정
-                player.SetInvincible(true, skill.Duration);
-
-                // 이동 속도 증가 적용
-                ApplySpeedBoost(skill.SpeedBoost, skill.Duration);
-
-                // Rush 스킬의 지속 시간이 끝난 후 Rush 활성화 상태 해제
-                StartCoroutine(RushCooldownCoroutine(skill.Duration));
-
-                // FSMManager에 UsingSkill 상태 전환 요청
-                if (fsmManager != null)
-                {
-                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.UsingSkill);
-                }
-                break;
-
-            case SkillType.Parry:
-            case SkillType.Skill1:
-            case SkillType.Skill2:
-                // FSMManager에 UsingSkill 상태 전환 요청
-                if (fsmManager != null)
-                {
-                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.UsingSkill);
-                }
-                break;
-        }
-
-        // 스킬 실행 시 FSMManager와 PlayerFsm의 상태 변경을 연동
-        if (skillType != SkillType.Rush)
+        if (skillType == SkillType.Rush)
         {
             if (fsmManager != null)
             {
                 fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.UsingSkill);
             }
+        }
+        else
+        {
+            if (fsmManager != null)
+            {
+                fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.UsingSkill);
+            }
+        }
+
+        // Rush 스킬일 경우 추가 처리
+        if (skillType == SkillType.Rush)
+        {
+            // 공격 잠금
+            if (playerFsm != null)
+            {
+                playerFsm.LockAttack();
+            }
+
+            StartCoroutine(RushSkillCoroutine(skill));
         }
 
         // 쿨다운 시작
@@ -571,9 +556,33 @@ public class SkillFsm : MonoBehaviour
                 {
                     fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
                 }
+                if (playerFsm != null)
+                {
+                    playerFsm.UnlockAttack(); // 공격 종료 시 입력 잠금 해제
+                }
                 break;
             case "Hit":
                 // Hit 애니메이션 종료 시 Idle 상태로 전환
+                if (fsmManager != null)
+                {
+                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                }
+                break;
+            case "Rush":
+                // Rush 애니메이션 종료 시
+                if (fsmManager != null)
+                {
+                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Moving);
+                }
+                if (playerFsm != null)
+                {
+                    playerFsm.UnlockAttack(); // Rush 종료 시 공격 잠금 해제
+                }
+                break;
+            case "Parry":
+            case "Skill1":
+            case "Skill2":
+                // 기타 스킬 애니메이션 종료 시 Idle 상태로 전환
                 if (fsmManager != null)
                 {
                     fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
@@ -639,10 +648,22 @@ public class SkillFsm : MonoBehaviour
     }
 
     // Rush 스킬의 지속 시간 동안 Rush 활성화 상태를 유지하는 코루틴
-    private IEnumerator RushCooldownCoroutine(float duration)
+    private IEnumerator RushSkillCoroutine(Skill skill)
     {
-        Log($"Rush 스킬 지속 시간 시작: {duration}초");
-        yield return new WaitForSeconds(duration);
+        IsRushActive = true; // Rush 활성화
+        Log("Rush 스킬이 활성화되었습니다.");
+
+        // 플레이어의 무적 상태를 스킬의 지속 시간과 동일하게 설정
+        if (player != null)
+        {
+            player.SetInvincible(true, skill.Duration);
+        }
+
+        // 이동 속도 증가 적용
+        ApplySpeedBoost(skill.SpeedBoost, skill.Duration);
+
+        yield return new WaitForSeconds(skill.Duration);
+
         IsRushActive = false;
         Log("Rush 스킬의 지속 시간이 끝나서 Rush 활성화 상태가 해제되었습니다.");
 
@@ -656,6 +677,12 @@ public class SkillFsm : MonoBehaviour
         if (player != null)
         {
             player.SetInvincible(false, 0f);
+        }
+
+        // 공격 잠금 해제
+        if (playerFsm != null)
+        {
+            playerFsm.UnlockAttack();
         }
 
         // 이동 속도 원복은 ApplySpeedBoost 코루틴에서 처리됨

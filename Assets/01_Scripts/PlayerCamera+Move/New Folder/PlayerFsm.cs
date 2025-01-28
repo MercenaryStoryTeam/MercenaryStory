@@ -614,6 +614,20 @@ public class PlayerFsm : MonoBehaviourPun
         isAttackLocked = false;
     }
 
+    // 공격 입력만 잠금
+    public void LockAttack()
+    {
+        isAttackLocked = true;
+        Log("[PlayerFsm] 공격 입력이 잠금되었습니다.");
+    }
+
+    // 공격 입력 잠금 해제
+    public void UnlockAttack()
+    {
+        isAttackLocked = false;
+        Log("[PlayerFsm] 공격 입력 잠금이 해제되었습니다.");
+    }
+
     // 씬 이동을 위함 -지원
     public void MoveMembersToRoom(string sceneName)
     {
