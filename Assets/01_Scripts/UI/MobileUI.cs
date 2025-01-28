@@ -19,20 +19,20 @@ public class MobileUI : MonoBehaviour
         MobileUIOnClick();
     }
 
-    private void Start()
+    private void Update()
     {
-        shop = GameObject.Find("Store");
-		if (shop == null)
-		{
-			Debug.LogError("[PlayerInputManager] 씬에 'Store' GameObject가 없습니다.");
-		}
-
-        player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
+        if(shop == null || player == null)
+        {
+            shop = GameObject.Find("Store");
+            player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
+        }
     }
+
     private void MobileUIOnClick()
     {
         invenButton.onClick.AddListener(InvenButtonClicked);
         optionButton.onClick.AddListener(OptionButtonClicked);
+        interactButton.onClick.AddListener(InteractionButtonClicked);
     }
     
     private void InvenButtonClicked()
@@ -45,7 +45,7 @@ public class MobileUI : MonoBehaviour
         UIManager.Instance.OpenOptionPanel();
     }
 
-    private void InteractionButtonClick()
+    private void InteractionButtonClicked()
     {
         // 기존 E 키 처리 코드 유지...
         if (player.droppedItems.Count > 0)
@@ -59,7 +59,7 @@ public class MobileUI : MonoBehaviour
                     continue;
                 }
 
-                if (Vector3.Distance(transform.position,
+                if (Vector3.Distance(player.transform.position,
                         player.droppedItems[i].droppedLightLine.transform.position) <
                     3f)
                 {
@@ -74,7 +74,7 @@ public class MobileUI : MonoBehaviour
             }
         }
 
-        if (Vector3.Distance(transform.position, shop.transform.position) < 7f)
+        if (Vector3.Distance(player.transform.position, shop.transform.position) < 7f)
         {
             UIManager.Instance.shop.TryOpenShop();
         }
