@@ -1,9 +1,12 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
+using Photon.Pun;
 using UnityEngine.SceneManagement;
+using System;
 
+// 스킬 유형 정의
+[System.Serializable]
 public enum SkillType
 {
     Rush,
@@ -205,6 +208,9 @@ public class SkillFsm : MonoBehaviour
     private Player player;
     private PlayerFsm playerFsm;
 
+    // FSMManager 참조 추가
+    private FSMManager fsmManager;
+
     // Rush 스킬 활성화 상태를 나타내는 프로퍼티
     public bool IsRushActive { get; private set; } = false;
 
@@ -219,7 +225,7 @@ public class SkillFsm : MonoBehaviour
 
     private void OnEnable()
     {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         // 입력 이벤트 등록 
         PlayerInputManager.OnSkillInput += TriggerRushSkill;
@@ -230,7 +236,7 @@ public class SkillFsm : MonoBehaviour
 
     private void OnDisable()
     {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
 
         // 입력 이벤트 해제 
         PlayerInputManager.OnSkillInput -= TriggerRushSkill;
@@ -273,6 +279,17 @@ public class SkillFsm : MonoBehaviour
         else
         {
             LogError("[SkillFsm] PlayerFsm 스크립트를 찾을 수 없습니다.");
+        }
+
+        // FSMManager 스크립트 가져오기
+        fsmManager = GetComponent<FSMManager>();
+        if (fsmManager != null)
+        {
+            Log("[SkillFsm] FSMManager 스크립트를 성공적으로 가져왔습니다.");
+        }
+        else
+        {
+            LogError("[SkillFsm] FSMManager 스크립트를 찾을 수 없습니다.");
         }
     }
 
@@ -396,7 +413,45 @@ public class SkillFsm : MonoBehaviour
     // 스킬 사용을 외부에서 요청할 수 있도록 하는 메서드
     public void ExternalTriggerSkill(SkillType skillType)
     {
+        // 입력 처리 전에 현재 상태 검증
+        if (!IsInputAllowed(skillType))
+        {
+            LogWarning($"[SkillFsm] {skillType} 스킬은 현재 상태({fsmManager.currentState})에서 사용할 수 없습니다.");
+            return;
+        }
+
         OnSkillTriggerRequested?.Invoke(skillType);
+    }
+
+    // 입력이 현재 상태에서 허용되는지 확인하는 메서드
+    private bool IsInputAllowed(SkillType skillType)
+    {
+        if (fsmManager == null)
+        {
+            LogError("[SkillFsm] FSMManager 참조가 없습니다.");
+            return false;
+        }
+
+        // 현재 상태가 UsingSkill 또는 Attacking이면 모든 입력을 차단
+        if (fsmManager.currentState == FSMManager.PlayerState.UsingSkill ||
+            fsmManager.currentState == FSMManager.PlayerState.Attack1 ||
+            fsmManager.currentState == FSMManager.PlayerState.Attack2 ||
+            fsmManager.currentState == FSMManager.PlayerState.Attacking)
+        {
+            return false;
+        }
+
+        switch (skillType)
+        {
+            case SkillType.Rush:
+                return fsmManager.currentState == FSMManager.PlayerState.Moving;
+            case SkillType.Parry:
+            case SkillType.Skill1:
+            case SkillType.Skill2:
+                return fsmManager.currentState == FSMManager.PlayerState.Idle;
+            default:
+                return false;
+        }
     }
 
     // FSMManager에서 호출하는 실제 스킬 트리거 메서드
@@ -421,6 +476,23 @@ public class SkillFsm : MonoBehaviour
             return;
         }
 
+        // 현재 상태가 UsingSkill 또는 Attacking이면 추가 입력 제한
+        if (fsmManager.currentState == FSMManager.PlayerState.UsingSkill ||
+            fsmManager.currentState == FSMManager.PlayerState.Attack1 ||
+            fsmManager.currentState == FSMManager.PlayerState.Attack2 ||
+            fsmManager.currentState == FSMManager.PlayerState.Attacking)
+        {
+            LogWarning($"[SkillFsm] 현재 상태({fsmManager.currentState})에서는 {skillType} 스킬을 사용할 수 없습니다.");
+            return;
+        }
+
+        // 현재 상태가 Rush인 경우 추가 Rush 스킬 사용 제한
+        if (skillType == SkillType.Rush && IsRushActive)
+        {
+            LogWarning("[SkillFsm] Rush 스킬이 이미 활성화되어 있습니다.");
+            return;
+        }
+
         // 스킬 실행
         animator.SetTrigger(skill.TriggerName);
         Log($"[SkillFsm] {skill.Name} 스킬이 트리거되었습니다.");
@@ -440,24 +512,99 @@ public class SkillFsm : MonoBehaviour
             LogWarning($"[SkillFsm] {skill.Name} 스킬의 파티클 이펙트가 설정되지 않았습니다.");
         }
 
-        // Rush 스킬이면 이동 속도 증가 및 Rush 활성화 상태 설정
-        if (skillType == SkillType.Rush && player != null)
+        // 스킬 실행 시 FSMManager의 상태 전환
+        switch (skillType)
         {
-            IsRushActive = true; // Rush 활성화
-            Log("Rush 스킬이 활성화되었습니다.");
+            case SkillType.Rush:
+                IsRushActive = true; // Rush 활성화
+                Log("Rush 스킬이 활성화되었습니다.");
 
-            // 플레이어의 무적 상태를 스킬의 지속 시간과 동일하게 설정
-            player.SetInvincible(true, skill.Duration);
+                // 플레이어의 무적 상태를 스킬의 지속 시간과 동일하게 설정
+                player.SetInvincible(true, skill.Duration);
 
-            // 이동 속도 증가 적용
-            ApplySpeedBoost(skill.SpeedBoost, skill.Duration);
+                // 이동 속도 증가 적용
+                ApplySpeedBoost(skill.SpeedBoost, skill.Duration);
 
-            // Rush 스킬의 지속 시간이 끝난 후 Rush 활성화 상태 해제
-            StartCoroutine(RushCooldownCoroutine(skill.Duration));
+                // Rush 스킬의 지속 시간이 끝난 후 Rush 활성화 상태 해제
+                StartCoroutine(RushCooldownCoroutine(skill.Duration));
+
+                // FSMManager에 UsingSkill 상태 전환 요청
+                if (fsmManager != null)
+                {
+                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.UsingSkill);
+                }
+                break;
+
+            case SkillType.Parry:
+            case SkillType.Skill1:
+            case SkillType.Skill2:
+                // FSMManager에 UsingSkill 상태 전환 요청
+                if (fsmManager != null)
+                {
+                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.UsingSkill);
+                }
+                break;
+        }
+
+        // 스킬 실행 시 FSMManager와 PlayerFsm의 상태 변경을 연동
+        if (skillType != SkillType.Rush)
+        {
+            if (fsmManager != null)
+            {
+                fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.UsingSkill);
+            }
         }
 
         // 쿨다운 시작
         StartCoroutine(CooldownCoroutine(skill));
+    }
+
+    // 스킬 애니메이션 종료 시 호출되는 메서드
+    public void OnAnimationEnd(string animationName)
+    {
+        switch (animationName)
+        {
+            case "Attack1":
+            case "Attack2":
+                // 공격 애니메이션 종료 시 Idle 상태로 전환
+                if (fsmManager != null)
+                {
+                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                }
+                break;
+            case "Hit":
+                // Hit 애니메이션 종료 시 Idle 상태로 전환
+                if (fsmManager != null)
+                {
+                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                }
+                break;
+            // Die 상태는 애니메이션 이벤트에서 제외
+            default:
+                Debug.LogWarning($"[SkillFsm] 알 수 없는 애니메이션 종료: {animationName}");
+                break;
+        }
+
+        Log($"[SkillFsm] {animationName} 애니메이션 종료 처리됨.");
+    }
+
+    // 종료된 스킬 타입을 식별하는 로직 (애니메이션 이름 기반)
+    private SkillType GetEndedSkillType(string animationName)
+    {
+        switch (animationName)
+        {
+            case "Rush":
+                return SkillType.Rush;
+            case "Parry":
+                return SkillType.Parry;
+            case "Skill1":
+                return SkillType.Skill1;
+            case "Skill2":
+                return SkillType.Skill2;
+            default:
+                Debug.LogWarning($"[SkillFsm] 알 수 없는 애니메이션 이름: {animationName}");
+                return default;
+        }
     }
 
     // 스킬 사운드를 재생하는 메서드 (수정된 메서드)
@@ -498,6 +645,20 @@ public class SkillFsm : MonoBehaviour
         yield return new WaitForSeconds(duration);
         IsRushActive = false;
         Log("Rush 스킬의 지속 시간이 끝나서 Rush 활성화 상태가 해제되었습니다.");
+
+        // FSMManager에 Rush 상태 해제 요청
+        if (fsmManager != null)
+        {
+            fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Moving);
+        }
+
+        // 플레이어의 무적 상태 해제
+        if (player != null)
+        {
+            player.SetInvincible(false, 0f);
+        }
+
+        // 이동 속도 원복은 ApplySpeedBoost 코루틴에서 처리됨
     }
 
     // 파티클 이펙트를 활성화

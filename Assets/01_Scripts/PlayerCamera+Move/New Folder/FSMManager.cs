@@ -9,8 +9,10 @@ public class FSMManager : MonoBehaviour
     {
         Idle,
         Moving,
-        Attack1,
-        Attack2,
+        Attacking,    // 일반 공격 중
+        Attack1,      // Attack1 상태 추가
+        Attack2,      // Attack2 상태 추가
+        UsingSkill,   // 스킬 사용 중
         Hit,
         Die,
         Rush,
@@ -32,7 +34,7 @@ public class FSMManager : MonoBehaviour
 
     private void OnEnable()
     {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         if (playerFsm != null)
             playerFsm.OnStateChanged += HandlePlayerStateChanged;
@@ -43,7 +45,7 @@ public class FSMManager : MonoBehaviour
 
     private void OnDisable()
     {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
 
         if (playerFsm != null)
             playerFsm.OnStateChanged -= HandlePlayerStateChanged;
@@ -93,9 +95,11 @@ public class FSMManager : MonoBehaviour
     }
 
     // PlayerFsm의 상태 변경을 처리하는 메서드
-    private void HandlePlayerStateChanged(FSMManager.PlayerState newState)
+    public void HandlePlayerStateChanged(PlayerState newState) // 접근 제한자: public
     {
         currentState = newState;
+        Debug.Log($"[FSMManager] 상태가 {newState}로 변경되었습니다.");
+        // 필요 시 추가적인 상태 변경 처리 로직 구현
     }
 
     // SkillFsm에서 스킬 트리거 요청을 처리하는 메서드
@@ -105,9 +109,10 @@ public class FSMManager : MonoBehaviour
         switch (skillType)
         {
             case SkillType.Rush:
-                if (currentState == PlayerState.Hit)
+                if (currentState == PlayerState.Hit || currentState == PlayerState.Die || currentState == PlayerState.UsingSkill)
                 {
-                    // 현재 Hit 상태이므로 Rush 스킬을 사용할 수 없습니다.
+                    // 현재 Hit, Die, UsingSkill 상태이므로 Rush 스킬을 사용할 수 없습니다.
+                    Debug.LogWarning("[FSMManager] 현재 상태에서는 Rush 스킬을 사용할 수 없습니다.");
                     return;
                 }
                 break;
@@ -118,9 +123,25 @@ public class FSMManager : MonoBehaviour
                 if (currentState != PlayerState.Idle)
                 {
                     // 현재 Idle 상태가 아니므로 스킬을 사용할 수 없습니다.
+                    Debug.LogWarning($"[FSMManager] 현재 상태({currentState})에서는 {skillType} 스킬을 사용할 수 없습니다.");
                     return;
                 }
                 break;
+        }
+
+        // Rush 스킬은 Moving 상태일 때만 사용 가능
+        if (skillType == SkillType.Rush && currentState != PlayerState.Moving)
+        {
+            Debug.LogWarning("[FSMManager] Rush 스킬은 이동 중일 때만 사용할 수 있습니다.");
+            return;
+        }
+
+        // Parry, Skill1, Skill2는 Idle 상태에서만 사용 가능
+        if ((skillType == SkillType.Parry || skillType == SkillType.Skill1 || skillType == SkillType.Skill2) &&
+            currentState != PlayerState.Idle)
+        {
+            Debug.LogWarning($"[FSMManager] {skillType} 스킬은 Idle 상태에서만 사용할 수 있습니다.");
+            return;
         }
 
         // 조건을 만족하면 스킬 트리거
