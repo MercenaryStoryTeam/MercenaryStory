@@ -78,44 +78,21 @@ public class UIManager : SingletonManager<UIManager>
 		inventoryMangerSystem = FindObjectOfType<InventoryManger>();
 		popUp = FindObjectOfType<PopUp>();
 		skillUI = FindObjectOfType<SkillUIManager>();
-		mobile = FindObjectOfType<MobileUI>();
 		popUp.PopUpClose();
 		CloseInventoryPanel();
 		CloseShopPanel();
 		CloseItemInfoPanel();
-
-		if (Application.isMobilePlatform) // 프로젝트 분리시 삭제 예정
-		{
-			mobile.gameObject.SetActive(true);
-		}
 	}
 
 	private void Update()
 	{
 		if (!skillUIPanel.activeSelf) isSkillPanelActive = false;
-		MobileSetting();
 	}
 
 	public void MobileSetting()
 	{
-		GameObject mobileUI = GameObject.Find("MoblieUI");
-		if (mobileUI != null)
-		{
-			Scene currentScene =
-				UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-			if (currentScene.name == "Mobile_TitleScene")
-			{
-				skillUI.gameObject.SetActive(false);
-				mobile.gameObject.SetActive(false);
-			}
-			else
-			{
-				skillUI.gameObject.SetActive(true);
-				mobile.gameObject.SetActive(true);
-			}
-		}
-
-		else return;
+		InGamePanel.SetActive(true);
+		mobile.gameObject.SetActive(true);
 	}
 
 	#region Inventory
