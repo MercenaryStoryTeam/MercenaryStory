@@ -24,8 +24,6 @@ public class PlayerInputManager : MonoBehaviourPun
 	// 모바일 플랫폼 여부
 	private bool useMobileInput;
 
-	private GameObject shop; // 상점 오브젝트
-
 	// SkillUIManager 참조 추가
 	private SkillUIManager skillUIManager;
 
@@ -33,12 +31,6 @@ public class PlayerInputManager : MonoBehaviourPun
 	{
 		// Player 스크립트 자동 참조 -> PlayerInputManager 스크립트가 속한 부모 객체에서 찾음
 		player = GetComponent<Player>();
-
-		shop = GameObject.Find("Store");
-		if (shop == null)
-		{
-			Debug.LogError("[PlayerInputManager] 씬에 'Store' GameObject가 없습니다.");
-		}
 
 		// 모바일 입력 활성화 여부 설정 (모바일 테스트 true 또는 모바일 플랫폼 감지)
 		useMobileInput = forceMobile || Application.isMobilePlatform;
@@ -164,41 +156,6 @@ public class PlayerInputManager : MonoBehaviourPun
 		if (Input.GetKeyDown(KeyCode.I))
 		{
 			UIManager.Instance.inventory.TryOpenInventory();
-		}
-
-		if (Input.GetKeyDown(KeyCode.E))
-		{
-			// 기존 E 키 처리 코드 유지...
-			if (player.droppedItems.Count > 0)
-			{
-				for (int i = player.droppedItems.Count - 1; i >= 0; i--)
-				{
-					if (player.droppedItems[i].droppedItem == null ||
-					    player.droppedItems[i].droppedLightLine == null)
-					{
-						player.droppedItems.RemoveAt(i);
-						continue;
-					}
-
-					if (Vector3.Distance(transform.position,
-						    player.droppedItems[i].droppedLightLine.transform.position) <
-					    3f)
-					{
-						if (player.droppedItems[i].droppedItem != null &&
-						    player.droppedItems[i].droppedLightLine != null)
-						{
-							InventoryManger.Instance.AddItemToInventory(player.droppedItems[i]
-								.droppedItem);
-							Destroy(player.droppedItems[i].droppedLightLine);
-						}
-					}
-				}
-			}
-
-			if (Vector3.Distance(transform.position, shop.transform.position) < 7f)
-			{
-				UIManager.Instance.shop.TryOpenShop();
-			}
 		}
 
 		if (Input.GetKeyDown(KeyCode.Z))
