@@ -24,7 +24,7 @@ public class GameManager : SingletonManager<GameManager>
 	{
 		if (CurrentScene != 0)
 		{
-			UIManager.Instance.InGamePanel.gameObject.SetActive(true);
+			UIManager.Instance.MobileSetting();
 		}
 
 		if (dieMonsterCount == sceneDatas[CurrentScene].monsterCount)
