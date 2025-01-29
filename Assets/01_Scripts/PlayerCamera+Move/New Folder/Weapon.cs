@@ -13,7 +13,7 @@ public class Weapon : MonoBehaviour
 		// 방법1: 부모 객체에 붙어있는 Player 스크립트 참조
 		player = GetComponentInParent<Player>();
 		manager = GetComponentInParent<FSMManager>();
-
+		
 		// 방법1 실패
 		if (player == null)
 		{
@@ -38,8 +38,7 @@ public class Weapon : MonoBehaviour
 
 	private void SetWeaponDamage()
 	{
-		int currentWeaponId =
-			FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+		int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
 		ItemBase currentWeapon =
 			InventoryManger.Instance.allItems.Find(x => x.id == currentWeaponId);
 		if (currentWeapon is WeaponItem weapon)
@@ -58,8 +57,7 @@ public class Weapon : MonoBehaviour
 				monster.TakeDamage(damage);
 			}
 
-			else if (collider.gameObject.TryGetComponent<BossMonster>(
-				         out BossMonster bossMonster))
+			else if (collider.gameObject.TryGetComponent<BossMonster>(out BossMonster bossMonster))
 			{
 				bossMonster.TakeDamage(damage);
 			}
@@ -68,6 +66,7 @@ public class Weapon : MonoBehaviour
 		}
 		else if (collider.CompareTag("Minion"))
 		{
+			print("Minion Damage");
 			collider.gameObject.GetComponent<Minion>().TakeDamage(damage);
 			player.SuckBlood();
 		}

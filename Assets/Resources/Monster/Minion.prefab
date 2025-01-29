@@ -1091,6 +1091,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectCollider: {fileID: 0}
+  minionData: {fileID: 11400000, guid: 16a99758917b02241954e63b67e8d596, type: 2}
 --- !u!114 &-1246373072989398009
 MonoBehaviour:
   m_ObjectHideFlags: 0

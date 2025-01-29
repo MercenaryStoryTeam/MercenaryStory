@@ -161,7 +161,7 @@ public class BossMonster : MonoBehaviourPun
     {
         foreach (Transform nest in nestList)
         {
-            PhotonNetwork.Instantiate(minionPrefab.name, nest.position, Quaternion.identity);
+            PhotonNetwork.Instantiate($"Monster/{minionPrefab.name}", nest.position, nest.rotation);
         }
     }
 
