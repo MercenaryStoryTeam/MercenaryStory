@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public enum MonsterStateType
 {
@@ -32,14 +31,15 @@ public class MonsterStateMachine
             { MonsterStateType.Attack, new MonsterAttackState() },
             { MonsterStateType.Return, new MonsterReturnState() },
             { MonsterStateType.Die, new MonsterDieState() },
-            { MonsterStateType.GetHit, new MonsterGetHitState() } };
+            { MonsterStateType.GetHit, new MonsterGetHitState() } 
+        };
     }
 
     public void ChangeState(MonsterStateType stateType)
     {
         exStateType = currentStateType;
         currentState?.ExitState(owner);
-        currentState = CreateState(stateType);
+        currentState = StateReturn(stateType);
         currentState?.EnterState(owner);
         currentStateType = stateType;
     }
@@ -52,7 +52,7 @@ public class MonsterStateMachine
         }
     }
 
-    private MonsterState CreateState(MonsterStateType stateType)
+    private MonsterState StateReturn(MonsterStateType stateType)
     {
         if (stateInstances.TryGetValue(stateType, out var state))
         {
