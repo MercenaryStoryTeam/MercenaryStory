@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Serialization;
 
 public class BossMonster : MonoBehaviourPun
 {
@@ -135,6 +134,15 @@ public class BossMonster : MonoBehaviourPun
             ChangeState(BossStateType.Idle);
         }
     }
+
+    public void OnDieAnimationEnd()
+    {
+        if (stateMachine.currentStateType == BossStateType.Die)
+        {
+            PhotonNetwork.Instantiate(portal.name, portal.transform.position, portal.transform.rotation); 
+        }
+    }
+    
     #endregion
 
     public void TakeDamage(int damage)
