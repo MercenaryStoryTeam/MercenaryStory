@@ -73,11 +73,6 @@ public class Minion : MonoBehaviourPun
 
     public void OnDieAnimationEnd()
     {
-        float startTime = Time.time;
-        if (Time.time - startTime > 3f)
-        {
-            PhotonNetwork.Destroy(gameObject);
-        }
     }
 
     public void TakeDamage(int damage)
