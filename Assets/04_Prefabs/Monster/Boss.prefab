@@ -1310,6 +1310,7 @@ MonoBehaviour:
   - {fileID: 0}
   hungerEffect: {fileID: 3674404426118497726}
   slashEffect: {fileID: 8820790971846461015}
+  portal: {fileID: 1282462039053895691, guid: 005cfc47f484080439647ff2ca56046f, type: 3}
   bossDropItems:
   - {fileID: 11400000, guid: f6e06da10d79f6648987c48d30a86a43, type: 2}
   - {fileID: 11400000, guid: bac05375a62d19343be6f9858006d49b, type: 2}

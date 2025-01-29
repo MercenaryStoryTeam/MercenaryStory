@@ -23,6 +23,18 @@ public class Portal : MonoBehaviour
 				UIManager.Instance.OpenDungeonPanel();
 			}
 		}
+		
+		else if (GameManager.Instance.CurrentScene == 7)
+		{
+			if (GameManager.Instance.portalIsActive) return;
+			// 파티장일 때
+			if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name ==
+			    other.gameObject.name)
+			{
+				GameManager.Instance.currentPlayerFsm.ReturnToTown();
+			}
+		}
+		
 		// 던전 포탈일 때
 		else
 		{
