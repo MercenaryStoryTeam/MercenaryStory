@@ -1,7 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 /// <summary>
 /// 플레이어의 입력을 관리하는 스크립트
@@ -14,6 +13,7 @@ public class PlayerInputManager : MonoBehaviourPun
 	public static System.Action OnRightClickInput;
 	public static System.Action OnShiftLeftClickInput;
 	public static System.Action OnShiftRightClickInput;
+	private Animator animator;
 
 	// PC에서 모바일 입력 테스트를 위해 모바일 입력 활성화
 	[Header("PC에서 모바일 테스트 실행 여부")] public bool forceMobile = false;
@@ -82,8 +82,14 @@ public class PlayerInputManager : MonoBehaviourPun
 	void Update()
 	{
 		if (!photonView.IsMine) return;
-		if (!UIManager.Instance.IsAnyPanelOpen() &&
-		    !UIManager.Instance.IsPopUpOpen())
+		if (UIManager.Instance.IsAnyPanelOpen() ||
+		    UIManager.Instance.IsPopUpOpen())
+		{
+			player.gameObject.GetComponent<PlayerFsm>().currentState = PlayerFsm.State.Idle; 
+			animator.SetFloat("Speed", 0);	
+			return;
+		}
+		else
 		{
 			if (useMobileInput)
 			{
@@ -120,8 +126,6 @@ public class PlayerInputManager : MonoBehaviourPun
 	// 컴퓨터 입력 
 	private void HandleDesktopInputs()
 	{
-		if (UIManager.Instance.IsAnyPanelOpen() ||
-		    UIManager.Instance.IsPopUpOpen()) return;
 		Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"),
 			Input.GetAxisRaw("Vertical"));
 
