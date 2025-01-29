@@ -85,11 +85,13 @@ public class PlayerInputManager : MonoBehaviourPun
 	void Update()
 	{
 		if (!photonView.IsMine) return;
+
+		HandleDesktopInvenInputs();
 		if (UIManager.Instance.IsAnyPanelOpen() ||
 		    UIManager.Instance.IsPopUpOpen())
 		{
-			player.gameObject.GetComponent<PlayerFsm>().currentState = PlayerFsm.State.Idle; 
-			animator.SetFloat("Speed", 0);	
+			player.gameObject.GetComponent<PlayerFsm>().currentState = PlayerFsm.State.Idle;
+			animator.SetFloat("Speed", 0);
 			return;
 		}
 		else
@@ -166,6 +168,14 @@ public class PlayerInputManager : MonoBehaviourPun
 			OnSkillInput?.Invoke();
 		}
 
+		if (Input.GetKeyDown(KeyCode.Z))
+		{
+			UIManager.Instance.OpenDungeonPanel();
+		}
+	}
+
+	private void HandleDesktopInvenInputs()
+	{
 		if (Input.GetKeyDown(KeyCode.I))
 		{
 			UIManager.Instance.inventory.TryOpenInventory();
@@ -173,7 +183,6 @@ public class PlayerInputManager : MonoBehaviourPun
 
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			// 기존 E 키 처리 코드 유지...
 			if (player.droppedItems.Count > 0)
 			{
 				for (int i = player.droppedItems.Count - 1; i >= 0; i--)
@@ -204,11 +213,6 @@ public class PlayerInputManager : MonoBehaviourPun
 			{
 				UIManager.Instance.shop.TryOpenShop();
 			}
-		}
-
-		if (Input.GetKeyDown(KeyCode.Z))
-		{
-			UIManager.Instance.OpenDungeonPanel();
 		}
 	}
 
