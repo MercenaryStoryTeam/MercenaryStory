@@ -90,8 +90,7 @@ public class PlayerFsm : MonoBehaviourPun
 
         if (PhotonNetwork.IsMasterClient && GameManager.Instance != null)
         {
-            if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name ==
-                gameObject.name)
+            if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Name == gameObject.name)
             {
                 GameManager.Instance.hostPlayerFsm = this;
             }
@@ -181,7 +180,6 @@ public class PlayerFsm : MonoBehaviourPun
             LogError("[PlayerFsm] FSMManager 스크립트를 찾을 수 없습니다.");
         }
 
-        // 플랫폼 감지
 #if UNITY_ANDROID || UNITY_IOS
         isMobile = true;
 #else
@@ -194,13 +192,11 @@ public class PlayerFsm : MonoBehaviourPun
     {
         if (cameraTransform == null)
         {
-            CinemachineVirtualCamera vCam =
-                FindObjectOfType<CinemachineVirtualCamera>();
+            CinemachineVirtualCamera vCam = FindObjectOfType<CinemachineVirtualCamera>();
             if (vCam)
             {
                 cameraTransform = vCam.transform;
-                VirtualCameraController vCamController =
-                    vCam.GetComponent<VirtualCameraController>();
+                VirtualCameraController vCamController = vCam.GetComponent<VirtualCameraController>();
                 if (vCamController != null)
                 {
                     vCamController.enabled = true;
@@ -241,7 +237,6 @@ public class PlayerFsm : MonoBehaviourPun
         if (fsmManager.currentState != FSMManager.PlayerState.Idle &&
             fsmManager.currentState != FSMManager.PlayerState.Moving)
         {
-            // 현재 상태에서 이동 입력을 무시
             return;
         }
 
@@ -289,14 +284,12 @@ public class PlayerFsm : MonoBehaviourPun
         // 공격 입력은 Idle 상태에서만 처리
         if (fsmManager.currentState != FSMManager.PlayerState.Idle)
         {
-            // 현재 상태에서 공격 입력을 무시
             return;
         }
 
         // 콤보 타이밍 체크
         if (Time.time - lastAttackTime > comboResetTime)
         {
-            // 콤보 타이머 초과 시 콤보 초기화
             currentComboState = ComboState.None;
         }
 
@@ -317,7 +310,6 @@ public class PlayerFsm : MonoBehaviourPun
                 TransitionToState(State.Attack2);
                 break;
             case ComboState.Attack2:
-                // 최대 콤보 단계 도달 시 추가 공격 불가 또는 반복
                 currentComboState = ComboState.None;
                 break;
         }
@@ -366,10 +358,8 @@ public class PlayerFsm : MonoBehaviourPun
         {
             case State.Idle:
                 Vector3 idleVelocity = rb.velocity;
-                idleVelocity.x =
-                    Mathf.Lerp(idleVelocity.x, 0f, Time.fixedDeltaTime * 10f);
-                idleVelocity.z =
-                    Mathf.Lerp(idleVelocity.z, 0f, Time.fixedDeltaTime * 10f);
+                idleVelocity.x = Mathf.Lerp(idleVelocity.x, 0f, Time.fixedDeltaTime * 10f);
+                idleVelocity.z = Mathf.Lerp(idleVelocity.z, 0f, Time.fixedDeltaTime * 10f);
                 rb.velocity = idleVelocity;
                 break;
             case State.Moving:
@@ -395,8 +385,7 @@ public class PlayerFsm : MonoBehaviourPun
         if (movementInput.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movementInput);
-            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation,
-                Time.fixedDeltaTime * 10f);
+            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
         }
     }
 
@@ -461,7 +450,6 @@ public class PlayerFsm : MonoBehaviourPun
     private void EnterIdleState()
     {
         animator.SetFloat("Speed", 0f);
-        // FSMManager 상태 업데이트
         if (fsmManager != null)
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
@@ -472,7 +460,6 @@ public class PlayerFsm : MonoBehaviourPun
     {
         float speed = movementInput.magnitude * currentSpeed;
         animator.SetFloat("Speed", speed);
-        // FSMManager 상태 업데이트
         if (fsmManager != null)
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Moving);
@@ -483,7 +470,6 @@ public class PlayerFsm : MonoBehaviourPun
     {
         animator.SetTrigger("Attack1");
         isAttackLocked = true; // 공격 중 입력 잠금
-        // FSMManager 상태 업데이트
         if (fsmManager != null)
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Attack1);
@@ -494,7 +480,6 @@ public class PlayerFsm : MonoBehaviourPun
     {
         animator.SetTrigger("Attack2");
         isAttackLocked = true; // 공격 중 입력 잠금
-        // FSMManager 상태 업데이트
         if (fsmManager != null)
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Attack2);
@@ -504,7 +489,6 @@ public class PlayerFsm : MonoBehaviourPun
     private void EnterHitState()
     {
         animator.SetTrigger("Hit");
-        // FSMManager 상태 업데이트
         if (fsmManager != null)
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Hit);
@@ -516,7 +500,6 @@ public class PlayerFsm : MonoBehaviourPun
         isDead = true;
         animator.SetTrigger("Die");
         Invoke("DisablePlayer", dieAnimationDuration);
-        // FSMManager 상태 업데이트
         if (fsmManager != null)
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Die);
@@ -531,9 +514,7 @@ public class PlayerFsm : MonoBehaviourPun
     // 공격을 받았을 때 호출
     public void TakeDamage()
     {
-        // 이미 die 상태거나 현재 hit 상태라면, 메서드를 종료
         if (isDead || currentState == State.Hit) return;
-        // hit 상태로 전환
         TransitionToState(State.Hit);
     }
 
@@ -552,7 +533,6 @@ public class PlayerFsm : MonoBehaviourPun
         {
             case "Attack1":
             case "Attack2":
-                // 공격 애니메이션 종료 시 Idle 상태로 전환
                 if (fsmManager != null)
                 {
                     fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
@@ -560,7 +540,6 @@ public class PlayerFsm : MonoBehaviourPun
                 isAttackLocked = false; // 공격 종료 시 입력 잠금 해제
                 break;
             case "Hit":
-                // Hit 애니메이션 종료 시 Idle 상태로 전환
                 if (fsmManager != null)
                 {
                     fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
@@ -570,14 +549,12 @@ public class PlayerFsm : MonoBehaviourPun
             case "Parry":
             case "Skill1":
             case "Skill2":
-                // 스킬 애니메이션 종료 시 Idle 상태로 전환
                 if (fsmManager != null)
                 {
                     fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
                 }
                 break;
             case "Die":
-                // Die 애니메이션 종료 시 별도의 처리 (상태 전환 없음)
                 Log($"[PlayerFsm] {animationName} 애니메이션 종료 후 별도의 처리가 필요합니다.");
                 break;
             default:
@@ -608,7 +585,6 @@ public class PlayerFsm : MonoBehaviourPun
         animator.SetFloat("Speed", 0f);
         rb.velocity = Vector3.zero;
 
-        // 현재 상태를 Idle로 전환
         TransitionToState(State.Idle);
     }
 
@@ -636,17 +612,14 @@ public class PlayerFsm : MonoBehaviourPun
     // 씬 이동을 위함 -지원
     public void MoveMembersToRoom(string sceneName)
     {
-        // 마스터가 아니라 파티장일 때!
         if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Id ==
             FirebaseManager.Instance.CurrentUserData.user_Id)
         {
-            // 파티원에게만!
             foreach (UserData member in FirebaseManager.Instance.CurrentPartyData.party_Members)
             {
-                // 닉네임이 네임인 플레이어 찾아서 rpc 호출
                 foreach (Photon.Realtime.Player photonPlayer in PhotonNetwork.PlayerList)
                 {
-                    if (photonPlayer.NickName == member.user_Name) // Firebase user_Id와 Photon NickName 매칭
+                    if (photonPlayer.NickName == member.user_Name)
                     {
                         photonView.RPC("RPC_MoveToScene", photonPlayer, sceneName);
                         break;
@@ -659,15 +632,12 @@ public class PlayerFsm : MonoBehaviourPun
     [PunRPC]
     private void RPC_MoveToScene(string sceneName)
     {
-        // 파티장일 때
         if (FirebaseManager.Instance.CurrentPartyData.party_Owner.user_Id ==
             FirebaseManager.Instance.CurrentUserData.user_Id)
         {
-            // Firebase에 Room 정보 업데이트
             FirebaseManager.Instance.UploadPartyDataToLoadScene(sceneName);
         }
 
-        // 파티 정보 업데이트 (파티장과 파티원 둘 다 서버에서 받아오기)
         FirebaseManager.Instance.UpdateCurrentPartyDataAndLoadScene(sceneName);
     }
 
@@ -701,8 +671,7 @@ public class PlayerFsm : MonoBehaviourPun
     private void RPC_ReturnToTown()
     {
         player.currentHp = player.maxHp;
-        FirebaseManager.Instance.CurrentUserData.UpdateUserData(
-            hp: player.currentHp);
+        FirebaseManager.Instance.CurrentUserData.UpdateUserData(hp: player.currentHp);
         FirebaseManager.Instance.UploadCurrentUserData();
         GameManager.Instance.ChangeScene(1);
         ServerManager.LeaveAndLoadScene("LJW_TownScene");
