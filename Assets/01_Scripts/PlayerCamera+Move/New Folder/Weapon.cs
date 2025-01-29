@@ -13,7 +13,7 @@ public class Weapon : MonoBehaviour
 		// 방법1: 부모 객체에 붙어있는 Player 스크립트 참조
 		player = GetComponentInParent<Player>();
 		manager = GetComponentInParent<FSMManager>();
-		
+
 		// 방법1 실패
 		if (player == null)
 		{
@@ -38,7 +38,8 @@ public class Weapon : MonoBehaviour
 
 	private void SetWeaponDamage()
 	{
-		int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
+		int currentWeaponId =
+			FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
 		ItemBase currentWeapon =
 			InventoryManger.Instance.allItems.Find(x => x.id == currentWeaponId);
 		if (currentWeapon is WeaponItem weapon)
@@ -50,30 +51,25 @@ public class Weapon : MonoBehaviour
 	// 콜라이더 충돌 시 호출
 	private void OnTriggerEnter(Collider collider)
 	{
-		if (manager.currentState == FSMManager.PlayerState.Attack1 ||
-		    manager.currentState == FSMManager.PlayerState.Attack2 ||
-		    manager.currentState == FSMManager.PlayerState.Skill1 ||
-		    manager.currentState == FSMManager.PlayerState.Skill2)
+		if (collider.CompareTag("Monster"))
 		{
-			if (collider.CompareTag("Monster"))
+			if (collider.gameObject.TryGetComponent<Monster>(out Monster monster))
 			{
-				if (collider.gameObject.TryGetComponent<Monster>(out Monster monster))
-				{
-					monster.TakeDamage(damage);
-				}
-
-				else if (collider.gameObject.TryGetComponent<BossMonster>(out BossMonster bossMonster))
-				{
-					bossMonster.TakeDamage(damage);
-				}
-
-				player.SuckBlood();
+				monster.TakeDamage(damage);
 			}
-			else if (collider.CompareTag("Minion"))
+
+			else if (collider.gameObject.TryGetComponent<BossMonster>(
+				         out BossMonster bossMonster))
 			{
-				collider.gameObject.GetComponent<Minion>().TakeDamage(damage);
-				player.SuckBlood();
+				bossMonster.TakeDamage(damage);
 			}
+
+			player.SuckBlood();
+		}
+		else if (collider.CompareTag("Minion"))
+		{
+			collider.gameObject.GetComponent<Minion>().TakeDamage(damage);
+			player.SuckBlood();
 		}
 	}
 }
