@@ -68,6 +68,9 @@ public class PlayerFsm : MonoBehaviourPun
 
     private bool isMobile = false;
 
+    // 현재 이동 방향 저장
+    private Vector3 currentMovementDirection = Vector3.zero;
+
     private void Awake()
     {
         InitializeComponents();
@@ -248,6 +251,8 @@ public class PlayerFsm : MonoBehaviourPun
         movementInput = CalculateMovementDirection(inputX, inputZ);
 
         currentSpeed = player != null ? player.moveSpeed : 0f;
+
+        currentMovementDirection = movementInput.normalized;
 
         if (movementInput.sqrMagnitude > moveThreshold)
         {
@@ -717,5 +722,11 @@ public class PlayerFsm : MonoBehaviourPun
     public void LogError(string message)
     {
         Debug.LogError(message);
+    }
+
+    // 플레이어의 현재 이동 방향을 반환하는 메서드
+    public Vector3 GetCurrentMovementDirection()
+    {
+        return currentMovementDirection;
     }
 }

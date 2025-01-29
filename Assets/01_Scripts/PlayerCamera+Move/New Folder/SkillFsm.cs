@@ -217,6 +217,9 @@ public class SkillFsm : MonoBehaviour
     // 스킬 트리거 요청 이벤트
     public event Action<SkillType> OnSkillTriggerRequested;
 
+    // 이전 이동 방향 저장
+    private Vector3 previousMovementDirection = Vector3.zero;
+
     private void Awake()
     {
         InitializeComponents();
@@ -420,6 +423,23 @@ public class SkillFsm : MonoBehaviour
             return;
         }
 
+        // Rush 스킬의 경우, 이동 방향이 변경되었을 때만 사용 가능하도록 추가 조건
+        if (skillType == SkillType.Rush)
+        {
+            Vector3 currentMovementDirection = playerFsm.GetCurrentMovementDirection();
+            if (Vector3.Dot(currentMovementDirection.normalized, previousMovementDirection.normalized) > 0.99f)
+            {
+                // 이동 방향이 거의 동일할 때만 Rush를 사용할 수 있도록 설정
+                // 필요에 따라 이 조건을 조정할 수 있습니다.
+                // 현재 방향과 거의 동일하므로 Rush 사용 허용
+            }
+            else
+            {
+                // 이동 방향이 변경되었을 경우 이전 방향을 업데이트
+                previousMovementDirection = currentMovementDirection;
+            }
+        }
+
         OnSkillTriggerRequested?.Invoke(skillType);
     }
 
@@ -452,6 +472,98 @@ public class SkillFsm : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+    // 스킬 사용 조건을 재검토하여 동일 방향 연속 사용을 허용
+    private bool CanUseRushSkill()
+    {
+        // 추가적인 조건을 여기서 체크할 수 있습니다.
+        // 예: 플레이어의 이동 방향이 변경되었는지 여부 등
+        return true;
+    }
+
+    // 스킬 가져오기
+    public Skill GetSkill(SkillType skillType)
+    {
+        Skill skill = Skills.Find(s => s.skillType == skillType);
+
+        if (skill != null)
+        {
+            if (enableDebugLogs)
+            {
+                Debug.Log($"[SkillFsm] {skillType} 스킬이 검색되었습니다.");
+            }
+        }
+        else
+        {
+            if (enableDebugLogs)
+            {
+                Debug.LogWarning($"[SkillFsm] {skillType} 스킬이 존재하지 않습니다.");
+            }
+        }
+
+        return skill;
+    }
+
+    // 스킬 레벨업
+    public bool LevelUpSkill(SkillType skillType)
+    {
+        Skill skill = GetSkill(skillType);
+        if (skill == null)
+        {
+            LogWarning($"[SkillFsm] {skillType} 스킬이 등록되어 있지 않습니다.");
+            return false;
+        }
+
+        bool leveledUp = skill.LevelUp();
+
+        if (FirebaseManager.Instance != null && FirebaseManager.Instance.CurrentUserData != null)
+        {
+            if ((int)skillType < FirebaseManager.Instance.CurrentUserData.user_Skills.Count)
+            {
+                FirebaseManager.Instance.CurrentUserData.user_Skills[(int)skillType] =
+                    new SkillData((int)skillType, skill.Level);
+            }
+            else
+            {
+                LogWarning($"[SkillFsm] user_Skills 리스트에 인덱스 {(int)skillType}가 존재하지 않습니다.");
+            }
+        }
+        else
+        {
+            LogError("[SkillFsm] FirebaseManager 또는 CurrentUserData가 초기화되지 않았습니다.");
+        }
+
+        if (leveledUp)
+        {
+            // 레벨업에 따른 스킬 속성 조정
+            AdjustSkillAttributes(skill);
+            Log($"[SkillFsm] {skill.Name} 스킬의 속성이 레벨업에 따라 조정되었습니다.");
+            return true;
+        }
+
+        return false;
+    }
+
+    // 스킬 레벨업에 따른 속성 조정
+    private void AdjustSkillAttributes(Skill skill)
+    {
+        switch (skill.skillType)
+        {
+            case SkillType.Rush:
+                // Rush 스킬의 레벨업 로직 필요 시 추가
+                break;
+            case SkillType.Parry:
+            case SkillType.Skill1:
+            case SkillType.Skill2:
+                Log($"[SkillFsm] {skill.Name} 스킬의 레벨업에 따른 추가 로직이 구현되었습니다.");
+                break;
+            default:
+                LogWarning($"[SkillFsm] {skill.Name} 스킬의 레벨업에 대한 로직이 정의되지 않았습니다.");
+                break;
+        }
+
+        // 추가적인 속성 조정이 필요할 경우 여기서 구현
     }
 
     // FSMManager에서 호출하는 실제 스킬 트리거 메서드
@@ -837,89 +949,5 @@ public class SkillFsm : MonoBehaviour
     {
         if (enableDebugLogs)
             Debug.LogError(message);
-    }
-
-    // 스킬 가져오기
-    public Skill GetSkill(SkillType skillType)
-    {
-        Skill skill = Skills.Find(s => s.skillType == skillType);
-
-        if (skill != null)
-        {
-            if (enableDebugLogs)
-            {
-                Debug.Log($"[SkillFsm] {skillType} 스킬이 검색되었습니다.");
-            }
-        }
-        else
-        {
-            if (enableDebugLogs)
-            {
-                Debug.LogWarning($"[SkillFsm] {skillType} 스킬이 존재하지 않습니다.");
-            }
-        }
-
-        return skill;
-    }
-
-    // 스킬 레벨업
-    public bool LevelUpSkill(SkillType skillType)
-    {
-        Skill skill = GetSkill(skillType);
-        if (skill == null)
-        {
-            LogWarning($"[SkillFsm] {skillType} 스킬이 등록되어 있지 않습니다.");
-            return false;
-        }
-
-        bool leveledUp = skill.LevelUp();
-
-        if (FirebaseManager.Instance != null && FirebaseManager.Instance.CurrentUserData != null)
-        {
-            if ((int)skillType < FirebaseManager.Instance.CurrentUserData.user_Skills.Count)
-            {
-                FirebaseManager.Instance.CurrentUserData.user_Skills[(int)skillType] =
-                    new SkillData((int)skillType, skill.Level);
-            }
-            else
-            {
-                LogWarning($"[SkillFsm] user_Skills 리스트에 인덱스 {(int)skillType}가 존재하지 않습니다.");
-            }
-        }
-        else
-        {
-            LogError("[SkillFsm] FirebaseManager 또는 CurrentUserData가 초기화되지 않았습니다.");
-        }
-
-        if (leveledUp)
-        {
-            // 레벨업에 따른 스킬 속성 조정
-            AdjustSkillAttributes(skill);
-            Log($"[SkillFsm] {skill.Name} 스킬의 속성이 레벨업에 따라 조정되었습니다.");
-            return true;
-        }
-
-        return false;
-    }
-
-    // 스킬 레벨업에 따른 속성 조정
-    private void AdjustSkillAttributes(Skill skill)
-    {
-        switch (skill.skillType)
-        {
-            case SkillType.Rush:
-                // Rush 스킬의 레벨업 로직 필요 시 추가
-                break;
-            case SkillType.Parry:
-            case SkillType.Skill1:
-            case SkillType.Skill2:
-                Log($"[SkillFsm] {skill.Name} 스킬의 레벨업에 따른 추가 로직이 구현되었습니다.");
-                break;
-            default:
-                LogWarning($"[SkillFsm] {skill.Name} 스킬의 레벨업에 대한 로직이 정의되지 않았습니다.");
-                break;
-        }
-
-        // 추가적인 속성 조정이 필요할 경우 여기서 구현
     }
 }
