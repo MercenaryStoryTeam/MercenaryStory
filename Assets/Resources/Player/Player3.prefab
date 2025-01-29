@@ -43118,7 +43118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 550d5e76a8df1534e8b79fab73b4f3f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMobile: 0
+  forceMobile: 1
 --- !u!114 &6204660149819172763
 MonoBehaviour:
   m_ObjectHideFlags: 0

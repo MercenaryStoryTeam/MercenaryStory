@@ -11,7 +11,7 @@ public class VirtualJoystick : MonoBehaviour, IDragHandler, IPointerUpHandler, I
     public RectTransform joystickHandle;
 
     [Header("조이스틱 핸들의 이동 범위")]
-    public float joystickRange = 35f;
+    public float joystickRange = 90f;
 
     [Header("Dead Zone")]
     public float deadZone = 0.2f;
