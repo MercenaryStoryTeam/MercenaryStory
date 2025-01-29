@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Firebase;
@@ -48,19 +47,9 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	// 미구현 상태. 나중에 할 수도 있고 안 할 수도 있고...
-	private IEnumerator CheckForEmptyPartiesCoroutine()
-	{
-		while (true)
-		{
-			yield return new WaitForSeconds(60f); // 60초마다 체크
-			_ = RemoveEmptyPartiesFromServer(); // 빈 파티 삭제
-		}
-	}
-
 	#region User Management
 
-	public async void SignUp(string email, string password, string user_Name,
+	public async Task SignUp(string email, string password, string user_Name,
 		Action<FirebaseUser, UserData> callback = null)
 	{
 		try
@@ -100,7 +89,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void CheckEmail(string email)
+	public async Task CheckEmail(string email)
 	{
 		try
 		{
@@ -137,7 +126,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void SignIn(string email, string password)
+	public async Task SignIn(string email, string password)
 	{
 		try
 		{
@@ -154,12 +143,13 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			}
 
 			CurrentUserData = userData;
-			CurrentUserData.UpdateUserData(currentParty: "", isOnline: true);
+			CurrentUserData.UpdateUserData(currentParty: "", isOnline: true, hp: 100);
 			// 비동기 작업들을 Task 배열로 생성
 			var tasks = new[]
 			{
 				UploadCurrentUserData("user_CurrentParty", ""),
-				UploadCurrentUserData("user_IsOnline", true)
+				UploadCurrentUserData("user_IsOnline", true),
+				UploadCurrentUserData("user_HP", 100)
 			};
 
 			// 모든 작업 완료 대기
@@ -188,7 +178,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UploadCurrnetInvenData(string childName,
+	public async Task UploadCurrnetInvenData(string childName,
 		List<SlotData> value)
 	{
 		try
@@ -281,7 +271,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 	#region Party Management
 
-	public async void CreateParty(string party_Name, int party_Size)
+	public async Task CreateParty(string party_Name, int party_Size)
 	{
 		try
 		{
@@ -319,7 +309,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UpdatePartyAndList()
+	public async Task UpdatePartyAndList()
 	{
 		try
 		{
@@ -365,7 +355,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void JoinParty(string name)
+	public async Task JoinParty(string name)
 	{
 		try
 		{
@@ -497,13 +487,13 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public void UploadPartyDataToLoadScene(string serverName)
+	public async Task UploadPartyDataToLoadScene(string serverName)
 	{
 		try
 		{
 			CurrentPartyData.UpdatePartyData(serverId: Guid.NewGuid().ToString());
 			CurrentPartyData.UpdatePartyData(serverName: serverName);
-			UploadCurrentPartyData();
+			await UploadCurrentPartyData();
 		}
 		catch (FirebaseException e)
 		{
@@ -533,7 +523,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 		}
 	}
 
-	public async void UpdateCurrentPartyDataAndLoadScene(string sceneName)
+	public async Task UpdateCurrentPartyDataAndLoadScene(string sceneName)
 	{
 		try
 		{
@@ -589,57 +579,6 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 				string updatedPartyDataJson = JsonConvert.SerializeObject(targetParty);
 				await DB.GetReference($"parties/{CurrentPartyData.party_Id}")
 					.SetRawJsonValueAsync(updatedPartyDataJson);
-			}
-		}
-		catch (FirebaseException e)
-		{
-			ExceptionManager.HandleFirebaseException(e);
-		}
-		catch (Exception e)
-		{
-			ExceptionManager.HandleException(e);
-		}
-	}
-
-	// 미구현상태.......
-	private async Task RemoveEmptyPartiesFromServer()
-	{
-		try
-		{
-			await UpdateUserList();
-			await UpdatePartyList();
-			List<string> partiesToRemove = new List<string>(); // 삭제할 파티 ID 목록
-
-			foreach (PartyData partyData in partyList)
-			{
-				bool allMembersOffline = true; // 모든 멤버가 오프라인인지 확인하는 플래그
-
-				foreach (UserData member in partyData.party_Members)
-				{
-					foreach (UserData userData in userList)
-					{
-						if (userData.user_Id == member.user_Id)
-						{
-							if (userData.user_IsOnline) // 한 명이라도 온라인이면 false
-							{
-								allMembersOffline = false;
-								break; // 더 이상 확인할 필요 없음
-							}
-						}
-					}
-				}
-
-				if (allMembersOffline)
-				{
-					partiesToRemove.Add(partyData.party_Id); // 오프라인인 파티 ID 추가
-				}
-			}
-
-			// 삭제할 파티 데이터 삭제
-			foreach (string partyId in partiesToRemove)
-			{
-				await DB.GetReference($"parties/{partyId}").RemoveValueAsync();
-				Debug.Log($"Removed empty party: {partyId}");
 			}
 		}
 		catch (FirebaseException e)
