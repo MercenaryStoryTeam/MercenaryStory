@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MinionDieState : MinionState
 {
     public override void EnterState(Minion minion)
     {
+        minion.GetComponent<Collider>().enabled = false;
         minion.agent.ResetPath();
         minion.animator.SetTrigger("Die");
         SoundManager.Instance.PlaySFX(minion.minionData.dieSound, minion.gameObject);
