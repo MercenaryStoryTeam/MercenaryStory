@@ -1,6 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 /// <summary>
 /// 플레이어의 입력을 관리하는 스크립트
@@ -27,6 +28,8 @@ public class PlayerInputManager : MonoBehaviourPun
 	// SkillUIManager 참조 추가
 	private SkillUIManager skillUIManager;
 
+	private Button attackButton;
+
 	private void Awake()
 	{
 		// Player 스크립트 자동 참조 -> PlayerInputManager 스크립트가 속한 부모 객체에서 찾음
@@ -48,19 +51,25 @@ public class PlayerInputManager : MonoBehaviourPun
 					Debug.LogError("[PlayerInputManager] 씬에 VirtualJoystick이 없습니다.");
 				}
 			}
+
+			GameObject canvas = GameObject.Find("MainCanvas");
+			attackButton = canvas.transform.FindDeepChild("BasicAttackButton")
+				.GetComponent<Button>();
+
+			attackButton.onClick.AddListener(AttackButtonClicked);
 		}
 
-        if (useMobileInput)
-        {
-            if (virtualJoystick == null)
-            {
-                virtualJoystick = FindObjectOfType<VirtualJoystick>();
-                if (virtualJoystick == null)
-                {
-                    Debug.LogError("씬에 VirtualJoystick이 없습니다. 인스펙터에서 할당하세요.");
-                }
-            }
-        }
+		if (useMobileInput)
+		{
+			if (virtualJoystick == null)
+			{
+				virtualJoystick = FindObjectOfType<VirtualJoystick>();
+				if (virtualJoystick == null)
+				{
+					Debug.LogError("씬에 VirtualJoystick이 없습니다. 인스펙터에서 할당하세요.");
+				}
+			}
+		}
 
 		// SkillUIManager 자동 참조
 		skillUIManager = FindObjectOfType<SkillUIManager>();
@@ -164,39 +173,21 @@ public class PlayerInputManager : MonoBehaviourPun
 	// 모바일 입력 
 	private void HandleMobileInputs()
 	{
-        if (!photonView.IsMine) return;
+		if (!photonView.IsMine) return;
 
-        // 조이스틱을 통한 이동 처리
-        if (virtualJoystick != null)
+		// 조이스틱을 통한 이동 처리
+		if (virtualJoystick != null)
 		{
 			Vector2 mobileMovement = virtualJoystick.InputVector;
 
 			// 항상 호출하여 Idle 상태 전환 가능하게 함
 			OnMoveInput?.Invoke(mobileMovement);
 		}
+	}
 
-		// 터치 입력을 통한 공격 처리
-		if (Input.touchCount > 0)
-		{
-			foreach (Touch touch in Input.touches)
-			{
-				// 터치가 시작될 때
-				if (touch.phase == TouchPhase.Began)
-				{
-					// 터치가 UI 위에 있는지 확인
-					if (!IsPointerOverUIObject(touch))
-					{
-						// 스킬 패널이 활성화되지 않은 경우 공격
-						OnAttackInput?.Invoke();
-					}
-				}
-
-				// 필요시 다른 터치 단계를 처리할 수 있습니다.
-			}
-		}
-
-		// 스킬 및 기타 액션은 UI 버튼을 통해 처리
-		// UI 버튼이 적절히 액션을 호출하도록 설정되어야 합니다.
+	private void AttackButtonClicked()
+	{
+		OnAttackInput?.Invoke();
 	}
 
 	/// <summary>
