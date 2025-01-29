@@ -25,7 +25,6 @@ public class Minion : MonoBehaviourPun
     public MinionStateType currentState;
     public LayerMask playerLayer;
     public DetectCollider detectCollider;
-    private PhotonObjectPool pool;
     
     public MonsterData minionData;
     
@@ -59,6 +58,7 @@ public class Minion : MonoBehaviourPun
     {
         if (currentState == MinionStateType.Attack)
         {
+            target.gameObject.GetComponent<Player>().TakeDamage(damage);
             ChangeState(MinionStateType.Idle);
         }
     }
@@ -71,9 +71,13 @@ public class Minion : MonoBehaviourPun
         }
     }
 
-    public void SetPool(PhotonObjectPool pool)
+    public void OnDieAnimationEnd()
     {
-        this.pool = pool;
+        float startTime = Time.time;
+        if (Time.time - startTime > 3f)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 
     public void TakeDamage(int damage)
@@ -85,15 +89,6 @@ public class Minion : MonoBehaviourPun
         if (hp <= 0)
         {
             stateMachine.ChangeState(MinionStateType.Die);
-        }
-    }
-
-    public void OnDieAnimationEnd()
-    {
-        if (currentState == MinionStateType.Die && pool != null)
-        {
-            pool.ReturnObject(gameObject);
-            hp = maxHp;
         }
     }
 

@@ -46,9 +46,6 @@ public class BossMonster : MonoBehaviourPun
     [HideInInspector] public Vector3 CenterPoint;
     [HideInInspector] public Animator Animator;
 
-    private ObjectPoolManager poolManager;
-    private PhotonObjectPool minionPool;
-
     private Vector3 originPos;
 
     #endregion
@@ -70,15 +67,6 @@ public class BossMonster : MonoBehaviourPun
         stateMachine = new BossStateMachine(this);
         stateMachine.ChangeState(BossStateType.Idle);
         
-        // ObjectPoolManager 찾기
-        poolManager = FindObjectOfType<ObjectPoolManager>();
-        
-        // 미니언 풀 미리 초기화
-        if (PhotonNetwork.IsMasterClient && minionPrefab != null)
-        {
-            minionPool = poolManager.GetPool(minionPrefab, 10);
-        }
-
         originPos.y = transform.position.y;
     }
     
@@ -161,28 +149,9 @@ public class BossMonster : MonoBehaviourPun
 
     public void SpawnMinion()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
         foreach (Transform nest in nestList)
         {
-            if (minionPrefab == null)
-            {
-                Debug.LogError("Minion Prefab이 설정되지 않았습니다!");
-                return;
-            }
-
-            if (minionPool != null)
-            {
-                GameObject newMinionObj = minionPool.GetObject(nest.position, Quaternion.identity);
-                if (newMinionObj != null)
-                {
-                    Minion newMinion = newMinionObj.GetComponent<Minion>();
-                    if (newMinion != null)
-                    {
-                        minionList.Add(newMinion);
-                    }
-                }
-            }
+            PhotonNetwork.Instantiate(minionPrefab.name, nest.position, Quaternion.identity);
         }
     }
 
