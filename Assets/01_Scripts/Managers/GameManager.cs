@@ -11,7 +11,7 @@ public class GameManager : SingletonManager<GameManager>
 	public bool portalIsActive;
 
 	public Vector3 spawnPoint;
-	public int CurrentScene { get; private set; }
+	public int CurrentScene;
 
 
 	private void Start()
@@ -24,7 +24,7 @@ public class GameManager : SingletonManager<GameManager>
 	{
 		if (CurrentScene != 0)
 		{
-			UIManager.Instance.MobileSetting();
+			UIManager.Instance.InGamePanel.gameObject.SetActive(true);
 		}
 
 		if (dieMonsterCount == sceneDatas[CurrentScene].monsterCount)

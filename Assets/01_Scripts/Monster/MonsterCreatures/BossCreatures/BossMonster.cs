@@ -74,15 +74,11 @@ public class BossMonster : MonoBehaviourPun
     protected virtual void Update()
     {
         currentState = stateMachine.currentStateType;
-        if (playerList.Count == 0 && currentState != BossStateType.Idle)
+        if (playerList.Count == 0 && currentState != BossStateType.Idle && currentState !=BossStateType.Die)
         {
             ChangeState(BossStateType.Idle);
         }
-
-        if (((float)hp / (float)maxHp) <= 0.3f && hungerPossible)
-        {
-            ChangeState(BossStateType.Hunger);
-        }
+        
         stateMachine.CurrentState?.ExecuteState(this);
     }
 
@@ -141,7 +137,7 @@ public class BossMonster : MonoBehaviourPun
     {
         if (stateMachine.currentStateType == BossStateType.Die)
         {
-            PhotonNetwork.Instantiate(portal.name, portal.transform.position, portal.transform.rotation); 
+            GameObject nextPortal = PhotonNetwork.Instantiate($"Portal/{portal.name}", portal.transform.position, portal.transform.rotation);
         }
     }
     
@@ -149,11 +145,16 @@ public class BossMonster : MonoBehaviourPun
 
     public void TakeDamage(int damage)
     {
+        if (stateMachine.currentStateType == BossStateType.Die) return;
         hp -= damage;
         if (hp <= 0)
         {
             ChangeState(BossStateType.Die);
             DroppedLightLine(TryDropItem(bossDropItems));
+        }
+        else if (((float)hp / (float)maxHp) <= 0.3f && hungerPossible)
+        {
+            ChangeState(BossStateType.Hunger);
         }
     }
 
