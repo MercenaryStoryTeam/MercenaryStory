@@ -133,7 +133,11 @@ public class Monster : MonoBehaviourPun
 
     public void OnDieAnimationEnd()
     {
-        Destroy(gameObject, 3f);
+        float startTime = Time.time;
+        if (Time.time - startTime > 3f)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 
     public void TakeDamage(int damage)
