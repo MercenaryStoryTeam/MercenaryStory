@@ -6,7 +6,7 @@ public class Portal : MonoBehaviour
 	private void OnTriggerEnter(Collider other)
 	{
 		// 마을 포탈일 때
-		if (GameManager.Instance.CurrentScene == 0)
+		if (GameManager.Instance.CurrentScene == 1)
 		{
 			// 파티가 없을 때
 			if (FirebaseManager.Instance.CurrentPartyData == null)
