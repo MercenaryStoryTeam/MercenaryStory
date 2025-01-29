@@ -39,7 +39,7 @@ public class PlayerFsm : MonoBehaviourPun
 		Hit
 	}
 
-	private State currentState = State.Idle;
+	public State currentState = State.Idle;
 	private bool isDead = false;
 
 	// 콤보 시스템
