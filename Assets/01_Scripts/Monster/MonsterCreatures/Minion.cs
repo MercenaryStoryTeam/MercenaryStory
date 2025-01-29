@@ -82,13 +82,13 @@ public class Minion : MonoBehaviourPun
 
     public void TakeDamage(int damage)
     {
+        stateMachine.ChangeState(MinionStateType.GetHit);
         print(damage.ToString());
         hp -= damage;
-        stateMachine.ChangeState(MinionStateType.GetHit);
-        detectCollider.minions.Remove(this);
         if (hp <= 0)
         {
             stateMachine.ChangeState(MinionStateType.Die);
+            detectCollider.minions.Remove(this);
         }
     }
 

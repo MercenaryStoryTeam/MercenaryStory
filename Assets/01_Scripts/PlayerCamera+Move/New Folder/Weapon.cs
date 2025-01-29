@@ -66,6 +66,7 @@ public class Weapon : MonoBehaviour
 		}
 		else if (collider.CompareTag("Minion"))
 		{
+			print("Minion Damage");
 			collider.gameObject.GetComponent<Minion>().TakeDamage(damage);
 			player.SuckBlood();
 		}
