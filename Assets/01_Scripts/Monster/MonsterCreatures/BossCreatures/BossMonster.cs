@@ -38,6 +38,8 @@ public class BossMonster : MonoBehaviourPun
     private BossStateMachine stateMachine;
     private int playerLayer;
     private int minionLayer;
+
+    public GameObject portal;
     
     [Header("드랍 아이템")]
     public List<ItemBase> bossDropItems;
