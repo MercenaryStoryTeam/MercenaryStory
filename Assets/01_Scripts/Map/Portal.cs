@@ -5,6 +5,7 @@ public class Portal : MonoBehaviour
 {
 	private void OnTriggerEnter(Collider other)
 	{
+		if(!GameManager.Instance.StageClear) return;
 		// 마을 포탈일 때
 		if (GameManager.Instance.CurrentScene == 1)
 		{
