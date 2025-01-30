@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7202429d30ec1e42a77eb2f30139e3e, type: 3}
   m_Name: 1-4StageScene
   m_EditorClassIdentifier: 
-  stageName: MAP 1-4
   bgmName: sound_dungeon_1-4BGM
-  monsterCount: 0
+  monsterCount: 27
   nextSceneName: MAP 1-5
