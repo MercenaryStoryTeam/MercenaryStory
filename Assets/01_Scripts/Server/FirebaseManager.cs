@@ -150,7 +150,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			{
 				UploadCurrentUserData("user_CurrentParty", ""),
 				UploadCurrentUserData("user_IsOnline", true),
-				UploadCurrentUserData("user_Hp", 100)
+				UploadCurrentUserData("user_HP", 100)
 			};
 
 			// 모든 작업 완료 대기
