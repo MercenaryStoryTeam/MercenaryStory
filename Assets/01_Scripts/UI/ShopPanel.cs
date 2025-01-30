@@ -137,7 +137,7 @@ public class ShopPanel : MonoBehaviour
 			return;
 		}
 
-		bool needsReorganize = false;
+		bool arraySlot = false;
 
 		foreach (InventorySlot sellSlot in sellSlots)
 		{
@@ -160,7 +160,7 @@ public class ShopPanel : MonoBehaviour
 							{
 								inventorySlot.RemoveItem();
 								inventorySlot.slotCount = 0;
-								needsReorganize = true;
+								arraySlot = true;
 							}
 							else
 							{
@@ -175,7 +175,7 @@ public class ShopPanel : MonoBehaviour
 						{
 							inventorySlot.RemoveItem();
 							inventorySlot.slotCount = 0;
-							needsReorganize = true;
+							arraySlot = true;
 						}
 					}
 
@@ -185,13 +185,13 @@ public class ShopPanel : MonoBehaviour
 			}
 		}
 
-		FirebaseManager.Instance.CurrentUserData.user_Gold += sellPrice;
-		FirebaseManager.Instance.UploadCurrentUserData("user_Gold",
-			FirebaseManager.Instance.CurrentUserData.user_Gold);
+		Player player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
+		player.AddGold(sellPrice);
+
 		sellPrice = 0;
 		isSellButtonClicked = true;
 
-		if (needsReorganize)
+		if (arraySlot)
 		{
 			InventoryManger.Instance.SlotArray();
 		}
