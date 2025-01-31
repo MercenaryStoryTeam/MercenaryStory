@@ -169,9 +169,7 @@ public class PlayerInputManager : MonoBehaviourPun
 			UIManager.Instance.inventory.TryOpenInventory();
 		}
 
-		if (Input.GetKeyDown(KeyCode.Z))
 		{
-			UIManager.Instance.OpenDungeonPanel();
 		}
 	}
 
