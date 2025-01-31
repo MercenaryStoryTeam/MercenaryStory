@@ -167,11 +167,6 @@ public class PlayerInputManager : MonoBehaviourPun
 		{
 			OnSkillInput?.Invoke();
 		}
-
-		if (Input.GetKeyDown(KeyCode.Z))
-		{
-			UIManager.Instance.OpenDungeonPanel();
-		}
 	}
 
 	private void HandleDesktopInvenInputs()
