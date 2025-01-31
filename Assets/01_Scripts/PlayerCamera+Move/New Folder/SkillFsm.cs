@@ -870,10 +870,10 @@ public class SkillFsm : MonoBehaviour
     {
         isSpeedBoostActive = true;
 
-        float originalSpeed = player != null ? PlayerData.moveSpeed : 0f;
+        float originalSpeed = player != null ? player.moveSpeed : 0f;
         if (player != null)
         {
-            PlayerData.moveSpeed *= speedBoost;
+            player.moveSpeed *= speedBoost;
             Log(
                 $"[SkillFsm] Rush 이동 속도 상승 시작 ({speedBoost}배, {duration}초). 원래 속도: {originalSpeed}, 새로운 속도: {player.moveSpeed}");
         }
