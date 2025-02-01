@@ -6,29 +6,13 @@ public class Weapon : MonoBehaviour
 
 	// Player 스크립트 참조
 	private Player player;
-	private FSMManager manager;
+	//private FSMManager manager;
 
 	private void Start()
 	{
 		// 방법1: 부모 객체에 붙어있는 Player 스크립트 참조
 		player = GetComponentInParent<Player>();
-		manager = GetComponentInParent<FSMManager>();
-		
-		// 방법1 실패
-		if (player == null)
-		{
-			// 방법2: 태그를 이용해 Player 스크립트 참조
-			GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-			if (playerObject != null)
-			{
-				player = playerObject.GetComponent<Player>();
-			}
-
-			if (player == null)
-			{
-				Debug.LogError("Player 참조x -> 부모 객체 확인 및 태크 확인");
-			}
-		}
+		//manager = GetComponentInParent<FSMManager>();
 	}
 
 	private void Update()
@@ -81,17 +65,6 @@ public class Weapon : MonoBehaviour
 
 //3. 넉백 - 조건 보스몬스터의 스킬
 
-//4. 대쉬 무적 
-
 //5. 콜라이더 손보고 -> 업그레이드 시 데미지 처리
-
-//6. ui 활성화될 때 입력처리 플레이어의 입력처리 안되도록
-//인풋매니저 비활성화 - 가장 직접적인 방법
-
-//7. 스킬 파티클 위치 조절,
-//러쉬 나머지 3개의 일반 스킬 - 파티클 적당한 위치에 적당한거 골라서 붙이기
-//레벨별 4개 
-
-//8. 사운드 추가 - 공격할때, 스킬 사용할때, 클립명 뒤에 , gameObject 추가
 
 //

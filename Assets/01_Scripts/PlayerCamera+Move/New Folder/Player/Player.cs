@@ -31,14 +31,11 @@ public class Player : MonoBehaviour
 
     private PlayerFsm playerFsm;
 
-    private void Awake()
+    private void Start()
     {
         // 현재 오브젝트에 있는 PlayerFsm 스크립트를 한 번만 가져와 저장
         playerFsm = GetComponent<PlayerFsm>();
-    }
 
-    private void Start()
-    {
         // 원래 이동 속도 저장(슬로우 존 등에서 복구 시 사용)
         originalMoveSpeed = moveSpeed;
     }
