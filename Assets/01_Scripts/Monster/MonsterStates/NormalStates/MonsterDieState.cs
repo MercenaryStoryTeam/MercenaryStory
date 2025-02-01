@@ -15,18 +15,18 @@ public class MonsterDieState : MonsterState
         if (monster.TargetTransform != null)
         {
             // playerTransform에서 Player 컴포넌트 가져오기
-            Player player = monster.TargetTransform.GetComponent<Player>();
+            GoldManager goldManager = monster.TargetTransform.GetComponent<GoldManager>();
 
-            if (player != null)
+            if (goldManager != null)
             {
                 float goldReward = monster.GoldReward;
-                player.AddGold(goldReward);
+                goldManager.AddGold(goldReward);
 
                 Debug.Log($"플레이어에게 {goldReward} 골드가 추가되었습니다.");
             }
             else
             {
-                Debug.LogWarning("playerTransform에 Player 컴포넌트가 없습니다.");
+                Debug.LogWarning("playerTransform에 GoldManager 컴포넌트가 없습니다.");
             }
         }
         else

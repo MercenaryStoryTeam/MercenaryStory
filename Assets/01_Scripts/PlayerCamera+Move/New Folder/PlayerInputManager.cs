@@ -86,9 +86,14 @@ public class PlayerInputManager : MonoBehaviourPun
 	{
 		if (!photonView.IsMine) return;
 
-		HandleDesktopInvenInputs();
-		if (UIManager.Instance.IsAnyPanelOpen() ||
-		    UIManager.Instance.IsPopUpOpen())
+        // ESC 키 처리
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            HandleEscapeKey();
+        }
+
+        HandleDesktopInvenInputs();
+		if (UIManager.Instance.IsAnyPanelOpen() || UIManager.Instance.IsPopUpOpen())
 		{
 			player.gameObject.GetComponent<PlayerFsm>().currentState = PlayerFsm.State.Idle;
 			animator.SetFloat("Speed", 0);
@@ -104,12 +109,6 @@ public class PlayerInputManager : MonoBehaviourPun
 			{
 				HandleDesktopInputs();
 			}
-		}
-
-		// ESC 키 처리
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			HandleEscapeKey();
 		}
 	}
 

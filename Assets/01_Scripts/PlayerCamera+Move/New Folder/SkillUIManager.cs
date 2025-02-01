@@ -23,6 +23,9 @@ public class SkillUIManager : MonoBehaviour
     [Header("열기 버튼")] public Button openButton;
     [Header("골드 표시 텍스트")] public Text goldText;
 
+    // GoldManager 참조 추가
+    [Header("GoldManager")] public GoldManager goldManager;
+
     // 초기 skillImage 스프라이트를 저장해둘 변수
     private Sprite defaultSkillSprite;
 
@@ -34,9 +37,6 @@ public class SkillUIManager : MonoBehaviour
 
     // 현재 선택된 스킬을 저장하는 변수
     private Skill selectedSkill;
-
-    // Player 스크립트 참조
-    private Player player;
 
     private void OnEnable()
     {
@@ -54,6 +54,12 @@ public class SkillUIManager : MonoBehaviour
 
         // 코루틴 정지
         StopAllCoroutines();
+
+        // 이벤트 해제
+        if (goldManager != null)
+        {
+            goldManager.OnGoldChanged -= UpdateGoldDisplay;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -65,42 +71,61 @@ public class SkillUIManager : MonoBehaviour
     {
         while (true)
         {
-            if (skillFsm == null || player == null)
-            {
-                GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
-                foreach (var go in allGameObjects)
-                {
-                    if (go.CompareTag("Player") && !go.name.Contains("Clone"))
-                    {
-                        if (skillFsm == null)
-                            skillFsm = go.GetComponent<SkillFsm>();
+            // 모든 "Player" 태그가 붙은 오브젝트 찾기
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+            GameObject player = null;
 
-                        if (player == null)
-                            player = go.GetComponent<Player>();
+            foreach (var go in players)
+            {
+                if (!go.name.Contains("Clone"))
+                {
+                    player = go;
+                    break;
+                }
+            }
+
+            if (player != null)
+            {
+                // SkillFsm 참조 설정
+                if (skillFsm == null)
+                {
+                    skillFsm = player.GetComponent<SkillFsm>();
+                    if (skillFsm == null)
+                    {
+                        Debug.LogWarning("[SkillUIManager] SkillFsm 컴포넌트를 찾을 수 없습니다. 1초 후 다시 시도합니다.");
                     }
                 }
 
-                if (player == null)
+                // GoldManager 참조 설정
+                if (goldManager == null)
                 {
-                    Debug.LogWarning("[SkillUpgradeUI] Player 인스턴스를 찾지 못했습니다. 1초 후 다시 시도합니다.");
-                }
-                else
-                {
-                    player.OnGoldChanged += UpdateGoldDisplay;
+                    goldManager = player.GetComponent<GoldManager>();
+                    if (goldManager == null)
+                    {
+                        Debug.LogWarning("[SkillUIManager] GoldManager 컴포넌트를 찾을 수 없습니다. 1초 후 다시 시도합니다.");
+                    }
+                    else
+                    {
+                        // 이벤트 중복 방지 후 구독
+                        goldManager.OnGoldChanged -= UpdateGoldDisplay;
+                        goldManager.OnGoldChanged += UpdateGoldDisplay;
+                        Debug.Log("[SkillUIManager] GoldManager 이벤트 구독 완료.");
+                    }
                 }
 
-                if (skillFsm == null)
+                // 두 참조가 모두 설정되었는지 확인
+                if (skillFsm != null && goldManager != null)
                 {
-                    Debug.LogWarning("[SkillUpgradeUI] SkillFsm 참조를 찾지 못했습니다. 1초 후 다시 시도합니다.");
+                    InitializeUI();
+                    yield break; // 코루틴 종료
                 }
             }
             else
             {
-                InitializeUI();
-                yield break;
+                Debug.LogWarning("[SkillUIManager] 이름에 'Clone'이 포함되지 않은 Player 오브젝트를 찾을 수 없습니다. 1초 후 다시 시도합니다.");
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1f); // 1초 대기 후 다시 시도
         }
     }
 
@@ -124,11 +149,13 @@ public class SkillUIManager : MonoBehaviour
                     if (i < skillTypes.Count)
                     {
                         SkillType skillType = skillTypes[i];
-                        button.onClick.AddListener(() => SelectSkill(skillType));
+                        // 인덱스 고정 람다 사용
+                        int index = i; // 로컬 변수로 캡처
+                        button.onClick.AddListener(() => SelectSkill(skillTypes[index]));
                     }
                     else
                     {
-                        Debug.LogWarning("[SkillUpgradeUI] 스킬 타입이 버튼 수보다 적습니다. 버튼: " + button.name);
+                        Debug.LogWarning("[SkillUIManager] 스킬 타입이 버튼 수보다 적습니다. 버튼: " + button.name);
                     }
                 }
             }
@@ -164,7 +191,10 @@ public class SkillUIManager : MonoBehaviour
             skillLevelText.text = "";
 
         // 골드 표시 업데이트
-        UpdateGoldDisplay(FirebaseManager.Instance.CurrentUserData.user_Gold);
+        if (goldManager != null)
+        {
+            UpdateGoldDisplay(goldManager.GetCurrentGold());
+        }
     }
 
     private void OnDestroy()
@@ -189,20 +219,23 @@ public class SkillUIManager : MonoBehaviour
             openButton.onClick.RemoveListener(OpenSkillUpgradeUI);
 
         // Player의 골드 변경 이벤트 해제
-        if (player != null)
+        if (goldManager != null)
         {
-            player.OnGoldChanged -= UpdateGoldDisplay;
+            goldManager.OnGoldChanged -= UpdateGoldDisplay;
         }
     }
 
     private void SelectSkill(SkillType skillType)
     {
-        SoundManager.Instance.PlaySFX("Fantasy Click 2", gameObject);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX("Fantasy Click 2", gameObject);
+        }
 
         selectedSkill = skillFsm.GetSkill(skillType);
         if (selectedSkill == null)
         {
-            Debug.LogWarning("[SkillUpgradeUI] " + skillType + " 스킬을 찾을 수 없습니다.");
+            Debug.LogWarning("[SkillUIManager] " + skillType + " 스킬을 찾을 수 없습니다.");
             return;
         }
 
@@ -220,25 +253,28 @@ public class SkillUIManager : MonoBehaviour
     {
         if (selectedSkill == null)
         {
-            Debug.LogWarning("[SkillUpgradeUI] 업그레이드할 스킬이 선택되지 않았습니다.");
+            Debug.LogWarning("[SkillUIManager] 업그레이드할 스킬이 선택되지 않았습니다.");
             return;
         }
 
         if (selectedSkill.Level >= selectedSkill.MaxLevel)
         {
-            Debug.LogWarning("[SkillUpgradeUI] " + selectedSkill.skillType + " 스킬은 이미 최대 레벨(" + selectedSkill.MaxLevel + ")에 도달했습니다.");
+            Debug.LogWarning("[SkillUIManager] " + selectedSkill.skillType + " 스킬은 이미 최대 레벨(" + selectedSkill.MaxLevel + ")에 도달했습니다.");
             return;
         }
 
         float upgradeCost = selectedSkill.UpgradeCosts[selectedSkill.Level - 1];
 
-        if (player.SpendGold(upgradeCost))
+        if (goldManager.SpendGold(upgradeCost))
         {
             bool success = skillFsm.LevelUpSkill(selectedSkill.skillType);
             if (success)
             {
-                Debug.Log("[SkillUpgradeUI] " + selectedSkill.skillType + " 스킬을 업그레이드했습니다. 현재 레벨: " + selectedSkill.Level);
-                SoundManager.Instance.PlaySFX("RankUP", gameObject);
+                Debug.Log("[SkillUIManager] " + selectedSkill.skillType + " 스킬 업그레이드 완료. 현재 레벨: " + selectedSkill.Level);
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlaySFX("RankUP", gameObject);
+                }
                 UpdateSelectedSkillLevelText();
                 UpdateUpgradeButtonState();
                 UpdateCooldownText();
@@ -246,12 +282,12 @@ public class SkillUIManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("[SkillUpgradeUI] " + selectedSkill.skillType + " 스킬 업그레이드에 실패했습니다.");
+                Debug.LogWarning("[SkillUIManager] " + selectedSkill.skillType + " 스킬 업그레이드 실패.");
             }
         }
         else
         {
-            Debug.LogWarning("[SkillUpgradeUI] 골드가 부족하여 스킬을 업그레이드할 수 없습니다.");
+            Debug.LogWarning("[SkillUIManager] 골드가 부족하여 스킬 업그레이드 불가.");
         }
     }
 
@@ -324,17 +360,17 @@ public class SkillUIManager : MonoBehaviour
 
     public void UpdateUpgradeButtonState()
     {
-        if (selectedSkill == null || upgradeButton == null) return;
+        if (selectedSkill == null || upgradeButton == null || goldManager == null) return;
 
         if (selectedSkill.Level >= selectedSkill.MaxLevel)
         {
             upgradeButton.interactable = false;
-            Debug.Log("[SkillUpgradeUI] " + selectedSkill.skillType + " 스킬은 이미 최대 레벨(" + selectedSkill.MaxLevel + ")에 도달했습니다.");
+            Debug.Log("[SkillUIManager] " + selectedSkill.skillType + " 스킬은 이미 최대 레벨(" + selectedSkill.MaxLevel + ")입니다.");
         }
         else
         {
             float nextUpgradeCost = selectedSkill.UpgradeCosts[selectedSkill.Level - 1];
-            upgradeButton.interactable = FirebaseManager.Instance.CurrentUserData.user_Gold >= nextUpgradeCost;
+            upgradeButton.interactable = goldManager.GetCurrentGold() >= nextUpgradeCost;
         }
     }
 
@@ -353,11 +389,16 @@ public class SkillUIManager : MonoBehaviour
         }
     }
 
-    private void UpdateGoldDisplay(float newGold)
+    public void UpdateGoldDisplay(float newGold)
     {
         if (goldText != null)
         {
             goldText.text = newGold.ToString();
+            Debug.Log($"[SkillUIManager] 골드 텍스트 업데이트: {newGold}");
+        }
+        else
+        {
+            Debug.LogWarning("[SkillUIManager] goldText 참조가 null입니다.");
         }
         UpdateUpgradeButtonState();
     }
@@ -367,7 +408,10 @@ public class SkillUIManager : MonoBehaviour
         if (skillPanel != null)
         {
             UIManager.Instance.CloseSkillPanel();
-            SoundManager.Instance.PlaySFX("ui_off", gameObject);
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("ui_off", gameObject);
+            }
 
             selectedSkill = null;
             ResetAllButtonColors();
@@ -389,7 +433,10 @@ public class SkillUIManager : MonoBehaviour
         if (skillPanel != null)
         {
             UIManager.Instance.OpenSkillPanel();
-            SoundManager.Instance.PlaySFX("ui_on", gameObject);
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX("ui_on", gameObject);
+            }
             RefreshSelectedSkillUI();
         }
     }

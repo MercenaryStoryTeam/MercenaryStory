@@ -185,8 +185,8 @@ public class ShopPanel : MonoBehaviour
 			}
 		}
 
-		Player player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
-		player.AddGold(sellPrice);
+        GoldManager goldManager = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<GoldManager>();
+        goldManager.AddGold(sellPrice);
 
 		sellPrice = 0;
 		isSellButtonClicked = true;

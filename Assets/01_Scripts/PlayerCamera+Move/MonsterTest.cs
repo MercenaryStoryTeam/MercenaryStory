@@ -140,13 +140,13 @@ public class MonsterTest : MonoBehaviour
         // 플레이어 오브젝트 찾기
         // 특정 플레이어 오브젝트를 식별하지 않기 때문에
         // 모두 획득
-        Player player = FindObjectOfType<Player>();
+        GoldManager goldManager = FindObjectOfType<GoldManager>();
 
         // 있으면 실행
-        if (player != null)
+        if (goldManager != null)
         {
             // 골드 처리
-            player.AddGold(goldReward);
+            goldManager.AddGold(goldReward);
 
             Debug.Log($"플레이어에게 {goldReward} 골드가 추가되었습니다.");
         }

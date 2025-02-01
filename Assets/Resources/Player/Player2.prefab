@@ -84601,6 +84601,7 @@ GameObject:
   - component: {fileID: 9125919698972074550}
   - component: {fileID: 8164066010600818272}
   - component: {fileID: -613514774767539222}
+  - component: {fileID: -3041793657054873945}
   m_Layer: 6
   m_Name: Player2
   m_TagString: Player
@@ -84845,6 +84846,7 @@ MonoBehaviour:
   dieAnimationDuration: 2
   comboResetTime: 1
   soundDelay: 0.8
+  currentState: 0
 --- !u!114 &6859112222779949191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85029,6 +85031,18 @@ MonoBehaviour:
   - {fileID: 1188255124729765496}
   - {fileID: 2543886326388795743}
   - {fileID: 8069937612005696995}
+--- !u!114 &-3041793657054873945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5217226068447975561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 039163a01147ce0488c9c20e28fb5365, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5223934271713900268
 GameObject:
   m_ObjectHideFlags: 0
