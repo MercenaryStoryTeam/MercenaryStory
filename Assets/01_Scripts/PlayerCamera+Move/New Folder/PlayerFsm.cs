@@ -81,7 +81,7 @@ public class PlayerFsm : MonoBehaviourPun
     {
         InitializeComponents();
         InitializeCamera();
-        InitializeStateDictionaries(); // 상태 전환 관련 딕셔너리 초기화
+        InitializeStateDictionaries(); 
     }
 
     private void Start()
@@ -220,7 +220,7 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
-    // 상태 전환 관련 딕셔너리 초기화 (추가된 부분)
+    // 상태 전환 관련 딕셔너리 초기화
     private void InitializeStateDictionaries()
     {
         // 상태 진입 함수 매핑
@@ -257,7 +257,6 @@ public class PlayerFsm : MonoBehaviourPun
                 }
             },
             { State.Moving, MovePlayer },
-            // Attack1, Attack2, Hit는 별도의 물리 처리 없음
             { State.Attack1, () => {} },
             { State.Attack2, () => {} },
             { State.Hit, () => {} },
