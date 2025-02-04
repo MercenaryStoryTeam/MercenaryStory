@@ -24,7 +24,7 @@ public class PlayerFsm : MonoBehaviourPun
     private Animator animator;
     private Vector3 movementInput;
     private const float moveThreshold = 0.05f;
-    private const float LERP_SPEED = 10f; // 이동 보간 속도 상수
+    private const float LERP_SPEED = 10f; 
 
     // 현재 이동 속도
     private float currentSpeed;
@@ -80,6 +80,9 @@ public class PlayerFsm : MonoBehaviourPun
     private Dictionary<State, Action> statePhysicsActions;
     private Dictionary<State, FSMManager.PlayerState> stateToFSMMapping;
     // =======================================================
+
+    // FixedUpdate 최적화를 위해 현재 상태의 물리 처리 함수를 저장
+    private Action currentPhysicsAction;
 
     // 애니메이션 종료 처리 딕셔너리
     private Dictionary<string, Action> animationEndActions;
@@ -147,7 +150,6 @@ public class PlayerFsm : MonoBehaviourPun
         // pun 동기화를 위함. 지우지 마시오!! - 지원
         if (!photonView.IsMine) return;
 
-        // 콤보 리셋은 코루틴으로 통합하였으므로 Update()에서 별도 처리 제거함.
     }
 
     private void FixedUpdate()
@@ -155,11 +157,8 @@ public class PlayerFsm : MonoBehaviourPun
         // pun 동기화를 위함. 지우지 마시오!! - 지원
         if (!photonView.IsMine) return;
 
-        // 딕셔너리로 현재 상태의 물리 처리 함수 호출
-        if (statePhysicsActions.ContainsKey(currentState))
-        {
-            statePhysicsActions[currentState]?.Invoke();
-        }
+        // 최적화를 위해 currentPhysicsAction을 직접 호출 
+        currentPhysicsAction?.Invoke();
     }
 
     // 컴포넌트 초기화 메서드
@@ -286,6 +285,9 @@ public class PlayerFsm : MonoBehaviourPun
                 }
             }
         };
+
+        // 초기 상태의 물리 처리 함수 설정
+        currentPhysicsAction = statePhysicsActions[currentState];
     }
     // ======================================================
 
@@ -295,54 +297,33 @@ public class PlayerFsm : MonoBehaviourPun
         animationEndActions = new Dictionary<string, Action>
         {
             { ANIM_ATTACK1, () => {
-                    if (fsmManager != null)
-                    {
-                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                    }
+                    InvokeFsmStateChange(FSMManager.PlayerState.Idle);
                     isAttackLocked = false;
                 }
             },
             { ANIM_ATTACK2, () => {
-                    if (fsmManager != null)
-                    {
-                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                    }
+                    InvokeFsmStateChange(FSMManager.PlayerState.Idle);
                     isAttackLocked = false;
                 }
             },
             { ANIM_HIT, () => {
-                    if (fsmManager != null)
-                    {
-                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                    }
+                    InvokeFsmStateChange(FSMManager.PlayerState.Idle);
                 }
             },
             { ANIM_RUSH, () => {
-                    if (fsmManager != null)
-                    {
-                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                    }
+                    InvokeFsmStateChange(FSMManager.PlayerState.Idle);
                 }
             },
             { ANIM_PARRY, () => {
-                    if (fsmManager != null)
-                    {
-                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                    }
+                    InvokeFsmStateChange(FSMManager.PlayerState.Idle);
                 }
             },
             { ANIM_SKILL1, () => {
-                    if (fsmManager != null)
-                    {
-                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                    }
+                    InvokeFsmStateChange(FSMManager.PlayerState.Idle);
                 }
             },
             { ANIM_SKILL2, () => {
-                    if (fsmManager != null)
-                    {
-                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                    }
+                    InvokeFsmStateChange(FSMManager.PlayerState.Idle);
                 }
             },
             { ANIM_DIE, () => {
@@ -477,7 +458,20 @@ public class PlayerFsm : MonoBehaviourPun
     {
         yield return new WaitForSeconds(comboResetTime);
         currentComboState = ComboState.None;
-        comboResetCoroutine = null; // 코루틴 종료 후 null로 초기화
+        comboResetCoroutine = null; 
+    }
+
+    // fsmManager의 null 체크 후 상태 전환 호출을 위한 유틸 함수
+    private void InvokeFsmStateChange(FSMManager.PlayerState state)
+    {
+        if (fsmManager != null)
+        {
+            fsmManager.HandlePlayerStateChanged(state);
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerFsm] FSMManager 참조가 없습니다. 상태 전환을 호출할 수 없습니다.");
+        }
     }
 
     public void TransitionToState(State newState, bool force = false)
@@ -487,11 +481,10 @@ public class PlayerFsm : MonoBehaviourPun
 
         currentState = newState;
 
-        // FSMManager.PlayerState로 변환 
+        // FSMManager.PlayerState로 변환 및 이벤트 호출
         if (stateToFSMMapping.ContainsKey(newState))
         {
             FSMManager.PlayerState fsmState = stateToFSMMapping[newState];
-            // 상태 변경 이벤트 호출
             OnStateChanged?.Invoke(fsmState);
         }
 
@@ -499,6 +492,16 @@ public class PlayerFsm : MonoBehaviourPun
         if (stateEnterActions.ContainsKey(newState))
         {
             stateEnterActions[newState]?.Invoke();
+        }
+
+        // FixedUpdate 최적화를 위해 현재 상태의 물리 처리 함수를 currentPhysicsAction에 업데이트
+        if (statePhysicsActions.ContainsKey(newState))
+        {
+            currentPhysicsAction = statePhysicsActions[newState];
+        }
+        else
+        {
+            currentPhysicsAction = null;
         }
     }
 
@@ -517,31 +520,22 @@ public class PlayerFsm : MonoBehaviourPun
     private void EnterIdleState()
     {
         animator.SetFloat("Speed", 0f);
-        if (fsmManager != null)
-        {
-            fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-        }
+        InvokeFsmStateChange(FSMManager.PlayerState.Idle);
     }
 
     private void EnterMovingState()
     {
         float speed = movementInput.magnitude * currentSpeed;
         animator.SetFloat("Speed", speed);
-        if (fsmManager != null)
-        {
-            fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Moving);
-        }
+        InvokeFsmStateChange(FSMManager.PlayerState.Moving);
     }
 
     // 공통 공격 상태 처리 함수 (TriggerName과 FSM 상태를 매개변수로 받음)
     private void HandleAttackState(string triggerName, FSMManager.PlayerState state)
     {
         animator.SetTrigger(triggerName);
-        isAttackLocked = true; // 공격 중 입력 잠금
-        if (fsmManager != null)
-        {
-            fsmManager.HandlePlayerStateChanged(state);
-        }
+        isAttackLocked = true; 
+        InvokeFsmStateChange(state);
 
         string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
         StartCoroutine(PlayDelayedSoundWithSoundManager(comboSoundClips, soundDelay));
@@ -550,10 +544,7 @@ public class PlayerFsm : MonoBehaviourPun
     private void EnterHitState()
     {
         animator.SetTrigger(ANIM_HIT);
-        if (fsmManager != null)
-        {
-            fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Hit);
-        }
+        InvokeFsmStateChange(FSMManager.PlayerState.Hit);
     }
 
     private void EnterDieState()
@@ -561,10 +552,7 @@ public class PlayerFsm : MonoBehaviourPun
         isDead = true;
         animator.SetTrigger(ANIM_DIE);
         Invoke("DisablePlayer", dieAnimationDuration);
-        if (fsmManager != null)
-        {
-            fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Die);
-        }
+        InvokeFsmStateChange(FSMManager.PlayerState.Die);
     }
 
     private void DisablePlayer()
