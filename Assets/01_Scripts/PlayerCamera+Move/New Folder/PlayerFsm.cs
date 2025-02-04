@@ -24,6 +24,7 @@ public class PlayerFsm : MonoBehaviourPun
     private Animator animator;
     private Vector3 movementInput;
     private const float moveThreshold = 0.05f;
+    private const float LERP_SPEED = 10f; // 이동 보간 속도 상수
 
     // 현재 이동 속도
     private float currentSpeed;
@@ -83,13 +84,23 @@ public class PlayerFsm : MonoBehaviourPun
     // 콤보 단계 전환을 위한 딕셔너리
     private Dictionary<ComboState, Action> comboTransitionActions;
 
+    // 애니메이션 이름 상수화
+    private const string ANIM_ATTACK1 = "Attack1";
+    private const string ANIM_ATTACK2 = "Attack2";
+    private const string ANIM_HIT = "Hit";
+    private const string ANIM_RUSH = "Rush";
+    private const string ANIM_PARRY = "Parry";
+    private const string ANIM_SKILL1 = "Skill1";
+    private const string ANIM_SKILL2 = "Skill2";
+    private const string ANIM_DIE = "Die";
+
     private void Awake()
     {
         InitializeComponents();
         InitializeCamera();
         InitializeStateDictionaries();
-        InitializeAnimationEndActions(); 
-        InitializeComboTransitionActions(); 
+        InitializeAnimationEndActions();
+        InitializeComboTransitionActions();
     }
 
     private void Start()
@@ -236,8 +247,8 @@ public class PlayerFsm : MonoBehaviourPun
         {
             { State.Idle, EnterIdleState },
             { State.Moving, EnterMovingState },
-            { State.Attack1, EnterAttack1State },
-            { State.Attack2, EnterAttack2State },
+            { State.Attack1, () => HandleAttackState(ANIM_ATTACK1, FSMManager.PlayerState.Attack1) },
+            { State.Attack2, () => HandleAttackState(ANIM_ATTACK2, FSMManager.PlayerState.Attack2) },
             { State.Hit, EnterHitState },
             { State.Die, EnterDieState }
         };
@@ -259,8 +270,8 @@ public class PlayerFsm : MonoBehaviourPun
             { State.Idle, () =>
                 {
                     Vector3 idleVelocity = rb.velocity;
-                    idleVelocity.x = Mathf.Lerp(idleVelocity.x, 0f, Time.fixedDeltaTime * 10f);
-                    idleVelocity.z = Mathf.Lerp(idleVelocity.z, 0f, Time.fixedDeltaTime * 10f);
+                    idleVelocity.x = Mathf.Lerp(idleVelocity.x, 0f, Time.fixedDeltaTime * LERP_SPEED);
+                    idleVelocity.z = Mathf.Lerp(idleVelocity.z, 0f, Time.fixedDeltaTime * LERP_SPEED);
                     rb.velocity = idleVelocity;
                 }
             },
@@ -283,7 +294,7 @@ public class PlayerFsm : MonoBehaviourPun
     {
         animationEndActions = new Dictionary<string, Action>
         {
-            { "Attack1", () => {
+            { ANIM_ATTACK1, () => {
                     if (fsmManager != null)
                     {
                         fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
@@ -291,7 +302,7 @@ public class PlayerFsm : MonoBehaviourPun
                     isAttackLocked = false;
                 }
             },
-            { "Attack2", () => {
+            { ANIM_ATTACK2, () => {
                     if (fsmManager != null)
                     {
                         fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
@@ -299,42 +310,42 @@ public class PlayerFsm : MonoBehaviourPun
                     isAttackLocked = false;
                 }
             },
-            { "Hit", () => {
+            { ANIM_HIT, () => {
                     if (fsmManager != null)
                     {
                         fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
                     }
                 }
             },
-            { "Rush", () => {
+            { ANIM_RUSH, () => {
                     if (fsmManager != null)
                     {
                         fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
                     }
                 }
             },
-            { "Parry", () => {
+            { ANIM_PARRY, () => {
                     if (fsmManager != null)
                     {
                         fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
                     }
                 }
             },
-            { "Skill1", () => {
+            { ANIM_SKILL1, () => {
                     if (fsmManager != null)
                     {
                         fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
                     }
                 }
             },
-            { "Skill2", () => {
+            { ANIM_SKILL2, () => {
                     if (fsmManager != null)
                     {
                         fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
                     }
                 }
             },
-            { "Die", () => {
+            { ANIM_DIE, () => {
                     Debug.Log($"[PlayerFsm] Die 애니메이션 종료 후 별도의 처리가 필요합니다.");
                 }
             }
@@ -503,7 +514,7 @@ public class PlayerFsm : MonoBehaviourPun
         if (movementInput.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movementInput);
-            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
+            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * LERP_SPEED);
         }
     }
 
@@ -526,26 +537,14 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
-    private void EnterAttack1State()
+    // 공통 공격 상태 처리 함수 (TriggerName과 FSM 상태를 매개변수로 받음)
+    private void HandleAttackState(string triggerName, FSMManager.PlayerState state)
     {
-        animator.SetTrigger("Attack1");
+        animator.SetTrigger(triggerName);
         isAttackLocked = true; // 공격 중 입력 잠금
         if (fsmManager != null)
         {
-            fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Attack1);
-        }
-
-        string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
-        StartCoroutine(PlayDelayedSoundWithSoundManager(comboSoundClips, soundDelay));
-    }
-
-    private void EnterAttack2State()
-    {
-        animator.SetTrigger("Attack2");
-        isAttackLocked = true; // 공격 중 입력 잠금
-        if (fsmManager != null)
-        {
-            fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Attack2);
+            fsmManager.HandlePlayerStateChanged(state);
         }
 
         string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
@@ -554,7 +553,7 @@ public class PlayerFsm : MonoBehaviourPun
 
     private void EnterHitState()
     {
-        animator.SetTrigger("Hit");
+        animator.SetTrigger(ANIM_HIT);
         if (fsmManager != null)
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Hit);
@@ -564,7 +563,7 @@ public class PlayerFsm : MonoBehaviourPun
     private void EnterDieState()
     {
         isDead = true;
-        animator.SetTrigger("Die");
+        animator.SetTrigger(ANIM_DIE);
         Invoke("DisablePlayer", dieAnimationDuration);
         if (fsmManager != null)
         {
