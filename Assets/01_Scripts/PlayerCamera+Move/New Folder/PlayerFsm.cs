@@ -1,8 +1,9 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
-using System.Collections;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(Player))]
@@ -70,10 +71,17 @@ public class PlayerFsm : MonoBehaviourPun
     // 현재 이동 방향 저장
     private Vector3 currentMovementDirection = Vector3.zero;
 
+    // ===== 딕셔너리 활용한 상태 전환 관련 변수 추가 =====
+    private Dictionary<State, Action> stateEnterActions;
+    private Dictionary<State, Action> statePhysicsActions;
+    private Dictionary<State, FSMManager.PlayerState> stateToFSMMapping;
+    // =======================================================
+
     private void Awake()
     {
         InitializeComponents();
         InitializeCamera();
+        InitializeStateDictionaries(); // 상태 전환 관련 딕셔너리 초기화
     }
 
     private void Start()
@@ -119,7 +127,6 @@ public class PlayerFsm : MonoBehaviourPun
 
         if (!isDead)
         {
-            HandleState();
             HandleComboReset();
         }
     }
@@ -129,7 +136,11 @@ public class PlayerFsm : MonoBehaviourPun
         // pun 동기화를 위함. 지우지 마시오!! - 지원
         if (!photonView.IsMine) return;
 
-        HandlePhysics();
+        // 딕셔너리로 현재 상태의 물리 처리 함수 호출
+        if (statePhysicsActions.ContainsKey(currentState))
+        {
+            statePhysicsActions[currentState]?.Invoke();
+        }
     }
 
     // 컴포넌트 초기화 메서드
@@ -168,17 +179,11 @@ public class PlayerFsm : MonoBehaviourPun
             }
         }
 
-        // AudioSource 관련 코드는 SoundManager 방식을 사용하므로 제거되었습니다.
-
         // FSMManager 스크립트 가져오기
         fsmManager = GetComponent<FSMManager>();
-        if (fsmManager != null)
+        if (fsmManager == null)
         {
-            Log("[PlayerFsm] FSMManager 스크립트를 성공적으로 가져왔습니다.");
-        }
-        else
-        {
-            LogError("[PlayerFsm] FSMManager 스크립트를 찾을 수 없습니다.");
+            Debug.LogError("[PlayerFsm] FSMManager 스크립트를 찾을 수 없습니다.");
         }
 
 #if UNITY_ANDROID || UNITY_IOS
@@ -215,6 +220,57 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
+    // 상태 전환 관련 딕셔너리 초기화 (추가된 부분)
+    private void InitializeStateDictionaries()
+    {
+        // 상태 진입 함수 매핑
+        stateEnterActions = new Dictionary<State, Action>
+        {
+            { State.Idle, EnterIdleState },
+            { State.Moving, EnterMovingState },
+            { State.Attack1, EnterAttack1State },
+            { State.Attack2, EnterAttack2State },
+            { State.Hit, EnterHitState },
+            { State.Die, EnterDieState }
+        };
+
+        // FSMManager의 PlayerState로의 매핑
+        stateToFSMMapping = new Dictionary<State, FSMManager.PlayerState>
+        {
+            { State.Idle, FSMManager.PlayerState.Idle },
+            { State.Moving, FSMManager.PlayerState.Moving },
+            { State.Attack1, FSMManager.PlayerState.Attack1 },
+            { State.Attack2, FSMManager.PlayerState.Attack2 },
+            { State.Hit, FSMManager.PlayerState.Hit },
+            { State.Die, FSMManager.PlayerState.Die }
+        };
+
+        // 물리 처리 함수 매핑
+        statePhysicsActions = new Dictionary<State, Action>
+        {
+            { State.Idle, () =>
+                {
+                    Vector3 idleVelocity = rb.velocity;
+                    idleVelocity.x = Mathf.Lerp(idleVelocity.x, 0f, Time.fixedDeltaTime * 10f);
+                    idleVelocity.z = Mathf.Lerp(idleVelocity.z, 0f, Time.fixedDeltaTime * 10f);
+                    rb.velocity = idleVelocity;
+                }
+            },
+            { State.Moving, MovePlayer },
+            // Attack1, Attack2, Hit는 별도의 물리 처리 없음
+            { State.Attack1, () => {} },
+            { State.Attack2, () => {} },
+            { State.Hit, () => {} },
+            { State.Die, () =>
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                }
+            }
+        };
+    }
+    // ======================================================
+
     // 씬 로딩 시 호출되는 메서드
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -222,7 +278,6 @@ public class PlayerFsm : MonoBehaviourPun
         InitializeCamera();
     }
 
-    // HandleMoveInput 메서드
     private void HandleMoveInput(Vector2 movement)
     {
         if (isDead || isMovementLocked) return;
@@ -230,7 +285,7 @@ public class PlayerFsm : MonoBehaviourPun
         // 현재 FSM 상태 확인
         if (fsmManager == null)
         {
-            LogError("[PlayerFsm] FSMManager 참조가 없습니다.");
+            Debug.LogError("[PlayerFsm] FSMManager 참조가 없습니다.");
             return;
         }
 
@@ -278,7 +333,7 @@ public class PlayerFsm : MonoBehaviourPun
         // 현재 FSM 상태 확인
         if (fsmManager == null)
         {
-            LogError("[PlayerFsm] FSMManager 참조가 없습니다.");
+            Debug.LogError("[PlayerFsm] FSMManager 참조가 없습니다.");
             return;
         }
 
@@ -336,45 +391,25 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
-    private void HandleState()
+    public void TransitionToState(State newState, bool force = false)
     {
-        switch (currentState)
-        {
-            case State.Idle:
-            case State.Moving:
-                break;
-            case State.Attack1:
-            case State.Attack2:
-                break;
-            case State.Hit:
-                break;
-            case State.Die:
-                break;
-        }
-    }
+        if (isDead && newState != State.Die && !force) return;
+        if (currentState == newState) return;
 
-    private void HandlePhysics()
-    {
-        switch (currentState)
+        currentState = newState;
+
+        // FSMManager.PlayerState로 변환 (딕셔너리 사용)
+        if (stateToFSMMapping.ContainsKey(newState))
         {
-            case State.Idle:
-                Vector3 idleVelocity = rb.velocity;
-                idleVelocity.x = Mathf.Lerp(idleVelocity.x, 0f, Time.fixedDeltaTime * 10f);
-                idleVelocity.z = Mathf.Lerp(idleVelocity.z, 0f, Time.fixedDeltaTime * 10f);
-                rb.velocity = idleVelocity;
-                break;
-            case State.Moving:
-                MovePlayer();
-                break;
-            case State.Attack1:
-            case State.Attack2:
-                break;
-            case State.Hit:
-                break;
-            case State.Die:
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
-                break;
+            FSMManager.PlayerState fsmState = stateToFSMMapping[newState];
+            // 상태 변경 이벤트 호출
+            OnStateChanged?.Invoke(fsmState);
+        }
+
+        // 상태 진입 처리 (딕셔너리 사용)
+        if (stateEnterActions.ContainsKey(newState))
+        {
+            stateEnterActions[newState]?.Invoke();
         }
     }
 
@@ -387,64 +422,6 @@ public class PlayerFsm : MonoBehaviourPun
         {
             Quaternion targetRotation = Quaternion.LookRotation(movementInput);
             rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
-        }
-    }
-
-    // 상태 관리
-    public void TransitionToState(State newState, bool force = false)
-    {
-        if (isDead && newState != State.Die && !force) return;
-        if (currentState == newState) return;
-
-        currentState = newState;
-
-        // FSMManager.PlayerState로 변환
-        FSMManager.PlayerState fsmState = ConvertToFSMState(newState);
-
-        // 상태 변경 이벤트 호출
-        OnStateChanged?.Invoke(fsmState);
-
-        switch (currentState)
-        {
-            case State.Idle:
-                EnterIdleState();
-                break;
-            case State.Moving:
-                EnterMovingState();
-                break;
-            case State.Attack1:
-                EnterAttack1State();
-                break;
-            case State.Attack2:
-                EnterAttack2State();
-                break;
-            case State.Hit:
-                EnterHitState();
-                break;
-            case State.Die:
-                EnterDieState();
-                break;
-        }
-    }
-
-    private FSMManager.PlayerState ConvertToFSMState(State state)
-    {
-        switch (state)
-        {
-            case State.Idle:
-                return FSMManager.PlayerState.Idle;
-            case State.Moving:
-                return FSMManager.PlayerState.Moving;
-            case State.Attack1:
-                return FSMManager.PlayerState.Attack1;
-            case State.Attack2:
-                return FSMManager.PlayerState.Attack2;
-            case State.Hit:
-                return FSMManager.PlayerState.Hit;
-            case State.Die:
-                return FSMManager.PlayerState.Die;
-            default:
-                return FSMManager.PlayerState.Idle;
         }
     }
 
@@ -564,14 +541,12 @@ public class PlayerFsm : MonoBehaviourPun
                 }
                 break;
             case "Die":
-                Log($"[PlayerFsm] {animationName} 애니메이션 종료 후 별도의 처리가 필요합니다.");
+                Debug.Log($"[PlayerFsm] {animationName} 애니메이션 종료 후 별도의 처리가 필요합니다.");
                 break;
             default:
                 Debug.LogWarning($"[PlayerFsm] 알 수 없는 애니메이션 종료: {animationName}");
                 break;
         }
-
-        Debug.Log($"[PlayerFsm] {animationName} 애니메이션 종료 처리됨.");
     }
 
     private Vector3 CalculateMovementDirection(float inputX, float inputZ)
@@ -608,14 +583,12 @@ public class PlayerFsm : MonoBehaviourPun
     public void LockAttack()
     {
         isAttackLocked = true;
-        Log("[PlayerFsm] 공격 입력이 잠금되었습니다.");
     }
 
     // 공격 입력 잠금 해제
     public void UnlockAttack()
     {
         isAttackLocked = false;
-        Log("[PlayerFsm] 공격 입력 잠금이 해제되었습니다.");
     }
 
     // 씬 이동을 위함 -지원
@@ -701,22 +674,6 @@ public class PlayerFsm : MonoBehaviourPun
         string soundName = soundClips[randomIndex];
         Debug.Log($"[PlayerFsm] SoundManager를 통해 사운드 재생 시도: {soundName}");
         SoundManager.Instance?.PlaySFX(soundName, gameObject);
-    }
-
-    // 코드 내에서 반복적으로 사용되는 로그 출력
-    public void Log(string message)
-    {
-        Debug.Log(message);
-    }
-
-    public void LogWarning(string message)
-    {
-        Debug.LogWarning(message);
-    }
-
-    public void LogError(string message)
-    {
-        Debug.LogError(message);
     }
 
     // 플레이어의 현재 이동 방향을 반환하는 메서드
