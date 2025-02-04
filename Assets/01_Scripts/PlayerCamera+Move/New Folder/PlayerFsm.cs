@@ -24,7 +24,7 @@ public class PlayerFsm : MonoBehaviourPun
     private Animator animator;
     private Vector3 movementInput;
     private const float moveThreshold = 0.05f;
-    private const float LERP_SPEED = 10f; 
+    private const float LERP_SPEED = 10f; // 이동 보간 속도 상수
 
     // 현재 이동 속도
     private float currentSpeed;
@@ -150,6 +150,7 @@ public class PlayerFsm : MonoBehaviourPun
         // pun 동기화를 위함. 지우지 마시오!! - 지원
         if (!photonView.IsMine) return;
 
+        // 콤보 리셋은 코루틴으로 통합하였으므로 Update()에서 별도 처리 제거함.
     }
 
     private void FixedUpdate()
@@ -157,7 +158,7 @@ public class PlayerFsm : MonoBehaviourPun
         // pun 동기화를 위함. 지우지 마시오!! - 지원
         if (!photonView.IsMine) return;
 
-        // 최적화를 위해 currentPhysicsAction을 직접 호출 
+        // 최적화를 위해 currentPhysicsAction을 직접 호출 (상태 변경 시 업데이트)
         currentPhysicsAction?.Invoke();
     }
 
@@ -195,6 +196,9 @@ public class PlayerFsm : MonoBehaviourPun
             {
                 Debug.LogWarning("Rigidbody useGravity가 비활성화되어 있습니다.");
             }
+
+            // 물리적 이동의 부드러움을 위해 Rigidbody Interpolation 활성화
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
         }
 
         // FSMManager 스크립트 가져오기
@@ -263,11 +267,12 @@ public class PlayerFsm : MonoBehaviourPun
             { State.Die, FSMManager.PlayerState.Die }
         };
 
-        // 물리 처리 함수 매핑
+        // 물리 처리 함수 매핑 (MovePlayer()에서 MovePosition 사용)
         statePhysicsActions = new Dictionary<State, Action>
         {
             { State.Idle, () =>
                 {
+                    // 이동하지 않을 때는 속도를 보간 처리
                     Vector3 idleVelocity = rb.velocity;
                     idleVelocity.x = Mathf.Lerp(idleVelocity.x, 0f, Time.fixedDeltaTime * LERP_SPEED);
                     idleVelocity.z = Mathf.Lerp(idleVelocity.z, 0f, Time.fixedDeltaTime * LERP_SPEED);
@@ -458,7 +463,7 @@ public class PlayerFsm : MonoBehaviourPun
     {
         yield return new WaitForSeconds(comboResetTime);
         currentComboState = ComboState.None;
-        comboResetCoroutine = null; 
+        comboResetCoroutine = null; // 코루틴 종료 후 null로 초기화
     }
 
     // fsmManager의 null 체크 후 상태 전환 호출을 위한 유틸 함수
@@ -505,11 +510,17 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
+    // MovePlayer() 메서드를 수정하여 Rigidbody.MovePosition() 사용 및 Time.fixedDeltaTime 보정
     private void MovePlayer()
     {
+        // 이동할 위치 계산 (y축은 Gravity에 의해 제어하므로 0으로 고정)
         Vector3 moveVelocity = movementInput * currentSpeed;
-        rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
+        Vector3 targetPosition = rb.position + new Vector3(moveVelocity.x, 0f, moveVelocity.z) * Time.fixedDeltaTime;
 
+        // MovePosition을 통해 이동 (물리적 충돌과의 자연스러운 상호 작용)
+        rb.MovePosition(targetPosition);
+
+        // 회전 처리 (방향 전환)
         if (movementInput.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movementInput);
@@ -534,7 +545,7 @@ public class PlayerFsm : MonoBehaviourPun
     private void HandleAttackState(string triggerName, FSMManager.PlayerState state)
     {
         animator.SetTrigger(triggerName);
-        isAttackLocked = true; 
+        isAttackLocked = true; // 공격 중 입력 잠금
         InvokeFsmStateChange(state);
 
         string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
