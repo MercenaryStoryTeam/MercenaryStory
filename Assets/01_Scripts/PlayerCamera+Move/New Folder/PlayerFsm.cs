@@ -77,15 +77,19 @@ public class PlayerFsm : MonoBehaviourPun
     private Dictionary<State, FSMManager.PlayerState> stateToFSMMapping;
     // =======================================================
 
-    // 애니메이션 종료 처리 딕셔너리 (switch문 대체)
+    // 애니메이션 종료 처리 딕셔너리
     private Dictionary<string, Action> animationEndActions;
+
+    // 콤보 단계 전환을 위한 딕셔너리
+    private Dictionary<ComboState, Action> comboTransitionActions;
 
     private void Awake()
     {
         InitializeComponents();
         InitializeCamera();
         InitializeStateDictionaries();
-        InitializeAnimationEndActions(); // 애니메이션 종료 처리용 딕셔너리 초기화
+        InitializeAnimationEndActions(); 
+        InitializeComboTransitionActions(); 
     }
 
     private void Start()
@@ -337,6 +341,28 @@ public class PlayerFsm : MonoBehaviourPun
         };
     }
 
+    // 콤보 단계 전환용 딕셔너리 초기화
+    private void InitializeComboTransitionActions()
+    {
+        comboTransitionActions = new Dictionary<ComboState, Action>
+        {
+            { ComboState.None, () => {
+                    currentComboState = ComboState.Attack1;
+                    TransitionToState(State.Attack1);
+                }
+            },
+            { ComboState.Attack1, () => {
+                    currentComboState = ComboState.Attack2;
+                    TransitionToState(State.Attack2);
+                }
+            },
+            { ComboState.Attack2, () => {
+                    currentComboState = ComboState.None;
+                }
+            }
+        };
+    }
+
     // 씬 로딩 시 호출되는 메서드
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -420,20 +446,10 @@ public class PlayerFsm : MonoBehaviourPun
         // 공격 시작 시 movementInput 초기화
         movementInput = Vector3.zero;
 
-        // 콤보 단계에 따라 공격 처리
-        switch (currentComboState)
+        // 콤보 단계에 따른 전환
+        if (comboTransitionActions.ContainsKey(currentComboState))
         {
-            case ComboState.None:
-                currentComboState = ComboState.Attack1;
-                TransitionToState(State.Attack1);
-                break;
-            case ComboState.Attack1:
-                currentComboState = ComboState.Attack2;
-                TransitionToState(State.Attack2);
-                break;
-            case ComboState.Attack2:
-                currentComboState = ComboState.None;
-                break;
+            comboTransitionActions[currentComboState].Invoke();
         }
 
         // 콤보 타이머 재시작
@@ -464,7 +480,7 @@ public class PlayerFsm : MonoBehaviourPun
 
         currentState = newState;
 
-        // FSMManager.PlayerState로 변환 (딕셔너리 사용)
+        // FSMManager.PlayerState로 변환 
         if (stateToFSMMapping.ContainsKey(newState))
         {
             FSMManager.PlayerState fsmState = stateToFSMMapping[newState];
@@ -472,7 +488,7 @@ public class PlayerFsm : MonoBehaviourPun
             OnStateChanged?.Invoke(fsmState);
         }
 
-        // 상태 진입 처리 (딕셔너리 사용)
+        // 상태 진입 처리
         if (stateEnterActions.ContainsKey(newState))
         {
             stateEnterActions[newState]?.Invoke();
@@ -576,7 +592,7 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
-    // Attack 및 스킬 애니메이션 종료 이후 처리 (딕셔너리 방식으로 전환)
+    // Attack 및 스킬 애니메이션 종료 이후 처리
     public void OnAnimationEnd(string animationName)
     {
         if (animationEndActions != null && animationEndActions.ContainsKey(animationName))
