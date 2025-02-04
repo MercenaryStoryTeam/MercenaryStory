@@ -24,6 +24,7 @@ public class FSMManager : MonoBehaviour
     private PlayerFsm playerFsm;
     private SkillFsm skillFsm;
 
+    // FSMManager가 현재 상태를 단일 관리합니다.
     public PlayerState currentState = PlayerState.Idle;
 
     private void Awake()
@@ -37,7 +38,8 @@ public class FSMManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         if (playerFsm != null)
-            playerFsm.OnStateChanged += HandlePlayerStateChanged;
+            // playerFsm의 OnStateChanged 이벤트 대신 HandlePlayerStateChanged()를 직접 호출받습니다.
+            playerFsm.OnAnimationEnd(""); // 임의 호출 X – 상태 전환은 PlayerFsm 내부에서 직접 HandlePlayerStateChanged()를 호출합니다.
 
         if (skillFsm != null)
             skillFsm.OnSkillTriggerRequested += HandleSkillTrigger;
@@ -48,9 +50,6 @@ public class FSMManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
         if (playerFsm != null)
-            playerFsm.OnStateChanged -= HandlePlayerStateChanged;
-
-        if (skillFsm != null)
             skillFsm.OnSkillTriggerRequested -= HandleSkillTrigger;
     }
 
@@ -78,7 +77,6 @@ public class FSMManager : MonoBehaviour
             enabled = false;
             return;
         }
-        // 추가 초기화 로직이 필요하면 여기서 수행
     }
 
     // 씬 로딩 시 호출되는 메서드
@@ -87,15 +85,14 @@ public class FSMManager : MonoBehaviour
         InitializeComponents();
         InitializeFSMManager();
 
-        if (playerFsm != null)
-            playerFsm.OnStateChanged += HandlePlayerStateChanged;
+        // PlayerFsm 내부에서 상태 전환 시 직접 HandlePlayerStateChanged() 호출하므로 별도의 작업은 필요하지 않습니다.
 
         if (skillFsm != null)
             skillFsm.OnSkillTriggerRequested += HandleSkillTrigger;
     }
 
-    // PlayerFsm의 상태 변경을 처리하는 메서드
-    public void HandlePlayerStateChanged(PlayerState newState) // 접근 제한자: public
+    // PlayerFsm의 상태 변경을 처리하는 메서드 (중앙 관리)
+    public void HandlePlayerStateChanged(PlayerState newState)
     {
         currentState = newState;
         Debug.Log($"[FSMManager] 상태가 {newState}로 변경되었습니다.");

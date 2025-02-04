@@ -29,7 +29,10 @@ public class PlayerFsm : MonoBehaviourPun
     // 현재 이동 속도
     private float currentSpeed;
 
-    // 상태 유형
+    // 기존에는 PlayerFsm 내부에서 상태를 관리했으나 FSMManager로 중앙 관리하므로 제거합니다.
+    // public State currentState = State.Idle;
+
+    // 상태 유형 (PlayerFsm 내부에서 상태별 동작을 구분하기 위한 용도)
     public enum State
     {
         Idle,
@@ -40,7 +43,6 @@ public class PlayerFsm : MonoBehaviourPun
         Die
     }
 
-    public State currentState = State.Idle;
     private bool isDead = false;
 
     // 콤보 시스템
@@ -67,8 +69,8 @@ public class PlayerFsm : MonoBehaviourPun
     private bool isMovementLocked = false;
     private bool isAttackLocked = false;
 
-    // 상태 변경 시 이벤트
-    public event Action<FSMManager.PlayerState> OnStateChanged;
+    // (이전에는 이벤트로 상태 변경을 알렸으나 중앙 관리하므로 직접 호출합니다.)
+    // public event Action<FSMManager.PlayerState> OnStateChanged;
 
     private bool isMobile = false;
 
@@ -78,6 +80,7 @@ public class PlayerFsm : MonoBehaviourPun
     // ===== 딕셔너리 활용한 상태 전환 관련 변수 추가 =====
     private Dictionary<State, Action> stateEnterActions;
     private Dictionary<State, Action> statePhysicsActions;
+    // 기존 PlayerFsm.State -> FSMManager.PlayerState 매핑 딕셔너리
     private Dictionary<State, FSMManager.PlayerState> stateToFSMMapping;
     // =======================================================
 
@@ -292,7 +295,7 @@ public class PlayerFsm : MonoBehaviourPun
         };
 
         // 초기 상태의 물리 처리 함수 설정
-        currentPhysicsAction = statePhysicsActions[currentState];
+        // 중앙 상태 관리는 FSMManager.currentState에서 이루어지므로 currentPhysicsAction은 나중에 TransitionToState()에서 업데이트됩니다.
     }
     // ======================================================
 
@@ -371,7 +374,7 @@ public class PlayerFsm : MonoBehaviourPun
     {
         if (isDead || isMovementLocked) return;
 
-        // 현재 FSM 상태 확인
+        // 현재 FSM 상태 확인 (FSMManager에서 중앙 관리)
         if (fsmManager == null)
         {
             Debug.LogError("[PlayerFsm] FSMManager 참조가 없습니다.");
@@ -394,15 +397,14 @@ public class PlayerFsm : MonoBehaviourPun
 
         currentMovementDirection = movementInput.normalized;
 
+        // FSMManager의 currentState와 비교할 필요는 없으므로, 단순히 입력에 따라 이동/정지 애니메이션을 조절합니다.
         if (movementInput.sqrMagnitude > moveThreshold)
         {
-            if (currentState != State.Moving)
-                TransitionToState(State.Moving);
+            TransitionToState(State.Moving);
         }
         else
         {
-            if (currentState != State.Idle)
-                TransitionToState(State.Idle);
+            TransitionToState(State.Idle);
         }
 
         float normalizedSpeed = (movementInput.magnitude * currentSpeed) /
@@ -466,7 +468,7 @@ public class PlayerFsm : MonoBehaviourPun
         comboResetCoroutine = null; // 코루틴 종료 후 null로 초기화
     }
 
-    // fsmManager의 null 체크 후 상태 전환 호출을 위한 유틸 함수
+    // fsmManager의 null 체크 후 상태 전환 호출을 위한 유틸 함수 (중앙 관리용)
     private void InvokeFsmStateChange(FSMManager.PlayerState state)
     {
         if (fsmManager != null)
@@ -479,24 +481,31 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
+    // 중앙 상태 관리를 위해 PlayerFsm 내부의 상태 변수는 제거하고 FSMManager.currentState를 기준으로 합니다.
     public void TransitionToState(State newState, bool force = false)
     {
-        if (isDead && newState != State.Die && !force) return;
-        if (currentState == newState) return;
+        // FSMManager의 현재 상태가 Die이면 다른 상태로 전환하지 않습니다.
+        if (fsmManager.currentState == FSMManager.PlayerState.Die && newState != State.Die && !force) return;
 
-        currentState = newState;
-
-        // FSMManager.PlayerState로 변환 및 이벤트 호출
-        if (stateToFSMMapping.ContainsKey(newState))
-        {
-            FSMManager.PlayerState fsmState = stateToFSMMapping[newState];
-            OnStateChanged?.Invoke(fsmState);
-        }
+        // 현재 FSMManager의 상태와 새 상태가 같다면 전환하지 않습니다.
+        if (stateToFSMMapping.ContainsKey(newState) && fsmManager.currentState == stateToFSMMapping[newState])
+            return;
 
         // 상태 진입 처리
         if (stateEnterActions.ContainsKey(newState))
         {
             stateEnterActions[newState]?.Invoke();
+        }
+
+        // FSMManager의 상태를 업데이트 (중앙 관리)
+        if (stateToFSMMapping.ContainsKey(newState))
+        {
+            FSMManager.PlayerState newFsmState = stateToFSMMapping[newState];
+            fsmManager.HandlePlayerStateChanged(newFsmState);
+        }
+        else
+        {
+            Debug.LogWarning("[PlayerFsm] stateToFSMMapping에 해당 상태가 없습니다.");
         }
 
         // FixedUpdate 최적화를 위해 현재 상태의 물리 처리 함수를 currentPhysicsAction에 업데이트
@@ -574,7 +583,7 @@ public class PlayerFsm : MonoBehaviourPun
     // 공격을 받았을 때 호출
     public void TakeDamage()
     {
-        if (isDead || currentState == State.Hit) return;
+        if (isDead || fsmManager.currentState == FSMManager.PlayerState.Hit) return;
         TransitionToState(State.Hit);
     }
 
