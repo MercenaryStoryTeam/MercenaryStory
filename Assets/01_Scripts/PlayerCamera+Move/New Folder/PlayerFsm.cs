@@ -8,8 +8,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Rigidbody), typeof(Animator), typeof(Player))]
 public class PlayerFsm : MonoBehaviourPun
 {
-    [HideInInspector]
-    public Transform cameraTransform;
+    [HideInInspector] public Transform cameraTransform;
 
     [Header("Die 애니메이션 재생 시간")]
     public float dieAnimationDuration = 2f;
@@ -169,6 +168,8 @@ public class PlayerFsm : MonoBehaviourPun
             }
         }
 
+        // AudioSource 관련 코드는 SoundManager 방식을 사용하므로 제거되었습니다.
+
         // FSMManager 스크립트 가져오기
         fsmManager = GetComponent<FSMManager>();
         if (fsmManager != null)
@@ -261,7 +262,7 @@ public class PlayerFsm : MonoBehaviourPun
         }
 
         float normalizedSpeed = (movementInput.magnitude * currentSpeed) /
-                                (player != null ? player.moveSpeed : 1f);
+                            (player != null ? player.moveSpeed : 1f);
         animator.SetFloat("Speed", normalizedSpeed);
     }
 
@@ -474,6 +475,10 @@ public class PlayerFsm : MonoBehaviourPun
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Attack1);
         }
+
+        // 사운드 재생: SoundManager 방식을 사용
+        string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
+        StartCoroutine(PlayDelayedSoundWithSoundManager(comboSoundClips, soundDelay));
     }
 
     private void EnterAttack2State()
@@ -484,6 +489,10 @@ public class PlayerFsm : MonoBehaviourPun
         {
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Attack2);
         }
+
+        // 사운드 재생: SoundManager 방식을 사용
+        string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
+        StartCoroutine(PlayDelayedSoundWithSoundManager(comboSoundClips, soundDelay));
     }
 
     private void EnterHitState()
@@ -675,6 +684,23 @@ public class PlayerFsm : MonoBehaviourPun
         FirebaseManager.Instance.UploadCurrentUserData();
         GameManager.Instance.ChangeScene(1);
         ServerManager.LeaveAndLoadScene("LJW_TownScene");
+    }
+
+    // 사운드 재생 코루틴 (SoundManager 방식을 사용)
+    private IEnumerator PlayDelayedSoundWithSoundManager(string[] soundClips, float delay)
+    {
+        if (soundClips == null || soundClips.Length == 0)
+        {
+            Debug.LogError("[PlayerFsm] soundClips 배열이 비어 있습니다!");
+            yield break;
+        }
+
+        yield return new WaitForSeconds(delay);
+
+        int randomIndex = UnityEngine.Random.Range(0, soundClips.Length);
+        string soundName = soundClips[randomIndex];
+        Debug.Log($"[PlayerFsm] SoundManager를 통해 사운드 재생 시도: {soundName}");
+        SoundManager.Instance?.PlaySFX(soundName, gameObject);
     }
 
     // 코드 내에서 반복적으로 사용되는 로그 출력
