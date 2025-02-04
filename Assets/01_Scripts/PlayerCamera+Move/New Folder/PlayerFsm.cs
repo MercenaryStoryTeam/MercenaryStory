@@ -54,6 +54,9 @@ public class PlayerFsm : MonoBehaviourPun
     private ComboState currentComboState = ComboState.None;
     private float lastAttackTime = 0f;
 
+    // 공격 리셋 코루틴 참조 (코루틴 중복 실행 관리를 위해 추가)
+    private Coroutine comboResetCoroutine;
+
     // Player 스크립트 참조: 이동 속도, HP 관리 등 플레이어 전반의 데이터를 가져오기 위함
     private Player player;
 
@@ -144,10 +147,7 @@ public class PlayerFsm : MonoBehaviourPun
         // pun 동기화를 위함. 지우지 마시오!! - 지원
         if (!photonView.IsMine) return;
 
-        if (!isDead)
-        {
-            HandleComboReset();
-        }
+        // 콤보 리셋은 코루틴으로 통합하였으므로 Update()에서 별도 처리 제거함.
     }
 
     private void FixedUpdate()
@@ -446,12 +446,13 @@ public class PlayerFsm : MonoBehaviourPun
             return;
         }
 
-        // 콤보 타이밍 체크
+        // 콤보 타이밍 체크: 마지막 공격 이후 지정 시간(comboResetTime)이 지났으면 콤보를 리셋합니다.
         if (Time.time - lastAttackTime > comboResetTime)
         {
             currentComboState = ComboState.None;
         }
 
+        // 마지막 공격 시간 업데이트
         lastAttackTime = Time.time;
 
         // 공격 시작 시 movementInput 초기화
@@ -463,25 +464,20 @@ public class PlayerFsm : MonoBehaviourPun
             comboTransitionActions[currentComboState].Invoke();
         }
 
-        // 콤보 타이머 재시작
-        StartCoroutine(ComboResetCoroutine());
+        // 코루틴 중복 실행 관리: 실행 중인 콤보 리셋 코루틴이 있다면 중단 후 새로 시작
+        if (comboResetCoroutine != null)
+        {
+            StopCoroutine(comboResetCoroutine);
+        }
+        comboResetCoroutine = StartCoroutine(ComboResetCoroutine());
     }
 
-    // 콤보 타이머를 리셋하는 코루틴
+    // 콤보 타이머를 리셋하는 코루틴 (코루틴만 사용하도록 통합)
     private IEnumerator ComboResetCoroutine()
     {
         yield return new WaitForSeconds(comboResetTime);
         currentComboState = ComboState.None;
-    }
-
-    // 콤보 리셋을 확인하는 함수
-    private void HandleComboReset()
-    {
-        if (Time.time - lastAttackTime > comboResetTime &&
-            currentComboState != ComboState.None)
-        {
-            currentComboState = ComboState.None;
-        }
+        comboResetCoroutine = null; // 코루틴 종료 후 null로 초기화
     }
 
     public void TransitionToState(State newState, bool force = false)
