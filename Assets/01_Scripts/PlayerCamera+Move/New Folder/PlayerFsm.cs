@@ -77,11 +77,15 @@ public class PlayerFsm : MonoBehaviourPun
     private Dictionary<State, FSMManager.PlayerState> stateToFSMMapping;
     // =======================================================
 
+    // 애니메이션 종료 처리 딕셔너리 (switch문 대체)
+    private Dictionary<string, Action> animationEndActions;
+
     private void Awake()
     {
         InitializeComponents();
         InitializeCamera();
-        InitializeStateDictionaries(); 
+        InitializeStateDictionaries();
+        InitializeAnimationEndActions(); // 애니메이션 종료 처리용 딕셔너리 초기화
     }
 
     private void Start()
@@ -270,6 +274,69 @@ public class PlayerFsm : MonoBehaviourPun
     }
     // ======================================================
 
+    // 애니메이션 종료 처리용 딕셔너리 초기화
+    private void InitializeAnimationEndActions()
+    {
+        animationEndActions = new Dictionary<string, Action>
+        {
+            { "Attack1", () => {
+                    if (fsmManager != null)
+                    {
+                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                    }
+                    isAttackLocked = false;
+                }
+            },
+            { "Attack2", () => {
+                    if (fsmManager != null)
+                    {
+                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                    }
+                    isAttackLocked = false;
+                }
+            },
+            { "Hit", () => {
+                    if (fsmManager != null)
+                    {
+                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                    }
+                }
+            },
+            { "Rush", () => {
+                    if (fsmManager != null)
+                    {
+                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                    }
+                }
+            },
+            { "Parry", () => {
+                    if (fsmManager != null)
+                    {
+                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                    }
+                }
+            },
+            { "Skill1", () => {
+                    if (fsmManager != null)
+                    {
+                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                    }
+                }
+            },
+            { "Skill2", () => {
+                    if (fsmManager != null)
+                    {
+                        fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
+                    }
+                }
+            },
+            { "Die", () => {
+                    Debug.Log($"[PlayerFsm] Die 애니메이션 종료 후 별도의 처리가 필요합니다.");
+                }
+            }
+        };
+    }
+
     // 씬 로딩 시 호출되는 메서드
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -452,7 +519,6 @@ public class PlayerFsm : MonoBehaviourPun
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Attack1);
         }
 
-        // 사운드 재생: SoundManager 방식을 사용
         string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
         StartCoroutine(PlayDelayedSoundWithSoundManager(comboSoundClips, soundDelay));
     }
@@ -466,7 +532,6 @@ public class PlayerFsm : MonoBehaviourPun
             fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Attack2);
         }
 
-        // 사운드 재생: SoundManager 방식을 사용
         string[] comboSoundClips = { "player_Twohandattack1", "player_Twohandattack2" };
         StartCoroutine(PlayDelayedSoundWithSoundManager(comboSoundClips, soundDelay));
     }
@@ -511,40 +576,16 @@ public class PlayerFsm : MonoBehaviourPun
         }
     }
 
-    // Attack 및 스킬 애니메이션 종료 이후 처리
+    // Attack 및 스킬 애니메이션 종료 이후 처리 (딕셔너리 방식으로 전환)
     public void OnAnimationEnd(string animationName)
     {
-        switch (animationName)
+        if (animationEndActions != null && animationEndActions.ContainsKey(animationName))
         {
-            case "Attack1":
-            case "Attack2":
-                if (fsmManager != null)
-                {
-                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                }
-                isAttackLocked = false; // 공격 종료 시 입력 잠금 해제
-                break;
-            case "Hit":
-                if (fsmManager != null)
-                {
-                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                }
-                break;
-            case "Rush":
-            case "Parry":
-            case "Skill1":
-            case "Skill2":
-                if (fsmManager != null)
-                {
-                    fsmManager.HandlePlayerStateChanged(FSMManager.PlayerState.Idle);
-                }
-                break;
-            case "Die":
-                Debug.Log($"[PlayerFsm] {animationName} 애니메이션 종료 후 별도의 처리가 필요합니다.");
-                break;
-            default:
-                Debug.LogWarning($"[PlayerFsm] 알 수 없는 애니메이션 종료: {animationName}");
-                break;
+            animationEndActions[animationName].Invoke();
+        }
+        else
+        {
+            Debug.LogWarning($"[PlayerFsm] 알 수 없는 애니메이션 종료: {animationName}");
         }
     }
 
