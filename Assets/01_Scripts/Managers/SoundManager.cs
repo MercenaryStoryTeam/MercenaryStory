@@ -22,8 +22,8 @@ public class SoundManager : SingletonManager<SoundManager>
     private void SetupAudio()
     {
         bgmSource = gameObject.AddComponent<AudioSource>();
-        bgmSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(BGM_VOLUME_KEY)[0];  // BGM 그룹에 연결
-        bgmSource.spatialBlend = 0f;  // 2D 사운드로 설정
+        bgmSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(BGM_VOLUME_KEY)[0];  
+        bgmSource.spatialBlend = 0f;  
         bgmSource.loop = true;  
 
         LoadAllAudioClips();
@@ -78,7 +78,7 @@ public class SoundManager : SingletonManager<SoundManager>
             {
                 audioSource = source.AddComponent<AudioSource>();
                 audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(SFX_VOLUME_KEY)[0];
-                audioSource.spatialBlend = 1f;  // 3D 사운드
+                audioSource.spatialBlend = 1f; 
             }
             
             print($"Playing SFX: {source} : {clipName}");

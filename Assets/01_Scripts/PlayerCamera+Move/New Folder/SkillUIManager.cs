@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+// 스킬창을 위한 스크립트
 public class SkillUIManager : MonoBehaviour
 {
     [Header("Skill FSM 스크립트")] public SkillFsm skillFsm;
@@ -125,7 +126,8 @@ public class SkillUIManager : MonoBehaviour
                 Debug.LogWarning("[SkillUIManager] 이름에 'Clone'이 포함되지 않은 Player 오브젝트를 찾을 수 없습니다. 1초 후 다시 시도합니다.");
             }
 
-            yield return new WaitForSeconds(1f); // 1초 대기 후 다시 시도
+            // 1초 대기 후 다시 시도
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -143,14 +145,13 @@ public class SkillUIManager : MonoBehaviour
                 var button = skillButtons[i];
                 if (button != null)
                 {
-                    button.onClick.RemoveAllListeners(); // 중복 등록 방지
+                    button.onClick.RemoveAllListeners(); 
                     buttonDefaultColors[button] = button.image.color;
 
                     if (i < skillTypes.Count)
                     {
                         SkillType skillType = skillTypes[i];
-                        // 인덱스 고정 람다 사용
-                        int index = i; // 로컬 변수로 캡처
+                        int index = i;
                         button.onClick.AddListener(() => SelectSkill(skillTypes[index]));
                     }
                     else

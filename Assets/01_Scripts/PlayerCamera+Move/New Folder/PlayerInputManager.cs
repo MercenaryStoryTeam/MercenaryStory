@@ -2,9 +2,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-/// <summary>
-/// 플레이어의 입력을 관리하는 스크립트
-/// </summary>
+// 플레이어의 입력을 관리하는 스크립트
 public class PlayerInputManager : MonoBehaviourPun
 {
     public static System.Action<Vector2> OnMoveInput;
@@ -113,9 +111,7 @@ public class PlayerInputManager : MonoBehaviourPun
         }
     }
 
-    /// <summary>
-    /// ESC 키 처리 메서드
-    /// </summary>
+    // ESC 키 처리 메서드
     private void HandleEscapeKey()
     {
         if (UIManager.Instance.IsAnyPanelOpen())
@@ -247,9 +243,7 @@ public class PlayerInputManager : MonoBehaviourPun
         // UI 버튼이 적절히 액션을 호출하도록 설정되어야 합니다.
     }
 
-    /// <summary>
-    /// 터치가 UI 요소 위에 있는지 확인하는 유틸리티 함수
-    /// </summary>
+    // 터치가 UI 요소 위에 있는지 확인하는 유틸리티 함수
     private bool IsPointerOverUIObject(Touch touch)
     {
         // 현재 터치 위치를 기반으로 PointerEventData 생성
