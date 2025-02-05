@@ -101,7 +101,7 @@ public class ShopPanel : MonoBehaviour
 			holdSlot.RemoveItem();
 		}
 
-		List<InventorySlot> inventorySlots = UIManager.Instance.inventoryMangerSystem.slots;
+		List<InventorySlot> inventorySlots = UIManager.Instance.inventoryManagerSystem.slots;
 		for (int i = 0; i < inventorySlots.Count && i < holdSlots.Count; i++)
 		{
 			if (inventorySlots[i].item != null)
@@ -147,7 +147,7 @@ public class ShopPanel : MonoBehaviour
 				{
 					int holdSlotIndex = holdSlots.IndexOf(originalSlot);
 					InventorySlot inventorySlot =
-						UIManager.Instance.inventoryMangerSystem.slots[holdSlotIndex];
+						UIManager.Instance.inventoryManagerSystem.slots[holdSlotIndex];
 
 					if (sellSlot.item.itemClass == 2)
 					{
@@ -193,12 +193,12 @@ public class ShopPanel : MonoBehaviour
 
 		if (arraySlot)
 		{
-			InventoryManger.Instance.SlotArray();
+			InventoryManager.Instance.SlotArray();
 		}
 
 		Debug.Log($"현재 골드: {FirebaseManager.Instance.CurrentUserData.user_Gold}");
 		UpdateHoldSlots();
-		InventoryManger.Instance.UpdateSlotData();
+		InventoryManager.Instance.UpdateSlotData();
 		UIManager.Instance.CloseShopPanel();
 	}
 

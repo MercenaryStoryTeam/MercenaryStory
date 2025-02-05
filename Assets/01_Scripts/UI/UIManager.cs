@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIManager : SingletonManager<UIManager>
@@ -10,7 +11,7 @@ public class UIManager : SingletonManager<UIManager>
 	public InventoryPanel inventory;
 	public ShopPanel shop;
 	public EquipmentPanel equipment;
-	public InventoryManger inventoryMangerSystem;
+	[FormerlySerializedAs("inventoryMangerSystem")] public InventoryManager inventoryManagerSystem;
 
 	public PopUp popUp;
 
@@ -75,7 +76,7 @@ public class UIManager : SingletonManager<UIManager>
 		inventory = FindObjectOfType<InventoryPanel>();
 		shop = FindObjectOfType<ShopPanel>();
 		equipment = FindObjectOfType<EquipmentPanel>();
-		inventoryMangerSystem = FindObjectOfType<InventoryManger>();
+		inventoryManagerSystem = FindObjectOfType<InventoryManager>();
 		popUp = FindObjectOfType<PopUp>();
 		skillUI = FindObjectOfType<SkillUIManager>();
 		mobile = FindObjectOfType<MobileUI>();

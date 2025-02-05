@@ -201,7 +201,7 @@ public class PlayerInputManager : MonoBehaviourPun
 						if (player.droppedItems[i].droppedItem != null &&
 						    player.droppedItems[i].droppedLightLine != null)
 						{
-							InventoryManger.Instance.AddItemToInventory(player.droppedItems[i]
+							InventoryManager.Instance.AddItemToInventory(player.droppedItems[i]
 								.droppedItem);
 							Destroy(player.droppedItems[i].droppedLightLine);
 						}

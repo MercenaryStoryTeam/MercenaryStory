@@ -12,7 +12,7 @@ public class Equipment : MonoBehaviourPunCallbacks
 			int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
 			if (savedWeaponId != 0)
 			{
-				ItemBase savedWeapon = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
+				ItemBase savedWeapon = InventoryManager.Instance.allItems.Find(x => x.id == savedWeaponId);
 				if (savedWeapon != null)
 				{
 					photonView.RPC("NetworkSetEquipment", RpcTarget.All, savedWeaponId);
@@ -64,19 +64,19 @@ public class Equipment : MonoBehaviourPunCallbacks
 	private void NetworkSetEquipment(int itemId)
 	{
 		
-		if (InventoryManger.Instance == null)
+		if (InventoryManager.Instance == null)
 		{
 			Debug.LogError("인벤토리매니저 없음");
 			return;
 		}
 
-		if (InventoryManger.Instance.allItems == null)
+		if (InventoryManager.Instance.allItems == null)
 		{
 			Debug.LogError("인벤토리 매니저의 allItems가 비어있음");
 			return;
 		}
 
-		ItemBase item = InventoryManger.Instance.allItems.Find(x => x.id == itemId);
+		ItemBase item = InventoryManager.Instance.allItems.Find(x => x.id == itemId);
 		if (item == null)
 		{
 			Debug.LogError($"ID {itemId}에 해당하는 아이템을 찾을 수 없음");

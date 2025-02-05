@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MobileUI : MonoBehaviour
@@ -10,8 +6,6 @@ public class MobileUI : MonoBehaviour
     public Button invenButton;
     public Button optionButton;
     
-    public Button interactButton; //플레이어 인풋 매니저 E키 그대로 사용
-
     private void Awake()
     {
         MobileUIOnClick();

@@ -1,11 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class InventoryManger : SingletonManager<InventoryManger>
+public class InventoryManager : SingletonManager<InventoryManager>
 {
 	public List<ItemBase> allItems;
 	public List<InventorySlot> slots;
@@ -73,10 +69,6 @@ public class InventoryManger : SingletonManager<InventoryManger>
 				}
 			}
 		}
-	}
-
-	private void Update()
-	{
 	}
 
 	public SlotData SetBasicItem(ItemBase item)

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -85,7 +83,7 @@ public class InventorySlot : MonoBehaviour
 				{
 					playerEquipment.SetCurrentEquip(this);
 					UIManager.Instance.equipment.SetEquipImage(this);
-					InventoryManger.Instance.UpdateSlotData();
+					InventoryManager.Instance.UpdateSlotData();
 				}
 			}
 		}

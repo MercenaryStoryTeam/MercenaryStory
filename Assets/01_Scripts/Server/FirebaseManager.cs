@@ -60,7 +60,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 
 			UserData userData = new UserData(result.User.UserId, email, user_Name);
 			userData.user_Inventory.Add(
-				InventoryManger.Instance.SetBasicItem(InventoryManger.Instance
+				InventoryManager.Instance.SetBasicItem(InventoryManager.Instance
 					.basicEquipWeapon));
 
 			// skill
@@ -156,7 +156,7 @@ public class FirebaseManager : SingletonManager<FirebaseManager>
 			// 모든 작업 완료 대기
 			await Task.WhenAll(tasks);
 
-			InventoryManger.Instance.LoadInventoryFromDatabase();
+			InventoryManager.Instance.LoadInventoryFromDatabase();
 
 			UIManager.Instance.popUp.PopUpClose();
 			ServerManager.ConnectLobby();

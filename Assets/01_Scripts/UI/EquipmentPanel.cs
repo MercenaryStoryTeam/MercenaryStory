@@ -38,7 +38,7 @@ public class EquipmentPanel : MonoBehaviour
 		int savedWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
 		if (savedWeaponId != 0)
 		{
-			currentItem = InventoryManger.Instance.allItems.Find(x => x.id == savedWeaponId);
+			currentItem = InventoryManager.Instance.allItems.Find(x => x.id == savedWeaponId);
 			if (currentItem != null)
 			{
 				currentEquipImage.sprite = currentItem.image;

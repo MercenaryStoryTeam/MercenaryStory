@@ -40,7 +40,7 @@ public class Weapon : MonoBehaviour
 	{
 		int currentWeaponId = FirebaseManager.Instance.CurrentUserData.user_weapon_item_Id;
 		ItemBase currentWeapon =
-			InventoryManger.Instance.allItems.Find(x => x.id == currentWeaponId);
+			InventoryManager.Instance.allItems.Find(x => x.id == currentWeaponId);
 		if (currentWeapon is WeaponItem weapon)
 		{
 			damage = weapon.damage;

@@ -28,7 +28,6 @@ public class ItemInfoPanel : MonoBehaviour
 
 	private void OnEnable()
 	{
-		// UI가 활성화될 때마다 Equipment 찾기 시도
 		TryFindEquipment();
 	}
 
@@ -54,8 +53,8 @@ public class ItemInfoPanel : MonoBehaviour
 
 	private void RemoveItemButtonClick()
 	{
-		InventoryManger inventoryManger = FindObjectOfType<InventoryManger>();
-		inventoryManger.DeleteItem(currentSelectedSlot);
+		InventoryManager inventoryManager = FindObjectOfType<InventoryManager>();
+		inventoryManager.DeleteItem(currentSelectedSlot);
 		UIManager.Instance.CloseItemInfoPanel();
 	}
 
@@ -67,7 +66,7 @@ public class ItemInfoPanel : MonoBehaviour
 		{
 			equipment.SetCurrentEquip(currentSelectedSlot);
 			equipPanel.SetEquipImage(currentSelectedSlot);
-			InventoryManger.Instance.UpdateSlotData();
+			InventoryManager.Instance.UpdateSlotData();
 		}
 		else
 		{
