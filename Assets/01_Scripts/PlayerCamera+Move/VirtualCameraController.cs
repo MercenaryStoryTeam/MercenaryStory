@@ -71,14 +71,6 @@ public class VirtualCameraController : MonoBehaviour
         // 여기서도 SetTargets()를 통해 참조 세팅
         SetTargets();
 
-        // 만약 SetTargets() 결과로 followTarget, lookAtTarget이 여전히 null이면 스크립트를 꺼둔다
-        if (!followTarget || !lookAtTarget)
-        {
-            Debug.LogError("Player 태그 또는 StageManager에서 플레이어를 찾을 수 없습니다. VirtualCameraController를 비활성화합니다.");
-            enabled = false;
-            return;
-        }
-
         // Transposer 설정
         transposer = vCam.GetCinemachineComponent<CinemachineTransposer>();
         vCam.m_Lens.FieldOfView = fieldOfView;
@@ -175,22 +167,20 @@ public class VirtualCameraController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// StageManager.Instance.currentPlayerFsm에서 플레이어를 받아 Follow/LookAt Target 세팅
-    /// </summary>
+    // GameManager.Instance.currentPlayerFsm에서 플레이어를 받아 Follow/LookAt Target 세팅
     private void SetTargets()
     {
-        // 1) StageManager 자체가 있는지 먼저 확인
+        // 1) GameManager 자체가 있는지 먼저 확인
         if (GameManager.Instance == null)
         {
-            Debug.LogWarning("StageManager.Instance가 존재하지 않습니다. 아직 초기화되지 않았거나 씬에 없습니다.");
+            Debug.LogWarning("GameManager.Instance가 존재하지 않습니다. 아직 초기화되지 않았거나 씬에 없습니다.");
             return;
         }
 
         // 2) currentPlayerFsm이 세팅되어 있는지 확인
         if (GameManager.Instance.currentPlayerFsm == null)
         {
-            Debug.LogWarning("StageManager.Instance.currentPlayerFsm이 null입니다. 플레이어 FSM이 할당되지 않았습니다.");
+            Debug.LogWarning("GameManager.Instance.currentPlayerFsm이 null입니다. 플레이어 FSM이 할당되지 않았습니다.");
             return;
         }
 
@@ -198,7 +188,7 @@ public class VirtualCameraController : MonoBehaviour
         GameObject player = GameManager.Instance.currentPlayerFsm.gameObject;
         if (player == null)
         {
-            Debug.LogWarning("StageManager.Instance.currentPlayerFsm.gameObject가 null입니다. 플레이어 오브젝트를 찾을 수 없습니다.");
+            Debug.LogWarning("GameManager.Instance.currentPlayerFsm.gameObject가 null입니다. 플레이어 오브젝트를 찾을 수 없습니다.");
             return;
         }
 
@@ -213,9 +203,7 @@ public class VirtualCameraController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 카메라 쉐이크를 발생시키는 메서드
-    /// </summary>
+    // 카메라 쉐이크를 발생시키는 메서드
     public void ShakeCamera(float duration)
     {
         // 설정된 범위 내에서 랜덤한 magnitude 선택
