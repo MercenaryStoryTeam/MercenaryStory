@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossReturnToIdleState : BossState
+public class BossReturnToIdleState : State<BossMonster>
 {
     public override void EnterState(BossMonster boss)
     {

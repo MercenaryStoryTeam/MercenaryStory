@@ -37,7 +37,7 @@ public class BossMonster : MonoBehaviourPun
 	public GameObject slashEffect;
 
 	private NavMeshAgent agent;
-	private BossStateMachine stateMachine;
+	private StateMachine<BossMonster, BossStateType> stateMachine;
 	private int playerLayer;
 	private int minionLayer;
 
@@ -49,6 +49,8 @@ public class BossMonster : MonoBehaviourPun
 	[HideInInspector] public Animator Animator;
 
 	private Vector3 originPos;
+
+	private Dictionary<BossStateType, State<BossMonster>> states;
 
 	#endregion
 
@@ -67,8 +69,20 @@ public class BossMonster : MonoBehaviourPun
 		agent.speed = moveSpeed;
 		playerLayer = LayerMask.GetMask("Player");
 		minionLayer = LayerMask.GetMask("Minion");
-		stateMachine = new BossStateMachine(this);
-		stateMachine.ChangeState(BossStateType.Idle);
+		stateMachine = new StateMachine<BossMonster, BossStateType>();
+		states = new Dictionary<BossStateType, State<BossMonster>>
+		{
+			{ BossStateType.Slash, new BossSlashState() },
+			{ BossStateType.SlashChase, new BossSlashChaseState() },
+			{ BossStateType.Bite, new BossBiteState() },
+			{ BossStateType.BiteChase, new BossBiteChaseState() },
+			{ BossStateType.Hunger, new BossHungerState() },
+			{ BossStateType.Charge, new BossChargeState() },
+			{ BossStateType.Idle, new BossIdleState() },
+			{ BossStateType.Die, new BossDieState() },
+			{ BossStateType.GetHit, new BossGetHitState() }
+		};
+		stateMachine.Setup(this, states[BossStateType.Idle], states);
 
 		originPos.y = transform.position.y;
 	}
@@ -76,26 +90,29 @@ public class BossMonster : MonoBehaviourPun
 	protected virtual void Update()
 	{
 		if (currentState == BossStateType.Die) return;
-		currentState = stateMachine.currentStateType;
+		currentState = (BossStateType)stateMachine.CurrentStateType;
 		if (playerList.Count == 0 && currentState != BossStateType.Idle)
 		{
 			ChangeState(BossStateType.Idle);
 		}
 
-		stateMachine.CurrentState?.ExecuteState(this);
+		stateMachine.ExecuteCurrentState();
 	}
 
 	public void ChangeState(BossStateType newState)
 	{
 		print($"{gameObject.name} State change : {newState}");
-		stateMachine.ChangeState(newState);
+		if (states.TryGetValue(newState, out var state))
+		{
+			stateMachine.ChangeState(state);
+		}
 	}
 
 	#region 애니메이션 끝날 때 호출하는 함수
 
 	public void OnSlashAnimationEnd()
 	{
-		if (stateMachine.currentStateType == BossStateType.Slash)
+		if (stateMachine.CurrentStateType == BossStateType.Slash)
 		{
 			print("slash animation end");
 			slashCount++;
@@ -113,9 +130,10 @@ public class BossMonster : MonoBehaviourPun
 
 	public void OnBiteAnimationEnd()
 	{
-		if (stateMachine.currentStateType == BossStateType.Bite)
+		if (stateMachine.CurrentStateType == BossStateType.Bite)
 		{
-			Target.gameObject.GetComponent<Minion>().TakeDamage(Target.gameObject.GetComponent<Minion>().hp);
+			Target.gameObject.GetComponent<Minion>()
+				.TakeDamage(Target.gameObject.GetComponent<Minion>().hp);
 			hp += maxHp / 10;
 			if (hp > maxHp)
 			{
@@ -128,7 +146,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void OnHungerAnimationEnd()
 	{
-		if (stateMachine.currentStateType == BossStateType.Hunger)
+		if (stateMachine.CurrentStateType == BossStateType.Hunger)
 		{
 			ChangeState(BossStateType.Idle);
 		}
@@ -136,7 +154,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void GetHitAnimationEnd()
 	{
-		if (stateMachine.currentStateType == BossStateType.GetHit)
+		if (stateMachine.CurrentStateType == BossStateType.GetHit)
 		{
 			ChangeState(BossStateType.Idle);
 		}
@@ -144,9 +162,10 @@ public class BossMonster : MonoBehaviourPun
 
 	public void OnDieAnimationEnd()
 	{
-		if (stateMachine.currentStateType == BossStateType.Die)
+		if (stateMachine.CurrentStateType == BossStateType.Die)
 		{
-			GameObject nextPortal = PhotonNetwork.Instantiate($"Portal/{portal.name}", portal.transform.position,
+			GameObject nextPortal = PhotonNetwork.Instantiate($"Portal/{portal.name}",
+				portal.transform.position,
 				portal.transform.rotation);
 		}
 	}
@@ -155,7 +174,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void TakeDamage(int damage)
 	{
-		if (stateMachine.currentStateType == BossStateType.Die) return;
+		if (stateMachine.CurrentStateType == BossStateType.Die) return;
 		hp -= damage;
 		if (hp <= 0)
 		{
@@ -172,7 +191,8 @@ public class BossMonster : MonoBehaviourPun
 	{
 		foreach (Transform nest in nestList)
 		{
-			PhotonNetwork.Instantiate($"Monster/{minionPrefab.name}", nest.position, nest.rotation);
+			PhotonNetwork.Instantiate($"Monster/{minionPrefab.name}", nest.position,
+				nest.rotation);
 		}
 	}
 
@@ -180,19 +200,19 @@ public class BossMonster : MonoBehaviourPun
 
 	public void StartCoolDown()
 	{
-		if (stateMachine.currentStateType == BossStateType.Charge)
+		if (stateMachine.CurrentStateType == BossStateType.Charge)
 		{
 			print("charge cooldown");
 			StartCoroutine(ChargeCoolDown());
 		}
 
-		else if (stateMachine.currentStateType == BossStateType.Slash && slashCount == 0)
+		else if (stateMachine.CurrentStateType == BossStateType.Slash && slashCount == 0)
 		{
 			print("slash cooldown");
 			StartCoroutine(SlashCoolDown());
 		}
 
-		else if (stateMachine.currentStateType == BossStateType.Hunger)
+		else if (stateMachine.CurrentStateType == BossStateType.Hunger)
 		{
 			print("hunger cooldown");
 			StartCoroutine(HungerCoolDown());
@@ -247,7 +267,6 @@ public class BossMonster : MonoBehaviourPun
 					droppedItem = item;
 					Debug.Log($"아이템 {droppedItem.itemName}을 {randomValue}의 확률로 얻음!");
 
-
 					break;
 				}
 			}
@@ -263,12 +282,15 @@ public class BossMonster : MonoBehaviourPun
 
 	private void DroppedLightLine(ItemBase item)
 	{
-		Player player = GameObject.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}").GetComponent<Player>();
+		Player player = GameObject
+			.Find($"{FirebaseManager.Instance.CurrentUserData.user_Name}")
+			.GetComponent<Player>();
 		Vector3 spawnPos = transform.position;
 		spawnPos.y = originPos.y;
 		if (item != null)
 		{
-			GameObject itemLightLine = Instantiate(item.dropLightLine, spawnPos, Quaternion.identity);
+			GameObject itemLightLine =
+				Instantiate(item.dropLightLine, spawnPos, Quaternion.identity);
 			player.droppedItems.Add((itemLightLine, item));
 		}
 	}
@@ -292,7 +314,8 @@ public class BossMonster : MonoBehaviourPun
 		{
 			float angle = -135f + (angleStep * i);
 			Vector3 direction = Quaternion.Euler(0, angle, 0) * forward;
-			Gizmos.DrawLine(transform.position, transform.position + direction * slashAttackRange);
+			Gizmos.DrawLine(transform.position,
+				transform.position + direction * slashAttackRange);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class MinionDieState : MinionState
+public class MinionDieState : State<Minion>
 {
 	private float startTime;
 

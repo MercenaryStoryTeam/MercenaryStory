@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossSlashChaseState : BossState
+public class BossSlashChaseState : State<BossMonster>
 {
     public override void EnterState(BossMonster boss)
     {
