@@ -32,7 +32,7 @@ public class Monster : MonoBehaviourPun
 
 	private StateMachine<Monster, MonsterStateType> stateMachine;
 	public Dictionary<MonsterStateType, State<Monster>> states;
-	public MonsterStateType currentState;
+	public State<Monster> currentState;
 
 	private Animator animator;
 
@@ -47,71 +47,27 @@ public class Monster : MonoBehaviourPun
 
 	#region 프로퍼티
 
-	public int Hp
-	{
-		set => hp = Mathf.Max(0, value);
-		get => hp;
-	}
+	public int Hp { set => hp = Mathf.Max(0, value); get => hp; }
 
-	public int MaxHp
-	{
-		set => maxHp = Mathf.Max(0, value);
-		get => maxHp;
-	}
+	public int MaxHp { set => maxHp = Mathf.Max(0, value); get => maxHp; }
 
-	public int Damage
-	{
-		set => damage = Mathf.Max(0, value);
-		get => damage;
-	}
+	public int Damage { set => damage = Mathf.Max(0, value); get => damage; }
 
-	public float MoveSpeed
-	{
-		set => moveSpeed = Mathf.Max(0, value);
-		get => moveSpeed;
-	}
+	public float MoveSpeed { set => moveSpeed = Mathf.Max(0, value); get => moveSpeed; }
 
-	public float RotationSpeed
-	{
-		set => rotationSpeed = Mathf.Max(0, value);
-		get => rotationSpeed;
-	}
+	public float RotationSpeed { set => rotationSpeed = Mathf.Max(0, value); get => rotationSpeed; }
 
-	public float AttackSpeed
-	{
-		set => attackSpeed = Mathf.Max(0, value);
-		get => attackSpeed;
-	}
+	public float AttackSpeed { set => attackSpeed = Mathf.Max(0, value); get => attackSpeed; }
 
-	public float PatrolRange
-	{
-		set => patrolRange = Mathf.Max(0, value);
-		get => patrolRange;
-	}
+	public float PatrolRange { set => patrolRange = Mathf.Max(0, value); get => patrolRange; }
 
-	public float DetectionRange
-	{
-		set => detectionRange = Mathf.Max(0, value);
-		get => detectionRange;
-	}
+	public float DetectionRange { set => detectionRange = Mathf.Max(0, value); get => detectionRange; }
 
-	public float AttackRange
-	{
-		set => attackRange = Mathf.Max(0, value);
-		get => attackRange;
-	}
+	public float AttackRange { set => attackRange = Mathf.Max(0, value); get => attackRange; }
 
-	public float ReturnRange
-	{
-		set => returnRange = Mathf.Max(0, value);
-		get => returnRange;
-	}
+	public float ReturnRange { set => returnRange = Mathf.Max(0, value); get => returnRange; }
 
-	public float GoldReward
-	{
-		set => goldReward = Mathf.Max(0, value);
-		get => goldReward;
-	}
+	public float GoldReward { set => goldReward = Mathf.Max(0, value); get => goldReward; }
 
 	public LayerMask PlayerLayer => playerLayer;
 	public NavMeshAgent Agent => agent;
@@ -159,15 +115,9 @@ public class Monster : MonoBehaviourPun
 		originPos.y = transform.position.y;
 	}
 
-	// 플레이어 레이어 찾기
-	private bool IsPlayerLayer(int layer)
-	{
-		return (playerLayer.value & (1 << layer)) != 0;
-	}
-
 	protected void Update()
 	{
-		currentState = stateMachine.CurrentStateType;
+		currentState = stateMachine.CurrentState;
 		stateMachine.ExecuteCurrentState();
 	}
 
@@ -188,7 +138,7 @@ public class Monster : MonoBehaviourPun
 
 	public void OnAttackAnimationEnd()
 	{
-		if (currentState == MonsterStateType.Attack)
+		if (currentState == states[MonsterStateType.Attack])
 		{
 			TargetTransform.gameObject.GetComponent<Player>().TakeDamage(damage);
 			ChangeState(MonsterStateType.Chase);
@@ -197,7 +147,7 @@ public class Monster : MonoBehaviourPun
 
 	public void GetHitAnimationEnd()
 	{
-		if (currentState == MonsterStateType.GetHit)
+		if (currentState == states[MonsterStateType.GetHit])
 		{
 			ChangeState(MonsterStateType.Chase);
 		}
@@ -218,14 +168,6 @@ public class Monster : MonoBehaviourPun
 		Hp -= damage;
 
 		Debug.Log($"Monster HP: {Hp}/{maxHp} (받은 Damage: {damage})");
-
-		// // 5초 동안 유지되는 몬스터 hp바 활성화
-		// monsterHpBar?.ShowHpBar();
-		//
-		// // 카메라 흔들기
-		// cameraController?.ShakeCamera(duration: cameraController.sakeDuration);
-
-		print($"Monster HP: {Hp}/{maxHp}");
 
 		if (Hp <= 0)
 		{
@@ -249,7 +191,6 @@ public class Monster : MonoBehaviourPun
 				{
 					droppedItem = item;
 					Debug.Log($"아이템 {droppedItem.itemName}을 {randomValue}의 확률로 얻음!");
-
 
 					break;
 				}

@@ -27,7 +27,7 @@ public class BossMonster : MonoBehaviourPun
 	public int hungerCooltime = 13;
 	public GameObject minionPrefab;
 	public int slashCount = 0;
-	public BossStateType currentState;
+	public State<BossMonster> currentState;
 	public Transform Target;
 	public List<Player> playerList = new List<Player>();
 	public List<Minion> minionList = new List<Minion>();
@@ -89,9 +89,9 @@ public class BossMonster : MonoBehaviourPun
 
 	protected virtual void Update()
 	{
-		if (currentState == BossStateType.Die) return;
-		currentState = (BossStateType)stateMachine.CurrentStateType;
-		if (playerList.Count == 0 && currentState != BossStateType.Idle)
+		if (currentState == states[BossStateType.Die]) return;
+		currentState = stateMachine.CurrentState;
+		if (playerList.Count == 0 && currentState != states[BossStateType.Idle])
 		{
 			ChangeState(BossStateType.Idle);
 		}
@@ -112,7 +112,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void OnSlashAnimationEnd()
 	{
-		if (stateMachine.CurrentStateType == BossStateType.Slash)
+		if (currentState == states[BossStateType.Slash])
 		{
 			print("slash animation end");
 			slashCount++;
@@ -130,7 +130,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void OnBiteAnimationEnd()
 	{
-		if (stateMachine.CurrentStateType == BossStateType.Bite)
+		if (currentState == states[BossStateType.Bite])
 		{
 			Target.gameObject.GetComponent<Minion>()
 				.TakeDamage(Target.gameObject.GetComponent<Minion>().hp);
@@ -146,7 +146,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void OnHungerAnimationEnd()
 	{
-		if (stateMachine.CurrentStateType == BossStateType.Hunger)
+		if (currentState == states[BossStateType.Hunger])
 		{
 			ChangeState(BossStateType.Idle);
 		}
@@ -154,7 +154,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void GetHitAnimationEnd()
 	{
-		if (stateMachine.CurrentStateType == BossStateType.GetHit)
+		if (currentState == states[BossStateType.GetHit])
 		{
 			ChangeState(BossStateType.Idle);
 		}
@@ -162,7 +162,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void OnDieAnimationEnd()
 	{
-		if (stateMachine.CurrentStateType == BossStateType.Die)
+		if (currentState == states[BossStateType.Die])
 		{
 			GameObject nextPortal = PhotonNetwork.Instantiate($"Portal/{portal.name}",
 				portal.transform.position,
@@ -174,7 +174,7 @@ public class BossMonster : MonoBehaviourPun
 
 	public void TakeDamage(int damage)
 	{
-		if (stateMachine.CurrentStateType == BossStateType.Die) return;
+		if (currentState == states[BossStateType.Die]) return;
 		hp -= damage;
 		if (hp <= 0)
 		{
@@ -200,19 +200,19 @@ public class BossMonster : MonoBehaviourPun
 
 	public void StartCoolDown()
 	{
-		if (stateMachine.CurrentStateType == BossStateType.Charge)
+		if (currentState == states[BossStateType.Charge])
 		{
 			print("charge cooldown");
 			StartCoroutine(ChargeCoolDown());
 		}
 
-		else if (stateMachine.CurrentStateType == BossStateType.Slash && slashCount == 0)
+		else if (currentState == states[BossStateType.Slash] && slashCount == 0)
 		{
 			print("slash cooldown");
 			StartCoroutine(SlashCoolDown());
 		}
 
-		else if (stateMachine.CurrentStateType == BossStateType.Hunger)
+		else if (currentState == states[BossStateType.Hunger])
 		{
 			print("hunger cooldown");
 			StartCoroutine(HungerCoolDown());

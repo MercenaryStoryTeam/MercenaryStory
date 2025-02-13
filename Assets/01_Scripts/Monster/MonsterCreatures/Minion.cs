@@ -20,7 +20,7 @@ public class Minion : MonoBehaviourPun
 	public NavMeshAgent agent;
 	public Transform target;
 	private StateMachine<Minion, MinionStateType> stateMachine;
-	public MinionStateType currentState;
+	public State<Minion> currentState;
 	public LayerMask playerLayer;
 	public DetectCollider detectCollider;
 
@@ -50,7 +50,7 @@ public class Minion : MonoBehaviourPun
 
 	protected virtual void Update()
 	{
-		currentState = (MinionStateType)stateMachine.CurrentStateType;
+		currentState = stateMachine.CurrentState;
 		if (playerList.Count == 0)
 		{
 			ChangeState(MinionStateType.Idle);
@@ -70,7 +70,7 @@ public class Minion : MonoBehaviourPun
 
 	public void OnAttackAnimationEnd()
 	{
-		if (currentState == MinionStateType.Attack)
+		if (currentState == states[MinionStateType.Attack])
 		{
 			target.gameObject.GetComponent<Player>().TakeDamage(damage);
 			ChangeState(MinionStateType.Idle);
@@ -79,7 +79,7 @@ public class Minion : MonoBehaviourPun
 
 	public void GetHitAnimationEnd()
 	{
-		if (currentState == MinionStateType.GetHit)
+		if (currentState == states[MinionStateType.GetHit])
 		{
 			ChangeState(MinionStateType.Idle);
 		}

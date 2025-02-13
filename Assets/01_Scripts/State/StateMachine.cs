@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.XR;
 using System.Linq;
 
-public class StateMachine<T, TStateType> where T : class where TStateType : System.Enum
+public class StateMachine<T, TStateType> 
+	where T : class where TStateType : System.Enum
 {
 	private T ownerEntity;
 	private State<T> currentState;
@@ -12,7 +13,6 @@ public class StateMachine<T, TStateType> where T : class where TStateType : Syst
 	private Dictionary<TStateType, State<T>> states;
 
 	public State<T> CurrentState => currentState;
-	public TStateType CurrentStateType { get; private set; }
 
 	public void Setup(T owner, State<T> entryState,
 		Dictionary<TStateType, State<T>> stateMap)
@@ -35,7 +35,6 @@ public class StateMachine<T, TStateType> where T : class where TStateType : Syst
 		}
 
 		currentState = newState;
-		CurrentStateType = states.FirstOrDefault(x => x.Value == newState).Key;
 		currentState.EnterState(ownerEntity);
 	}
 
