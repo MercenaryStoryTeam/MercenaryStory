@@ -16,7 +16,7 @@ public class ItemInfoPanel : MonoBehaviour
 
 	public GameObject secondOption;
 
-	private InventorySlot currentSelectedSlot;
+	private Slot currentSelectedSlot;
 	private Equipment equipment;
 	private EquipmentPanel equipPanel;
 
@@ -76,7 +76,7 @@ public class ItemInfoPanel : MonoBehaviour
 		UIManager.Instance.CloseItemInfoPanel();
 	}
 
-	public void SetCurrentSlot(InventorySlot slot)
+	public void SetCurrentSlot(Slot slot)
 	{
 		currentSelectedSlot = slot;
 	}

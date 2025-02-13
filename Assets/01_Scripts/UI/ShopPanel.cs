@@ -8,18 +8,18 @@ public class ShopPanel : MonoBehaviour
 	public GameObject shopPanel;
 	public Text sellPriceText;
 	public Text currentGoldText;
-	public List<InventorySlot> holdSlots; // 보유 물품 슬롯들
-	public List<InventorySlot> sellSlots; // 판매할 물품 슬롯들
+	public List<Slot> holdSlots; // 보유 물품 슬롯들
+	public List<Slot> sellSlots; // 판매할 물품 슬롯들
 	public Button sellButton;
 	public Button closeButton;
 
 	private bool isSellButtonClicked = false;
 	[HideInInspector] public float sellPrice = 0;
-	[HideInInspector] public Dictionary<InventorySlot, InventorySlot> originalSlotState =
-		new Dictionary<InventorySlot, InventorySlot>();
-	private InventorySlot sellSlot;
-	private Dictionary<InventorySlot, ItemState> itemStates =
-		new Dictionary<InventorySlot, ItemState>();
+	[HideInInspector] public Dictionary<Slot, Slot> originalSlotState =
+		new Dictionary<Slot, Slot>();
+	private Slot sellSlot;
+	private Dictionary<Slot, ItemState> itemStates =
+		new Dictionary<Slot, ItemState>();
 
 	private struct ItemState
 	{
@@ -36,7 +36,7 @@ public class ShopPanel : MonoBehaviour
 
 	private void SaveOriginalState()
 	{
-		foreach (InventorySlot slot in holdSlots)
+		foreach (Slot slot in holdSlots)
 		{
 			itemStates[slot] = new ItemState
 			{
@@ -51,7 +51,7 @@ public class ShopPanel : MonoBehaviour
 	{
 		if (!isSellButtonClicked)
 		{
-			foreach (InventorySlot slot in holdSlots)
+			foreach (Slot slot in holdSlots)
 			{
 				if (itemStates.ContainsKey(slot))
 				{
@@ -62,7 +62,7 @@ public class ShopPanel : MonoBehaviour
 				}
 			}
 
-			foreach (InventorySlot slot in sellSlots)
+			foreach (Slot slot in sellSlots)
 			{
 				slot.RemoveItem();
 				slot.slotCount = 0;
@@ -76,7 +76,7 @@ public class ShopPanel : MonoBehaviour
 		{
 			isSellButtonClicked = false;
 			sellPrice = 0;
-			foreach (InventorySlot slot in holdSlots)
+			foreach (Slot slot in holdSlots)
 			{
 				if (itemStates.ContainsKey(slot))
 				{
@@ -96,12 +96,12 @@ public class ShopPanel : MonoBehaviour
 
 	private void UpdateHoldSlots()
 	{
-		foreach (InventorySlot holdSlot in holdSlots)
+		foreach (Slot holdSlot in holdSlots)
 		{
 			holdSlot.RemoveItem();
 		}
 
-		List<InventorySlot> inventorySlots = UIManager.Instance.inventoryManagerSystem.slots;
+		List<Slot> inventorySlots = UIManager.Instance.inventoryManagerSystem.slots;
 		for (int i = 0; i < inventorySlots.Count && i < holdSlots.Count; i++)
 		{
 			if (inventorySlots[i].item != null)
@@ -121,7 +121,7 @@ public class ShopPanel : MonoBehaviour
 	private void sellButtonClick()
 	{
 		bool isItemToSell = false;
-		foreach (InventorySlot slot in sellSlots)
+		foreach (Slot slot in sellSlots)
 		{
 			if (slot.item != null)
 			{
@@ -139,14 +139,14 @@ public class ShopPanel : MonoBehaviour
 
 		bool arraySlot = false;
 
-		foreach (InventorySlot sellSlot in sellSlots)
+		foreach (Slot sellSlot in sellSlots)
 		{
 			if (sellSlot.item != null)
 			{
-				if (originalSlotState.TryGetValue(sellSlot, out InventorySlot originalSlot))
+				if (originalSlotState.TryGetValue(sellSlot, out Slot originalSlot))
 				{
 					int holdSlotIndex = holdSlots.IndexOf(originalSlot);
-					InventorySlot inventorySlot =
+					Slot slot =
 						UIManager.Instance.inventoryManagerSystem.slots[holdSlotIndex];
 
 					if (sellSlot.item.itemClass == 2)
@@ -154,27 +154,27 @@ public class ShopPanel : MonoBehaviour
 						sellSlot.item.currentItemCount -= sellSlot.slotCount;
 
 
-						if (inventorySlot != null)
+						if (slot != null)
 						{
-							if (inventorySlot.slotCount <= sellSlot.slotCount)
+							if (slot.slotCount <= sellSlot.slotCount)
 							{
-								inventorySlot.RemoveItem();
-								inventorySlot.slotCount = 0;
+								slot.RemoveItem();
+								slot.slotCount = 0;
 								arraySlot = true;
 							}
 							else
 							{
-								inventorySlot.slotCount -= sellSlot.slotCount;
+								slot.slotCount -= sellSlot.slotCount;
 							}
 						}
 					}
 					else if (sellSlot.item.itemClass == 1)
 					{
 						sellSlot.item.currentItemCount--;
-						if (inventorySlot != null)
+						if (slot != null)
 						{
-							inventorySlot.RemoveItem();
-							inventorySlot.slotCount = 0;
+							slot.RemoveItem();
+							slot.slotCount = 0;
 							arraySlot = true;
 						}
 					}

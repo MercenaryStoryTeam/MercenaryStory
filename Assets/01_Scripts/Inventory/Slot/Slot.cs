@@ -10,7 +10,7 @@ public enum SlotType
 	ShopSell
 }
 
-public class InventorySlot : MonoBehaviour
+public class Slot : MonoBehaviour
 {
 	public ItemBase item;
 	public Image itemImage;
@@ -53,8 +53,7 @@ public class InventorySlot : MonoBehaviour
 	private void OnSlotClicked()
 	{
 		if (item == null) return;
-
-
+		
 		switch (slotType)
 		{
 			case SlotType.Inventory:
@@ -96,11 +95,11 @@ public class InventorySlot : MonoBehaviour
 			return;
 		}
 
-		List<InventorySlot> sellSlots = UIManager.Instance.shop.sellSlots;
+		List<Slot> sellSlots = UIManager.Instance.shop.sellSlots;
 
 		if (item.itemClass == 1)
 		{
-			foreach (InventorySlot sellSlot in sellSlots)
+			foreach (Slot sellSlot in sellSlots)
 			{
 				if (sellSlot.item == null)
 				{
@@ -116,8 +115,8 @@ public class InventorySlot : MonoBehaviour
 
 		if (item.itemClass == 2)
 		{
-			InventorySlot currentSellSlot = null;
-			foreach (InventorySlot slot in sellSlots)
+			Slot currentSellSlot = null;
+			foreach (Slot slot in sellSlots)
 			{
 				if (slot.item != null &&
 				    slot.item == item &&
@@ -144,7 +143,7 @@ public class InventorySlot : MonoBehaviour
 
 			else if (currentSellSlot == null)
 			{
-				foreach (InventorySlot sellSlot in sellSlots)
+				foreach (Slot sellSlot in sellSlots)
 				{
 					if (sellSlot.item == null)
 					{

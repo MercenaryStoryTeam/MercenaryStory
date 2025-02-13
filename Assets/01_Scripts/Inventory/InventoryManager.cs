@@ -4,7 +4,7 @@ using UnityEngine;
 public class InventoryManager : SingletonManager<InventoryManager>
 {
 	public List<ItemBase> allItems;
-	public List<InventorySlot> slots;
+	public List<Slot> slots;
 
 	public ItemBase basicEquipWeapon;
 
@@ -13,7 +13,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 	public int GetTotalItemCount(ItemBase item)
 	{
 		int totalCount = 0;
-		foreach (InventorySlot slot in slots)
+		foreach (Slot slot in slots)
 		{
 			if (slot.item == item)
 			{
@@ -27,6 +27,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
 	public void LoadInventoryFromDatabase()
 	{
+		
 		if (FirebaseManager.Instance.CurrentUserData != null)
 		{
 			foreach (ItemBase item in allItems)
@@ -41,7 +42,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 				}
 			}
 
-			foreach (InventorySlot slot in slots)
+			foreach (Slot slot in slots)
 			{
 				slot.RemoveItem();
 				slot.slotCount = 0;
@@ -55,7 +56,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 					ItemBase originalItem = allItems.Find(x => x.id == slotData.item_Id);
 					if (originalItem != null)
 					{
-						foreach (InventorySlot slot in slots)
+						foreach (Slot slot in slots)
 						{
 							if (slot.item == null)
 							{
@@ -82,7 +83,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 	{
 		if (newItem.itemClass == 1)
 		{
-			foreach (InventorySlot slot in slots)
+			foreach (Slot slot in slots)
 			{
 				if (slot.item == null)
 				{
@@ -98,7 +99,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 		else if (newItem.itemClass == 2)
 		{
 			bool added = false;
-			foreach (InventorySlot slot in slots)
+			foreach (Slot slot in slots)
 			{
 				if (slot.item != null && slot.item.id == newItem.id && !slot.IsFull())
 				{
@@ -111,7 +112,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
 			if (!added)
 			{
-				foreach (InventorySlot slot in slots)
+				foreach (Slot slot in slots)
 				{
 					if (slot.item == null)
 					{
@@ -127,7 +128,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 		}
 	}
 
-	public void DeleteItem(InventorySlot slot)
+	public void DeleteItem(Slot slot)
 	{
 		if (slot != null && slot.item != null)
 		{
@@ -152,7 +153,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 	{
 		List<(ItemBase item, int stack)> itemsToKeep = new List<(ItemBase, int)>();
 
-		foreach (InventorySlot slot in slots)
+		foreach (Slot slot in slots)
 		{
 			if (slot.item != null && slot.slotCount > 0)
 			{
@@ -160,7 +161,7 @@ public class InventoryManager : SingletonManager<InventoryManager>
 			}
 		}
 
-		foreach (InventorySlot slot in slots)
+		foreach (Slot slot in slots)
 		{
 			slot.RemoveItem();
 			slot.slotCount = 0;

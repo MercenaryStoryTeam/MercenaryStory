@@ -38,7 +38,7 @@ public class Equipment : MonoBehaviourPunCallbacks
 	}
 
 	[PunRPC]
-	public void SetCurrentEquip(InventorySlot slot)
+	public void SetCurrentEquip(Slot slot)
 	{
 		if (!photonView.IsMine) return;
 
@@ -48,15 +48,18 @@ public class Equipment : MonoBehaviourPunCallbacks
 			return;
 		}
 
-		if (slot.item.equipPrefab == null)
+		if (slot.item is WeaponItem weapon)
 		{
-			Debug.Log("프리팹 리스트가 비어있거나 아이템이 할당되지 않음");
-			return;
-		}
+			if (weapon.equipPrefab == null)
+			{
+				Debug.Log("프리팹 리스트가 비어있거나 아이템이 할당되지 않음");
+				return;
+			}
 
-		if (slot.item.equipPrefab != null)
-		{
-			photonView.RPC("NetworkSetEquipment", RpcTarget.All, slot.item.id);
+			if (weapon.equipPrefab != null)
+			{
+				photonView.RPC("NetworkSetEquipment", RpcTarget.All, slot.item.id);
+			}
 		}
 	}
 
@@ -64,25 +67,19 @@ public class Equipment : MonoBehaviourPunCallbacks
 	private void NetworkSetEquipment(int itemId)
 	{
 		
-		if (InventoryManager.Instance == null)
+		if (InventoryManager.Instance == null && InventoryManager.Instance.allItems == null)
 		{
-			Debug.LogError("인벤토리매니저 없음");
-			return;
-		}
-
-		if (InventoryManager.Instance.allItems == null)
-		{
-			Debug.LogError("인벤토리 매니저의 allItems가 비어있음");
+			Debug.LogError("인벤토리매니저가 없거나 비어있음");
 			return;
 		}
 
 		ItemBase item = InventoryManager.Instance.allItems.Find(x => x.id == itemId);
+		
 		if (item == null)
 		{
 			Debug.LogError($"ID {itemId}에 해당하는 아이템을 찾을 수 없음");
 			return;
 		}
-
 		
 		if (photonView.IsMine)
 		{

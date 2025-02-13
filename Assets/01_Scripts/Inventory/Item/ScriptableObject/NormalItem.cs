@@ -3,11 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Other Item", menuName = "Items/Other Item")]
+[CreateAssetMenu(fileName = "New Normal Item", menuName = "Items/Normal Item")]
 [Serializable]
-public class OtherItem : ItemBase
+public class NormalItem : ItemBase
 {
-    public int stackAmount = 10;
     private void Awake()
     {
         itemClass = 2;

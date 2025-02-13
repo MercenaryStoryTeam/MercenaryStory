@@ -268,7 +268,7 @@ public class BossMonster : MonoBehaviourPun
 		spawnPos.y = originPos.y;
 		if (item != null)
 		{
-			GameObject itemLightLine = Instantiate(item.dropLightLine, spawnPos, Quaternion.identity);
+			GameObject itemLightLine = Instantiate(item.dropEffect, spawnPos, Quaternion.identity);
 			player.droppedItems.Add((itemLightLine, item));
 		}
 	}

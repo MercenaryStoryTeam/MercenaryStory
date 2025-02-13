@@ -45,9 +45,12 @@ public class EquipmentPanel : MonoBehaviour
 
 				DestroyCurrentEquipments();
 
-				if (currentItem.equipPrefab != null)
+				if (currentItem is WeaponItem weapon)
 				{
-					SetPanelSwordCharacter(currentItem);
+					if (weapon.equipPrefab != null)
+					{
+						SetPanelSwordCharacter(currentItem);
+					}
 				}
 			}
 		}
@@ -58,7 +61,7 @@ public class EquipmentPanel : MonoBehaviour
 		UpdateUI();
 	}
 
-	public void SetEquipImage(InventorySlot slot)
+	public void SetEquipImage(Slot slot)
 	{
 		if (currentItem != null)
 		{
@@ -69,11 +72,14 @@ public class EquipmentPanel : MonoBehaviour
 			currentEquipImage.sprite = slot.item.image;
 
 			DestroyCurrentEquipments();
-			if (slot.item.equipPrefab != null)
+			if (slot.item is WeaponItem weapon)
 			{
-				SetPanelSwordCharacter(slot.item);
-			}
+				if (weapon.equipPrefab != null)
+				{
+					SetPanelSwordCharacter(slot.item);
+				}
 
+			}
 			slot.RemoveItem();
 			print(
 				$"현재 장착한 아이템: {currentItem.itemName}, 장착한 아이탬 개수: {currentItem.currentItemCount}");
@@ -108,7 +114,10 @@ public class EquipmentPanel : MonoBehaviour
 			{
 				Transform rightHand = child.FindDeepChild("Sword");
 
-				GameObject panelSword = Instantiate(item.equipPrefab, rightHand);
+				if (item is WeaponItem weapon)
+				{
+					GameObject panelSword = Instantiate(weapon.equipPrefab, rightHand);
+				}
 			}
 		}
 	}
