@@ -11,6 +11,9 @@ public class PlayerInputManager : MonoBehaviourPun
     public static System.Action OnRightClickInput;
     public static System.Action OnShiftLeftClickInput;
     public static System.Action OnShiftRightClickInput;
+    // K키 입력 이벤트 추가
+    public static System.Action OnKKeyInput;
+
     private Animator animator;
 
     // PC에서 모바일 입력 테스트를 위해 모바일 입력 활성화
@@ -124,7 +127,7 @@ public class PlayerInputManager : MonoBehaviourPun
         }
     }
 
-    // 컴퓨터 입력 
+    // 컴퓨터 입력 처리
     private void HandleDesktopInputs()
     {
         Vector2 movement = new Vector2(Input.GetAxisRaw("Horizontal"),
@@ -162,6 +165,12 @@ public class PlayerInputManager : MonoBehaviourPun
         if (Input.GetButtonDown("Jump"))
         {
             OnSkillInput?.Invoke();
+        }
+
+        // K 키 입력 처리
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            OnKKeyInput?.Invoke();
         }
     }
 
@@ -207,7 +216,7 @@ public class PlayerInputManager : MonoBehaviourPun
         }
     }
 
-    // 모바일 입력 
+    // 모바일 입력 처리
     private void HandleMobileInputs()
     {
         // 조이스틱을 통한 이동 처리
@@ -234,7 +243,6 @@ public class PlayerInputManager : MonoBehaviourPun
                         OnAttackInput?.Invoke();
                     }
                 }
-
                 // 필요시 다른 터치 단계를 처리할 수 있습니다.
             }
         }
