@@ -183,36 +183,30 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
 	// 서버에 올릴 때 사용하면 된다.
 	// ServerManager.JoinOrCreatePersistentRoom();에서
-	public bool UpdateSlotData()
+	public void UpdateSlotData()
 	{
-		Debug.Log("UpdateSlotData 시작");
-
 		// FirebaseManager 체크
 		if (FirebaseManager.Instance == null)
 		{
 			Debug.LogError("FirebaseManager.Instance가 null입니다");
-			return false;
 		}
 
 		// CurrentUserData 체크
 		if (FirebaseManager.Instance.CurrentUserData == null)
 		{
 			Debug.LogError("CurrentUserData가 null입니다");
-			return false;
 		}
 
 		// slots 체크
 		if (slots == null)
 		{
 			Debug.LogError("slots가 null입니다");
-			return false;
 		}
 
 		// user_Inventory 체크
 		if (FirebaseManager.Instance.CurrentUserData.user_Inventory == null)
 		{
 			Debug.LogError("user_Inventory가 null입니다");
-			return false;
 		}
 
 		try
@@ -238,13 +232,10 @@ public class InventoryManager : SingletonManager<InventoryManager>
 
 			FirebaseManager.Instance.UploadCurrnetInvenData("user_Inventory",
 				currentUserData.user_Inventory);
-			Debug.Log("Firebase 업로드 요청 완료");
-			return true;
 		}
 		catch (System.Exception e)
 		{
 			Debug.LogError($"인벤토리 업데이트 실패: {e.Message}");
-			return false;
 		}
 	}
 }
